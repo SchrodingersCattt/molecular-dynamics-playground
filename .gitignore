@@ -1,0 +1,63 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Virtual environments
+.venv/
+.venv*/
+venv/
+env/
+ENV/
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Local env / secrets
+.env
+.env.*
+!.env.template
+
+# Logs
+*.log
+
+# Build / temp artifacts
+build/
+dist/
+*.tmp
+*.temp
+
+# Media / rendered outputs
+media/
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+*.gif
+
+# Scientific / generated data
+*.npz
+*.npy
+
+# Bohrium / dispatcher workdirs
+part2/bohrium_work/
+
+# Roo Code generated planning files
+plans/
