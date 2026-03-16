@@ -1,0 +1,47 @@
+# ══════════════════════════════════════════════════════════════════════════════
+# Molecular Dynamics Visualization — Python Dependencies
+# ══════════════════════════════════════════════════════════════════════════════
+#
+# Recommended: conda environment with Python 3.10
+#
+#   conda create -n md_vis python=3.10
+#   conda activate md_vis
+#   pip install -r requirements.txt
+#
+# System requirements (install separately):
+#   - ffmpeg  (for matplotlib animation + manim rendering)
+#       Windows: winget install ffmpeg  OR  conda install -c conda-forge ffmpeg
+#       Linux:   sudo apt install ffmpeg
+#   - LaTeX   (for Manim math rendering)
+#       Windows: winget install MiKTeX.MiKTeX  OR  pip install manim[latex]
+#       Linux:   sudo apt install texlive-full
+# ══════════════════════════════════════════════════════════════════════════════
+
+# ── Part 1: Manim ─────────────────────────────────────────────────────────────
+manim>=0.18.0
+
+# ── Part 2: Core scientific stack ─────────────────────────────────────────────
+numpy>=1.24.0
+scipy>=1.10.0
+matplotlib>=3.7.0
+
+# ── Part 2a: DFT-MD ───────────────────────────────────────────────────────────
+pyscf>=2.4.0
+
+# ── Part 2b: Classical FF MD ──────────────────────────────────────────────────
+# (pure numpy — no extra dependencies)
+
+# ── Part 2c: DeePMD-kit ───────────────────────────────────────────────────────
+# CPU-only version:
+#   pip install deepmd-kit
+# GPU version (CUDA 11.x):
+#   pip install deepmd-kit[gpu]
+# GPU version (CUDA 12.x):
+#   pip install deepmd-kit[gpu] --extra-index-url https://download.pytorch.org/whl/cu121
+deepmd-kit>=2.2.0
+
+# ASE (Atomic Simulation Environment) — used by Part 2a and Part 2c
+ase>=3.22.0
+
+# ── Optional: PyTorch (for mock DeePot in Part 2c if no .pb model) ────────────
+# torch>=2.0.0
