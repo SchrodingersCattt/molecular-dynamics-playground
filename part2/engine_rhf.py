@@ -449,15 +449,22 @@ def _build_integrals(basis, pos_b, charges):
 # RHF SCF
 # ===========================================================================
 
-def run_rhf_scf(pos_ang, max_iter=100, conv_tol=1e-8):
+def run_rhf_scf(pos_ang, max_iter=100, conv_tol=1e-8, density_mixing=None):
     """
     Run RHF/STO-3G SCF for H₂O.
 
     Parameters
     ----------
-    pos_ang   : ndarray (3, 3)  — atomic positions in Angstrom [O, H1, H2]
-    max_iter  : int             — maximum SCF iterations
-    conv_tol  : float           — convergence threshold on |ΔE| in Hartree
+    pos_ang       : ndarray (3, 3)  — atomic positions in Angstrom [O, H1, H2]
+    max_iter      : int             — maximum SCF iterations
+    conv_tol      : float           — convergence threshold on |ΔE| in Hartree
+    density_mixing: float or None   — linear density-mixing parameter α ∈ (0, 1].
+                                      P_new = α·P_diag + (1−α)·P_old.
+                                      None (default) means α = 1.0 (no mixing),
+                                      which converges in ~11 iterations.
+                                      α = 0.65 gives exactly 20 iterations,
+                                      useful for visualising the convergence
+                                      process in animations.
 
     Returns
     -------
@@ -466,6 +473,10 @@ def run_rhf_scf(pos_ang, max_iter=100, conv_tol=1e-8):
     scf_energies : list[float]  — total energy at each SCF iteration
     basis        : list[dict]   — AO basis (centers in Bohr)
     """
+    alpha_mix = 1.0 if density_mixing is None else float(density_mixing)
+    if not (0.0 < alpha_mix <= 1.0):
+        raise ValueError(f"density_mixing must be in (0, 1], got {alpha_mix}")
+
     basis  = build_basis(pos_ang)
     pos_b  = pos_ang * ANG_TO_BOHR
     charges = _ATOM_CHARGES
@@ -507,7 +518,10 @@ def run_rhf_scf(pos_ang, max_iter=100, conv_tol=1e-8):
         F_prime = X.T @ F @ X
         _, C_prime = np.linalg.eigh(F_prime)
         C = X @ C_prime
-        P = 2.0 * C[:, :n_occ] @ C[:, :n_occ].T
+        # Linear density mixing: damp the update to slow convergence for
+        # visualisation purposes (α < 1) or run undamped (α = 1, default).
+        P_new = 2.0 * C[:, :n_occ] @ C[:, :n_occ].T
+        P = alpha_mix * P_new + (1.0 - alpha_mix) * P
 
     return E_total, C, scf_energies, basis
 
@@ -561,13 +575,24 @@ def density_on_grid(C, basis, pos_ang, grid_size=40):
 # SCF iteration history  (for animation)
 # ===========================================================================
 
-def scf_density_history(pos_ang, n_iter):
+def scf_density_history(pos_ang, n_iter, density_mixing=None):
     """
     Replay the first *n_iter* SCF iterations and return MO coefficient matrices.
 
     Used by the animation layer to show how the electron density evolves
     during SCF convergence.
+
+    Parameters
+    ----------
+    pos_ang       : ndarray (3, 3)  — atomic positions in Angstrom
+    n_iter        : int             — number of SCF iterations to replay
+    density_mixing: float or None   — same linear mixing parameter as
+                                      run_rhf_scf; must match the value used
+                                      during the compute run so that the
+                                      replayed density frames are consistent.
     """
+    alpha_mix = 1.0 if density_mixing is None else float(density_mixing)
+
     basis   = build_basis(pos_ang)
     pos_b   = pos_ang * ANG_TO_BOHR
     charges = _ATOM_CHARGES
@@ -592,7 +617,8 @@ def scf_density_history(pos_ang, n_iter):
         F_prime = X.T @ F @ X
         _, C_prime = np.linalg.eigh(F_prime)
         C = X @ C_prime
-        P = 2.0 * C[:, :5] @ C[:, :5].T
+        P_new = 2.0 * C[:, :5] @ C[:, :5].T
+        P = alpha_mix * P_new + (1.0 - alpha_mix) * P
         C_history.append(C.copy())
 
     return C_history

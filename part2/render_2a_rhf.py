@@ -62,18 +62,24 @@ ATOM_RADII   = [220, 100, 100]
 # MD / animation parameters  (must match compute_2a_rhf.py)
 # ---------------------------------------------------------------------------
 N_MD_STEPS      = 20
-N_SCF_ITER_SHOW = 4
-SCF_CONV_TOL    = 1e-6
+N_SCF_ITER_SHOW = 20       # must match N_SCF_SHOW in compute_2a_rhf.py
+SCF_CONV_TOL    = 1e-8     # matches conv_tol used in compute_2a_rhf.py
 DT_FS           = 1.0
 
-FPS_A          = 6
+# Timing: first N_SLOW_LOOPS_A steps get a pause at key sub-frames,
+# the rest play at 1 frame each — total ~30 s at FPS_A fps.
+# With 20 SCF iters: 20 steps × 23 sub-frames = 460 base frames.
+# At FPS=15: 460 base + 2×3×15 pause = 550 frames → 36.7 s
+# At FPS=15 with PAUSE=0.5s: 460 + 2×3×8 = 508 frames → 33.9 s  ✓
+FPS_A          = 15
 N_SLOW_LOOPS_A = 2
-PAUSE_SEC_A    = 1.0
+PAUSE_SEC_A    = 0.5
 
 FRAMES_PER_STEP = N_SCF_ITER_SHOW + 3
 KEY_SUBS_A      = {N_SCF_ITER_SHOW, N_SCF_ITER_SHOW + 1, N_SCF_ITER_SHOW + 2}
 
 NPZ_PATH = os.path.join(os.path.dirname(__file__), "md_data.npz")
+OUTPUT_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "part2a_rhf_md.mp4")
 
 # ---------------------------------------------------------------------------
 # Abstract Velocity Verlet flowchart nodes  (engine-agnostic)
@@ -89,12 +95,14 @@ VV_NODES = [
 # sub-frame → active VV node
 def _sub_to_node(step_idx, sub_frame):
     if step_idx == 0 and sub_frame == 0:
-        return 0
+        return 0                          # Initialize
     if sub_frame <= N_SCF_ITER_SHOW:
-        return 1
+        return 1                          # Compute Forces (SCF running)
     if sub_frame == N_SCF_ITER_SHOW + 1:
-        return 2
-    return 3
+        return 2                          # Velocity ½-kick (first)
+    if sub_frame == N_SCF_ITER_SHOW + 2:
+        return 4                          # Velocity ½-kick (second)
+    return 4
 
 
 # ===========================================================================
@@ -200,6 +208,13 @@ class RHFMDAnimation:
             fontsize=12, color="#333333",
             fontfamily="Consolas",
         )
+
+        # Cache keys — skip redraw when content is identical (pause frames)
+        self._mol_cache_key  = None   # (step_idx, show_forces, show_vel, show_disp)
+        self._traj_cache_key = None   # step_idx
+        self._den_cache_key  = None   # (step_idx, scf_iter, show_forces, show_vel, show_disp)
+        self._scf_cache_key  = None   # (step_idx, scf_show)
+        self._flow_cache_key = None   # active_node
 
     # -----------------------------------------------------------------------
     # Flowchart
@@ -327,7 +342,7 @@ class RHFMDAnimation:
         ax.set_xlabel("SCF Iteration")
         ax.set_ylabel("|ΔE| (Hartree)")
         ax.set_xlim(0.5, N_SCF_ITER_SHOW + 0.5)
-        ax.set_ylim(1e-8, 2.0)
+        ax.set_ylim(SCF_CONV_TOL * 0.1, 2.0)
         ax.legend(); ax.grid(True, alpha=0.3)
 
     # -----------------------------------------------------------------------
@@ -340,10 +355,19 @@ class RHFMDAnimation:
         ax.set_title(f"Electron Density  (SCF iter {scf_iter}/{N_SCF_ITER_SHOW})",
                      fontsize=12, color="#1565C0")
 
-        ax.contourf(X, Z, rho, levels=self._rho_levels,
-                    cmap="Blues", alpha=0.90, extend="min")
-        ax.contour(X, Z, rho, levels=self._rho_levels[::3],
-                   colors="navy", linewidths=0.5, alpha=0.45)
+        # Per-frame normalisation so early SCF iterations (low density) are
+        # still clearly visible.  Use 98th-percentile of this frame as vmax.
+        rho_frame_max = float(np.percentile(rho[rho > 0], 98)) if rho.max() > 0 else 1e-6
+        rho_clipped = np.clip(rho, 0, rho_frame_max)
+        ax.imshow(rho_clipped, origin="lower", aspect="auto",
+                  extent=[X.min(), X.max(), Z.min(), Z.max()],
+                  cmap="Blues", vmin=0, vmax=rho_frame_max, alpha=0.92)
+        # Make contours sparse in low-density regions and denser near the high-density core.
+        contour_fracs = np.array([0.06, 0.14, 0.24, 0.36, 0.50,
+                                  0.64, 0.74, 0.82, 0.88, 0.93, 0.97])
+        contour_levels = rho_frame_max * contour_fracs
+        ax.contour(X, Z, rho, levels=contour_levels,
+                   colors="navy", linewidths=0.65, alpha=0.58)
 
         for i, (sym, col) in enumerate(zip(ATOM_SYMBOLS, ATOM_COLORS)):
             ax.scatter(positions[i,1], positions[i,2],
@@ -481,29 +505,52 @@ class RHFMDAnimation:
                        if step_idx > 0 else d["positions"])
         X, Z, _     = d["density_grid"]
 
-        self._draw_flowchart(self.ax_flow, active_node)
-        self._draw_molecule_3d(
-            self.ax_mol, d["positions"],
-            forces     = d["forces"]     if show_forces else None,
-            velocities = d["velocities"] if show_vel    else None,
-            disp_from  = prev_pos        if show_disp   else None,
-            title=f"H₂O  (step {step_idx+1})"
-        )
-        self._draw_scf(self.ax_scf, d["scf_energies"], scf_show, step_idx)
-        self._draw_density(
-            self.ax_den, X, Z, rho_show, d["positions"], scf_show,
-            forces     = d["forces"]     if show_forces else None,
-            velocities = d["velocities"] if show_vel    else None,
-            disp_from  = prev_pos        if show_disp   else None,
-        )
-        self._draw_trajectory(self.ax_traj, step_idx)
-        self._draw_energy(self.ax_energy, step_idx)
+        # Flowchart: only redraw when active node changes
+        if active_node != self._flow_cache_key:
+            self._draw_flowchart(self.ax_flow, active_node)
+            self._flow_cache_key = active_node
+
+        # SCF convergence: only redraw when step or shown-iter count changes
+        scf_key = (step_idx, scf_show)
+        if scf_key != self._scf_cache_key:
+            self._draw_scf(self.ax_scf, d["scf_energies"], scf_show, step_idx)
+            self._scf_cache_key = scf_key
+
+        # Density: only redraw when content changes
+        den_key = (step_idx, scf_show, show_forces, show_vel, show_disp)
+        if den_key != self._den_cache_key:
+            self._draw_density(
+                self.ax_den, X, Z, rho_show, d["positions"], scf_show,
+                forces     = d["forces"]     if show_forces else None,
+                velocities = d["velocities"] if show_vel    else None,
+                disp_from  = prev_pos        if show_disp   else None,
+            )
+            self._den_cache_key = den_key
+
+        # 3D molecule: only redraw when step or overlay changes
+        mol_key = (step_idx, show_forces, show_vel, show_disp)
+        if mol_key != self._mol_cache_key:
+            self._draw_molecule_3d(
+                self.ax_mol, d["positions"],
+                forces     = d["forces"]     if show_forces else None,
+                velocities = d["velocities"] if show_vel    else None,
+                disp_from  = prev_pos        if show_disp   else None,
+                title=f"H₂O  (step {step_idx+1})"
+            )
+            self._mol_cache_key = mol_key
+
+        # Trajectory/energy: only redraw when step_idx advances
+        if step_idx != self._traj_cache_key:
+            self._draw_trajectory(self.ax_traj, step_idx)
+            self._draw_energy(self.ax_energy, step_idx)
+            self._traj_cache_key = step_idx
 
         phases = {
             0: "Initializing          ",
-            1: "Computing forces      ",
-            2: "Velocity half-kick    ",
+            1: "Computing forces (SCF)",
+            2: "Velocity ½-kick  (1st)",
             3: "Updating positions    ",
+            4: "Velocity ½-kick  (2nd)",
         }
         phase_str = phases.get(active_node, "                      ")
         status = (f"Step {step_idx+1:02d}/{self.n_steps:02d}"
@@ -513,15 +560,15 @@ class RHFMDAnimation:
 
         return []
 
-    def run(self, output="part2a_rhf_md.mp4", fps=FPS_A):
+    def run(self, output=OUTPUT_PATH, fps=FPS_A):
         print(f"\nRendering {self.total_frames} frames @ {fps} fps -> {output}")
         print(f"  Duration: {self.total_frames / fps:.1f}s")
         ani = FuncAnimation(self.fig, self.animate,
                             frames=self.total_frames,
                             interval=1000 // fps, blit=False)
-        writer = FFMpegWriter(fps=fps, bitrate=2000,
+        writer = FFMpegWriter(fps=fps, bitrate=3500,
                               metadata={"title": "H2O RHF/STO-3G MD"})
-        ani.save(output, writer=writer, dpi=130)
+        ani.save(output, writer=writer, dpi=140)
         print(f"Saved: {output}")
         plt.close(self.fig)
 
@@ -530,4 +577,4 @@ class RHFMDAnimation:
 if __name__ == "__main__":
     md_data = load_md_data()
     anim = RHFMDAnimation(md_data)
-    anim.run(output="part2a_rhf_md.mp4", fps=FPS_A)
+    anim.run(output=OUTPUT_PATH, fps=FPS_A)

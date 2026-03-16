@@ -40,8 +40,14 @@ MASSES      = np.array([15.9994, 1.008, 1.008])
 DT_FS       = 1.0      # fs
 N_STEPS     = 20
 TEMPERATURE = 300.0    # K
-N_SCF_SHOW  = 4        # SCF iterations to record per step
-GRID_SIZE   = 40
+N_SCF_SHOW  = 20       # SCF iterations to record per step (slowed with mixing)
+GRID_SIZE   = 60       # density grid resolution (higher = sharper density map)
+
+# Linear density-mixing parameter for SCF.  α = 0.65 gives exactly 20
+# iterations across all MD geometries, making the convergence process
+# clearly visible in the animation.
+# Set to None (or 1.0) to disable mixing (converges in ~11 iterations).
+SCF_DENSITY_MIXING = 0.65
 
 NPZ_PATH = os.path.join(os.path.dirname(__file__), "md_data.npz")
 
@@ -75,15 +81,20 @@ def run_md():
     for step in range(N_STEPS):
         print(f"  Step {step+1:3d}/{N_STEPS} ...", end=" ", flush=True)
 
-        # Full SCF at current geometry
-        E_ha, C, scf_energies, basis = run_rhf_scf(pos, max_iter=100, conv_tol=1e-8)
+        # Full SCF at current geometry — use density mixing so convergence
+        # takes ~20 iterations (visible in the animation).
+        E_ha, C, scf_energies, basis = run_rhf_scf(
+            pos, max_iter=100, conv_tol=1e-8,
+            density_mixing=SCF_DENSITY_MIXING,
+        )
         E_ev = E_ha * HARTREE_TO_EV
 
         # Electron density on grid
         Y, Z, rho = density_on_grid(C, basis, pos, grid_size=GRID_SIZE)
 
-        # SCF density history (first N_SCF_SHOW iterations)
-        C_hist = scf_density_history(pos, N_SCF_SHOW)
+        # SCF density history (first N_SCF_SHOW iterations, same mixing)
+        C_hist = scf_density_history(pos, N_SCF_SHOW,
+                                     density_mixing=SCF_DENSITY_MIXING)
         density_hist = []
         for C_i in C_hist:
             _, _, rho_i = density_on_grid(C_i, basis, pos, grid_size=GRID_SIZE)

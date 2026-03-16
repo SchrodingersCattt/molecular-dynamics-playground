@@ -191,7 +191,7 @@ def run_bohrium():
                 "./worker.log",
                 "./worker.err",
                 "./worker_crash.log",
-            ],
+            ], 
         },
     }
     if ticket:
