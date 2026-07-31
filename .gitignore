@@ -57,7 +57,7 @@ media/
 *.npy
 
 # Bohrium / dispatcher workdirs
-part2/bohrium_work/
+md_workflows/bohrium_work/
 
 # Roo Code generated planning files
 plans/
