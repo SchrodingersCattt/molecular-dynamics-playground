@@ -1,0 +1,18 @@
+{
+  "job_name": "md-slide-water-box-dp-eval",
+  "command": "bash run.sh",
+  "log_file": "eval.log",
+  "backward_files": [
+    "dpmd_water_box_results.npz",
+    "dpmd_eval.json",
+    "eval.log"
+  ],
+  "project_id": 17142,
+  "machine_type": "c2_m4_cpu",
+  "image_address": "registry.dp.tech/dptech/dpmd:2.2.8-cuda12.0",
+  "job_type": "container",
+  "disk_size": 10,
+  "max_run_time": 20,
+  "max_reschedule_times": 1,
+  "nnode": 1
+}

@@ -1,0 +1,132 @@
+{
+  "version": 1,
+  "figure": {
+    "canonical_stem": "03_deep_potential_md"
+  },
+  "outputs": [
+    {
+      "path": "../../figures/03_deep_potential_md.png"
+    },
+    {
+      "path": "../../figures/03_deep_potential_md.svg"
+    }
+  ],
+  "target": {
+    "width_mm": 338.7,
+    "qa_dpi": 144,
+    "min_dpi": 140,
+    "max_dpi": 300
+  },
+  "panels": [
+    {
+      "id": "a",
+      "source": "../../figures/03_deep_potential_md.png",
+      "slot": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "source_min_clearance_px": 32,
+      "min_clearance_px": 32,
+      "source_allow_touch_edges": [],
+      "allow_touch_edges": []
+    }
+  ],
+  "checks": {
+    "whitespace": {
+      "background_threshold": 245,
+      "min_ink_fraction": 0.01,
+      "min_panel_bbox_fill": 0.35,
+      "grid_rows": 12,
+      "grid_columns": 20
+    },
+    "boundaries": {
+      "bands": []
+    },
+    "colors": {
+      "semantics": [
+        {
+          "id": "hydrogen_and_cutoff",
+          "color": "#183153",
+          "min_pixels": 250
+        },
+        {
+          "id": "oxygen",
+          "color": "#A32035",
+          "min_pixels": 150
+        },
+        {
+          "id": "learned_atomic_energy",
+          "color": "#2F6B4F",
+          "min_pixels": 80
+        }
+      ]
+    }
+  },
+  "integrity": {
+    "required_content": [
+      "periodic_water_box",
+      "stable_central_atom",
+      "exact_cutoff_selection",
+      "bond_and_neighbor_views",
+      "deep_potential_pipeline",
+      "no_fabricated_forces"
+    ],
+    "evidence": {
+      "periodic_water_box": "data/water_box_64.extxyz and water_box_64.npz contain 64 waters in a 12.4296 Å cubic PBC cell",
+      "stable_central_atom": "source_id 126 is translated to the box centre without changing relative geometry",
+      "exact_cutoff_selection": "neighbor_mask is computed from 3D minimum-image distances with r_cut = 6.0 Å and selects 83 atoms",
+      "bond_and_neighbor_views": "the animation switches from stored O-H molecular bonds to stable-ID local neighbor vectors",
+      "deep_potential_pipeline": "render_slide3_deep_potential.py shows descriptor, shared atomic network, atomic energy sum, and differentiation",
+      "no_fabricated_forces": "the slide states F = -grad E but renders no quantitative force arrows because the model job was not created"
+    },
+    "scientific_changes": []
+  },
+  "consistency": {
+    "constraints": [
+      "1920x1080 white canvas",
+      "shared outer Verlet ring",
+      "shared palette and typography",
+      "fixed camera and physical scale across all video stages"
+    ],
+    "evidence": {
+      "renderer": "three_slide_story/common.py and render_slide3_deep_potential.py"
+    }
+  },
+  "quantitative": {
+    "transformations": [
+      "All 3D points use one orthographic projection derived from view direction [1.55, -1.0, 0.62] and up [0, 0, 1]",
+      "The water-box origin is translated so source_id 126 is centered; periodic distances remain invariant",
+      "Atom radii, network layout, and line opacity are qualitative display encodings"
+    ],
+    "units": {
+      "coordinates": "angstrom",
+      "cutoff": "angstrom",
+      "density": "g/cm^3",
+      "energy_and_force_equations": "symbolic only"
+    }
+  },
+  "deviations": {
+    "records": [
+      {
+        "scope": "quantitative DPMD output",
+        "reason": "bohr CLI failed during local Windows input sync before job creation",
+        "mitigation": "no numeric energy, per-atom energy, or force arrows are shown",
+        "follow_up": "rerun evaluate_water_box_deepmd.py when the uploader is fixed"
+      }
+    ]
+  },
+  "review": {
+    "render_sha256": "00d070f6f276a2959177fabdb54eec3f58e969aa1dc125d3c0931dbe90ea7d60",
+    "problems": {
+      "scientific_expression": "Corrected 83 atoms inside to 83 neighbors; the central atom is separate, the box is disclosed as prepared rather than equilibrated, and no model force values are asserted.",
+      "geometry": "Rejected the symmetric camera trial; final fixed asymmetric orthographic camera preserves one isotropic scale for cell, bonds, neighbor vectors, and cutoff sphere.",
+      "annotations": "Unified the 6.0 angstrom cutoff label and 83-neighbor caption and verified that the five-stage rail maps to the highlighted visual element.",
+      "readability": "Verified 17 to 39 point text, white final canvas, light-grey inactive context, black active step, and sparse navy, crimson, and green semantics at 1920 by 1080.",
+      "submission_quality": "Kept canonical PNG, SVG, and MP4 outputs, confined diagnostics to the QA directory, and removed duplicate Bohrium model and upload payloads."
+    },
+    "action": "Accepted after the corrected fresh render, strict QA, and original-resolution inspection of the static figure and five video stages.",
+    "stop_condition": "fixed"
+  }
+}

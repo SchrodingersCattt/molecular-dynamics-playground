@@ -1,0 +1,42 @@
+{
+  "tool": "MatterVis public CLI",
+  "purpose": "independent topology, cell, and camera verification for the periodic water-box source",
+  "source": {
+    "path": "../../../data/water_box_64.extxyz",
+    "sha256": "8f20d7d1ad1bb69e6ac991493520e0c0c56953275654a254041ae264407737e9",
+    "format": "extxyz",
+    "parsed_atoms": 192,
+    "site_records": 192,
+    "bond_records": 128,
+    "fragments": 1,
+    "warnings": []
+  },
+  "render_request": {
+    "backend": "cpu",
+    "representation": "ball_stick",
+    "view": "unit_cell",
+    "camera_projection": "orthographic",
+    "camera_direction": [1.55, -1.0, 0.62],
+    "camera_up": [0.0, 0.0, 1.0],
+    "width_px": 1400,
+    "height_px": 1000,
+    "background": "#F2F2F2",
+    "background_note": "QA render only; the final slide uses white and explicit navy/crimson atom colors."
+  },
+  "effective_camera": {
+    "position": [24.4264, -5.56495, 13.5950],
+    "target": [6.25910, 6.15591, 6.32809],
+    "orthographic_scale": 11.3739059,
+    "symmetric_111_view": false
+  },
+  "output": {
+    "path": "mattervis_water_box.png",
+    "sha256": "aced4e9816d9c7fac7089840840b0ba2d21bb163c0a0ed3311c1ac6a4f75553c",
+    "warnings": []
+  },
+  "checks": {
+    "inspect": "pass",
+    "preflight": "pass",
+    "render": "pass"
+  }
+}
