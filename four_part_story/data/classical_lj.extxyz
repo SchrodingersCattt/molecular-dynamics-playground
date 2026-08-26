@@ -1,0 +1,12 @@
+2
+Properties=species:S:1:pos:R:3 frame=0 state=repulsive pbc="F F F"
+Ar -1.5597140269 -0.5458999094 -0.3119428054
+Ar 1.5597140269 0.5458999094 0.3119428054
+2
+Properties=species:S:1:pos:R:3 frame=1 state=equilibrium pbc="F F F"
+Ar -1.7724023033 -0.6203408062 -0.3544804607
+Ar 1.7724023033 0.6203408062 0.3544804607
+2
+Properties=species:S:1:pos:R:3 frame=2 state=attractive pbc="F F F"
+Ar -2.3395710404 -0.8188498641 -0.4679142081
+Ar 2.3395710404 0.8188498641 0.4679142081

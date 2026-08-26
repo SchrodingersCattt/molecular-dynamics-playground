@@ -1,0 +1,28 @@
+{
+  "tool": "MatterVis public CLI",
+  "purpose": "independent no-bond and fixed-camera verification for the Ar pair",
+  "source": {
+    "path": "../../../data/classical_lj.extxyz",
+    "sha256": "0fe8987b6a91af8f63d1b5cae63138c2c0d0a892db5dab735ac4ad51586d2b4c",
+    "format": "extxyz",
+    "frames": 3,
+    "parsed_atoms": 2,
+    "bond_records": 0,
+    "warnings": []
+  },
+  "render_request": {
+    "backend": "cpu",
+    "representation": "ball_stick",
+    "camera_projection": "orthographic",
+    "camera_direction": [1.55, -1.0, 0.62],
+    "camera_up": [0.0, 0.0, 1.0],
+    "width_px": 1400,
+    "height_px": 1000
+  },
+  "output": {
+    "path": "argon_pair.png",
+    "sha256": "066aeff05572230fd78ef76afa2c8bd05ff0ed1960df1caf5c229a341edb74bb",
+    "warnings": []
+  },
+  "checks": {"inspect": "pass", "preflight": "pass", "render": "pass"}
+}

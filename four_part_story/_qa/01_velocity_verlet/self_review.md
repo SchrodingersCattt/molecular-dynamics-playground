@@ -1,46 +1,25 @@
-# Five-Problem Self-Review
-
-After every substantive render, assume the figure is still wrong. List exactly
-five concrete problems before deciding whether to rerender. Automated QA passing
-is not enough.
-
-## Render
-
-- Figure:
-- Script:
-- Output file inspected:
-- Inspection size / zoom:
-- Programmatic QA result:
+# Five-Problem Self-Review — 01 Velocity Verlet
 
 ## Pass 1
 
-1. Scientific expression problem:
-2. Geometric or data-coordinate correctness problem:
-3. Label, leader, legend, or panel-letter placement problem:
-4. Readability or print-scale problem:
-5. Submission-quality or filename/output-discipline problem:
+1. Scientific expression: five visual substeps obscured the requested three-part explanation even though the underlying integrator was correct.
+2. Geometry: the physical H2O motion was too small to see at presentation scale.
+3. Annotation: the highlighted acceleration label exceeded its circle.
+4. Readability: the earlier dashboard layout split attention among too many boxes and labels.
+5. Submission quality: a slide-derived montage was not suitable as an independent PowerPoint video.
 
-Action taken:
+Action taken: rebuilt the visual as an empty three-node loop plus one large 3D H2O case; retained the exact Velocity Verlet equations; disclosed fixed vector display scales; enlarged the active node; and exported separate A4 PNG/SVG and 1920 × 1080 MP4 outputs.
 
 ## Pass 2
 
-Repeat after fixes and a fresh render.
+1. Scientific expression: no blocking issue remains; position, new acceleration, and final velocity reproduce the verified numerical step.
+2. Geometry: no blocking issue remains; atoms, bonds, ghost positions, and atom-anchored vectors share one fixed orthographic projection.
+3. Annotation: no blocking issue remains; all loop words fit their circles and every text item meets the format-specific minimum size.
+4. Readability: no blocking issue remains; only the active step turns black while the concrete case remains visually dominant.
+5. Submission quality: no blocking issue remains; strict A4 checks and all 216 video-frame checks pass.
 
-1. Scientific expression problem:
-2. Geometric or data-coordinate correctness problem:
-3. Label, leader, legend, or panel-letter placement problem:
-4. Readability or print-scale problem:
-5. Submission-quality or filename/output-discipline problem:
+Action taken: accepted after original-resolution inspection of the three representative frames and the final static render.
 
-Action taken:
+## Stop Condition
 
-## Stop Conditions
-
-Stop only when one of these is true:
-
-- The five listed problems are all fixed and no new blocking issue is visible.
-- The remaining choice is a genuine scientific or manuscript-style decision for
-  the user.
-- The source data are ambiguous and choosing a representation would assert a fact
-  not present in the data.
-- The user explicitly accepts the current figure.
+The five listed problems are fixed and no new blocking issue is visible.

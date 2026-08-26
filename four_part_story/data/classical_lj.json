@@ -1,0 +1,41 @@
+{
+  "case": "argon pair with the standard 12-6 Lennard-Jones form",
+  "sigma_angstrom": 3.405,
+  "epsilon_ev": 0.0103,
+  "r_min_angstrom": 3.821983274493415,
+  "states": [
+    {
+      "name": "repulsive",
+      "r_angstrom": 3.363345281554205,
+      "U_eV": 0.0033999716348526356,
+      "force_on_right_eV_per_angstrom": 0.09126246715368275
+    },
+    {
+      "name": "equilibrium",
+      "r_angstrom": 3.821983274493415,
+      "U_eV": -0.0103,
+      "force_on_right_eV_per_angstrom": -7.18075177144032e-18
+    },
+    {
+      "name": "attractive",
+      "r_angstrom": 5.045017922331308,
+      "U_eV": -0.0035261616112704877,
+      "force_on_right_eV_per_angstrom": -0.0037558736444289584
+    }
+  ],
+  "analytic_vs_finite_difference_max_error": 3.9437314525159195e-11,
+  "equilibrium_force_abs": 7.18075177144032e-18,
+  "camera": {
+    "projection": "orthographic",
+    "direction": [
+      1.55,
+      -1.0,
+      0.62
+    ],
+    "up": [
+      0.0,
+      0.0,
+      1.0
+    ]
+  }
+}

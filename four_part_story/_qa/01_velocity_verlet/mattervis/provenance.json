@@ -1,0 +1,29 @@
+{
+  "tool": "MatterVis public CLI",
+  "purpose": "independent topology and fixed-camera verification for the concrete H2O step",
+  "source": {
+    "path": "../../../data/vv_h2o_step.extxyz",
+    "sha256": "39446e55e15a203f3b8b674c7622031fb477ead23d7b5c033c3bb4b4230d588d",
+    "format": "extxyz",
+    "frames": 2,
+    "parsed_atoms": 3,
+    "bond_records": 2,
+    "fragments": 1,
+    "warnings": []
+  },
+  "render_request": {
+    "backend": "cpu",
+    "representation": "ball_stick",
+    "camera_projection": "orthographic",
+    "camera_direction": [1.55, -1.0, 0.62],
+    "camera_up": [0.0, 0.0, 1.0],
+    "width_px": 1400,
+    "height_px": 1000
+  },
+  "output": {
+    "path": "h2o_step.png",
+    "sha256": "e1ca00aa82946e6a41509b7f38a70fb8ff80a873a9d060eacbe1f6732111d32b",
+    "warnings": []
+  },
+  "checks": {"inspect": "pass", "preflight": "pass", "render": "pass"}
+}

@@ -47,6 +47,7 @@ dist/
 media/
 *.mp4
 !three_slide_story/videos/*.mp4
+!four_part_story/videos/*.mp4
 *.mov
 *.avi
 *.mkv
@@ -56,6 +57,7 @@ media/
 # Scientific / generated data
 *.npz
 *.npy
+!four_part_story/data/*.npz
 
 # Bohrium / dispatcher workdirs
 md_workflows/bohrium_work/
