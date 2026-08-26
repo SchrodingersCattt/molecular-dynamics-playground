@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "figure": {"canonical_stem": "01_velocity_verlet"},
+  "outputs": [
+    {"path": "../../figures/01_velocity_verlet.png"},
+    {"path": "../../figures/01_velocity_verlet.svg"},
+    {"path": "../../videos/01_velocity_verlet.mp4"}
+  ],
+  "target": {"width_mm": 297.0, "qa_dpi": 300, "min_dpi": 295, "max_dpi": 305},
+  "panels": [
+    {"id": "abstract_loop", "source": "source/abstract_loop.png", "slot": [0.045, 0.19, 0.39, 0.86], "source_min_clearance_px": 24, "min_clearance_px": 24, "source_allow_touch_edges": [], "allow_touch_edges": []},
+    {"id": "concrete_h2o", "source": "source/concrete_h2o.png", "slot": [0.43, 0.16, 0.965, 0.88], "source_min_clearance_px": 24, "min_clearance_px": 24, "source_allow_touch_edges": [], "allow_touch_edges": []}
+  ],
+  "checks": {
+    "whitespace": {"background_threshold": 245, "min_ink_fraction": 0.025, "min_panel_bbox_fill": 0.42, "grid_rows": 14, "grid_columns": 20},
+    "boundaries": {"bands": [{"id": "column_gap", "rect": [0.397, 0.16, 0.420, 0.88], "max_ink_pixels": 0}]},
+    "colors": {"semantics": [
+      {"id": "position", "color": "#183153", "min_pixels": 500},
+      {"id": "acceleration", "color": "#A32035", "min_pixels": 500},
+      {"id": "velocity", "color": "#2F6B4F", "min_pixels": 500}
+    ]}
+  },
+  "integrity": {"required_content": ["three_step_velocity_verlet", "verified_h2o_step", "stable_atom_ids", "declared_vector_scales"], "evidence": {"three_step_velocity_verlet": "render metadata records the position, acceleration, and velocity equations", "verified_h2o_step": "data/vv_h2o_step.npz includes residual checks against the stated equations", "stable_atom_ids": "source IDs O0, H1, H2 and explicit bonds persist across both states", "declared_vector_scales": "data/vv_h2o_step.json records the three display scales"}, "scientific_changes": []},
+  "consistency": {"constraints": ["A4 static layout separate from 16:9 video", "fixed camera and isotropic scale", "shared palette and typography across four stories"], "evidence": {"renderer": "four_part_story/render_velocity_verlet.py and common.py"}},
+  "quantitative": {"transformations": ["one orthographic projection for both H2O states", "display arrow scales are fixed and disclosed"], "units": {"position": "angstrom", "velocity": "angstrom/fs", "acceleration": "angstrom/fs^2", "time": "fs"}},
+  "deviations": {"records": []},
+  "review": {"render_sha256": "REPLACE_AFTER_RENDER", "problems": {"scientific_expression": "", "geometry": "", "annotations": "", "readability": "", "submission_quality": ""}, "action": "", "stop_condition": "fixed"}
+}
