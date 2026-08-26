@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "figure": {
+    "canonical_stem": "02_aimd_scf"
+  },
+  "outputs": [
+    {
+      "path": "../../figures/02_aimd_scf.png"
+    },
+    {
+      "path": "../../figures/02_aimd_scf.svg"
+    }
+  ],
+  "target": {
+    "width_mm": 338.7,
+    "qa_dpi": 144,
+    "min_dpi": 140,
+    "max_dpi": 300
+  },
+  "panels": [
+    {
+      "id": "a",
+      "source": "../../figures/02_aimd_scf.png",
+      "slot": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "source_min_clearance_px": 32,
+      "min_clearance_px": 32,
+      "source_allow_touch_edges": [],
+      "allow_touch_edges": []
+    }
+  ],
+  "checks": {
+    "whitespace": {
+      "background_threshold": 245,
+      "min_ink_fraction": 0.01,
+      "min_panel_bbox_fill": 0.35,
+      "grid_rows": 12,
+      "grid_columns": 20
+    },
+    "boundaries": {
+      "bands": []
+    },
+    "colors": {
+      "semantics": [
+        {
+          "id": "hydrogen_and_density",
+          "color": "#183153",
+          "min_pixels": 250
+        },
+        {
+          "id": "force_and_oxygen",
+          "color": "#A32035",
+          "min_pixels": 250
+        },
+        {
+          "id": "converged",
+          "color": "#2F6B4F",
+          "min_pixels": 30
+        }
+      ]
+    }
+  },
+  "integrity": {
+    "required_content": [
+      "outer_force_query",
+      "five_stage_scf_loop",
+      "real_dimer_scf",
+      "real_atomic_forces"
+    ],
+    "evidence": {
+      "outer_force_query": "render_slide2_aimd_scf.py preserves the shared five-stage Verlet ring and activates node 4",
+      "five_stage_scf_loop": "render_slide2_aimd_scf.py defines density, Fock build, orbital solve, density update, and convergence test in order",
+      "real_dimer_scf": "data/h2o_dimer_scf.npz stores 19 RHF/STO-3G iterations and density grids",
+      "real_atomic_forces": "data/h2o_dimer_scf.npz stores central finite-difference gradients of converged RHF energies"
+    },
+    "scientific_changes": []
+  },
+  "consistency": {
+    "constraints": [
+      "1920x1080 white canvas",
+      "shared outer Verlet ring",
+      "shared semantic palette and typography"
+    ],
+    "evidence": {
+      "renderer": "three_slide_story/common.py"
+    }
+  },
+  "quantitative": {
+    "transformations": [
+      "Dimer coordinates and density grid use one isotropic x-y projection",
+      "Density contour levels use per-frame fractions of the displayed frame maximum",
+      "Force arrows are normalized for qualitative direction display"
+    ],
+    "units": {
+      "energy": "hartree",
+      "force_source": "eV/angstrom",
+      "coordinates": "angstrom"
+    }
+  },
+  "deviations": {
+    "records": []
+  },
+  "review": {
+    "render_sha256": "6f5f0e1b305e1089e762e2a7e065b682f315bf479545a6ffc63664df01bc8f35",
+    "problems": {
+      "scientific_expression": "Verified that one outer force query expands into a complete five-stage SCF loop with a failed-test return edge.",
+      "geometry": "Verified a shared isotropic x-y projection for dimer atoms, density, bonds, and force origins.",
+      "annotations": "Verified loop labels, equations, connector, and iteration readout do not overlap at 1920x1080.",
+      "readability": "Verified active-node progression and real density evolution in early, middle, pre-converged, and converged frames.",
+      "submission_quality": "Verified canonical PNG/SVG and independent 16 s H.264 MP4 with 384 frames."
+    },
+    "action": "Rebuilt the two-loop layout in widescreen isotropic coordinates, moved the readout, increased density visibility, and accepted after original-resolution inspection.",
+    "stop_condition": "fixed"
+  }
+}

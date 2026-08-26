@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "check": "clipping",
+      "passed": true,
+      "duration_seconds": 0.06406860001152381,
+      "metrics": {
+        "a": {
+          "clearances_px": {
+            "left": 106,
+            "right": 198,
+            "top": 71,
+            "bottom": 38
+          },
+          "minimum_px": 32
+        }
+      },
+      "findings": []
+    }
+  ],
+  "duration_seconds": 0.06406860001152381
+}
