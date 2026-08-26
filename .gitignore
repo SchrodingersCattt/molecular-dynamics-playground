@@ -46,6 +46,7 @@ dist/
 # Media / rendered outputs
 media/
 *.mp4
+!three_slide_story/videos/*.mp4
 *.mov
 *.avi
 *.mkv
