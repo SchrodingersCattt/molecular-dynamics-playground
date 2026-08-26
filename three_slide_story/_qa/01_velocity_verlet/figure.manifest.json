@@ -1,0 +1,116 @@
+{
+  "version": 1,
+  "figure": {
+    "canonical_stem": "01_velocity_verlet"
+  },
+  "outputs": [
+    {
+      "path": "../../figures/01_velocity_verlet.png"
+    },
+    {
+      "path": "../../figures/01_velocity_verlet.svg"
+    }
+  ],
+  "target": {
+    "width_mm": 338.7,
+    "qa_dpi": 144,
+    "min_dpi": 140,
+    "max_dpi": 300
+  },
+  "panels": [
+    {
+      "id": "a",
+      "source": "../../figures/01_velocity_verlet.png",
+      "slot": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "source_min_clearance_px": 32,
+      "min_clearance_px": 32,
+      "source_allow_touch_edges": [],
+      "allow_touch_edges": []
+    }
+  ],
+  "checks": {
+    "whitespace": {
+      "background_threshold": 245,
+      "min_ink_fraction": 0.01,
+      "min_panel_bbox_fill": 0.3,
+      "grid_rows": 12,
+      "grid_columns": 20
+    },
+    "boundaries": {
+      "bands": []
+    },
+    "colors": {
+      "semantics": [
+        {
+          "id": "position_and_hydrogen",
+          "color": "#183153",
+          "min_pixels": 250
+        },
+        {
+          "id": "velocity",
+          "color": "#2F6B4F",
+          "min_pixels": 100
+        },
+        {
+          "id": "force_and_oxygen",
+          "color": "#A32035",
+          "min_pixels": 250
+        }
+      ]
+    }
+  },
+  "integrity": {
+    "required_content": [
+      "five_stage_order",
+      "real_h2o_step",
+      "force_from_pes"
+    ],
+    "evidence": {
+      "five_stage_order": "render_slide1_velocity_verlet.py defines and draws the ordered five-stage ring",
+      "real_h2o_step": "frame n=4 and n+1=5 are loaded from md_workflows/classical_data.npz",
+      "force_from_pes": "stage 4 explicitly shows a = M^-1[-grad U(R)]"
+    },
+    "scientific_changes": []
+  },
+  "consistency": {
+    "constraints": [
+      "1920x1080 white canvas",
+      "shared five-node outer ring",
+      "shared semantic palette"
+    ],
+    "evidence": {
+      "renderer": "three_slide_story/common.py"
+    }
+  },
+  "quantitative": {
+    "transformations": [
+      "H2O coordinates use an isotropic orthographic x-y projection",
+      "velocity and force vectors are normalized for qualitative display and do not encode absolute magnitude"
+    ],
+    "units": {
+      "position_source": "angstrom",
+      "time_step_source": "fs",
+      "display_vectors": "qualitative"
+    }
+  },
+  "deviations": {
+    "records": []
+  },
+  "review": {
+    "render_sha256": "bf10c03ee7dbacd7e6a2d062742af9a94eb928f8ea90435f317e15febd5b0c6b",
+    "problems": {
+      "scientific_expression": "Verified the complete five-stage Velocity Verlet order and the force-from-PES relationship.",
+      "geometry": "Verified isotropic H2O projection and atom-anchored vector origins.",
+      "annotations": "Verified equations, legend, ring arrows, and node labels do not overlap at 1920x1080.",
+      "readability": "Verified minimum 18 pt type and black-only active-stage emphasis at slide size.",
+      "submission_quality": "Verified canonical PNG/SVG and independent 12 s MP4 naming and dimensions."
+    },
+    "action": "Rebuilt from scratch, corrected scale and legend placement, then accepted after original-resolution inspection.",
+    "stop_condition": "fixed"
+  }
+}
