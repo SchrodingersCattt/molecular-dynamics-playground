@@ -53,12 +53,14 @@ DATA_PATH = ROOT / "data" / "aimd_h2o_dimer.npz"
 MOTION_SOURCE = ROOT / "data" / "aimd_h2o_dimer_motion_display.extxyz"
 
 SCENE_RECT = (0.00, 0.13, 0.65, 0.92)
-CAMERA_SCALE = 2.35
-DENSITY_ISOVALUE = 0.030
-DENSITY_OPACITY = 0.32
-PALE_FORCE = "#D98E98"
-FORCE_DISPLAY_SCALE = 0.30
-DISPLACEMENT_ARROW_SCALE = 320.0
+CAMERA_SCALE = 1.95
+DENSITY_ISOVALUE = 0.080
+DENSITY_OPACITY = 0.20
+POSITION_LAKE = "#4E9BB5"
+FORCE_OLIVE = "#A99C50"
+VELOCITY_EMERALD = "#2F8562"
+FORCE_DISPLAY_SCALE = 1.60
+DISPLACEMENT_ARROW_SCALE = 400.0
 AIMD_CAMERA_DIRECTION = (0.55, -0.35, 1.40)
 AIMD_CAMERA_UP = (0.0, 1.0, 0.0)
 
@@ -127,8 +129,14 @@ def prepare_mattervis(
                 data["positions"],
                 data["forces"],
                 scale=FORCE_DISPLAY_SCALE,
-                color=PALE_FORCE,
-                tail_offset=0.18,
+                color=FORCE_OLIVE,
+                tail_offset=0.0,
+                style={
+                    "shaft_radius": 0.085,
+                    "head_length": 0.20,
+                    "head_radius": 0.17,
+                    "sides": 18,
+                },
             ),
         )
     )
@@ -163,8 +171,8 @@ def prepare_mattervis(
         data["positions"],
         data["vv_displacement"],
         scale=DISPLACEMENT_ARROW_SCALE,
-        color=GREEN,
-        tail_offset=0.14,
+        color=POSITION_LAKE,
+        tail_offset=0.0,
     )
     for frame in range(len(data["display_motion_positions"])):
         frame_camera = camera_for_source(
@@ -380,7 +388,7 @@ def draw_case(
         # must be fully legible for every frame assigned to this stage.
         place_render(ax, force_path, SCENE_RECT, zorder=5)
         heading = r"converged $\rho(\mathbf{r})$ $\rightarrow$ nuclear forces"
-        heading_color = CRIMSON
+        heading_color = INK
         note = "the SCF loop stops before forces return to the MD integrator"
         converged = True
     else:
@@ -390,7 +398,7 @@ def draw_case(
         frame = int(round(smoothstep(phase_progress) * (len(movement_paths) - 1)))
         place_render(ax, movement_paths[frame], SCENE_RECT, alpha=fade, zorder=5)
         heading = "forces return to Velocity Verlet"
-        heading_color = GREEN
+        heading_color = POSITION_LAKE
         note = "old nuclei remain as a faint reference while the new positions move"
         converged = True
 
@@ -567,9 +575,9 @@ def draw_video_frame(
         {"id": "oxygen", "color": CRIMSON, "min_pixels": 180},
     ]
     if state["mode"] == "move" and state["progress"] >= 0.18:
-        semantics.append({"id": "displacement", "color": GREEN, "min_pixels": 180})
+        semantics.append({"id": "displacement", "color": POSITION_LAKE, "min_pixels": 180})
     if state["mode"] == "force":
-        semantics.append({"id": "nuclear_force", "color": PALE_FORCE, "min_pixels": 260})
+        semantics.append({"id": "nuclear_force", "color": FORCE_OLIVE, "min_pixels": 260})
     return semantics
 
 

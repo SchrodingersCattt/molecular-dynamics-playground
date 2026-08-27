@@ -4,17 +4,17 @@
   "format": "png",
   "width": 1500,
   "height": 950,
-  "plan_sha256": "0b624dc402b35dc42dbc3abdee2c73c5b26985ce6228511946235d92e915ee6a",
-  "output_sha256": "eb62332d21d36aedd0d36d58fbfcc6c84085c42f868b8d6046a28ca38a5d13fd",
+  "plan_sha256": "12bf92ddfc45daabc7572ead1c689117f2f88da67b8d8076ef83c4bd0288f563",
+  "output_sha256": "7da7a5ec2c0cc6f19cac3bf8968d80ac3656ca8b6ec46e18efe235fa6ebe9c60",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\density_13.png",
-  "source_sha256": "17a437900a51d397f00e82602a7cd4ef4f72059b00ee669eb188d1fc380e3b87",
+  "source_sha256": "a7564b22d243339c92bb54519ff5c9a89ade34c63e5e336f10d6dcaa62c79dc1",
   "camera": {
     "target": [
-      0.314861701684306,
-      0.15441954864030819,
-      0.0
+      0.28821416045300047,
+      0.07486069758950598,
+      0.29648353847969666
     ],
-    "ortho_scale": 2.35,
+    "ortho_scale": 1.95,
     "direction": [
       0.55,
       -0.35,
@@ -27,8 +27,8 @@
     ],
     "scene_offset": [
       3.3500002544006158,
-      2.349999792101853,
-      1.75000014917765
+      2.349999792037761,
+      1.7500001491135582
     ]
   },
   "render_settings": {
@@ -36,8 +36,8 @@
     "height": 950,
     "atom_scale": 0.9,
     "bond_radius": 0.105,
-    "isovalue": 0.03,
-    "opacity": 0.32
+    "isovalue": 0.08,
+    "opacity": 0.2
   },
   "vector_signature": "[]",
   "vector_count": 0,
@@ -52,14 +52,14 @@
     "actual_backend": "cpu",
     "camera": {
       "position": [
-        12.212177544828847,
-        -2.934781488458518,
-        23.50680346598037
+        12.185530003597542,
+        -3.0143403395734123,
+        23.803287004395973
       ],
       "target": [
-        3.6648619560849216,
-        2.504419340742161,
-        1.75000014917765
+        3.6382144148536164,
+        2.424860489627267,
+        2.0464836875932546
       ],
       "up": [
         0.0,
@@ -70,7 +70,7 @@
       "fov_y_deg": 45.0,
       "near": 0.01,
       "far": 10000.0,
-      "ortho_scale": 2.35
+      "ortho_scale": 1.95
     },
     "source": {
       "path": null,

@@ -12,6 +12,7 @@ import hashlib
 import json
 import sys
 import time
+from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 
 import numpy as np
@@ -26,8 +27,6 @@ sys.path.insert(0, str(REPO / "md_workflows"))
 import engine_rhf as rhf  # noqa: E402
 from three_slide_story.compute_h2o_dimer_scf import (  # noqa: E402
     ELEMENTS,
-    dimer_geometry,
-    finite_difference_forces,
     run_scf,
 )
 
@@ -40,6 +39,101 @@ ACCELERATION_FACTOR = 0.00964853322  # (eV/A)/amu -> A/fs^2
 DISPLAY_MOTION_SCALE = 80.0
 MOTION_FRAMES = 25
 MAX_BLUR_SIGMA_VOXELS = 3.0
+FORCE_DELTA_ANGSTROM = 0.003
+
+
+def presentation_dimer_geometry() -> np.ndarray:
+    """Return an asymmetric, non-planar water dimer for readable true forces."""
+
+    bond = 0.990
+    angle = np.deg2rad(102.5)
+    oxygen_1 = np.array([-1.45, -0.10, -0.10])
+    oxygen_2 = np.array([1.42, 0.18, 0.20])
+
+    def unit(vector: np.ndarray | list[float]) -> np.ndarray:
+        value = np.asarray(vector, dtype=float)
+        return value / np.linalg.norm(value)
+
+    donor_direction = unit([0.90, -0.35, 0.25])
+    donor_plane = np.array([0.05, 0.80, 0.58])
+    donor_perpendicular = unit(
+        donor_plane - np.dot(donor_plane, donor_direction) * donor_direction
+    )
+    donor_other = (
+        np.cos(angle) * donor_direction
+        + np.sin(angle) * donor_perpendicular
+    )
+
+    acceptor_bisector = unit([0.80, -0.22, 0.56])
+    acceptor_plane = np.array([0.15, 0.96, 0.16])
+    acceptor_perpendicular = unit(
+        acceptor_plane
+        - np.dot(acceptor_plane, acceptor_bisector) * acceptor_bisector
+    )
+    half_angle = angle / 2.0
+    acceptor_first = (
+        np.cos(half_angle) * acceptor_bisector
+        + np.sin(half_angle) * acceptor_perpendicular
+    )
+    acceptor_second = (
+        np.cos(half_angle) * acceptor_bisector
+        - np.sin(half_angle) * acceptor_perpendicular
+    )
+    return np.array(
+        [
+            oxygen_1,
+            oxygen_1 + bond * donor_direction,
+            oxygen_1 + bond * donor_other,
+            oxygen_2,
+            oxygen_2 + bond * acceptor_first,
+            oxygen_2 + bond * acceptor_second,
+        ],
+        dtype=float,
+    )
+
+
+def _shifted_energy_3d(
+    task: tuple[np.ndarray, int, int, float],
+) -> tuple[int, int, float, float]:
+    positions, atom_index, axis, delta = task
+    plus = positions.copy()
+    minus = positions.copy()
+    plus[atom_index, axis] += delta
+    minus[atom_index, axis] -= delta
+    plus_energy = run_scf(
+        plus, mixing=1.0, tolerance=1.0e-9, keep_density_history=False
+    )["energy"]
+    minus_energy = run_scf(
+        minus, mixing=1.0, tolerance=1.0e-9, keep_density_history=False
+    )["energy"]
+    return atom_index, axis, float(plus_energy), float(minus_energy)
+
+
+def finite_difference_forces_3d(
+    positions: np.ndarray,
+    *,
+    delta: float = FORCE_DELTA_ANGSTROM,
+    workers: int = 4,
+) -> np.ndarray:
+    """Return all Cartesian nuclear forces from converged RHF energies."""
+
+    tasks = [
+        (positions, atom_index, axis, delta)
+        for atom_index in range(len(positions))
+        for axis in range(3)
+    ]
+    forces = np.zeros_like(positions)
+    with ProcessPoolExecutor(max_workers=workers) as executor:
+        futures = [executor.submit(_shifted_energy_3d, task) for task in tasks]
+        for future in as_completed(futures):
+            atom_index, axis, plus_energy, minus_energy = future.result()
+            derivative_hartree_per_angstrom = (
+                plus_energy - minus_energy
+            ) / (2.0 * delta)
+            forces[atom_index, axis] = (
+                -derivative_hartree_per_angstrom * rhf.HARTREE_TO_EV
+            )
+    return forces
 
 
 def density_volumes(
@@ -168,8 +262,12 @@ def main() -> None:
     args = parser.parse_args()
 
     started = time.perf_counter()
-    positions = dimer_geometry()
+    positions = presentation_dimer_geometry()
     result = run_scf(positions, mixing=0.70, tolerance=1.0e-8)
+    if len(result["energies"]) != 19:
+        raise RuntimeError(
+            f"Expected 19 actual SCF iterations for the story, got {len(result['energies'])}"
+        )
     selected = np.arange(len(result["energies"]), dtype=int)
     grid_x, grid_y, grid_z, raw_volumes = density_volumes(
         result["density_matrices"], result["basis"], selected
@@ -187,12 +285,16 @@ def main() -> None:
     )
 
     if args.skip_forces:
-        previous = np.load(REPO / "three_slide_story" / "data" / "h2o_dimer_scf.npz")
+        previous = np.load(DATA_DIR / "aimd_h2o_dimer.npz")
+        if not np.allclose(previous["positions"], positions, atol=1.0e-12):
+            raise RuntimeError("Cached forces do not belong to the current dimer geometry")
         forces = np.asarray(previous["forces"], dtype=float)
-        force_origin = "verified prior central finite difference of converged RHF energy"
+        force_origin = "verified cached 3D central finite difference of converged RHF energy"
     else:
-        forces = finite_difference_forces(positions, workers=args.force_workers)
-        force_origin = "fresh central finite difference of converged RHF energy"
+        forces = finite_difference_forces_3d(
+            positions, workers=args.force_workers
+        )
+        force_origin = "fresh 3D central finite difference of converged RHF energy"
 
     masses = np.array([15.999 if element == "O" else 1.008 for element in ELEMENTS])
     accelerations = forces / masses[:, None] * ACCELERATION_FACTOR
@@ -290,6 +392,7 @@ def main() -> None:
     metadata = {
         "method": "RHF/STO-3G",
         "engine": "project pure-NumPy Gaussian integral engine",
+        "geometry": "asymmetric non-planar presentation dimer; forces remain unmodified RHF finite differences",
         "atoms": ELEMENTS.tolist(),
         "iterations": int(len(result["energies"])),
         "saved_density_iterations_zero_based": selected.tolist(),
@@ -306,7 +409,7 @@ def main() -> None:
         "density_mixing": 0.70,
         "convergence_tolerance_hartree": 1.0e-8,
         "force_method": force_origin,
-        "force_delta_angstrom": 0.003,
+        "force_delta_angstrom": FORCE_DELTA_ANGSTROM,
         "max_force_ev_per_angstrom": float(np.linalg.norm(forces, axis=1).max()),
         "time_step_fs": TIME_STEP_FS,
         "display_motion_scale": DISPLAY_MOTION_SCALE,

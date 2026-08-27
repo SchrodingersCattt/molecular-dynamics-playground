@@ -1,6 +1,7 @@
 {
   "method": "RHF/STO-3G",
   "engine": "project pure-NumPy Gaussian integral engine",
+  "geometry": "asymmetric non-planar presentation dimer; forces remain unmodified RHF finite differences",
   "atoms": [
     "O",
     "H",
@@ -40,207 +41,207 @@
   "density_visual_encoding": "Each displayed field is the real rho^k(r); Gaussian blur sigma is a monotonic function of the saved SCF density residual.",
   "density_blur_sigma_voxels": [
     3.0,
-    2.6896241331247737,
-    2.399968160944417,
-    2.1380508067500585,
-    1.916966645648779,
-    1.734854452064431,
-    1.5769373974266743,
-    1.4313022475593618,
-    1.2921556434884827,
-    1.1569244120234727,
-    1.0243066743420393,
-    0.893519733597007,
-    0.7640396885409764,
-    0.63550004563996,
-    0.5076407449927184,
-    0.38027632294371494,
-    0.253274006174648,
-    0.12653827679969512,
+    2.666576663849216,
+    2.37213968986787,
+    2.118021435723185,
+    1.9097166918332071,
+    1.735977825235203,
+    1.5813750725200144,
+    1.4367022943267715,
+    1.2976867016675726,
+    1.1622612317204053,
+    1.0292680301507047,
+    0.897977890794091,
+    0.7679038528181239,
+    0.6387129338521188,
+    0.5101751401927819,
+    0.3821306773749613,
+    0.25446805253031973,
+    0.12710930376373697,
     0.0
   ],
   "cube_records": [
     {
       "iteration_one_based": 1,
-      "residual": 0.3723340642305311,
+      "residual": 0.3684165900634267,
       "blur_sigma_voxels": 3.0,
       "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_01_raw.cube",
       "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_01_display.cube",
-      "raw_sha256": "aef52297b1489b62c96d0daa93454c26eaf36f4173d513f8becb6f922ca66ff9",
-      "display_sha256": "82560744cdad1e5e652a2a6f5b3e27c09da2e19996e286a702a05d867886954b"
+      "raw_sha256": "a45472fd986c767fbcb8c2614b531b4e8db56eb86ba924b240f1762af22206b6",
+      "display_sha256": "3fc126ee8271dc0c6937784101c10a6ed6c4c41c2786023b6e4cfb96b5a874d3"
     },
     {
       "iteration_one_based": 2,
-      "residual": 0.10613657225966748,
-      "blur_sigma_voxels": 2.6896241331247737,
+      "residual": 0.10075867268892172,
+      "blur_sigma_voxels": 2.666576663849216,
       "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_02_raw.cube",
       "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_02_display.cube",
-      "raw_sha256": "4546b6e09afdaf9edd6a00fd54400594f0a80bb30d28393de3c4265ba470f2b7",
-      "display_sha256": "8b9762fd64df309070c88300692f6c0919df63186c30aa943a96ea43d46e52cd"
+      "raw_sha256": "7eb0e2974b049843b3c4d0de0928c358aa7b635a49523e273245c97fc946354c",
+      "display_sha256": "6268fa86abb251819ed824bfb8827def3e1d197c9ef5a394937feb4d8b12578b"
     },
     {
       "iteration_one_based": 3,
-      "residual": 0.03289914893384621,
-      "blur_sigma_voxels": 2.399968160944417,
+      "residual": 0.03206730944191395,
+      "blur_sigma_voxels": 2.37213968986787,
       "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_03_raw.cube",
       "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_03_display.cube",
-      "raw_sha256": "1b334afdf4e52cb0cbb01b386df5f8ad597cdfd5a0456c5174f45c3e7d6fe433",
-      "display_sha256": "c38d2d179f7a75283037410a3b3d1c46958105c10bb9ad42ab162e02d930b10a"
+      "raw_sha256": "889a2151c51fd7bb6a36ef95a4432b9adc136549af7a6c651b6b1818dd81c84a",
+      "display_sha256": "a24675b943fddcde30ad36423efc331df541cb324a4ecaf0dccb152c4edc30d4"
     },
     {
       "iteration_one_based": 4,
-      "residual": 0.011408210981577191,
-      "blur_sigma_voxels": 2.1380508067500585,
+      "residual": 0.011937940346434958,
+      "blur_sigma_voxels": 2.118021435723185,
       "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_04_raw.cube",
       "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_04_display.cube",
-      "raw_sha256": "546bb1394afcf0a488e1ce10c38d5ff7189837dfab0e5114585ada60e9aeb556",
-      "display_sha256": "b99a809ee1ddedf0460865edcac7e7754ef2e219f6803cdd7aca686448998c35"
+      "raw_sha256": "ec87eb28ecaa4ac0aabe7e42974033fd11a1212bcd89003fdcab87096beb0e25",
+      "display_sha256": "4031a5abd7b3de07e6487061e07fdea7e3507f1dd4224343f56f210da3ecb194"
     },
     {
       "iteration_one_based": 5,
-      "residual": 0.004666161721633947,
-      "blur_sigma_voxels": 1.916966645648779,
+      "residual": 0.005310827727319854,
+      "blur_sigma_voxels": 1.9097166918332071,
       "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_05_raw.cube",
       "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_05_display.cube",
-      "raw_sha256": "0424a98df79910de894088bd0c536155903f33f46e0f955b56235640a4c40ada",
-      "display_sha256": "a1dcf887d08373fccc1d98243401a8e524d25ed8afe22424ac0b872b54e430c7"
+      "raw_sha256": "6e6ee8d4aff196a7542ec42e80005987c0942323e6d0058eee66f92b1c926b67",
+      "display_sha256": "2af1280de448480a380f0684850248b7e43e59ede64a510723290f085039f05a"
     },
     {
       "iteration_one_based": 6,
-      "residual": 0.0022343067224046415,
-      "blur_sigma_voxels": 1.734854452064431,
+      "residual": 0.002702507533822851,
+      "blur_sigma_voxels": 1.735977825235203,
       "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_06_raw.cube",
       "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_06_display.cube",
-      "raw_sha256": "31d66ffe0b2fd9e434d9649e33529c75a853c3f0f2c0969d1c59a370f4599a55",
-      "display_sha256": "7fcb116ec84cb08afea419cf98b1c84c2c8d67635523ea6f606746051fb839a5"
+      "raw_sha256": "97a2195388f56cf0b591cd22da020ca90c772856ec41ab64bbb740acb6201a00",
+      "display_sha256": "028de8ea08013a0e9051b9a020821019007b87e4f62810703aff0b9b7b5fbc76"
     },
     {
       "iteration_one_based": 7,
-      "residual": 0.0011798211558869214,
-      "blur_sigma_voxels": 1.5769373974266743,
+      "residual": 0.0014814501453884606,
+      "blur_sigma_voxels": 1.5813750725200144,
       "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_07_raw.cube",
       "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_07_display.cube",
-      "raw_sha256": "6da4d52323a7409ba6562fadcd2c9cab4748c1b862bc53cf7e241ea3a2fafd94",
-      "display_sha256": "3dfed44d038ccb681334009318f348c61e90ca566b8ec509cba7d48d1d1e3926"
+      "raw_sha256": "390230503cc508fb389206a8d6adff0b3d8653c2d29989272ad671132e40bb5b",
+      "display_sha256": "748fec5f663f3b3c6d8e6c4bddd79e59ea504992511591a7a0b4e193b1f6ffcd"
     },
     {
       "iteration_one_based": 8,
-      "residual": 0.0006547243280706405,
-      "blur_sigma_voxels": 1.4313022475593618,
+      "residual": 0.000844065322417131,
+      "blur_sigma_voxels": 1.4367022943267715,
       "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_08_raw.cube",
       "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_08_display.cube",
-      "raw_sha256": "9f44314a47cc790fb498dbba90a9d4f3bfb9a096f9b31fb8992f09c5c6b998b1",
-      "display_sha256": "b589b7aa1f6d6900312af99db6681fdbbcecc5ebacf3c0165c5726249d12c96d"
+      "raw_sha256": "a933eaac8a3727858b86a74abe27e0990cc924f53cce0e948a17f75fde4f1461",
+      "display_sha256": "3ee2cd24ed2418d8895a741fb5e45dd62231d4ef06cfec7c9d2a40ba6f47464c"
     },
     {
       "iteration_one_based": 9,
-      "residual": 0.00037298868843394596,
-      "blur_sigma_voxels": 1.2921556434884827,
+      "residual": 0.0004916074379535831,
+      "blur_sigma_voxels": 1.2976867016675726,
       "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_09_raw.cube",
       "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_09_display.cube",
-      "raw_sha256": "b43db89d3a450f0c0e3e23d2054db591169ca84ccc87053e2c1feca1ad562b40",
-      "display_sha256": "993b4c807badf87b6105b64f8409d8c24e8633d9b78b4390f021c2357c42bc2a"
+      "raw_sha256": "5bb460e850a70b6cf6bad9a596c2790dd0a4f63832788949efeeaeee43459dc8",
+      "display_sha256": "29afae8b76ae49a95eca8808aa02e59d09f7544211628f2f7f9d17a0560914a5"
     },
     {
       "iteration_one_based": 10,
-      "residual": 0.00021587822560582937,
-      "blur_sigma_voxels": 1.1569244120234727,
+      "residual": 0.00029035113194221583,
+      "blur_sigma_voxels": 1.1622612317204053,
       "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_10_raw.cube",
       "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_10_display.cube",
-      "raw_sha256": "318d65fe261cf98a0ad71d36c3a0d1e29e8590352ba08b584c7f96917770f6fe",
-      "display_sha256": "9bcd94df486f5c6211677d82615fd4439f6ccdc1fc0538338c9f59549c2b603a"
+      "raw_sha256": "e62baff5cd67e5a197355c4736fc0891668037f033e440c938be8b0c3b84fec4",
+      "display_sha256": "bcb10bd996d2b44d997c3bfb809a37d8bb7aa3a9262408b74a5655289472d243"
     },
     {
       "iteration_one_based": 11,
-      "residual": 0.00012627335366452384,
-      "blur_sigma_voxels": 1.0243066743420393,
+      "residual": 0.0001731155214183078,
+      "blur_sigma_voxels": 1.0292680301507047,
       "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_11_raw.cube",
       "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_11_display.cube",
-      "raw_sha256": "9059512e59498ec770a9e9ca4648e0947bb1b3693c7ed1defd94cd098ba9a57d",
-      "display_sha256": "0f8925dcab3ee36a7e9de94dcb382c3b564d54a3f48b67d7fdc8d0410b5e0ae1"
+      "raw_sha256": "1851aa51de9ccbbf64ea921e1fc7558c64ee476e46f35838241fe66bbfb1cd4f",
+      "display_sha256": "e165da4c24bb1904dcba8033c2dcb5296989fed9aa99fbc2af82858a7e6f24a2"
     },
     {
       "iteration_one_based": 12,
-      "residual": 7.440973380181225e-05,
-      "blur_sigma_voxels": 0.893519733597007,
+      "residual": 0.00010390213659653497,
+      "blur_sigma_voxels": 0.897977890794091,
       "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_12_raw.cube",
       "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_12_display.cube",
-      "raw_sha256": "b7acde0e21e2fa9f947ba0f1a014174d2b3da2ca27405c067ccf1c2745020753",
-      "display_sha256": "577e62a75f7d1401fb37533de90f4b0624f1db40cfd24d6ead51d0ce7c4b5fa8"
+      "raw_sha256": "f4c67b3bf7ce97cf55192871f070f58c3b6d6c27bb7e721effa2e2ce5259acaf",
+      "display_sha256": "a6a7a63406496a20f90a5476643da3e994561a8570149869d3a756b6ca2890de"
     },
     {
       "iteration_one_based": 13,
-      "residual": 4.4080133021957095e-05,
-      "blur_sigma_voxels": 0.7640396885409764,
+      "residual": 6.265656703772017e-05,
+      "blur_sigma_voxels": 0.7679038528181239,
       "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_13_raw.cube",
       "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_13_display.cube",
-      "raw_sha256": "d1444174cf907b96080dc73b64f5455ed358cb3aac090b3cb72646add0297404",
-      "display_sha256": "17a437900a51d397f00e82602a7cd4ef4f72059b00ee669eb188d1fc380e3b87"
+      "raw_sha256": "2031868d4ae12ccf292679562198bd7fb7a1bef173602a08f5e7f82698f63624",
+      "display_sha256": "a7564b22d243339c92bb54519ff5c9a89ade34c63e5e336f10d6dcaa62c79dc1"
     },
     {
       "iteration_one_based": 14,
-      "residual": 2.621244502736365e-05,
-      "blur_sigma_voxels": 0.63550004563996,
+      "residual": 3.791403875350021e-05,
+      "blur_sigma_voxels": 0.6387129338521188,
       "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_14_raw.cube",
       "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_14_display.cube",
-      "raw_sha256": "a5478a987f700deed2bd5e89915857eb33babf9ed2fc049335a218fee5c96559",
-      "display_sha256": "7ad282d6ae89ae9dcd4557fad7a2273a35a29a67db68c4a32c7f952cd5be4466"
+      "raw_sha256": "06f038cf6ad2ba8cfee5a662646625e1dfc74a6d6565397d19b30af2897da410",
+      "display_sha256": "0c7bafdeee17f3dbde67d3da80dbc911d7e1c6c8a3486447513b0b2d2d975171"
     },
     {
       "iteration_one_based": 15,
-      "residual": 1.563028706977728e-05,
-      "blur_sigma_voxels": 0.5076407449927184,
+      "residual": 2.3000455941684933e-05,
+      "blur_sigma_voxels": 0.5101751401927819,
       "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_15_raw.cube",
       "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_15_display.cube",
-      "raw_sha256": "e8a58ac2a9a7b1924f129ceb1316f1df5c200f329df655b15052ff676dda243a",
-      "display_sha256": "f27a1c6ff3a5260be03b34b485b089d0263ce5454125ee4eaf701a5a65baae7c"
+      "raw_sha256": "597a49ee14bedbd2fbe228b45c866d475c7d10b3641ab1131cef9a60e7ea5e8a",
+      "display_sha256": "fdbd06d892cd4204b68e85aa01755e46c75348729e3e3183f80dfb411f4001d1"
     },
     {
       "iteration_one_based": 16,
-      "residual": 9.338894281073123e-06,
-      "blur_sigma_voxels": 0.38027632294371494,
+      "residual": 1.397996021752914e-05,
+      "blur_sigma_voxels": 0.3821306773749613,
       "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_16_raw.cube",
       "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_16_display.cube",
-      "raw_sha256": "68db0b8afe39038798290a70fec9ad9f6ab763510ff6bcb88ef77abe5a1696a5",
-      "display_sha256": "0aea9ccc9a3762cf2f2c1ccae4abcb8ebff41351e5279cc87ca85dbcde3ee33b"
+      "raw_sha256": "3be568bcda8ed18196e5ed4a61cd2b3b01cc1909afa92e0b2b23f0a1bdf4fa49",
+      "display_sha256": "ac6127bd173298f41184982748f473682bee771d5148dd1469543586238dc504"
     },
     {
       "iteration_one_based": 17,
-      "residual": 5.588044761387177e-06,
-      "blur_sigma_voxels": 0.253274006174648,
+      "residual": 8.509817397152332e-06,
+      "blur_sigma_voxels": 0.25446805253031973,
       "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_17_raw.cube",
       "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_17_display.cube",
-      "raw_sha256": "599cd38d29c68fd83994e62fd3e7769db061bf9a57caf41a307e93c70ea944e0",
-      "display_sha256": "1df6771477f31470dabf456e6a0114d37170dbbe7f638b0b0ad16ca0615c4ace"
+      "raw_sha256": "b827df346375ad39b1d7e21b5755e6281cfa8c16f8b6d3e7978f5ff9166b3a97",
+      "display_sha256": "dd28ce5e1bdc489e4a1fa69b063a6d33746b25e0bd6b3e3dd2889d312b4de5a5"
     },
     {
       "iteration_one_based": 18,
-      "residual": 3.3472832309970337e-06,
-      "blur_sigma_voxels": 0.12653827679969512,
+      "residual": 5.1861814396858025e-06,
+      "blur_sigma_voxels": 0.12710930376373697,
       "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_18_raw.cube",
       "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_18_display.cube",
-      "raw_sha256": "d9f05c3a5a91f648e8acafaa54ffba3da08368e94b37accf5a6afab6962e5556",
-      "display_sha256": "c3818d728b9ca8e3a4b5146b0da84e117c59c1dd8714d73d27481267f43a98da"
+      "raw_sha256": "ae81615ea35c3e2aa060fdec40452ed9856fe3b8176a49bfa61fb6b736bef635",
+      "display_sha256": "11f38d34624a01227fc9528809594ee8e4184b654576e6eebb35238ff00bd893"
     },
     {
       "iteration_one_based": 19,
-      "residual": 2.006650808743569e-06,
+      "residual": 3.1637081505575904e-06,
       "blur_sigma_voxels": 0.0,
       "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_19_raw.cube",
       "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_19_display.cube",
-      "raw_sha256": "3b74830b9e0b15ddf511d65c2c64faa8733fd502da7da378fcccb1043996729e",
-      "display_sha256": "7b119faf46f3fdcde248775f305f32c953d85862df8a7e95d07263f45f6a6fb5"
+      "raw_sha256": "4d23f8336e884a96f3013a397c75c1f85198dbcc8af816057ef219bd9381485b",
+      "display_sha256": "689e896a135f3da66ab8bd839d3f29299f7e665597cc3aa2c270d4becc61502b"
     }
   ],
-  "final_energy_hartree": -149.93375702830417,
-  "final_delta_energy_hartree": 4.2770693653437775e-09,
+  "final_energy_hartree": -149.93495425041797,
+  "final_delta_energy_hartree": 5.144784154254012e-09,
   "density_mixing": 0.7,
   "convergence_tolerance_hartree": 1e-08,
-  "force_method": "verified prior central finite difference of converged RHF energy",
+  "force_method": "fresh 3D central finite difference of converged RHF energy",
   "force_delta_angstrom": 0.003,
-  "max_force_ev_per_angstrom": 3.0714442708205882,
+  "max_force_ev_per_angstrom": 0.6086424524337084,
   "time_step_fs": 0.5,
   "display_motion_scale": 80.0,
-  "max_true_vv_displacement_angstrom": 0.0025366309362131662,
-  "wall_seconds": 25.237229700025637
+  "max_true_vv_displacement_angstrom": 0.0007282374654524931,
+  "wall_seconds": 321.0187579000485
 }

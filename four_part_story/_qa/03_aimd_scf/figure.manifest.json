@@ -77,13 +77,13 @@
           "min_pixels": 700
         },
         {
-          "id": "oxygen",
-          "color": "#A32035",
-          "min_pixels": 120
+          "id": "oxygen_shaded",
+          "color": "#97495D",
+          "min_pixels": 300
         },
         {
           "id": "nuclear_force",
-          "color": "#D98E98",
+          "color": "#A99C50",
           "min_pixels": 200
         }
       ]
@@ -133,15 +133,15 @@
     "records": []
   },
   "review": {
-    "render_sha256": "ad7a2c7f778ef75367fe247189a4f01c54fae8508e88d6456b54d1a2a1ad9758",
+    "render_sha256": "f9d680a19ed521414fe71fa6b753478c4d33788b8ca5c603e125e428432ee531",
     "problems": {
       "scientific_expression": "The previous concept sampled only a few SCF states and did not make it visually evident that every surface came from a real RHF density iterate.",
-      "geometry": "The previous near-axial water-dimer view compressed the H-O-H geometry and made several force arrows disappear behind atomic spheres.",
+      "geometry": "The previous near-axial water-dimer view compressed the H-O-H geometry, while the CPU vector path discarded explicit head geometry and made the arrows read as detached caps.",
       "annotations": "The earlier SCF labels crowded the density object and the relationship between the four electronic steps and the outer MD loop was ambiguous.",
       "readability": "Dark red force arrows were too close to the oxygen color and too short to read reliably at A4 scale.",
       "submission_quality": "The prior assets mixed provisional projections with stale source panels and lacked a traceable all-iteration Cube provenance set."
     },
-    "action": "Recomputed and retained all 19 RHF/STO-3G density matrices on one fixed grid; rendered every Cube, molecule, and force arrow through MatterVis; changed to an asymmetric dimer camera; offset and enlarged pale dusty-rose force arrows; simplified the SCF loop to four nodes outside the structure; moved the solve-orbitals label inward to preserve print clearance; and regenerated independent A4 source panels with provenance sidecars.",
+    "action": "Recomputed and retained all 19 RHF/STO-3G density matrices on one fixed grid; rendered every Cube, molecule, bond, and vector through MatterVis; changed to an asymmetric dimer camera; fixed the density isovalue at 0.080; placed every olive force-arrow origin exactly at its nucleus with one shared scale and explicit 3D head geometry; simplified the SCF loop to four nodes outside the structure; and regenerated independent A4 source panels with provenance sidecars.",
     "stop_condition": "fixed"
   }
 }

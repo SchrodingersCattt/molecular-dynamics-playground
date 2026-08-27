@@ -17,17 +17,17 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "2e7c882d65c2e36c39e24d57bfb6c8f4012d0ef7fa775d5d9542f7b4de877b02",
-      "output_sha256": "bb19b9d05cdf2e7b1757cdf7d9c87b09e891d5ad377b742c666ff9e5f33fc2a1",
+      "plan_sha256": "67a93500692e6347b9a850acef3a9f1ae85a1b20d71c37a2c7cf534bf02c0578",
+      "output_sha256": "9265a8522ca42afda2b33aab4fce9f77b6311ce985c0e462b1adb6fe62386100",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\density_01.png",
-      "source_sha256": "82560744cdad1e5e652a2a6f5b3e27c09da2e19996e286a702a05d867886954b",
+      "source_sha256": "3fc126ee8271dc0c6937784101c10a6ed6c4c41c2786023b6e4cfb96b5a874d3",
       "camera": {
         "target": [
-          0.314861701684306,
-          0.15441954864030819,
-          0.0
+          0.28821416045300047,
+          0.07486069758950598,
+          0.29648353847969666
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -40,8 +40,8 @@
         ],
         "scene_offset": [
           3.3500002544006158,
-          2.349999792101853,
-          1.75000014917765
+          2.349999792037761,
+          1.7500001491135582
         ]
       },
       "render_settings": {
@@ -49,8 +49,8 @@
         "height": 950,
         "atom_scale": 0.9,
         "bond_radius": 0.105,
-        "isovalue": 0.03,
-        "opacity": 0.32
+        "isovalue": 0.08,
+        "opacity": 0.2
       },
       "vector_signature": "[]",
       "vector_count": 0,
@@ -65,14 +65,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            12.212177544828847,
-            -2.934781488458518,
-            23.50680346598037
+            12.185530003597542,
+            -3.0143403395734123,
+            23.803287004395973
           ],
           "target": [
-            3.6648619560849216,
-            2.504419340742161,
-            1.75000014917765
+            3.6382144148536164,
+            2.424860489627267,
+            2.0464836875932546
           ],
           "up": [
             0.0,
@@ -83,7 +83,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -116,17 +116,17 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "066e85a89d3069267de96e5a8cb5de64df675fbbbd8d83417d5795021435aef0",
-      "output_sha256": "8f5874acfb0ada4c0735cf63182ce14e27e66b0e29dbba0cc5f0b69ff510cef5",
+      "plan_sha256": "5827514e44cb88944e3e47fbb1ce3ac683175b7e88705074705467c7be5fde33",
+      "output_sha256": "3ff777bbe9c5d9e602061d37b40646eae66043d7cf0faa03c4eb866135e5c6c9",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\density_02.png",
-      "source_sha256": "8b9762fd64df309070c88300692f6c0919df63186c30aa943a96ea43d46e52cd",
+      "source_sha256": "6268fa86abb251819ed824bfb8827def3e1d197c9ef5a394937feb4d8b12578b",
       "camera": {
         "target": [
-          0.314861701684306,
-          0.15441954864030819,
-          0.0
+          0.28821416045300047,
+          0.07486069758950598,
+          0.29648353847969666
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -139,8 +139,8 @@
         ],
         "scene_offset": [
           3.3500002544006158,
-          2.349999792101853,
-          1.75000014917765
+          2.349999792037761,
+          1.7500001491135582
         ]
       },
       "render_settings": {
@@ -148,8 +148,8 @@
         "height": 950,
         "atom_scale": 0.9,
         "bond_radius": 0.105,
-        "isovalue": 0.03,
-        "opacity": 0.32
+        "isovalue": 0.08,
+        "opacity": 0.2
       },
       "vector_signature": "[]",
       "vector_count": 0,
@@ -164,14 +164,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            12.212177544828847,
-            -2.934781488458518,
-            23.50680346598037
+            12.185530003597542,
+            -3.0143403395734123,
+            23.803287004395973
           ],
           "target": [
-            3.6648619560849216,
-            2.504419340742161,
-            1.75000014917765
+            3.6382144148536164,
+            2.424860489627267,
+            2.0464836875932546
           ],
           "up": [
             0.0,
@@ -182,7 +182,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -215,17 +215,17 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "1e9eb625e651acd397810d6dfa89ef519bfff40aaf00ac9e86ceee1d8b5d52cf",
-      "output_sha256": "30e7b28642ff95e5820f2813c7220f027cb58287b7a559d99c06bc53ea840e98",
+      "plan_sha256": "8bc42dbc1bb91c6b08866a3fe3da21c5dbcdd8222d01565925bf51fbe8751b07",
+      "output_sha256": "7dd87667ba78e3ae2b980e70f38921ecfafb2bab7d2e84866d7070afe1e130d4",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\density_03.png",
-      "source_sha256": "c38d2d179f7a75283037410a3b3d1c46958105c10bb9ad42ab162e02d930b10a",
+      "source_sha256": "a24675b943fddcde30ad36423efc331df541cb324a4ecaf0dccb152c4edc30d4",
       "camera": {
         "target": [
-          0.314861701684306,
-          0.15441954864030819,
-          0.0
+          0.28821416045300047,
+          0.07486069758950598,
+          0.29648353847969666
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -238,8 +238,8 @@
         ],
         "scene_offset": [
           3.3500002544006158,
-          2.349999792101853,
-          1.75000014917765
+          2.349999792037761,
+          1.7500001491135582
         ]
       },
       "render_settings": {
@@ -247,8 +247,8 @@
         "height": 950,
         "atom_scale": 0.9,
         "bond_radius": 0.105,
-        "isovalue": 0.03,
-        "opacity": 0.32
+        "isovalue": 0.08,
+        "opacity": 0.2
       },
       "vector_signature": "[]",
       "vector_count": 0,
@@ -263,14 +263,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            12.212177544828847,
-            -2.934781488458518,
-            23.50680346598037
+            12.185530003597542,
+            -3.0143403395734123,
+            23.803287004395973
           ],
           "target": [
-            3.6648619560849216,
-            2.504419340742161,
-            1.75000014917765
+            3.6382144148536164,
+            2.424860489627267,
+            2.0464836875932546
           ],
           "up": [
             0.0,
@@ -281,7 +281,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -314,17 +314,17 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "d1dab891ab7f659cb346669e1dbe171807a17847c43565a32321e92a0e27286d",
-      "output_sha256": "287230ab2c5ef62bfcc44d6f74be1b457cefc5b1eec98f8d65302e857e3d3773",
+      "plan_sha256": "4348b6cde5b7eb2979dd731a94216d9c5b72375393bdca8d1bb4b1e30fc9e4ef",
+      "output_sha256": "88adff43ca37b57e86965509448da7c513273244ca0e9db9160e4d4d0db664e1",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\density_04.png",
-      "source_sha256": "b99a809ee1ddedf0460865edcac7e7754ef2e219f6803cdd7aca686448998c35",
+      "source_sha256": "4031a5abd7b3de07e6487061e07fdea7e3507f1dd4224343f56f210da3ecb194",
       "camera": {
         "target": [
-          0.314861701684306,
-          0.15441954864030819,
-          0.0
+          0.28821416045300047,
+          0.07486069758950598,
+          0.29648353847969666
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -337,8 +337,8 @@
         ],
         "scene_offset": [
           3.3500002544006158,
-          2.349999792101853,
-          1.75000014917765
+          2.349999792037761,
+          1.7500001491135582
         ]
       },
       "render_settings": {
@@ -346,8 +346,8 @@
         "height": 950,
         "atom_scale": 0.9,
         "bond_radius": 0.105,
-        "isovalue": 0.03,
-        "opacity": 0.32
+        "isovalue": 0.08,
+        "opacity": 0.2
       },
       "vector_signature": "[]",
       "vector_count": 0,
@@ -362,14 +362,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            12.212177544828847,
-            -2.934781488458518,
-            23.50680346598037
+            12.185530003597542,
+            -3.0143403395734123,
+            23.803287004395973
           ],
           "target": [
-            3.6648619560849216,
-            2.504419340742161,
-            1.75000014917765
+            3.6382144148536164,
+            2.424860489627267,
+            2.0464836875932546
           ],
           "up": [
             0.0,
@@ -380,7 +380,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -413,17 +413,17 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "0e91cb0dd8d78d26fd41dcde29d8495512f043fdfcba6bbcc87d0ec6f40acf04",
-      "output_sha256": "255f11373d62df0eeeaa23d2724b5870b97edf08745047aff02119a87821ddb3",
+      "plan_sha256": "0b0562628dbad08d328344776f1ec43d708d3b79c29123bc5971d5c233145618",
+      "output_sha256": "5f0bb1c670213f225d1f89bfa58c4864f4fe35ae5f67e280590a41b6ecccea31",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\density_05.png",
-      "source_sha256": "a1dcf887d08373fccc1d98243401a8e524d25ed8afe22424ac0b872b54e430c7",
+      "source_sha256": "2af1280de448480a380f0684850248b7e43e59ede64a510723290f085039f05a",
       "camera": {
         "target": [
-          0.314861701684306,
-          0.15441954864030819,
-          0.0
+          0.28821416045300047,
+          0.07486069758950598,
+          0.29648353847969666
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -436,8 +436,8 @@
         ],
         "scene_offset": [
           3.3500002544006158,
-          2.349999792101853,
-          1.75000014917765
+          2.349999792037761,
+          1.7500001491135582
         ]
       },
       "render_settings": {
@@ -445,8 +445,8 @@
         "height": 950,
         "atom_scale": 0.9,
         "bond_radius": 0.105,
-        "isovalue": 0.03,
-        "opacity": 0.32
+        "isovalue": 0.08,
+        "opacity": 0.2
       },
       "vector_signature": "[]",
       "vector_count": 0,
@@ -461,14 +461,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            12.212177544828847,
-            -2.934781488458518,
-            23.50680346598037
+            12.185530003597542,
+            -3.0143403395734123,
+            23.803287004395973
           ],
           "target": [
-            3.6648619560849216,
-            2.504419340742161,
-            1.75000014917765
+            3.6382144148536164,
+            2.424860489627267,
+            2.0464836875932546
           ],
           "up": [
             0.0,
@@ -479,7 +479,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -512,17 +512,17 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "3376ded786aea1ad86b69800d08147d797c2c7c919750599df743a5b64eb645e",
-      "output_sha256": "9e0407719bc218a87a925abb56d50522141a32bc232ded2c39c58db1d1f7042b",
+      "plan_sha256": "849fffe5ee84cc02065536a589c50392a0b9b6c1d007820b6d533cc7bd00de75",
+      "output_sha256": "85f0570290daefb7cae20d05d2dfbca5e8585a0ef89634ffe9e410232c6103d1",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\density_06.png",
-      "source_sha256": "7fcb116ec84cb08afea419cf98b1c84c2c8d67635523ea6f606746051fb839a5",
+      "source_sha256": "028de8ea08013a0e9051b9a020821019007b87e4f62810703aff0b9b7b5fbc76",
       "camera": {
         "target": [
-          0.314861701684306,
-          0.15441954864030819,
-          0.0
+          0.28821416045300047,
+          0.07486069758950598,
+          0.29648353847969666
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -535,8 +535,8 @@
         ],
         "scene_offset": [
           3.3500002544006158,
-          2.349999792101853,
-          1.75000014917765
+          2.349999792037761,
+          1.7500001491135582
         ]
       },
       "render_settings": {
@@ -544,8 +544,8 @@
         "height": 950,
         "atom_scale": 0.9,
         "bond_radius": 0.105,
-        "isovalue": 0.03,
-        "opacity": 0.32
+        "isovalue": 0.08,
+        "opacity": 0.2
       },
       "vector_signature": "[]",
       "vector_count": 0,
@@ -560,14 +560,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            12.212177544828847,
-            -2.934781488458518,
-            23.50680346598037
+            12.185530003597542,
+            -3.0143403395734123,
+            23.803287004395973
           ],
           "target": [
-            3.6648619560849216,
-            2.504419340742161,
-            1.75000014917765
+            3.6382144148536164,
+            2.424860489627267,
+            2.0464836875932546
           ],
           "up": [
             0.0,
@@ -578,7 +578,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -611,17 +611,17 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "ba554903b07b1ba04eb8fac46993f301d04d652eb70f2af39ad9dc6abc3924b3",
-      "output_sha256": "1fa574122795c229cb2e08f884f00b9629b386ce6b54b8b0124166d39a52fe82",
+      "plan_sha256": "338761a697998c1fadd6d40da9eb263ec27d97c5ac32f4d9f32afaad5f34e3e3",
+      "output_sha256": "24129f614919b4c2f90009b301ebab2057cebde66a623eb846158685ba996bd6",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\density_07.png",
-      "source_sha256": "3dfed44d038ccb681334009318f348c61e90ca566b8ec509cba7d48d1d1e3926",
+      "source_sha256": "748fec5f663f3b3c6d8e6c4bddd79e59ea504992511591a7a0b4e193b1f6ffcd",
       "camera": {
         "target": [
-          0.314861701684306,
-          0.15441954864030819,
-          0.0
+          0.28821416045300047,
+          0.07486069758950598,
+          0.29648353847969666
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -634,8 +634,8 @@
         ],
         "scene_offset": [
           3.3500002544006158,
-          2.349999792101853,
-          1.75000014917765
+          2.349999792037761,
+          1.7500001491135582
         ]
       },
       "render_settings": {
@@ -643,8 +643,8 @@
         "height": 950,
         "atom_scale": 0.9,
         "bond_radius": 0.105,
-        "isovalue": 0.03,
-        "opacity": 0.32
+        "isovalue": 0.08,
+        "opacity": 0.2
       },
       "vector_signature": "[]",
       "vector_count": 0,
@@ -659,14 +659,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            12.212177544828847,
-            -2.934781488458518,
-            23.50680346598037
+            12.185530003597542,
+            -3.0143403395734123,
+            23.803287004395973
           ],
           "target": [
-            3.6648619560849216,
-            2.504419340742161,
-            1.75000014917765
+            3.6382144148536164,
+            2.424860489627267,
+            2.0464836875932546
           ],
           "up": [
             0.0,
@@ -677,7 +677,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -710,17 +710,17 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "588f0af4d9affe7ffd63a88ff4072ec8f44f1e90842baf9f31ffd00302d78d9e",
-      "output_sha256": "9f9f6d88bdedf1438e12cb1128ce885860771c8c7a047cda9b5f112187350b56",
+      "plan_sha256": "68888e2d2b227ebf4e38450fd7c74b6238667ba40f42f1159776fca842730932",
+      "output_sha256": "ae198d888ae3da988e10259e981654e38102691f5ddc3c10faf477ff32a7e4b6",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\density_08.png",
-      "source_sha256": "b589b7aa1f6d6900312af99db6681fdbbcecc5ebacf3c0165c5726249d12c96d",
+      "source_sha256": "3ee2cd24ed2418d8895a741fb5e45dd62231d4ef06cfec7c9d2a40ba6f47464c",
       "camera": {
         "target": [
-          0.314861701684306,
-          0.15441954864030819,
-          0.0
+          0.28821416045300047,
+          0.07486069758950598,
+          0.29648353847969666
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -733,8 +733,8 @@
         ],
         "scene_offset": [
           3.3500002544006158,
-          2.349999792101853,
-          1.75000014917765
+          2.349999792037761,
+          1.7500001491135582
         ]
       },
       "render_settings": {
@@ -742,8 +742,8 @@
         "height": 950,
         "atom_scale": 0.9,
         "bond_radius": 0.105,
-        "isovalue": 0.03,
-        "opacity": 0.32
+        "isovalue": 0.08,
+        "opacity": 0.2
       },
       "vector_signature": "[]",
       "vector_count": 0,
@@ -758,14 +758,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            12.212177544828847,
-            -2.934781488458518,
-            23.50680346598037
+            12.185530003597542,
+            -3.0143403395734123,
+            23.803287004395973
           ],
           "target": [
-            3.6648619560849216,
-            2.504419340742161,
-            1.75000014917765
+            3.6382144148536164,
+            2.424860489627267,
+            2.0464836875932546
           ],
           "up": [
             0.0,
@@ -776,7 +776,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -809,17 +809,17 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "001e4334635b8a49b33cfb20deca519acbd75842dfd7637505c7ec76a0a6415f",
-      "output_sha256": "290b6b553cdb80eec64a3cc376da62f042541760ae8d89ac6ee3bcd375d8459a",
+      "plan_sha256": "b46046216beb35e6fd7dd05676d0b812b26ccb8acce76c3ea88fc5d8f349df76",
+      "output_sha256": "7a7a2a970c8913bc656cfc5113a34a6f60d74870eae34e981dbe5c1cac45e4dd",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\density_09.png",
-      "source_sha256": "993b4c807badf87b6105b64f8409d8c24e8633d9b78b4390f021c2357c42bc2a",
+      "source_sha256": "29afae8b76ae49a95eca8808aa02e59d09f7544211628f2f7f9d17a0560914a5",
       "camera": {
         "target": [
-          0.314861701684306,
-          0.15441954864030819,
-          0.0
+          0.28821416045300047,
+          0.07486069758950598,
+          0.29648353847969666
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -832,8 +832,8 @@
         ],
         "scene_offset": [
           3.3500002544006158,
-          2.349999792101853,
-          1.75000014917765
+          2.349999792037761,
+          1.7500001491135582
         ]
       },
       "render_settings": {
@@ -841,8 +841,8 @@
         "height": 950,
         "atom_scale": 0.9,
         "bond_radius": 0.105,
-        "isovalue": 0.03,
-        "opacity": 0.32
+        "isovalue": 0.08,
+        "opacity": 0.2
       },
       "vector_signature": "[]",
       "vector_count": 0,
@@ -857,14 +857,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            12.212177544828847,
-            -2.934781488458518,
-            23.50680346598037
+            12.185530003597542,
+            -3.0143403395734123,
+            23.803287004395973
           ],
           "target": [
-            3.6648619560849216,
-            2.504419340742161,
-            1.75000014917765
+            3.6382144148536164,
+            2.424860489627267,
+            2.0464836875932546
           ],
           "up": [
             0.0,
@@ -875,7 +875,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -908,17 +908,17 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "ceaebeafddadf25af966ed225c0028b334abf11e02ccfc40e38ad659fd6b097e",
-      "output_sha256": "41d9ac3a2c2060b8d48aa3ea6848e9f3ba2f47af66e727b0b5e1f2cdab7a0a47",
+      "plan_sha256": "77db02fb9ad51a9d224ec610b7d209e72ec004e652a22b6be5b43193b1faecae",
+      "output_sha256": "154a9b256632327767f11c1322780cc8dfbc315fa39103c1bc25fa04df2393e6",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\density_10.png",
-      "source_sha256": "9bcd94df486f5c6211677d82615fd4439f6ccdc1fc0538338c9f59549c2b603a",
+      "source_sha256": "bcb10bd996d2b44d997c3bfb809a37d8bb7aa3a9262408b74a5655289472d243",
       "camera": {
         "target": [
-          0.314861701684306,
-          0.15441954864030819,
-          0.0
+          0.28821416045300047,
+          0.07486069758950598,
+          0.29648353847969666
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -931,8 +931,8 @@
         ],
         "scene_offset": [
           3.3500002544006158,
-          2.349999792101853,
-          1.75000014917765
+          2.349999792037761,
+          1.7500001491135582
         ]
       },
       "render_settings": {
@@ -940,8 +940,8 @@
         "height": 950,
         "atom_scale": 0.9,
         "bond_radius": 0.105,
-        "isovalue": 0.03,
-        "opacity": 0.32
+        "isovalue": 0.08,
+        "opacity": 0.2
       },
       "vector_signature": "[]",
       "vector_count": 0,
@@ -956,14 +956,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            12.212177544828847,
-            -2.934781488458518,
-            23.50680346598037
+            12.185530003597542,
+            -3.0143403395734123,
+            23.803287004395973
           ],
           "target": [
-            3.6648619560849216,
-            2.504419340742161,
-            1.75000014917765
+            3.6382144148536164,
+            2.424860489627267,
+            2.0464836875932546
           ],
           "up": [
             0.0,
@@ -974,7 +974,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -1007,17 +1007,17 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "d631b79ca28fa551e1078e7b955941fbbe1a9544f5d6899277e7b50c1db7051e",
-      "output_sha256": "aed143b1ecde3f3fb013c598584d34b237d3a59b0d7c6539cefe4ae7080fcbe0",
+      "plan_sha256": "6740933a7de1ad4b3146fa732893d8a1913c71591b9db6df051e05d69518da54",
+      "output_sha256": "cfd48a7bac2b4e6032225158a86950dc8df5451cf36897ac16c071049594c36a",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\density_11.png",
-      "source_sha256": "0f8925dcab3ee36a7e9de94dcb382c3b564d54a3f48b67d7fdc8d0410b5e0ae1",
+      "source_sha256": "e165da4c24bb1904dcba8033c2dcb5296989fed9aa99fbc2af82858a7e6f24a2",
       "camera": {
         "target": [
-          0.314861701684306,
-          0.15441954864030819,
-          0.0
+          0.28821416045300047,
+          0.07486069758950598,
+          0.29648353847969666
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -1030,8 +1030,8 @@
         ],
         "scene_offset": [
           3.3500002544006158,
-          2.349999792101853,
-          1.75000014917765
+          2.349999792037761,
+          1.7500001491135582
         ]
       },
       "render_settings": {
@@ -1039,8 +1039,8 @@
         "height": 950,
         "atom_scale": 0.9,
         "bond_radius": 0.105,
-        "isovalue": 0.03,
-        "opacity": 0.32
+        "isovalue": 0.08,
+        "opacity": 0.2
       },
       "vector_signature": "[]",
       "vector_count": 0,
@@ -1055,14 +1055,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            12.212177544828847,
-            -2.934781488458518,
-            23.50680346598037
+            12.185530003597542,
+            -3.0143403395734123,
+            23.803287004395973
           ],
           "target": [
-            3.6648619560849216,
-            2.504419340742161,
-            1.75000014917765
+            3.6382144148536164,
+            2.424860489627267,
+            2.0464836875932546
           ],
           "up": [
             0.0,
@@ -1073,7 +1073,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -1106,17 +1106,17 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "2b061a2595f148ef21caaf4c1b21b848fb82ff34f23a8d6aab4f00f8125515f5",
-      "output_sha256": "135d7079037e633e21273ecd1aa02a09c4bb0ac43449fc8061031f95c179163b",
+      "plan_sha256": "0f9bdd0ca14bcf3b2b40d2856b84f84dda030ee12defb3fdc74194a49b93b86d",
+      "output_sha256": "5225240bdb666471421cf656bb88326a98ab19ececc58795c68aef19f4c0108a",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\density_12.png",
-      "source_sha256": "577e62a75f7d1401fb37533de90f4b0624f1db40cfd24d6ead51d0ce7c4b5fa8",
+      "source_sha256": "a6a7a63406496a20f90a5476643da3e994561a8570149869d3a756b6ca2890de",
       "camera": {
         "target": [
-          0.314861701684306,
-          0.15441954864030819,
-          0.0
+          0.28821416045300047,
+          0.07486069758950598,
+          0.29648353847969666
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -1129,8 +1129,8 @@
         ],
         "scene_offset": [
           3.3500002544006158,
-          2.349999792101853,
-          1.75000014917765
+          2.349999792037761,
+          1.7500001491135582
         ]
       },
       "render_settings": {
@@ -1138,8 +1138,8 @@
         "height": 950,
         "atom_scale": 0.9,
         "bond_radius": 0.105,
-        "isovalue": 0.03,
-        "opacity": 0.32
+        "isovalue": 0.08,
+        "opacity": 0.2
       },
       "vector_signature": "[]",
       "vector_count": 0,
@@ -1154,14 +1154,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            12.212177544828847,
-            -2.934781488458518,
-            23.50680346598037
+            12.185530003597542,
+            -3.0143403395734123,
+            23.803287004395973
           ],
           "target": [
-            3.6648619560849216,
-            2.504419340742161,
-            1.75000014917765
+            3.6382144148536164,
+            2.424860489627267,
+            2.0464836875932546
           ],
           "up": [
             0.0,
@@ -1172,7 +1172,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -1205,17 +1205,17 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "0b624dc402b35dc42dbc3abdee2c73c5b26985ce6228511946235d92e915ee6a",
-      "output_sha256": "eb62332d21d36aedd0d36d58fbfcc6c84085c42f868b8d6046a28ca38a5d13fd",
+      "plan_sha256": "12bf92ddfc45daabc7572ead1c689117f2f88da67b8d8076ef83c4bd0288f563",
+      "output_sha256": "7da7a5ec2c0cc6f19cac3bf8968d80ac3656ca8b6ec46e18efe235fa6ebe9c60",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\density_13.png",
-      "source_sha256": "17a437900a51d397f00e82602a7cd4ef4f72059b00ee669eb188d1fc380e3b87",
+      "source_sha256": "a7564b22d243339c92bb54519ff5c9a89ade34c63e5e336f10d6dcaa62c79dc1",
       "camera": {
         "target": [
-          0.314861701684306,
-          0.15441954864030819,
-          0.0
+          0.28821416045300047,
+          0.07486069758950598,
+          0.29648353847969666
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -1228,8 +1228,8 @@
         ],
         "scene_offset": [
           3.3500002544006158,
-          2.349999792101853,
-          1.75000014917765
+          2.349999792037761,
+          1.7500001491135582
         ]
       },
       "render_settings": {
@@ -1237,8 +1237,8 @@
         "height": 950,
         "atom_scale": 0.9,
         "bond_radius": 0.105,
-        "isovalue": 0.03,
-        "opacity": 0.32
+        "isovalue": 0.08,
+        "opacity": 0.2
       },
       "vector_signature": "[]",
       "vector_count": 0,
@@ -1253,14 +1253,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            12.212177544828847,
-            -2.934781488458518,
-            23.50680346598037
+            12.185530003597542,
+            -3.0143403395734123,
+            23.803287004395973
           ],
           "target": [
-            3.6648619560849216,
-            2.504419340742161,
-            1.75000014917765
+            3.6382144148536164,
+            2.424860489627267,
+            2.0464836875932546
           ],
           "up": [
             0.0,
@@ -1271,7 +1271,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -1304,17 +1304,17 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "1cabf6036c149a3c9d713df492db5f17798206b102abf6294b8de320bde5a466",
-      "output_sha256": "b1ac27aed27e08f2066f10ef26b99328b6e579e0d7f785e383b1c5eaddaaf7c7",
+      "plan_sha256": "b5aaed86b0a4bb3449f946e7f6c3a8e410dcc8cfbec86d41f407fceb366bd6f0",
+      "output_sha256": "ccada686556351c3b931e3b44fbe95a6e9cc757104cc2050bf15719b1d8ae3b5",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\density_14.png",
-      "source_sha256": "7ad282d6ae89ae9dcd4557fad7a2273a35a29a67db68c4a32c7f952cd5be4466",
+      "source_sha256": "0c7bafdeee17f3dbde67d3da80dbc911d7e1c6c8a3486447513b0b2d2d975171",
       "camera": {
         "target": [
-          0.314861701684306,
-          0.15441954864030819,
-          0.0
+          0.28821416045300047,
+          0.07486069758950598,
+          0.29648353847969666
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -1327,8 +1327,8 @@
         ],
         "scene_offset": [
           3.3500002544006158,
-          2.349999792101853,
-          1.75000014917765
+          2.349999792037761,
+          1.7500001491135582
         ]
       },
       "render_settings": {
@@ -1336,8 +1336,8 @@
         "height": 950,
         "atom_scale": 0.9,
         "bond_radius": 0.105,
-        "isovalue": 0.03,
-        "opacity": 0.32
+        "isovalue": 0.08,
+        "opacity": 0.2
       },
       "vector_signature": "[]",
       "vector_count": 0,
@@ -1352,14 +1352,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            12.212177544828847,
-            -2.934781488458518,
-            23.50680346598037
+            12.185530003597542,
+            -3.0143403395734123,
+            23.803287004395973
           ],
           "target": [
-            3.6648619560849216,
-            2.504419340742161,
-            1.75000014917765
+            3.6382144148536164,
+            2.424860489627267,
+            2.0464836875932546
           ],
           "up": [
             0.0,
@@ -1370,7 +1370,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -1403,17 +1403,17 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "05b46881cb4493c6546d52d32fa98ce4105c2686fa63a08b767d072ceaa1f0bc",
-      "output_sha256": "5102c87e9a3412ce60f95f81ee5f30c953bf333f5809c3e6435a987fa17ca755",
+      "plan_sha256": "feeb5191ea4ed7225489df4762f60af7ce9c561480f5806e854fc85555367636",
+      "output_sha256": "55bc1f3bf307c9779691e04d7b614e18881e25a7f4fb3d7904dfeb46c8947148",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\density_15.png",
-      "source_sha256": "f27a1c6ff3a5260be03b34b485b089d0263ce5454125ee4eaf701a5a65baae7c",
+      "source_sha256": "fdbd06d892cd4204b68e85aa01755e46c75348729e3e3183f80dfb411f4001d1",
       "camera": {
         "target": [
-          0.314861701684306,
-          0.15441954864030819,
-          0.0
+          0.28821416045300047,
+          0.07486069758950598,
+          0.29648353847969666
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -1426,8 +1426,8 @@
         ],
         "scene_offset": [
           3.3500002544006158,
-          2.349999792101853,
-          1.75000014917765
+          2.349999792037761,
+          1.7500001491135582
         ]
       },
       "render_settings": {
@@ -1435,8 +1435,8 @@
         "height": 950,
         "atom_scale": 0.9,
         "bond_radius": 0.105,
-        "isovalue": 0.03,
-        "opacity": 0.32
+        "isovalue": 0.08,
+        "opacity": 0.2
       },
       "vector_signature": "[]",
       "vector_count": 0,
@@ -1451,14 +1451,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            12.212177544828847,
-            -2.934781488458518,
-            23.50680346598037
+            12.185530003597542,
+            -3.0143403395734123,
+            23.803287004395973
           ],
           "target": [
-            3.6648619560849216,
-            2.504419340742161,
-            1.75000014917765
+            3.6382144148536164,
+            2.424860489627267,
+            2.0464836875932546
           ],
           "up": [
             0.0,
@@ -1469,7 +1469,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -1502,17 +1502,17 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "4442b2109e6747ba859e936ae9d2aa41270b159d543bddb64996aab82a93b84c",
-      "output_sha256": "811e7ed3b8259746faebfcee96c221e07e5c5f69c58a6ba327dc26c3cdd451b0",
+      "plan_sha256": "c0268652899ee656e106ad06a964c6138e02ee68b2574b0728ddaae4be99b895",
+      "output_sha256": "65b516fe089c5c6360b7ed994563eac0978ae14552bd3139698b30572d446faf",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\density_16.png",
-      "source_sha256": "0aea9ccc9a3762cf2f2c1ccae4abcb8ebff41351e5279cc87ca85dbcde3ee33b",
+      "source_sha256": "ac6127bd173298f41184982748f473682bee771d5148dd1469543586238dc504",
       "camera": {
         "target": [
-          0.314861701684306,
-          0.15441954864030819,
-          0.0
+          0.28821416045300047,
+          0.07486069758950598,
+          0.29648353847969666
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -1525,8 +1525,8 @@
         ],
         "scene_offset": [
           3.3500002544006158,
-          2.349999792101853,
-          1.75000014917765
+          2.349999792037761,
+          1.7500001491135582
         ]
       },
       "render_settings": {
@@ -1534,8 +1534,8 @@
         "height": 950,
         "atom_scale": 0.9,
         "bond_radius": 0.105,
-        "isovalue": 0.03,
-        "opacity": 0.32
+        "isovalue": 0.08,
+        "opacity": 0.2
       },
       "vector_signature": "[]",
       "vector_count": 0,
@@ -1550,14 +1550,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            12.212177544828847,
-            -2.934781488458518,
-            23.50680346598037
+            12.185530003597542,
+            -3.0143403395734123,
+            23.803287004395973
           ],
           "target": [
-            3.6648619560849216,
-            2.504419340742161,
-            1.75000014917765
+            3.6382144148536164,
+            2.424860489627267,
+            2.0464836875932546
           ],
           "up": [
             0.0,
@@ -1568,7 +1568,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -1601,17 +1601,17 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "e412f543270dbd38134c4ce9a3e8abb8c1da078af6ddbdf3a073b287e35e5f25",
-      "output_sha256": "a86bb3e3ecdbb125d2bd4af5ca5762b2f27f1d1fdc4e7431adc8a003c54d89e6",
+      "plan_sha256": "9fd32df8b6e8de48e26bd491e888773d5e16438b3a9bf3fe9b045995323546b5",
+      "output_sha256": "20e874e48ac4e4571e76b70db6ddaee5f69e827308c5dec2dd6f3423988c09f8",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\density_17.png",
-      "source_sha256": "1df6771477f31470dabf456e6a0114d37170dbbe7f638b0b0ad16ca0615c4ace",
+      "source_sha256": "dd28ce5e1bdc489e4a1fa69b063a6d33746b25e0bd6b3e3dd2889d312b4de5a5",
       "camera": {
         "target": [
-          0.314861701684306,
-          0.15441954864030819,
-          0.0
+          0.28821416045300047,
+          0.07486069758950598,
+          0.29648353847969666
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -1624,8 +1624,8 @@
         ],
         "scene_offset": [
           3.3500002544006158,
-          2.349999792101853,
-          1.75000014917765
+          2.349999792037761,
+          1.7500001491135582
         ]
       },
       "render_settings": {
@@ -1633,8 +1633,8 @@
         "height": 950,
         "atom_scale": 0.9,
         "bond_radius": 0.105,
-        "isovalue": 0.03,
-        "opacity": 0.32
+        "isovalue": 0.08,
+        "opacity": 0.2
       },
       "vector_signature": "[]",
       "vector_count": 0,
@@ -1649,14 +1649,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            12.212177544828847,
-            -2.934781488458518,
-            23.50680346598037
+            12.185530003597542,
+            -3.0143403395734123,
+            23.803287004395973
           ],
           "target": [
-            3.6648619560849216,
-            2.504419340742161,
-            1.75000014917765
+            3.6382144148536164,
+            2.424860489627267,
+            2.0464836875932546
           ],
           "up": [
             0.0,
@@ -1667,7 +1667,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -1700,17 +1700,17 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "e0ec73abb54179d0c3c66c59a69e5715a91ebbf7ee09f862f48e698384b2c9b8",
-      "output_sha256": "a1539a2e51576654c7e54ae00c9a241b431f66dc0f53841ba74559fd684892f9",
+      "plan_sha256": "17639ebdf504be6522a9ec294250ddbf829bf92d490632dcc33088a5f252c1a3",
+      "output_sha256": "763e9317c10d59237a08807f2258b4cacd9cb52d04c81727bc2d248a8e6ba8c4",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\density_18.png",
-      "source_sha256": "c3818d728b9ca8e3a4b5146b0da84e117c59c1dd8714d73d27481267f43a98da",
+      "source_sha256": "11f38d34624a01227fc9528809594ee8e4184b654576e6eebb35238ff00bd893",
       "camera": {
         "target": [
-          0.314861701684306,
-          0.15441954864030819,
-          0.0
+          0.28821416045300047,
+          0.07486069758950598,
+          0.29648353847969666
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -1723,8 +1723,8 @@
         ],
         "scene_offset": [
           3.3500002544006158,
-          2.349999792101853,
-          1.75000014917765
+          2.349999792037761,
+          1.7500001491135582
         ]
       },
       "render_settings": {
@@ -1732,8 +1732,8 @@
         "height": 950,
         "atom_scale": 0.9,
         "bond_radius": 0.105,
-        "isovalue": 0.03,
-        "opacity": 0.32
+        "isovalue": 0.08,
+        "opacity": 0.2
       },
       "vector_signature": "[]",
       "vector_count": 0,
@@ -1748,14 +1748,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            12.212177544828847,
-            -2.934781488458518,
-            23.50680346598037
+            12.185530003597542,
+            -3.0143403395734123,
+            23.803287004395973
           ],
           "target": [
-            3.6648619560849216,
-            2.504419340742161,
-            1.75000014917765
+            3.6382144148536164,
+            2.424860489627267,
+            2.0464836875932546
           ],
           "up": [
             0.0,
@@ -1766,7 +1766,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -1799,17 +1799,17 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "8a523280e69a9ca30d422c0aac72aeec02b7d16020439553ac82d0cc7907c578",
-      "output_sha256": "779a6f190ca04f15cf856386f05df42596e7bca4ca3fa3445cffa01467244853",
+      "plan_sha256": "8bfa8562b94e6695664d27d5ff595badcdaf9e845b4dec8a9c66f93d2753f41e",
+      "output_sha256": "52030f48fc5cab8d590310c67e57a56196121a67f0a0ffe681cc737e8cc626a4",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\density_19.png",
-      "source_sha256": "7b119faf46f3fdcde248775f305f32c953d85862df8a7e95d07263f45f6a6fb5",
+      "source_sha256": "689e896a135f3da66ab8bd839d3f29299f7e665597cc3aa2c270d4becc61502b",
       "camera": {
         "target": [
-          0.314861701684306,
-          0.15441954864030819,
-          0.0
+          0.28821416045300047,
+          0.07486069758950598,
+          0.29648353847969666
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -1822,8 +1822,8 @@
         ],
         "scene_offset": [
           3.3500002544006158,
-          2.349999792101853,
-          1.75000014917765
+          2.349999792037761,
+          1.7500001491135582
         ]
       },
       "render_settings": {
@@ -1831,8 +1831,8 @@
         "height": 950,
         "atom_scale": 0.9,
         "bond_radius": 0.105,
-        "isovalue": 0.03,
-        "opacity": 0.32
+        "isovalue": 0.08,
+        "opacity": 0.2
       },
       "vector_signature": "[]",
       "vector_count": 0,
@@ -1847,14 +1847,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            12.212177544828847,
-            -2.934781488458518,
-            23.50680346598037
+            12.185530003597542,
+            -3.0143403395734123,
+            23.803287004395973
           ],
           "target": [
-            3.6648619560849216,
-            2.504419340742161,
-            1.75000014917765
+            3.6382144148536164,
+            2.424860489627267,
+            2.0464836875932546
           ],
           "up": [
             0.0,
@@ -1865,7 +1865,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -1898,17 +1898,17 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "b6ca5c47a99a962d90630d74c723c24b5b48bd92db6f187e6a6c15bc109c85e3",
-      "output_sha256": "2fe71fc3d038d3776cbe56125a606b844996092205552cd9650824868b80435d",
+      "plan_sha256": "ea6fd4141c307cf360d5fb4847ca3c1b9e66d23f2294687dd774f45bb547e9e6",
+      "output_sha256": "2b29519c7010aa9f0a0535fe9850ebbc552a9cd23d332ece8f8151a98022b0cb",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\density_force.png",
-      "source_sha256": "7b119faf46f3fdcde248775f305f32c953d85862df8a7e95d07263f45f6a6fb5",
+      "source_sha256": "689e896a135f3da66ab8bd839d3f29299f7e665597cc3aa2c270d4becc61502b",
       "camera": {
         "target": [
-          0.314861701684306,
-          0.15441954864030819,
-          0.0
+          0.28821416045300047,
+          0.07486069758950598,
+          0.29648353847969666
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -1921,8 +1921,8 @@
         ],
         "scene_offset": [
           3.3500002544006158,
-          2.349999792101853,
-          1.75000014917765
+          2.349999792037761,
+          1.7500001491135582
         ]
       },
       "render_settings": {
@@ -1930,10 +1930,10 @@
         "height": 950,
         "atom_scale": 0.9,
         "bond_radius": 0.105,
-        "isovalue": 0.03,
-        "opacity": 0.32
+        "isovalue": 0.08,
+        "opacity": 0.2
       },
-      "vector_signature": "[{\"color\":\"#D98E98\",\"id\":\"rhf-nuclear-force-0\",\"origin\":[-1.5583330361557903,-0.14374962009434403,0.0],\"vector\":[-0.5516593570986903,-0.7320096049960865,0.0]},{\"color\":\"#D98E98\",\"id\":\"rhf-nuclear-force-1\",\"origin\":[-0.31623637197209864,0.03397969697354164,0.0],\"vector\":[0.6245801299814898,0.12006453923380836,0.0]},{\"color\":\"#D98E98\",\"id\":\"rhf-nuclear-force-2\",\"origin\":[-1.6926621064236278,1.1064914760963105,0.0],\"vector\":[-0.010169670870742303,0.6003978073932404,0.0]},{\"color\":\"#D98E98\",\"id\":\"rhf-nuclear-force-3\",\"origin\":[1.2700122044671152,0.002096058017441667,0.0],\"vector\":[-0.9213708056785104,0.010729875648297948,0.0]},{\"color\":\"#D98E98\",\"id\":\"rhf-nuclear-force-4\",\"origin\":[2.172429830821837,0.8739818806581613,0.0],\"vector\":[0.43887117990466007,0.37700933282432586,0.0]},{\"color\":\"#D98E98\",\"id\":\"rhf-nuclear-force-5\",\"origin\":[2.169935320148428,-0.8768247273219556,0.0],\"vector\":[0.41974902623594845,-0.376195126781236,0.0]}]",
+      "vector_signature": "[{\"color\":\"#A99C50\",\"id\":\"rhf-nuclear-force-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{\"head_length\":0.2,\"head_radius\":0.17,\"shaft_radius\":0.085,\"sides\":18},\"vector\":[-0.513810177419466,-0.47796140204422266,-0.1949276559199336]},{\"color\":\"#A99C50\",\"id\":\"rhf-nuclear-force-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{\"head_length\":0.2,\"head_radius\":0.17,\"shaft_radius\":0.085,\"sides\":18},\"vector\":[-0.12184885586915457,0.9617777456549459,0.09207198076416646]},{\"color\":\"#A99C50\",\"id\":\"rhf-nuclear-force-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{\"head_length\":0.2,\"head_radius\":0.17,\"shaft_radius\":0.085,\"sides\":18},\"vector\":[0.6119630434373358,-0.29873074237027947,0.012565624745190743]},{\"color\":\"#A99C50\",\"id\":\"rhf-nuclear-force-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{\"head_length\":0.2,\"head_radius\":0.17,\"shaft_radius\":0.085,\"sides\":18},\"vector\":[-0.43937786796220407,-0.13494692306966208,-0.09634833523214963]},{\"color\":\"#A99C50\",\"id\":\"rhf-nuclear-force-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{\"head_length\":0.2,\"head_radius\":0.17,\"shaft_radius\":0.085,\"sides\":18},\"vector\":[0.04088928901188294,-0.5145416420222667,0.02908208320112217]},{\"color\":\"#A99C50\",\"id\":\"rhf-nuclear-force-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{\"head_length\":0.2,\"head_radius\":0.17,\"shaft_radius\":0.085,\"sides\":18},\"vector\":[0.42221776102079345,0.4644142929409304,0.1576434874693292]}]",
       "vector_count": 6,
       "vector_renderer": "MatterVis native world-space vector_overlays",
       "isosurface_renderer": "MatterVis native Cube isosurface mesh",
@@ -1946,14 +1946,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            12.212177544828847,
-            -2.934781488458518,
-            23.50680346598037
+            12.185530003597542,
+            -3.0143403395734123,
+            23.803287004395973
           ],
           "target": [
-            3.6648619560849216,
-            2.504419340742161,
-            1.75000014917765
+            3.6382144148536164,
+            2.424860489627267,
+            2.0464836875932546
           ],
           "up": [
             0.0,
@@ -1964,7 +1964,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -1997,19 +1997,19 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "67d8994e55684f5ca890476816b96bcb142895a9e30a3b85853fdb54faf13cde",
-      "output_sha256": "d677916c591d4fe1f811a0a798cad36ff46cb4db53b60f2b6c21f1aab46eed23",
+      "plan_sha256": "ab3d3afc7a03a01a90851b7e63324e1cd36bffbd2d3c7e04565a836665a7e9bb",
+      "output_sha256": "8942697e11027d89ddb27fa50490494219485855d22b20d824dc9d77a7350092",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\motion_ghost.png",
-      "source_sha256": "d982d66c4ec580229b3cbe0c4d53172a26d4253a99feb27f4a0306052ac2ddac",
+      "source_sha256": "130c31b9152ac09b801111eccfc5609f39c7132af720d80cb2c92cc15a0640e5",
       "frame": 0,
       "view": "cluster",
       "camera": {
         "target": [
-          0.33983704178334706,
-          0.16664884018556353,
-          0.0
+          0.2912445301300754,
+          0.076809218059831,
+          0.2974098227430353
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -2021,9 +2021,9 @@
           0.0
         ],
         "scene_offset": [
-          6.6896136638999995,
-          5.7566899221,
-          5.0
+          6.5144237272000005,
+          5.708608794,
+          5.1
         ]
       },
       "render_settings": {
@@ -2044,14 +2044,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            15.576766294427273,
-            0.4841379330848836,
-            26.756803316802717
+            15.352983846074002,
+            0.34621718285915204,
+            27.154213139545753
           ],
           "target": [
-            7.029450705683346,
-            5.923338762285563,
-            5.0
+            6.805668257330076,
+            5.785418012059831,
+            5.397409822743035
           ],
           "up": [
             0.0,
@@ -2062,7 +2062,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -2095,19 +2095,19 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "dde7b234a369820a83058dcadb6835e446a64ba2a2fa316555a2857293fc0faa",
-      "output_sha256": "880b1ccaf521141a0b18ee58005e7e3bb73816c0e742b73d29323a92a35e0004",
+      "plan_sha256": "17b59e29db85aa38fce708801b648991d82d888070a04a1a1d98df93f35d02b6",
+      "output_sha256": "bd74e882c8cc7984587ecfc2c163b7b31b69352e98fabed57172f702c6187dc8",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\motion_00.png",
-      "source_sha256": "d982d66c4ec580229b3cbe0c4d53172a26d4253a99feb27f4a0306052ac2ddac",
+      "source_sha256": "130c31b9152ac09b801111eccfc5609f39c7132af720d80cb2c92cc15a0640e5",
       "frame": 0,
       "view": "cluster",
       "camera": {
         "target": [
-          0.33983704178334706,
-          0.16664884018556353,
-          0.0
+          0.2912445301300754,
+          0.076809218059831,
+          0.2974098227430353
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -2119,9 +2119,9 @@
           0.0
         ],
         "scene_offset": [
-          6.6896136638999995,
-          5.7566899221,
-          5.0
+          6.5144237272000005,
+          5.708608794,
+          5.1
         ]
       },
       "render_settings": {
@@ -2131,7 +2131,7 @@
         "bond_radius": 0.105,
         "show_cell": false
       },
-      "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-0\",\"origin\":[-1.53425902812117,-0.1118052600733787,0.0],\"vector\":[-0.04435863602383945,-0.05886050370784689,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-1\",\"origin\":[-0.3555171782005211,0.0264286532016435,0.0],\"vector\":[0.7971272662272912,0.15323368985997265,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-2\",\"origin\":[-1.6919846747472884,1.0664972129286523,0.0],\"vector\":[-0.012979154395876115,0.7662643108265664,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-3\",\"origin\":[1.3100094923633119,0.001630267346899075,0.0],\"vector\":[-0.07408693732130985,0.0008627836043008672,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-4\",\"origin\":[2.142088076637644,0.8479170009725383,0.0],\"vector\":[0.5601141744194059,0.48116231111184454,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-5\",\"origin\":[2.1401479016694367,-0.8501281039332672,0.0],\"vector\":[0.5357093153042594,-0.48012317168662266,0.0]}]",
+      "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{},\"vector\":[-0.009683250839126295,-0.009007645918302429,-0.0036736006227737063]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{},\"vector\":[-0.03644787740800253,0.28769049259698826,0.027540909134246686]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{},\"vector\":[0.1830526337431001,-0.08935743711541738,0.0037586758365583737]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{},\"vector\":[-0.008280501818797463,-0.002543205571782648,-0.001815777769663518]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{},\"vector\":[0.01223095434565146,-0.15391158625140092,0.008699139566990054]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{},\"vector\":[0.1262953277927563,0.13891730943958888,0.04715489911224196]}]",
       "vector_count": 6,
       "vector_renderer": "MatterVis native world-space vector_overlays",
       "pipeline_version": 2,
@@ -2142,14 +2142,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            15.576766294427273,
-            0.4841379330848836,
-            26.756803316802717
+            15.352983846074002,
+            0.34621718285915204,
+            27.154213139545753
           ],
           "target": [
-            7.029450705683346,
-            5.923338762285563,
-            5.0
+            6.805668257330076,
+            5.785418012059831,
+            5.397409822743035
           ],
           "up": [
             0.0,
@@ -2160,7 +2160,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -2193,19 +2193,19 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "d1af803f877aa6fd73a63d976870f5f624be9183a318666536855473acaad0c7",
-      "output_sha256": "94c5f2b05124bb36dd61e2b713291e1cb6e619deee455bf21e34b8020f9b7591",
+      "plan_sha256": "172262841f6381ffb0dbd816ad93c8ecadfad39fe17653cc40e07253efb08c55",
+      "output_sha256": "771b205c42ea31f3739dbc5920036d49a779cea39b8ba6a7d7a3263ff245605b",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\motion_01.png",
-      "source_sha256": "d982d66c4ec580229b3cbe0c4d53172a26d4253a99feb27f4a0306052ac2ddac",
+      "source_sha256": "130c31b9152ac09b801111eccfc5609f39c7132af720d80cb2c92cc15a0640e5",
       "frame": 1,
       "view": "cluster",
       "camera": {
         "target": [
-          0.33983704178334706,
-          0.16664884018556353,
-          0.0
+          0.2912445301300754,
+          0.076809218059831,
+          0.2974098227430353
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -2217,9 +2217,9 @@
           0.0
         ],
         "scene_offset": [
-          6.6896192972,
-          5.7568983089,
-          5.0
+          6.5143601673,
+          5.7085605588,
+          5.1000012756
         ]
       },
       "render_settings": {
@@ -2229,7 +2229,7 @@
         "bond_radius": 0.105,
         "show_cell": false
       },
-      "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-0\",\"origin\":[-1.53425902812117,-0.1118052600733787,0.0],\"vector\":[-0.04435863602383945,-0.05886050370784689,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-1\",\"origin\":[-0.3555171782005211,0.0264286532016435,0.0],\"vector\":[0.7971272662272912,0.15323368985997265,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-2\",\"origin\":[-1.6919846747472884,1.0664972129286523,0.0],\"vector\":[-0.012979154395876115,0.7662643108265664,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-3\",\"origin\":[1.3100094923633119,0.001630267346899075,0.0],\"vector\":[-0.07408693732130985,0.0008627836043008672,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-4\",\"origin\":[2.142088076637644,0.8479170009725383,0.0],\"vector\":[0.5601141744194059,0.48116231111184454,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-5\",\"origin\":[2.1401479016694367,-0.8501281039332672,0.0],\"vector\":[0.5357093153042594,-0.48012317168662266,0.0]}]",
+      "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{},\"vector\":[-0.009683250839126295,-0.009007645918302429,-0.0036736006227737063]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{},\"vector\":[-0.03644787740800253,0.28769049259698826,0.027540909134246686]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{},\"vector\":[0.1830526337431001,-0.08935743711541738,0.0037586758365583737]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{},\"vector\":[-0.008280501818797463,-0.002543205571782648,-0.001815777769663518]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{},\"vector\":[0.01223095434565146,-0.15391158625140092,0.008699139566990054]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{},\"vector\":[0.1262953277927563,0.13891730943958888,0.04715489911224196]}]",
       "vector_count": 6,
       "vector_renderer": "MatterVis native world-space vector_overlays",
       "pipeline_version": 2,
@@ -2240,14 +2240,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            15.576771927727272,
-            0.4843463198848843,
-            26.756803316802717
+            15.352920286174001,
+            0.3461689476591525,
+            27.154214415145752
           ],
           "target": [
-            7.029456338983347,
-            5.923547149085564,
-            5.0
+            6.805604697430075,
+            5.785369776859832,
+            5.397411098343036
           ],
           "up": [
             0.0,
@@ -2258,7 +2258,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -2291,19 +2291,19 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "bc5086f437937a4467d46fd271a2594a8a25c20b14aef1bc5bcb61e07682d06b",
-      "output_sha256": "be92626c5abb4d529c697dee520c09f233602c645adccb647e838bba9ebd3d11",
+      "plan_sha256": "b2e67c1b18d5b239f13af4eb5753fa850cc781406c3255835e28a2e522469e74",
+      "output_sha256": "0c2d14be3a52c03cd32238c6fbb6fe5c88ab546b551ef02df6d834953caff384",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\motion_02.png",
-      "source_sha256": "d982d66c4ec580229b3cbe0c4d53172a26d4253a99feb27f4a0306052ac2ddac",
+      "source_sha256": "130c31b9152ac09b801111eccfc5609f39c7132af720d80cb2c92cc15a0640e5",
       "frame": 2,
       "view": "cluster",
       "camera": {
         "target": [
-          0.33983704178334706,
-          0.16664884018556353,
-          0.0
+          0.2912445301300754,
+          0.076809218059831,
+          0.2974098227430353
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -2315,9 +2315,9 @@
           0.0
         ],
         "scene_offset": [
-          6.6896361971000005,
-          5.7575234692,
-          5.0
+          6.5141694875,
+          5.7084158533,
+          5.1000051022
         ]
       },
       "render_settings": {
@@ -2327,7 +2327,7 @@
         "bond_radius": 0.105,
         "show_cell": false
       },
-      "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-0\",\"origin\":[-1.53425902812117,-0.1118052600733787,0.0],\"vector\":[-0.04435863602383945,-0.05886050370784689,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-1\",\"origin\":[-0.3555171782005211,0.0264286532016435,0.0],\"vector\":[0.7971272662272912,0.15323368985997265,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-2\",\"origin\":[-1.6919846747472884,1.0664972129286523,0.0],\"vector\":[-0.012979154395876115,0.7662643108265664,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-3\",\"origin\":[1.3100094923633119,0.001630267346899075,0.0],\"vector\":[-0.07408693732130985,0.0008627836043008672,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-4\",\"origin\":[2.142088076637644,0.8479170009725383,0.0],\"vector\":[0.5601141744194059,0.48116231111184454,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-5\",\"origin\":[2.1401479016694367,-0.8501281039332672,0.0],\"vector\":[0.5357093153042594,-0.48012317168662266,0.0]}]",
+      "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{},\"vector\":[-0.009683250839126295,-0.009007645918302429,-0.0036736006227737063]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{},\"vector\":[-0.03644787740800253,0.28769049259698826,0.027540909134246686]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{},\"vector\":[0.1830526337431001,-0.08935743711541738,0.0037586758365583737]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{},\"vector\":[-0.008280501818797463,-0.002543205571782648,-0.001815777769663518]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{},\"vector\":[0.01223095434565146,-0.15391158625140092,0.008699139566990054]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{},\"vector\":[0.1262953277927563,0.13891730943958888,0.04715489911224196]}]",
       "vector_count": 6,
       "vector_renderer": "MatterVis native world-space vector_overlays",
       "pipeline_version": 2,
@@ -2338,14 +2338,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            15.576788827627272,
-            0.4849714801848837,
-            26.756803316802717
+            15.352729606374002,
+            0.3460242421591522,
+            27.154218241745752
           ],
           "target": [
-            7.029473238883347,
-            5.924172309385563,
-            5.0
+            6.805414017630076,
+            5.785225071359831,
+            5.397414924943035
           ],
           "up": [
             0.0,
@@ -2356,7 +2356,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -2389,19 +2389,19 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "afc1b621e77d0254a5f1d72a5f1bb3fa0078cdc6e08bf717c9dc6069b3ef8a94",
-      "output_sha256": "3f2bde3f2aa12b38d0058c4734bae4a386af6921c1783a62900b63420ac7b8ef",
+      "plan_sha256": "fe8223934df1da89a5aa1225383a78e4585f42dfbfb067d04591c0aa6cc96d48",
+      "output_sha256": "e4ead132975cfd98f66d3689aa443fe2fc592d8c8ce4316a635721297d745234",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\motion_03.png",
-      "source_sha256": "d982d66c4ec580229b3cbe0c4d53172a26d4253a99feb27f4a0306052ac2ddac",
+      "source_sha256": "130c31b9152ac09b801111eccfc5609f39c7132af720d80cb2c92cc15a0640e5",
       "frame": 3,
       "view": "cluster",
       "camera": {
         "target": [
-          0.33983704178334706,
-          0.16664884018556353,
-          0.0
+          0.2912445301300754,
+          0.076809218059831,
+          0.2974098227430353
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -2413,9 +2413,9 @@
           0.0
         ],
         "scene_offset": [
-          6.6896643637,
-          5.7585654032,
-          5.0
+          6.5138516878,
+          5.7081746774,
+          5.10001148
         ]
       },
       "render_settings": {
@@ -2425,7 +2425,7 @@
         "bond_radius": 0.105,
         "show_cell": false
       },
-      "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-0\",\"origin\":[-1.53425902812117,-0.1118052600733787,0.0],\"vector\":[-0.04435863602383945,-0.05886050370784689,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-1\",\"origin\":[-0.3555171782005211,0.0264286532016435,0.0],\"vector\":[0.7971272662272912,0.15323368985997265,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-2\",\"origin\":[-1.6919846747472884,1.0664972129286523,0.0],\"vector\":[-0.012979154395876115,0.7662643108265664,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-3\",\"origin\":[1.3100094923633119,0.001630267346899075,0.0],\"vector\":[-0.07408693732130985,0.0008627836043008672,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-4\",\"origin\":[2.142088076637644,0.8479170009725383,0.0],\"vector\":[0.5601141744194059,0.48116231111184454,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-5\",\"origin\":[2.1401479016694367,-0.8501281039332672,0.0],\"vector\":[0.5357093153042594,-0.48012317168662266,0.0]}]",
+      "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{},\"vector\":[-0.009683250839126295,-0.009007645918302429,-0.0036736006227737063]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{},\"vector\":[-0.03644787740800253,0.28769049259698826,0.027540909134246686]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{},\"vector\":[0.1830526337431001,-0.08935743711541738,0.0037586758365583737]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{},\"vector\":[-0.008280501818797463,-0.002543205571782648,-0.001815777769663518]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{},\"vector\":[0.01223095434565146,-0.15391158625140092,0.008699139566990054]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{},\"vector\":[0.1262953277927563,0.13891730943958888,0.04715489911224196]}]",
       "vector_count": 6,
       "vector_renderer": "MatterVis native world-space vector_overlays",
       "pipeline_version": 2,
@@ -2436,14 +2436,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            15.576816994227272,
-            0.4860134141848844,
-            26.756803316802717
+            15.352411806674002,
+            0.3457830662591519,
+            27.15422461954575
           ],
           "target": [
-            7.029501405483347,
-            5.925214243385564,
-            5.0
+            6.805096217930076,
+            5.784983895459831,
+            5.3974213027430356
           ],
           "up": [
             0.0,
@@ -2454,7 +2454,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -2487,19 +2487,19 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "2d3039dd00ecfaf922cff5c9cbe2b1559c51f969a545f58eec19631d5629e3d9",
-      "output_sha256": "74ae0014aec3c0fb3f94a68aba262f7516238ccba061e36aff33122580279ec9",
+      "plan_sha256": "de55113dfe511618a5e6d6ff46b23e1f269264489b165a687a80052b85ece015",
+      "output_sha256": "fd3b7766dda3ad659a04e16e49be08a024038de2f6f4f3aaa79518068e59e4c9",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\motion_04.png",
-      "source_sha256": "d982d66c4ec580229b3cbe0c4d53172a26d4253a99feb27f4a0306052ac2ddac",
+      "source_sha256": "130c31b9152ac09b801111eccfc5609f39c7132af720d80cb2c92cc15a0640e5",
       "frame": 4,
       "view": "cluster",
       "camera": {
         "target": [
-          0.33983704178334706,
-          0.16664884018556353,
-          0.0
+          0.2912445301300754,
+          0.076809218059831,
+          0.2974098227430353
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -2511,9 +2511,9 @@
           0.0
         ],
         "scene_offset": [
-          6.6897037969,
-          5.7600241108,
-          5.0
+          6.5134067682,
+          5.7078370311,
+          5.1000204089
         ]
       },
       "render_settings": {
@@ -2523,7 +2523,7 @@
         "bond_radius": 0.105,
         "show_cell": false
       },
-      "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-0\",\"origin\":[-1.53425902812117,-0.1118052600733787,0.0],\"vector\":[-0.04435863602383945,-0.05886050370784689,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-1\",\"origin\":[-0.3555171782005211,0.0264286532016435,0.0],\"vector\":[0.7971272662272912,0.15323368985997265,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-2\",\"origin\":[-1.6919846747472884,1.0664972129286523,0.0],\"vector\":[-0.012979154395876115,0.7662643108265664,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-3\",\"origin\":[1.3100094923633119,0.001630267346899075,0.0],\"vector\":[-0.07408693732130985,0.0008627836043008672,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-4\",\"origin\":[2.142088076637644,0.8479170009725383,0.0],\"vector\":[0.5601141744194059,0.48116231111184454,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-5\",\"origin\":[2.1401479016694367,-0.8501281039332672,0.0],\"vector\":[0.5357093153042594,-0.48012317168662266,0.0]}]",
+      "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{},\"vector\":[-0.009683250839126295,-0.009007645918302429,-0.0036736006227737063]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{},\"vector\":[-0.03644787740800253,0.28769049259698826,0.027540909134246686]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{},\"vector\":[0.1830526337431001,-0.08935743711541738,0.0037586758365583737]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{},\"vector\":[-0.008280501818797463,-0.002543205571782648,-0.001815777769663518]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{},\"vector\":[0.01223095434565146,-0.15391158625140092,0.008699139566990054]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{},\"vector\":[0.1262953277927563,0.13891730943958888,0.04715489911224196]}]",
       "vector_count": 6,
       "vector_renderer": "MatterVis native world-space vector_overlays",
       "pipeline_version": 2,
@@ -2534,14 +2534,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            15.576856427427273,
-            0.48747212178488386,
-            26.756803316802717
+            15.351966887074003,
+            0.34544541995915257,
+            27.154233548445752
           ],
           "target": [
-            7.029540838683347,
-            5.926672950985563,
-            5.0
+            6.804651298330076,
+            5.784646249159832,
+            5.397430231643035
           ],
           "up": [
             0.0,
@@ -2552,7 +2552,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -2585,19 +2585,19 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "2fda88ae468f325377f9625ce465fd15e71ec9fa9811a64eda38ead38cc6cf87",
-      "output_sha256": "5f0e145e3fdb64252da8ff8fd40a41c8b13db8d0a0a4a9223fa1f50b3de09b9a",
+      "plan_sha256": "1d6f53092fb09b521941be92be2317bff2b1794f6367ec74c8784ad5da3ccdbd",
+      "output_sha256": "c63b0d3423faf2ace73c170d3567528f446724965f5ecc8ff12d9449016f8167",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\motion_05.png",
-      "source_sha256": "d982d66c4ec580229b3cbe0c4d53172a26d4253a99feb27f4a0306052ac2ddac",
+      "source_sha256": "130c31b9152ac09b801111eccfc5609f39c7132af720d80cb2c92cc15a0640e5",
       "frame": 5,
       "view": "cluster",
       "camera": {
         "target": [
-          0.33983704178334706,
-          0.16664884018556353,
-          0.0
+          0.2912445301300754,
+          0.076809218059831,
+          0.2974098227430353
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -2609,9 +2609,9 @@
           0.0
         ],
         "scene_offset": [
-          6.6897544967,
-          5.7618995919,
-          5.0
+          6.5128347287,
+          5.7074029145,
+          5.1000318889
         ]
       },
       "render_settings": {
@@ -2621,7 +2621,7 @@
         "bond_radius": 0.105,
         "show_cell": false
       },
-      "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-0\",\"origin\":[-1.53425902812117,-0.1118052600733787,0.0],\"vector\":[-0.04435863602383945,-0.05886050370784689,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-1\",\"origin\":[-0.3555171782005211,0.0264286532016435,0.0],\"vector\":[0.7971272662272912,0.15323368985997265,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-2\",\"origin\":[-1.6919846747472884,1.0664972129286523,0.0],\"vector\":[-0.012979154395876115,0.7662643108265664,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-3\",\"origin\":[1.3100094923633119,0.001630267346899075,0.0],\"vector\":[-0.07408693732130985,0.0008627836043008672,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-4\",\"origin\":[2.142088076637644,0.8479170009725383,0.0],\"vector\":[0.5601141744194059,0.48116231111184454,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-5\",\"origin\":[2.1401479016694367,-0.8501281039332672,0.0],\"vector\":[0.5357093153042594,-0.48012317168662266,0.0]}]",
+      "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{},\"vector\":[-0.009683250839126295,-0.009007645918302429,-0.0036736006227737063]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{},\"vector\":[-0.03644787740800253,0.28769049259698826,0.027540909134246686]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{},\"vector\":[0.1830526337431001,-0.08935743711541738,0.0037586758365583737]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{},\"vector\":[-0.008280501818797463,-0.002543205571782648,-0.001815777769663518]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{},\"vector\":[0.01223095434565146,-0.15391158625140092,0.008699139566990054]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{},\"vector\":[0.1262953277927563,0.13891730943958888,0.04715489911224196]}]",
       "vector_count": 6,
       "vector_renderer": "MatterVis native world-space vector_overlays",
       "pipeline_version": 2,
@@ -2632,14 +2632,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            15.576907127227273,
-            0.48934760288488377,
-            26.756803316802717
+            15.351394847574001,
+            0.3450113033591524,
+            27.154245028445754
           ],
           "target": [
-            7.029591538483347,
-            5.928548432085563,
-            5.0
+            6.804079258830075,
+            5.784212132559832,
+            5.397441711643036
           ],
           "up": [
             0.0,
@@ -2650,7 +2650,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -2683,19 +2683,19 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "ea7e32c79729075700b99b9347af2a87eae1cd8c11ac6ca32c6b5b974d5c0562",
-      "output_sha256": "14316321fd11722510e4d23af544574aeb0c00c9f75437b53e9c5784557a744c",
+      "plan_sha256": "879827af4f550a7417f1e4781c63beedad84c60b559734cc071ec5e98beedf59",
+      "output_sha256": "5e800375f821c41c9b5609995c6881c28890b76fbdc9de6415997d72367634d5",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\motion_06.png",
-      "source_sha256": "d982d66c4ec580229b3cbe0c4d53172a26d4253a99feb27f4a0306052ac2ddac",
+      "source_sha256": "130c31b9152ac09b801111eccfc5609f39c7132af720d80cb2c92cc15a0640e5",
       "frame": 6,
       "view": "cluster",
       "camera": {
         "target": [
-          0.33983704178334706,
-          0.16664884018556353,
-          0.0
+          0.2912445301300754,
+          0.076809218059831,
+          0.2974098227430353
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -2707,9 +2707,9 @@
           0.0
         ],
         "scene_offset": [
-          6.6898164632,
-          5.7641918466,
-          5.0
+          6.5121355693,
+          5.7068723276,
+          5.10004592
         ]
       },
       "render_settings": {
@@ -2719,7 +2719,7 @@
         "bond_radius": 0.105,
         "show_cell": false
       },
-      "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-0\",\"origin\":[-1.53425902812117,-0.1118052600733787,0.0],\"vector\":[-0.04435863602383945,-0.05886050370784689,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-1\",\"origin\":[-0.3555171782005211,0.0264286532016435,0.0],\"vector\":[0.7971272662272912,0.15323368985997265,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-2\",\"origin\":[-1.6919846747472884,1.0664972129286523,0.0],\"vector\":[-0.012979154395876115,0.7662643108265664,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-3\",\"origin\":[1.3100094923633119,0.001630267346899075,0.0],\"vector\":[-0.07408693732130985,0.0008627836043008672,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-4\",\"origin\":[2.142088076637644,0.8479170009725383,0.0],\"vector\":[0.5601141744194059,0.48116231111184454,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-5\",\"origin\":[2.1401479016694367,-0.8501281039332672,0.0],\"vector\":[0.5357093153042594,-0.48012317168662266,0.0]}]",
+      "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{},\"vector\":[-0.009683250839126295,-0.009007645918302429,-0.0036736006227737063]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{},\"vector\":[-0.03644787740800253,0.28769049259698826,0.027540909134246686]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{},\"vector\":[0.1830526337431001,-0.08935743711541738,0.0037586758365583737]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{},\"vector\":[-0.008280501818797463,-0.002543205571782648,-0.001815777769663518]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{},\"vector\":[0.01223095434565146,-0.15391158625140092,0.008699139566990054]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{},\"vector\":[0.1262953277927563,0.13891730943958888,0.04715489911224196]}]",
       "vector_count": 6,
       "vector_renderer": "MatterVis native world-space vector_overlays",
       "pipeline_version": 2,
@@ -2730,14 +2730,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            15.576969093727271,
-            0.49163985758488415,
-            26.756803316802717
+            15.350695688174001,
+            0.34448071645915235,
+            27.15425905954575
           ],
           "target": [
-            7.029653504983346,
-            5.930840686785563,
-            5.0
+            6.8033800994300755,
+            5.783681545659832,
+            5.397455742743036
           ],
           "up": [
             0.0,
@@ -2748,7 +2748,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -2781,19 +2781,19 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "fe3e541ec480a0ff46b5685a22ed92058cabb81e0cd88efa26caea5365f06a83",
-      "output_sha256": "8b0d2f3d289a577b82481898e0bb5d3200601ef1b610f076692aa670a16adcbe",
+      "plan_sha256": "2345558a25cd0f5c7083f63ba150159cb121a99f98faebfa83e130eb749d964b",
+      "output_sha256": "264ccb8c05e5bd8fc33770896fbdd1eb0a378d93aa1e5852a59f071df907e362",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\motion_07.png",
-      "source_sha256": "d982d66c4ec580229b3cbe0c4d53172a26d4253a99feb27f4a0306052ac2ddac",
+      "source_sha256": "130c31b9152ac09b801111eccfc5609f39c7132af720d80cb2c92cc15a0640e5",
       "frame": 7,
       "view": "cluster",
       "camera": {
         "target": [
-          0.33983704178334706,
-          0.16664884018556353,
-          0.0
+          0.2912445301300754,
+          0.076809218059831,
+          0.2974098227430353
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -2805,9 +2805,9 @@
           0.0
         ],
         "scene_offset": [
-          6.6898896962,
-          5.7669008749,
-          5.0
+          6.5113092901,
+          5.7062452703,
+          5.1000625022
         ]
       },
       "render_settings": {
@@ -2817,7 +2817,7 @@
         "bond_radius": 0.105,
         "show_cell": false
       },
-      "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-0\",\"origin\":[-1.53425902812117,-0.1118052600733787,0.0],\"vector\":[-0.04435863602383945,-0.05886050370784689,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-1\",\"origin\":[-0.3555171782005211,0.0264286532016435,0.0],\"vector\":[0.7971272662272912,0.15323368985997265,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-2\",\"origin\":[-1.6919846747472884,1.0664972129286523,0.0],\"vector\":[-0.012979154395876115,0.7662643108265664,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-3\",\"origin\":[1.3100094923633119,0.001630267346899075,0.0],\"vector\":[-0.07408693732130985,0.0008627836043008672,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-4\",\"origin\":[2.142088076637644,0.8479170009725383,0.0],\"vector\":[0.5601141744194059,0.48116231111184454,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-5\",\"origin\":[2.1401479016694367,-0.8501281039332672,0.0],\"vector\":[0.5357093153042594,-0.48012317168662266,0.0]}]",
+      "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{},\"vector\":[-0.009683250839126295,-0.009007645918302429,-0.0036736006227737063]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{},\"vector\":[-0.03644787740800253,0.28769049259698826,0.027540909134246686]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{},\"vector\":[0.1830526337431001,-0.08935743711541738,0.0037586758365583737]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{},\"vector\":[-0.008280501818797463,-0.002543205571782648,-0.001815777769663518]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{},\"vector\":[0.01223095434565146,-0.15391158625140092,0.008699139566990054]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{},\"vector\":[0.1262953277927563,0.13891730943958888,0.04715489911224196]}]",
       "vector_count": 6,
       "vector_renderer": "MatterVis native world-space vector_overlays",
       "pipeline_version": 2,
@@ -2828,14 +2828,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            15.577042326727273,
-            0.4943488858848841,
-            26.756803316802717
+            15.349869408974001,
+            0.34385365915915234,
+            27.154275641745752
           ],
           "target": [
-            7.029726737983347,
-            5.933549715085563,
-            5.0
+            6.8025538202300755,
+            5.783054488359832,
+            5.397472324943036
           ],
           "up": [
             0.0,
@@ -2846,7 +2846,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -2879,19 +2879,19 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "afc4a0c97a564a93cb1ba9fca51f525bd5a2e8946c58bc6eab9ded6f0cbe5e55",
-      "output_sha256": "771713be22de61e2d100f323d8097794053c49e5eb02ab31a402109e007e646f",
+      "plan_sha256": "413ece4cbb863eb721f03cff544c77bd91c4b9e224552da3c24b51b0bdabfa50",
+      "output_sha256": "cac6d5adb5138c11af05a5528d6f1d4cc1627038dcd6cc3923135ffd71bfe514",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\motion_08.png",
-      "source_sha256": "d982d66c4ec580229b3cbe0c4d53172a26d4253a99feb27f4a0306052ac2ddac",
+      "source_sha256": "130c31b9152ac09b801111eccfc5609f39c7132af720d80cb2c92cc15a0640e5",
       "frame": 8,
       "view": "cluster",
       "camera": {
         "target": [
-          0.33983704178334706,
-          0.16664884018556353,
-          0.0
+          0.2912445301300754,
+          0.076809218059831,
+          0.2974098227430353
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -2903,9 +2903,9 @@
           0.0
         ],
         "scene_offset": [
-          6.6899741959,
-          5.7700266768,
-          5.0
+          6.5103558909,
+          5.7055217426,
+          5.1000816356
         ]
       },
       "render_settings": {
@@ -2915,7 +2915,7 @@
         "bond_radius": 0.105,
         "show_cell": false
       },
-      "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-0\",\"origin\":[-1.53425902812117,-0.1118052600733787,0.0],\"vector\":[-0.04435863602383945,-0.05886050370784689,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-1\",\"origin\":[-0.3555171782005211,0.0264286532016435,0.0],\"vector\":[0.7971272662272912,0.15323368985997265,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-2\",\"origin\":[-1.6919846747472884,1.0664972129286523,0.0],\"vector\":[-0.012979154395876115,0.7662643108265664,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-3\",\"origin\":[1.3100094923633119,0.001630267346899075,0.0],\"vector\":[-0.07408693732130985,0.0008627836043008672,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-4\",\"origin\":[2.142088076637644,0.8479170009725383,0.0],\"vector\":[0.5601141744194059,0.48116231111184454,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-5\",\"origin\":[2.1401479016694367,-0.8501281039332672,0.0],\"vector\":[0.5357093153042594,-0.48012317168662266,0.0]}]",
+      "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{},\"vector\":[-0.009683250839126295,-0.009007645918302429,-0.0036736006227737063]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{},\"vector\":[-0.03644787740800253,0.28769049259698826,0.027540909134246686]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{},\"vector\":[0.1830526337431001,-0.08935743711541738,0.0037586758365583737]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{},\"vector\":[-0.008280501818797463,-0.002543205571782648,-0.001815777769663518]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{},\"vector\":[0.01223095434565146,-0.15391158625140092,0.008699139566990054]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{},\"vector\":[0.1262953277927563,0.13891730943958888,0.04715489911224196]}]",
       "vector_count": 6,
       "vector_renderer": "MatterVis native world-space vector_overlays",
       "pipeline_version": 2,
@@ -2926,14 +2926,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            15.577126826427271,
-            0.4974746877848837,
-            26.756803316802717
+            15.348916009774001,
+            0.3431301314591524,
+            27.15429477514575
           ],
           "target": [
-            7.029811237683346,
-            5.936675516985563,
-            5.0
+            6.801600421030075,
+            5.782330960659832,
+            5.397491458343035
           ],
           "up": [
             0.0,
@@ -2944,7 +2944,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -2977,19 +2977,19 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "f91c63373fe79cbf5f90e733c06191a5325624bb78b9d09eb46b71d8b601e110",
-      "output_sha256": "a059e6e12ce3eff02f2144066470b0dcc0b5de87cdb7289acb630082501986de",
+      "plan_sha256": "27aca11fbb8ef4be0f9c277ad1e6a83c620435b0a3078f9b347c41d6a7267565",
+      "output_sha256": "32eb42da3cfeea6a92adb9e5ad0f0f9db2656dc19abfafd2fc742d4c83ccb978",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\motion_09.png",
-      "source_sha256": "d982d66c4ec580229b3cbe0c4d53172a26d4253a99feb27f4a0306052ac2ddac",
+      "source_sha256": "130c31b9152ac09b801111eccfc5609f39c7132af720d80cb2c92cc15a0640e5",
       "frame": 9,
       "view": "cluster",
       "camera": {
         "target": [
-          0.33983704178334706,
-          0.16664884018556353,
-          0.0
+          0.2912445301300754,
+          0.076809218059831,
+          0.2974098227430353
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -3001,9 +3001,9 @@
           0.0
         ],
         "scene_offset": [
-          6.690069962300001,
-          5.7735692523,
-          5.0
+          6.5092753719,
+          5.7047017446,
+          5.10010332
         ]
       },
       "render_settings": {
@@ -3013,7 +3013,7 @@
         "bond_radius": 0.105,
         "show_cell": false
       },
-      "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-0\",\"origin\":[-1.53425902812117,-0.1118052600733787,0.0],\"vector\":[-0.04435863602383945,-0.05886050370784689,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-1\",\"origin\":[-0.3555171782005211,0.0264286532016435,0.0],\"vector\":[0.7971272662272912,0.15323368985997265,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-2\",\"origin\":[-1.6919846747472884,1.0664972129286523,0.0],\"vector\":[-0.012979154395876115,0.7662643108265664,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-3\",\"origin\":[1.3100094923633119,0.001630267346899075,0.0],\"vector\":[-0.07408693732130985,0.0008627836043008672,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-4\",\"origin\":[2.142088076637644,0.8479170009725383,0.0],\"vector\":[0.5601141744194059,0.48116231111184454,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-5\",\"origin\":[2.1401479016694367,-0.8501281039332672,0.0],\"vector\":[0.5357093153042594,-0.48012317168662266,0.0]}]",
+      "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{},\"vector\":[-0.009683250839126295,-0.009007645918302429,-0.0036736006227737063]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{},\"vector\":[-0.03644787740800253,0.28769049259698826,0.027540909134246686]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{},\"vector\":[0.1830526337431001,-0.08935743711541738,0.0037586758365583737]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{},\"vector\":[-0.008280501818797463,-0.002543205571782648,-0.001815777769663518]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{},\"vector\":[0.01223095434565146,-0.15391158625140092,0.008699139566990054]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{},\"vector\":[0.1262953277927563,0.13891730943958888,0.04715489911224196]}]",
       "vector_count": 6,
       "vector_renderer": "MatterVis native world-space vector_overlays",
       "pipeline_version": 2,
@@ -3024,14 +3024,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            15.577222592827273,
-            0.5010172632848837,
-            26.756803316802717
+            15.347835490774003,
+            0.3423101334591525,
+            27.154316459545754
           ],
           "target": [
-            7.029907004083348,
-            5.940218092485563,
-            5.0
+            6.800519902030076,
+            5.781510962659832,
+            5.397513142743035
           ],
           "up": [
             0.0,
@@ -3042,7 +3042,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -3075,19 +3075,19 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "bcabeaff3776a5e7df72a80b7fdd3d536d67227c8577c37d279a668a6b8983d5",
-      "output_sha256": "c7736aa05aefa97eeed153b07b6e8fe943b3d816878cc8aa705490c70c8c1a7d",
+      "plan_sha256": "e3684eb5880d60dcded651e1f8cc6a85d4f14d2c58a82ddfb5fea6a78938b745",
+      "output_sha256": "9f67cd93ab49ebdc6a87e8b93c971decf5b45206a4f4945f9155d54b726f909e",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\motion_10.png",
-      "source_sha256": "d982d66c4ec580229b3cbe0c4d53172a26d4253a99feb27f4a0306052ac2ddac",
+      "source_sha256": "130c31b9152ac09b801111eccfc5609f39c7132af720d80cb2c92cc15a0640e5",
       "frame": 10,
       "view": "cluster",
       "camera": {
         "target": [
-          0.33983704178334706,
-          0.16664884018556353,
-          0.0
+          0.2912445301300754,
+          0.076809218059831,
+          0.2974098227430353
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -3099,9 +3099,9 @@
           0.0
         ],
         "scene_offset": [
-          6.6901769952,
-          5.7775286014,
-          5.0
+          6.508067733,
+          5.7037852763,
+          5.1001275556
         ]
       },
       "render_settings": {
@@ -3111,7 +3111,7 @@
         "bond_radius": 0.105,
         "show_cell": false
       },
-      "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-0\",\"origin\":[-1.53425902812117,-0.1118052600733787,0.0],\"vector\":[-0.04435863602383945,-0.05886050370784689,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-1\",\"origin\":[-0.3555171782005211,0.0264286532016435,0.0],\"vector\":[0.7971272662272912,0.15323368985997265,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-2\",\"origin\":[-1.6919846747472884,1.0664972129286523,0.0],\"vector\":[-0.012979154395876115,0.7662643108265664,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-3\",\"origin\":[1.3100094923633119,0.001630267346899075,0.0],\"vector\":[-0.07408693732130985,0.0008627836043008672,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-4\",\"origin\":[2.142088076637644,0.8479170009725383,0.0],\"vector\":[0.5601141744194059,0.48116231111184454,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-5\",\"origin\":[2.1401479016694367,-0.8501281039332672,0.0],\"vector\":[0.5357093153042594,-0.48012317168662266,0.0]}]",
+      "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{},\"vector\":[-0.009683250839126295,-0.009007645918302429,-0.0036736006227737063]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{},\"vector\":[-0.03644787740800253,0.28769049259698826,0.027540909134246686]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{},\"vector\":[0.1830526337431001,-0.08935743711541738,0.0037586758365583737]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{},\"vector\":[-0.008280501818797463,-0.002543205571782648,-0.001815777769663518]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{},\"vector\":[0.01223095434565146,-0.15391158625140092,0.008699139566990054]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{},\"vector\":[0.1262953277927563,0.13891730943958888,0.04715489911224196]}]",
       "vector_count": 6,
       "vector_renderer": "MatterVis native world-space vector_overlays",
       "pipeline_version": 2,
@@ -3122,14 +3122,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            15.577329625727273,
-            0.5049766123848842,
-            26.756803316802717
+            15.346627851874,
+            0.3413936651591518,
+            27.154340695145752
           ],
           "target": [
-            7.030014036983347,
-            5.9441774415855635,
-            5.0
+            6.7993122631300755,
+            5.780594494359831,
+            5.397537378343036
           ],
           "up": [
             0.0,
@@ -3140,7 +3140,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -3173,19 +3173,19 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "a8869891fadec7bab001697d635dcd61f6e95487548a2d87664499a13f3ae69d",
-      "output_sha256": "44ab9d7de0db1611852d8faaa716b7f4a50f73218f5abdb97b2208e8371b81e4",
+      "plan_sha256": "76b84a7dd7266575d793417204a144baa626149d85d0126a657e2620c0d93ffb",
+      "output_sha256": "cae8cd504087b6268abc58eeb4e9bb1a5d0d436709ae1ce3ce96ffe7a79994fa",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\motion_11.png",
-      "source_sha256": "d982d66c4ec580229b3cbe0c4d53172a26d4253a99feb27f4a0306052ac2ddac",
+      "source_sha256": "130c31b9152ac09b801111eccfc5609f39c7132af720d80cb2c92cc15a0640e5",
       "frame": 11,
       "view": "cluster",
       "camera": {
         "target": [
-          0.33983704178334706,
-          0.16664884018556353,
-          0.0
+          0.2912445301300754,
+          0.076809218059831,
+          0.2974098227430353
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -3197,9 +3197,9 @@
           0.0
         ],
         "scene_offset": [
-          6.6902952948,
-          5.7819047241,
-          5.0
+          6.5067329742,
+          5.7027723376,
+          5.1001543422
         ]
       },
       "render_settings": {
@@ -3209,7 +3209,7 @@
         "bond_radius": 0.105,
         "show_cell": false
       },
-      "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-0\",\"origin\":[-1.53425902812117,-0.1118052600733787,0.0],\"vector\":[-0.04435863602383945,-0.05886050370784689,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-1\",\"origin\":[-0.3555171782005211,0.0264286532016435,0.0],\"vector\":[0.7971272662272912,0.15323368985997265,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-2\",\"origin\":[-1.6919846747472884,1.0664972129286523,0.0],\"vector\":[-0.012979154395876115,0.7662643108265664,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-3\",\"origin\":[1.3100094923633119,0.001630267346899075,0.0],\"vector\":[-0.07408693732130985,0.0008627836043008672,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-4\",\"origin\":[2.142088076637644,0.8479170009725383,0.0],\"vector\":[0.5601141744194059,0.48116231111184454,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-5\",\"origin\":[2.1401479016694367,-0.8501281039332672,0.0],\"vector\":[0.5357093153042594,-0.48012317168662266,0.0]}]",
+      "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{},\"vector\":[-0.009683250839126295,-0.009007645918302429,-0.0036736006227737063]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{},\"vector\":[-0.03644787740800253,0.28769049259698826,0.027540909134246686]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{},\"vector\":[0.1830526337431001,-0.08935743711541738,0.0037586758365583737]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{},\"vector\":[-0.008280501818797463,-0.002543205571782648,-0.001815777769663518]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{},\"vector\":[0.01223095434565146,-0.15391158625140092,0.008699139566990054]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{},\"vector\":[0.1262953277927563,0.13891730943958888,0.04715489911224196]}]",
       "vector_count": 6,
       "vector_renderer": "MatterVis native world-space vector_overlays",
       "pipeline_version": 2,
@@ -3220,14 +3220,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            15.577447925327274,
-            0.5093527350848843,
-            26.756803316802717
+            15.345293093074002,
+            0.34038072645915207,
+            27.15436748174575
           ],
           "target": [
-            7.030132336583347,
-            5.948553564285564,
-            5.0
+            6.797977504330076,
+            5.779581555659831,
+            5.397564164943035
           ],
           "up": [
             0.0,
@@ -3238,7 +3238,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -3271,19 +3271,19 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "93d9e6f98efaa3f7f51031eb97dce535df6e8c6d9f2a0e0e35a5e16f7ef2e70c",
-      "output_sha256": "0e5e16856bab9832baa4c83437059e86d168cd6c824502e25787eda40314d6a1",
+      "plan_sha256": "9af7194eb4c3ba47363b9b2519a3b26230d1392f194eb47a50b9522fed2506a2",
+      "output_sha256": "0ba714b0b2a8a793799b157274d6263352ed6dd6fc444d5bf84fc63d10fbd9a1",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\motion_12.png",
-      "source_sha256": "d982d66c4ec580229b3cbe0c4d53172a26d4253a99feb27f4a0306052ac2ddac",
+      "source_sha256": "130c31b9152ac09b801111eccfc5609f39c7132af720d80cb2c92cc15a0640e5",
       "frame": 12,
       "view": "cluster",
       "camera": {
         "target": [
-          0.33983704178334706,
-          0.16664884018556353,
-          0.0
+          0.2912445301300754,
+          0.076809218059831,
+          0.2974098227430353
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -3295,9 +3295,9 @@
           0.0
         ],
         "scene_offset": [
-          6.690424861,
-          5.7866976203,
-          5.0
+          6.5052710955999995,
+          5.7016629285,
+          5.10018368
         ]
       },
       "render_settings": {
@@ -3307,7 +3307,7 @@
         "bond_radius": 0.105,
         "show_cell": false
       },
-      "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-0\",\"origin\":[-1.53425902812117,-0.1118052600733787,0.0],\"vector\":[-0.04435863602383945,-0.05886050370784689,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-1\",\"origin\":[-0.3555171782005211,0.0264286532016435,0.0],\"vector\":[0.7971272662272912,0.15323368985997265,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-2\",\"origin\":[-1.6919846747472884,1.0664972129286523,0.0],\"vector\":[-0.012979154395876115,0.7662643108265664,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-3\",\"origin\":[1.3100094923633119,0.001630267346899075,0.0],\"vector\":[-0.07408693732130985,0.0008627836043008672,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-4\",\"origin\":[2.142088076637644,0.8479170009725383,0.0],\"vector\":[0.5601141744194059,0.48116231111184454,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-5\",\"origin\":[2.1401479016694367,-0.8501281039332672,0.0],\"vector\":[0.5357093153042594,-0.48012317168662266,0.0]}]",
+      "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{},\"vector\":[-0.009683250839126295,-0.009007645918302429,-0.0036736006227737063]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{},\"vector\":[-0.03644787740800253,0.28769049259698826,0.027540909134246686]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{},\"vector\":[0.1830526337431001,-0.08935743711541738,0.0037586758365583737]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{},\"vector\":[-0.008280501818797463,-0.002543205571782648,-0.001815777769663518]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{},\"vector\":[0.01223095434565146,-0.15391158625140092,0.008699139566990054]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{},\"vector\":[0.1262953277927563,0.13891730943958888,0.04715489911224196]}]",
       "vector_count": 6,
       "vector_renderer": "MatterVis native world-space vector_overlays",
       "pipeline_version": 2,
@@ -3318,14 +3318,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            15.577577491527272,
-            0.514145631284884,
-            26.756803316802717
+            15.343831214474001,
+            0.3392713173591524,
+            27.154396819545752
           ],
           "target": [
-            7.030261902783347,
-            5.953346460485563,
-            5.0
+            6.796515625730075,
+            5.778472146559832,
+            5.397593502743035
           ],
           "up": [
             0.0,
@@ -3336,7 +3336,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -3369,19 +3369,19 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "d1d3687900476c3008f0dd76a3f953348be46fadd07b1ee6155bd1f13a681e5e",
-      "output_sha256": "dabcc6525cd950e644652adcd153b8509fb96b530b8854f424989dabc78a8745",
+      "plan_sha256": "d56140b8b819332cb7244b01ed493e8c1811ae6cded714a93a95e615e74b9322",
+      "output_sha256": "98feb3e05a28a62ee032d31f9ea130392771a948a8e1d04c17b3eb0406b055a7",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\motion_13.png",
-      "source_sha256": "d982d66c4ec580229b3cbe0c4d53172a26d4253a99feb27f4a0306052ac2ddac",
+      "source_sha256": "130c31b9152ac09b801111eccfc5609f39c7132af720d80cb2c92cc15a0640e5",
       "frame": 13,
       "view": "cluster",
       "camera": {
         "target": [
-          0.33983704178334706,
-          0.16664884018556353,
-          0.0
+          0.2912445301300754,
+          0.076809218059831,
+          0.2974098227430353
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -3393,9 +3393,9 @@
           0.0
         ],
         "scene_offset": [
-          6.6905656939,
-          5.7919072901,
-          5.0
+          6.503682097,
+          5.7004570491,
+          5.1002155689
         ]
       },
       "render_settings": {
@@ -3405,7 +3405,7 @@
         "bond_radius": 0.105,
         "show_cell": false
       },
-      "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-0\",\"origin\":[-1.53425902812117,-0.1118052600733787,0.0],\"vector\":[-0.04435863602383945,-0.05886050370784689,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-1\",\"origin\":[-0.3555171782005211,0.0264286532016435,0.0],\"vector\":[0.7971272662272912,0.15323368985997265,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-2\",\"origin\":[-1.6919846747472884,1.0664972129286523,0.0],\"vector\":[-0.012979154395876115,0.7662643108265664,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-3\",\"origin\":[1.3100094923633119,0.001630267346899075,0.0],\"vector\":[-0.07408693732130985,0.0008627836043008672,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-4\",\"origin\":[2.142088076637644,0.8479170009725383,0.0],\"vector\":[0.5601141744194059,0.48116231111184454,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-5\",\"origin\":[2.1401479016694367,-0.8501281039332672,0.0],\"vector\":[0.5357093153042594,-0.48012317168662266,0.0]}]",
+      "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{},\"vector\":[-0.009683250839126295,-0.009007645918302429,-0.0036736006227737063]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{},\"vector\":[-0.03644787740800253,0.28769049259698826,0.027540909134246686]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{},\"vector\":[0.1830526337431001,-0.08935743711541738,0.0037586758365583737]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{},\"vector\":[-0.008280501818797463,-0.002543205571782648,-0.001815777769663518]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{},\"vector\":[0.01223095434565146,-0.15391158625140092,0.008699139566990054]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{},\"vector\":[0.1262953277927563,0.13891730943958888,0.04715489911224196]}]",
       "vector_count": 6,
       "vector_renderer": "MatterVis native world-space vector_overlays",
       "pipeline_version": 2,
@@ -3416,14 +3416,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            15.577718324427273,
-            0.5193553010848841,
-            26.756803316802717
+            15.342242215874002,
+            0.3380654379591519,
+            27.154428708445753
           ],
           "target": [
-            7.030402735683347,
-            5.958556130285563,
-            5.0
+            6.794926627130076,
+            5.777266267159831,
+            5.397625391643036
           ],
           "up": [
             0.0,
@@ -3434,7 +3434,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -3467,19 +3467,19 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "91617420b54ca1049dcb1200fc10e95365782922e628667f2730d504450d367c",
-      "output_sha256": "1fcae480ab4edd81dc193b9b06a082a0de0f809d76207cd07f4194205be13fa0",
+      "plan_sha256": "5970b39eb30203a67b2e0ddabc1458018138996bd20fe0fcc6631b525f45aa1c",
+      "output_sha256": "ae33c0574b0d61f00cbd0c9d1f017d3aa04b9d98c3f9656b0b342893a725bf4d",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\motion_14.png",
-      "source_sha256": "d982d66c4ec580229b3cbe0c4d53172a26d4253a99feb27f4a0306052ac2ddac",
+      "source_sha256": "130c31b9152ac09b801111eccfc5609f39c7132af720d80cb2c92cc15a0640e5",
       "frame": 14,
       "view": "cluster",
       "camera": {
         "target": [
-          0.33983704178334706,
-          0.16664884018556353,
-          0.0
+          0.2912445301300754,
+          0.076809218059831,
+          0.2974098227430353
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -3491,9 +3491,9 @@
           0.0
         ],
         "scene_offset": [
-          6.690717793300001,
-          5.7975337336,
-          5.0
+          6.5019659785999995,
+          5.6991546993,
+          5.1002500089
         ]
       },
       "render_settings": {
@@ -3503,7 +3503,7 @@
         "bond_radius": 0.105,
         "show_cell": false
       },
-      "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-0\",\"origin\":[-1.53425902812117,-0.1118052600733787,0.0],\"vector\":[-0.04435863602383945,-0.05886050370784689,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-1\",\"origin\":[-0.3555171782005211,0.0264286532016435,0.0],\"vector\":[0.7971272662272912,0.15323368985997265,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-2\",\"origin\":[-1.6919846747472884,1.0664972129286523,0.0],\"vector\":[-0.012979154395876115,0.7662643108265664,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-3\",\"origin\":[1.3100094923633119,0.001630267346899075,0.0],\"vector\":[-0.07408693732130985,0.0008627836043008672,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-4\",\"origin\":[2.142088076637644,0.8479170009725383,0.0],\"vector\":[0.5601141744194059,0.48116231111184454,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-5\",\"origin\":[2.1401479016694367,-0.8501281039332672,0.0],\"vector\":[0.5357093153042594,-0.48012317168662266,0.0]}]",
+      "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{},\"vector\":[-0.009683250839126295,-0.009007645918302429,-0.0036736006227737063]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{},\"vector\":[-0.03644787740800253,0.28769049259698826,0.027540909134246686]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{},\"vector\":[0.1830526337431001,-0.08935743711541738,0.0037586758365583737]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{},\"vector\":[-0.008280501818797463,-0.002543205571782648,-0.001815777769663518]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{},\"vector\":[0.01223095434565146,-0.15391158625140092,0.008699139566990054]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{},\"vector\":[0.1262953277927563,0.13891730943958888,0.04715489911224196]}]",
       "vector_count": 6,
       "vector_renderer": "MatterVis native world-space vector_overlays",
       "pipeline_version": 2,
@@ -3514,14 +3514,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            15.577870423827274,
-            0.5249817445848839,
-            26.756803316802717
+            15.340526097474001,
+            0.33676308815915235,
+            27.154463148445753
           ],
           "target": [
-            7.030554835083348,
-            5.964182573785563,
-            5.0
+            6.793210508730075,
+            5.775963917359832,
+            5.397659831643035
           ],
           "up": [
             0.0,
@@ -3532,7 +3532,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -3565,19 +3565,19 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "d81061fe4192631473e14b8a1060d81ac8ef5d196cc2815722ee65f6a3cc2691",
-      "output_sha256": "0f6d3b8751dd57099dea82420450162c4bc4b4ed3a3541d51a658075c1f62289",
+      "plan_sha256": "5dc0855d107bd52532ce539db1651eab07062360a79f6a21a18287357273b044",
+      "output_sha256": "8a3fc303c6e28d0c935bc53b52774b5acb333b2374261f6e6db1e95058595df7",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\motion_15.png",
-      "source_sha256": "d982d66c4ec580229b3cbe0c4d53172a26d4253a99feb27f4a0306052ac2ddac",
+      "source_sha256": "130c31b9152ac09b801111eccfc5609f39c7132af720d80cb2c92cc15a0640e5",
       "frame": 15,
       "view": "cluster",
       "camera": {
         "target": [
-          0.33983704178334706,
-          0.16664884018556353,
-          0.0
+          0.2912445301300754,
+          0.076809218059831,
+          0.2974098227430353
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -3589,9 +3589,9 @@
           0.0
         ],
         "scene_offset": [
-          6.6908811594,
-          5.8035769506,
-          5.0
+          6.5001227402,
+          5.6977558792,
+          5.100287
         ]
       },
       "render_settings": {
@@ -3601,7 +3601,7 @@
         "bond_radius": 0.105,
         "show_cell": false
       },
-      "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-0\",\"origin\":[-1.53425902812117,-0.1118052600733787,0.0],\"vector\":[-0.04435863602383945,-0.05886050370784689,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-1\",\"origin\":[-0.3555171782005211,0.0264286532016435,0.0],\"vector\":[0.7971272662272912,0.15323368985997265,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-2\",\"origin\":[-1.6919846747472884,1.0664972129286523,0.0],\"vector\":[-0.012979154395876115,0.7662643108265664,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-3\",\"origin\":[1.3100094923633119,0.001630267346899075,0.0],\"vector\":[-0.07408693732130985,0.0008627836043008672,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-4\",\"origin\":[2.142088076637644,0.8479170009725383,0.0],\"vector\":[0.5601141744194059,0.48116231111184454,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-5\",\"origin\":[2.1401479016694367,-0.8501281039332672,0.0],\"vector\":[0.5357093153042594,-0.48012317168662266,0.0]}]",
+      "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{},\"vector\":[-0.009683250839126295,-0.009007645918302429,-0.0036736006227737063]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{},\"vector\":[-0.03644787740800253,0.28769049259698826,0.027540909134246686]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{},\"vector\":[0.1830526337431001,-0.08935743711541738,0.0037586758365583737]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{},\"vector\":[-0.008280501818797463,-0.002543205571782648,-0.001815777769663518]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{},\"vector\":[0.01223095434565146,-0.15391158625140092,0.008699139566990054]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{},\"vector\":[0.1262953277927563,0.13891730943958888,0.04715489911224196]}]",
       "vector_count": 6,
       "vector_renderer": "MatterVis native world-space vector_overlays",
       "pipeline_version": 2,
@@ -3612,14 +3612,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            15.578033789927272,
-            0.5310249615848841,
-            26.756803316802717
+            15.338682859074002,
+            0.335364268059152,
+            27.154500139545753
           ],
           "target": [
-            7.030718201183347,
-            5.970225790785563,
-            5.0
+            6.791367270330076,
+            5.774565097259831,
+            5.397696822743035
           ],
           "up": [
             0.0,
@@ -3630,7 +3630,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -3663,19 +3663,19 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "0bc2ea187484b959ac583a7c014fc59132d857894fecf87b815ca6c54af864f3",
-      "output_sha256": "feab983861f5b6daa236e328622b55bc0e7be4520db315a95ade76ad759a25e7",
+      "plan_sha256": "173b3a7790e8f3b5b4bfe46231e2b7b9dcbe238cdf27e94cb10c9fa76d79d9e3",
+      "output_sha256": "184e74c8710402ad47d0432821a7e5477d3dd7f3da8a4af114843472ffa573e4",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\motion_16.png",
-      "source_sha256": "d982d66c4ec580229b3cbe0c4d53172a26d4253a99feb27f4a0306052ac2ddac",
+      "source_sha256": "130c31b9152ac09b801111eccfc5609f39c7132af720d80cb2c92cc15a0640e5",
       "frame": 16,
       "view": "cluster",
       "camera": {
         "target": [
-          0.33983704178334706,
-          0.16664884018556353,
-          0.0
+          0.2912445301300754,
+          0.076809218059831,
+          0.2974098227430353
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -3687,9 +3687,9 @@
           0.0
         ],
         "scene_offset": [
-          6.6910557921,
-          5.8100369411,
-          5.0
+          6.498152382,
+          5.6962605886999995,
+          5.1003265423
         ]
       },
       "render_settings": {
@@ -3699,7 +3699,7 @@
         "bond_radius": 0.105,
         "show_cell": false
       },
-      "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-0\",\"origin\":[-1.53425902812117,-0.1118052600733787,0.0],\"vector\":[-0.04435863602383945,-0.05886050370784689,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-1\",\"origin\":[-0.3555171782005211,0.0264286532016435,0.0],\"vector\":[0.7971272662272912,0.15323368985997265,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-2\",\"origin\":[-1.6919846747472884,1.0664972129286523,0.0],\"vector\":[-0.012979154395876115,0.7662643108265664,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-3\",\"origin\":[1.3100094923633119,0.001630267346899075,0.0],\"vector\":[-0.07408693732130985,0.0008627836043008672,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-4\",\"origin\":[2.142088076637644,0.8479170009725383,0.0],\"vector\":[0.5601141744194059,0.48116231111184454,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-5\",\"origin\":[2.1401479016694367,-0.8501281039332672,0.0],\"vector\":[0.5357093153042594,-0.48012317168662266,0.0]}]",
+      "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{},\"vector\":[-0.009683250839126295,-0.009007645918302429,-0.0036736006227737063]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{},\"vector\":[-0.03644787740800253,0.28769049259698826,0.027540909134246686]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{},\"vector\":[0.1830526337431001,-0.08935743711541738,0.0037586758365583737]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{},\"vector\":[-0.008280501818797463,-0.002543205571782648,-0.001815777769663518]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{},\"vector\":[0.01223095434565146,-0.15391158625140092,0.008699139566990054]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{},\"vector\":[0.1262953277927563,0.13891730943958888,0.04715489911224196]}]",
       "vector_count": 6,
       "vector_renderer": "MatterVis native world-space vector_overlays",
       "pipeline_version": 2,
@@ -3710,14 +3710,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            15.578208422627274,
-            0.5374849520848839,
-            26.756803316802717
+            15.336712500874,
+            0.3338689775591517,
+            27.154539681845755
           ],
           "target": [
-            7.030892833883347,
-            5.976685781285563,
-            5.0
+            6.7893969121300755,
+            5.773069806759831,
+            5.397736365043036
           ],
           "up": [
             0.0,
@@ -3728,7 +3728,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -3761,19 +3761,19 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "51f0fe2b8b1df4ead4ad830974cb5156b910d3d07ad0f9e2fc329a0964fc4dad",
-      "output_sha256": "ab062382545c54e912d709ead17758f0d2cbd479c97164842d107e0ee1e800d9",
+      "plan_sha256": "11a9cf3abcfdec9c1763a8da59f692f883aa57f232c05ba282c490bf9c242f06",
+      "output_sha256": "ec323a933e3ff6be204bfb1b4b391a0edc96c5a1aec34ac1fe5494db1f8d66e8",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\motion_17.png",
-      "source_sha256": "d982d66c4ec580229b3cbe0c4d53172a26d4253a99feb27f4a0306052ac2ddac",
+      "source_sha256": "130c31b9152ac09b801111eccfc5609f39c7132af720d80cb2c92cc15a0640e5",
       "frame": 17,
       "view": "cluster",
       "camera": {
         "target": [
-          0.33983704178334706,
-          0.16664884018556353,
-          0.0
+          0.2912445301300754,
+          0.076809218059831,
+          0.2974098227430353
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -3785,9 +3785,9 @@
           0.0
         ],
         "scene_offset": [
-          6.6912416915,
-          5.8169137053,
-          5.0
+          6.4960549039,
+          5.6946688278,
+          5.1003686356
         ]
       },
       "render_settings": {
@@ -3797,7 +3797,7 @@
         "bond_radius": 0.105,
         "show_cell": false
       },
-      "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-0\",\"origin\":[-1.53425902812117,-0.1118052600733787,0.0],\"vector\":[-0.04435863602383945,-0.05886050370784689,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-1\",\"origin\":[-0.3555171782005211,0.0264286532016435,0.0],\"vector\":[0.7971272662272912,0.15323368985997265,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-2\",\"origin\":[-1.6919846747472884,1.0664972129286523,0.0],\"vector\":[-0.012979154395876115,0.7662643108265664,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-3\",\"origin\":[1.3100094923633119,0.001630267346899075,0.0],\"vector\":[-0.07408693732130985,0.0008627836043008672,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-4\",\"origin\":[2.142088076637644,0.8479170009725383,0.0],\"vector\":[0.5601141744194059,0.48116231111184454,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-5\",\"origin\":[2.1401479016694367,-0.8501281039332672,0.0],\"vector\":[0.5357093153042594,-0.48012317168662266,0.0]}]",
+      "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{},\"vector\":[-0.009683250839126295,-0.009007645918302429,-0.0036736006227737063]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{},\"vector\":[-0.03644787740800253,0.28769049259698826,0.027540909134246686]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{},\"vector\":[0.1830526337431001,-0.08935743711541738,0.0037586758365583737]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{},\"vector\":[-0.008280501818797463,-0.002543205571782648,-0.001815777769663518]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{},\"vector\":[0.01223095434565146,-0.15391158625140092,0.008699139566990054]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{},\"vector\":[0.1262953277927563,0.13891730943958888,0.04715489911224196]}]",
       "vector_count": 6,
       "vector_renderer": "MatterVis native world-space vector_overlays",
       "pipeline_version": 2,
@@ -3808,14 +3808,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            15.578394322027272,
-            0.5443617162848842,
-            26.756803316802717
+            15.334615022774003,
+            0.33227721665915233,
+            27.15458177514575
           ],
           "target": [
-            7.031078733283347,
-            5.983562545485563,
-            5.0
+            6.787299434030076,
+            5.771478045859832,
+            5.397778458343035
           ],
           "up": [
             0.0,
@@ -3826,7 +3826,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -3859,19 +3859,19 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "1ae3e4b1a3028e4a17e8f264ef6868f22cf56d8b4c48672f51686c5a95dc4420",
-      "output_sha256": "6ae6b6d04da767c3dec2ba046d0cf35d545191692fbf0d34a60a0924ae94045c",
+      "plan_sha256": "bbd691b794b96939a1d10aa14add24cfd78149d746814c25aa801d3e6c3a6d25",
+      "output_sha256": "7c64b644b414944f3f91146bfd012eecf13055f6262050b8aeb3d1de992255af",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\motion_18.png",
-      "source_sha256": "d982d66c4ec580229b3cbe0c4d53172a26d4253a99feb27f4a0306052ac2ddac",
+      "source_sha256": "130c31b9152ac09b801111eccfc5609f39c7132af720d80cb2c92cc15a0640e5",
       "frame": 18,
       "view": "cluster",
       "camera": {
         "target": [
-          0.33983704178334706,
-          0.16664884018556353,
-          0.0
+          0.2912445301300754,
+          0.076809218059831,
+          0.2974098227430353
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -3883,9 +3883,9 @@
           0.0
         ],
         "scene_offset": [
-          6.6914388575,
-          5.8242072431,
-          5.0
+          6.4938303058999995,
+          5.6929805967,
+          5.1004132801
         ]
       },
       "render_settings": {
@@ -3895,7 +3895,7 @@
         "bond_radius": 0.105,
         "show_cell": false
       },
-      "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-0\",\"origin\":[-1.53425902812117,-0.1118052600733787,0.0],\"vector\":[-0.04435863602383945,-0.05886050370784689,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-1\",\"origin\":[-0.3555171782005211,0.0264286532016435,0.0],\"vector\":[0.7971272662272912,0.15323368985997265,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-2\",\"origin\":[-1.6919846747472884,1.0664972129286523,0.0],\"vector\":[-0.012979154395876115,0.7662643108265664,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-3\",\"origin\":[1.3100094923633119,0.001630267346899075,0.0],\"vector\":[-0.07408693732130985,0.0008627836043008672,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-4\",\"origin\":[2.142088076637644,0.8479170009725383,0.0],\"vector\":[0.5601141744194059,0.48116231111184454,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-5\",\"origin\":[2.1401479016694367,-0.8501281039332672,0.0],\"vector\":[0.5357093153042594,-0.48012317168662266,0.0]}]",
+      "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{},\"vector\":[-0.009683250839126295,-0.009007645918302429,-0.0036736006227737063]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{},\"vector\":[-0.03644787740800253,0.28769049259698826,0.027540909134246686]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{},\"vector\":[0.1830526337431001,-0.08935743711541738,0.0037586758365583737]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{},\"vector\":[-0.008280501818797463,-0.002543205571782648,-0.001815777769663518]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{},\"vector\":[0.01223095434565146,-0.15391158625140092,0.008699139566990054]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{},\"vector\":[0.1262953277927563,0.13891730943958888,0.04715489911224196]}]",
       "vector_count": 6,
       "vector_renderer": "MatterVis native world-space vector_overlays",
       "pipeline_version": 2,
@@ -3906,14 +3906,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            15.578591488027271,
-            0.551655254084884,
-            26.756803316802717
+            15.332390424774001,
+            0.33058898555915217,
+            27.15462641964575
           ],
           "target": [
-            7.031275899283346,
-            5.990856083285563,
-            5.0
+            6.785074836030075,
+            5.769789814759831,
+            5.397823102843035
           ],
           "up": [
             0.0,
@@ -3924,7 +3924,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -3957,19 +3957,19 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "a732b58dea9871d0f0c1fc847cc7551cf9b556a0e6a05ed6331e9f56222cd92b",
-      "output_sha256": "48b4721d44863c72615bd7084c209d9ad1c1c57cd4f01241f3eb978f5b52d308",
+      "plan_sha256": "54a7dc67f4bbe166c18a26da919af699f2bc63d27e542fe0018bc67439c6351a",
+      "output_sha256": "6a0b215b539660933b9c6e27b0444991ec92b49a19f3950d273e8b692f643847",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\motion_19.png",
-      "source_sha256": "d982d66c4ec580229b3cbe0c4d53172a26d4253a99feb27f4a0306052ac2ddac",
+      "source_sha256": "130c31b9152ac09b801111eccfc5609f39c7132af720d80cb2c92cc15a0640e5",
       "frame": 19,
       "view": "cluster",
       "camera": {
         "target": [
-          0.33983704178334706,
-          0.16664884018556353,
-          0.0
+          0.2912445301300754,
+          0.076809218059831,
+          0.2974098227430353
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -3981,9 +3981,9 @@
           0.0
         ],
         "scene_offset": [
-          6.6916472901,
-          5.8319175544,
-          5.0
+          6.4914785881,
+          5.6911958951,
+          5.1004604756
         ]
       },
       "render_settings": {
@@ -3993,7 +3993,7 @@
         "bond_radius": 0.105,
         "show_cell": false
       },
-      "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-0\",\"origin\":[-1.53425902812117,-0.1118052600733787,0.0],\"vector\":[-0.04435863602383945,-0.05886050370784689,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-1\",\"origin\":[-0.3555171782005211,0.0264286532016435,0.0],\"vector\":[0.7971272662272912,0.15323368985997265,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-2\",\"origin\":[-1.6919846747472884,1.0664972129286523,0.0],\"vector\":[-0.012979154395876115,0.7662643108265664,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-3\",\"origin\":[1.3100094923633119,0.001630267346899075,0.0],\"vector\":[-0.07408693732130985,0.0008627836043008672,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-4\",\"origin\":[2.142088076637644,0.8479170009725383,0.0],\"vector\":[0.5601141744194059,0.48116231111184454,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-5\",\"origin\":[2.1401479016694367,-0.8501281039332672,0.0],\"vector\":[0.5357093153042594,-0.48012317168662266,0.0]}]",
+      "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{},\"vector\":[-0.009683250839126295,-0.009007645918302429,-0.0036736006227737063]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{},\"vector\":[-0.03644787740800253,0.28769049259698826,0.027540909134246686]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{},\"vector\":[0.1830526337431001,-0.08935743711541738,0.0037586758365583737]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{},\"vector\":[-0.008280501818797463,-0.002543205571782648,-0.001815777769663518]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{},\"vector\":[0.01223095434565146,-0.15391158625140092,0.008699139566990054]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{},\"vector\":[0.1262953277927563,0.13891730943958888,0.04715489911224196]}]",
       "vector_count": 6,
       "vector_renderer": "MatterVis native world-space vector_overlays",
       "pipeline_version": 2,
@@ -4004,14 +4004,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            15.578799920627272,
-            0.5593655653848844,
-            26.756803316802717
+            15.330038706974001,
+            0.32880428395915207,
+            27.154673615145754
           ],
           "target": [
-            7.031484331883346,
-            5.998566394585564,
-            5.0
+            6.782723118230075,
+            5.768005113159831,
+            5.397870298343036
           ],
           "up": [
             0.0,
@@ -4022,7 +4022,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -4055,19 +4055,19 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "810d207c81d4310fb9606b6504290c79224d953bc0aab804f80da3175378407c",
-      "output_sha256": "aea247a04959a63d04cc812fb38357a3c077f3dc2bc04c0d596e936bcd90bfd1",
+      "plan_sha256": "5644504aaf98a8e664c65ecce33bdc167c75a1b316256e0cd1aa3bc28aaa3164",
+      "output_sha256": "3f1e2097815c744ea9715ed4fa88e0022ba9cd0569d2fa5dd0e6fe426f1dc1e4",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\motion_20.png",
-      "source_sha256": "d982d66c4ec580229b3cbe0c4d53172a26d4253a99feb27f4a0306052ac2ddac",
+      "source_sha256": "130c31b9152ac09b801111eccfc5609f39c7132af720d80cb2c92cc15a0640e5",
       "frame": 20,
       "view": "cluster",
       "camera": {
         "target": [
-          0.33983704178334706,
-          0.16664884018556353,
-          0.0
+          0.2912445301300754,
+          0.076809218059831,
+          0.2974098227430353
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -4079,9 +4079,9 @@
           0.0
         ],
         "scene_offset": [
-          6.6918669893,
-          5.8400446394,
-          5.0
+          6.4889997503,
+          5.6893147232,
+          5.1005102223
         ]
       },
       "render_settings": {
@@ -4091,7 +4091,7 @@
         "bond_radius": 0.105,
         "show_cell": false
       },
-      "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-0\",\"origin\":[-1.53425902812117,-0.1118052600733787,0.0],\"vector\":[-0.04435863602383945,-0.05886050370784689,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-1\",\"origin\":[-0.3555171782005211,0.0264286532016435,0.0],\"vector\":[0.7971272662272912,0.15323368985997265,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-2\",\"origin\":[-1.6919846747472884,1.0664972129286523,0.0],\"vector\":[-0.012979154395876115,0.7662643108265664,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-3\",\"origin\":[1.3100094923633119,0.001630267346899075,0.0],\"vector\":[-0.07408693732130985,0.0008627836043008672,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-4\",\"origin\":[2.142088076637644,0.8479170009725383,0.0],\"vector\":[0.5601141744194059,0.48116231111184454,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-5\",\"origin\":[2.1401479016694367,-0.8501281039332672,0.0],\"vector\":[0.5357093153042594,-0.48012317168662266,0.0]}]",
+      "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{},\"vector\":[-0.009683250839126295,-0.009007645918302429,-0.0036736006227737063]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{},\"vector\":[-0.03644787740800253,0.28769049259698826,0.027540909134246686]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{},\"vector\":[0.1830526337431001,-0.08935743711541738,0.0037586758365583737]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{},\"vector\":[-0.008280501818797463,-0.002543205571782648,-0.001815777769663518]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{},\"vector\":[0.01223095434565146,-0.15391158625140092,0.008699139566990054]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{},\"vector\":[0.1262953277927563,0.13891730943958888,0.04715489911224196]}]",
       "vector_count": 6,
       "vector_renderer": "MatterVis native world-space vector_overlays",
       "pipeline_version": 2,
@@ -4102,14 +4102,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            15.579019619827273,
-            0.5674926503848843,
-            26.756803316802717
+            15.327559869174001,
+            0.32692311205915203,
+            27.154723361845754
           ],
           "target": [
-            7.031704031083347,
-            6.0066934795855635,
-            5.0
+            6.780244280430075,
+            5.766123941259831,
+            5.397920045043035
           ],
           "up": [
             0.0,
@@ -4120,7 +4120,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -4153,19 +4153,19 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "0ba12d40c4fc780ace05114839136ec02824e396d7085266d75c11741dcaa1d1",
-      "output_sha256": "b759ac291d5a5ba10b2776cd8540fa6a99fed71f22d98bdd3fb771a0ca1c85ac",
+      "plan_sha256": "34d589d7df703e5eb99f8bc1f8ae824c3c85939248e42e92f948d121c32b2abe",
+      "output_sha256": "0dc616151325f32d8e09310fd84933e2c0fbd76c7692f25fe87d940b46e427ec",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\motion_21.png",
-      "source_sha256": "d982d66c4ec580229b3cbe0c4d53172a26d4253a99feb27f4a0306052ac2ddac",
+      "source_sha256": "130c31b9152ac09b801111eccfc5609f39c7132af720d80cb2c92cc15a0640e5",
       "frame": 21,
       "view": "cluster",
       "camera": {
         "target": [
-          0.33983704178334706,
-          0.16664884018556353,
-          0.0
+          0.2912445301300754,
+          0.076809218059831,
+          0.2974098227430353
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -4177,9 +4177,9 @@
           0.0
         ],
         "scene_offset": [
-          6.6920979551999995,
-          5.8485884979,
-          5.0
+          6.4863937926999995,
+          5.687337081,
+          5.1005625201
         ]
       },
       "render_settings": {
@@ -4189,7 +4189,7 @@
         "bond_radius": 0.105,
         "show_cell": false
       },
-      "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-0\",\"origin\":[-1.53425902812117,-0.1118052600733787,0.0],\"vector\":[-0.04435863602383945,-0.05886050370784689,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-1\",\"origin\":[-0.3555171782005211,0.0264286532016435,0.0],\"vector\":[0.7971272662272912,0.15323368985997265,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-2\",\"origin\":[-1.6919846747472884,1.0664972129286523,0.0],\"vector\":[-0.012979154395876115,0.7662643108265664,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-3\",\"origin\":[1.3100094923633119,0.001630267346899075,0.0],\"vector\":[-0.07408693732130985,0.0008627836043008672,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-4\",\"origin\":[2.142088076637644,0.8479170009725383,0.0],\"vector\":[0.5601141744194059,0.48116231111184454,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-5\",\"origin\":[2.1401479016694367,-0.8501281039332672,0.0],\"vector\":[0.5357093153042594,-0.48012317168662266,0.0]}]",
+      "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{},\"vector\":[-0.009683250839126295,-0.009007645918302429,-0.0036736006227737063]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{},\"vector\":[-0.03644787740800253,0.28769049259698826,0.027540909134246686]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{},\"vector\":[0.1830526337431001,-0.08935743711541738,0.0037586758365583737]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{},\"vector\":[-0.008280501818797463,-0.002543205571782648,-0.001815777769663518]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{},\"vector\":[0.01223095434565146,-0.15391158625140092,0.008699139566990054]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{},\"vector\":[0.1262953277927563,0.13891730943958888,0.04715489911224196]}]",
       "vector_count": 6,
       "vector_renderer": "MatterVis native world-space vector_overlays",
       "pipeline_version": 2,
@@ -4200,14 +4200,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            15.579250585727273,
-            0.5760365088848838,
-            26.756803316802717
+            15.324953911574001,
+            0.32494546985915207,
+            27.154775659645754
           ],
           "target": [
-            7.031934996983346,
-            6.015237338085563,
-            5.0
+            6.777638322830075,
+            5.764146299059831,
+            5.397972342843036
           ],
           "up": [
             0.0,
@@ -4218,7 +4218,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -4251,19 +4251,19 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "87bd4b9e1056c7afbbd20e8527dd6eb816e2b8d034ec86e77918a89bda2e7794",
-      "output_sha256": "36cdfce6ce8d887cb16a25198e1f5dc5edd1efe6092b8522fcf4dcfdf6767ad0",
+      "plan_sha256": "30a827380bbd0cc699274133346e30bd76ed4bd3d49a2a5d5a7ba326007ce0c8",
+      "output_sha256": "4a635e80dad8ccae140fb31db54c3f80e2b8f4191859912fa1981bccb29b8386",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\motion_22.png",
-      "source_sha256": "d982d66c4ec580229b3cbe0c4d53172a26d4253a99feb27f4a0306052ac2ddac",
+      "source_sha256": "130c31b9152ac09b801111eccfc5609f39c7132af720d80cb2c92cc15a0640e5",
       "frame": 22,
       "view": "cluster",
       "camera": {
         "target": [
-          0.33983704178334706,
-          0.16664884018556353,
-          0.0
+          0.2912445301300754,
+          0.076809218059831,
+          0.2974098227430353
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -4275,9 +4275,9 @@
           0.0
         ],
         "scene_offset": [
-          6.6923401876,
-          5.85754913,
-          5.0
+          6.483660715200001,
+          5.6852629684,
+          5.100617369
         ]
       },
       "render_settings": {
@@ -4287,7 +4287,7 @@
         "bond_radius": 0.105,
         "show_cell": false
       },
-      "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-0\",\"origin\":[-1.53425902812117,-0.1118052600733787,0.0],\"vector\":[-0.04435863602383945,-0.05886050370784689,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-1\",\"origin\":[-0.3555171782005211,0.0264286532016435,0.0],\"vector\":[0.7971272662272912,0.15323368985997265,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-2\",\"origin\":[-1.6919846747472884,1.0664972129286523,0.0],\"vector\":[-0.012979154395876115,0.7662643108265664,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-3\",\"origin\":[1.3100094923633119,0.001630267346899075,0.0],\"vector\":[-0.07408693732130985,0.0008627836043008672,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-4\",\"origin\":[2.142088076637644,0.8479170009725383,0.0],\"vector\":[0.5601141744194059,0.48116231111184454,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-5\",\"origin\":[2.1401479016694367,-0.8501281039332672,0.0],\"vector\":[0.5357093153042594,-0.48012317168662266,0.0]}]",
+      "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{},\"vector\":[-0.009683250839126295,-0.009007645918302429,-0.0036736006227737063]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{},\"vector\":[-0.03644787740800253,0.28769049259698826,0.027540909134246686]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{},\"vector\":[0.1830526337431001,-0.08935743711541738,0.0037586758365583737]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{},\"vector\":[-0.008280501818797463,-0.002543205571782648,-0.001815777769663518]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{},\"vector\":[0.01223095434565146,-0.15391158625140092,0.008699139566990054]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{},\"vector\":[0.1262953277927563,0.13891730943958888,0.04715489911224196]}]",
       "vector_count": 6,
       "vector_renderer": "MatterVis native world-space vector_overlays",
       "pipeline_version": 2,
@@ -4298,14 +4298,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            15.579492818127273,
-            0.5849971409848838,
-            26.756803316802717
+            15.322220834074002,
+            0.32287135725915217,
+            27.154830508545754
           ],
           "target": [
-            7.032177229383347,
-            6.024197970185563,
-            5.0
+            6.774905245330077,
+            5.762072186459831,
+            5.398027191743036
           ],
           "up": [
             0.0,
@@ -4316,7 +4316,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -4349,19 +4349,19 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "f5f7d661e788762248ba28b5fd3a2b8d8fc5bb0141846c17c52d80aad58c3e44",
-      "output_sha256": "38b1ee8bfa4c13142cbb917ba14cb0e7aa05b3223ac2c21646da8783cdca1cb1",
+      "plan_sha256": "00ec730939881c7655a92ff873f2fb76a835be1894483158c55e5953b8ce58e7",
+      "output_sha256": "cdf1f42a97cf5db72ef6ee011c349c55510f08fa3fe76eeaa59f1b2040a1c42d",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\motion_23.png",
-      "source_sha256": "d982d66c4ec580229b3cbe0c4d53172a26d4253a99feb27f4a0306052ac2ddac",
+      "source_sha256": "130c31b9152ac09b801111eccfc5609f39c7132af720d80cb2c92cc15a0640e5",
       "frame": 23,
       "view": "cluster",
       "camera": {
         "target": [
-          0.33983704178334706,
-          0.16664884018556353,
-          0.0
+          0.2912445301300754,
+          0.076809218059831,
+          0.2974098227430353
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -4373,9 +4373,9 @@
           0.0
         ],
         "scene_offset": [
-          6.6925936867,
-          5.8669265357,
-          5.0
+          6.4808005178000005,
+          5.6830923854,
+          5.100674769
         ]
       },
       "render_settings": {
@@ -4385,7 +4385,7 @@
         "bond_radius": 0.105,
         "show_cell": false
       },
-      "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-0\",\"origin\":[-1.53425902812117,-0.1118052600733787,0.0],\"vector\":[-0.04435863602383945,-0.05886050370784689,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-1\",\"origin\":[-0.3555171782005211,0.0264286532016435,0.0],\"vector\":[0.7971272662272912,0.15323368985997265,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-2\",\"origin\":[-1.6919846747472884,1.0664972129286523,0.0],\"vector\":[-0.012979154395876115,0.7662643108265664,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-3\",\"origin\":[1.3100094923633119,0.001630267346899075,0.0],\"vector\":[-0.07408693732130985,0.0008627836043008672,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-4\",\"origin\":[2.142088076637644,0.8479170009725383,0.0],\"vector\":[0.5601141744194059,0.48116231111184454,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-5\",\"origin\":[2.1401479016694367,-0.8501281039332672,0.0],\"vector\":[0.5357093153042594,-0.48012317168662266,0.0]}]",
+      "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{},\"vector\":[-0.009683250839126295,-0.009007645918302429,-0.0036736006227737063]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{},\"vector\":[-0.03644787740800253,0.28769049259698826,0.027540909134246686]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{},\"vector\":[0.1830526337431001,-0.08935743711541738,0.0037586758365583737]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{},\"vector\":[-0.008280501818797463,-0.002543205571782648,-0.001815777769663518]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{},\"vector\":[0.01223095434565146,-0.15391158625140092,0.008699139566990054]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{},\"vector\":[0.1262953277927563,0.13891730943958888,0.04715489911224196]}]",
       "vector_count": 6,
       "vector_renderer": "MatterVis native world-space vector_overlays",
       "pipeline_version": 2,
@@ -4396,14 +4396,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            15.579746317227272,
-            0.5943745466848842,
-            26.756803316802717
+            15.319360636674002,
+            0.32070077425915233,
+            27.154887908545753
           ],
           "target": [
-            7.032430728483347,
-            6.0335753758855635,
-            5.0
+            6.772045047930076,
+            5.759901603459832,
+            5.398084591743036
           ],
           "up": [
             0.0,
@@ -4414,7 +4414,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,
@@ -4447,19 +4447,19 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "c19e5c1848f9bce9c2dd9c9cf6fb2269c496711da3e253fa1327c9533f71adc9",
-      "output_sha256": "e5632be4668fc2e4245c2c73fe14583478c3e306197bdd0414340928fadf52ee",
+      "plan_sha256": "fe6d0857450f014a8f1d2f9b6e53ba6288af22507d670365ea79bcf365d244a2",
+      "output_sha256": "7150cbd824f9b14848483ba8721029ad045dc8a6f07c1ed34f45b0fdb49a7263",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\motion_24.png",
-      "source_sha256": "d982d66c4ec580229b3cbe0c4d53172a26d4253a99feb27f4a0306052ac2ddac",
+      "source_sha256": "130c31b9152ac09b801111eccfc5609f39c7132af720d80cb2c92cc15a0640e5",
       "frame": 24,
       "view": "cluster",
       "camera": {
         "target": [
-          0.33983704178334706,
-          0.16664884018556353,
-          0.0
+          0.2912445301300754,
+          0.076809218059831,
+          0.2974098227430353
         ],
-        "ortho_scale": 2.35,
+        "ortho_scale": 1.95,
         "direction": [
           0.55,
           -0.35,
@@ -4471,9 +4471,9 @@
           0.0
         ],
         "scene_offset": [
-          6.6928584525,
-          5.876720715,
-          5.0
+          6.4778132005,
+          5.6808253320999995,
+          5.1007347201
         ]
       },
       "render_settings": {
@@ -4483,7 +4483,7 @@
         "bond_radius": 0.105,
         "show_cell": false
       },
-      "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-0\",\"origin\":[-1.53425902812117,-0.1118052600733787,0.0],\"vector\":[-0.04435863602383945,-0.05886050370784689,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-1\",\"origin\":[-0.3555171782005211,0.0264286532016435,0.0],\"vector\":[0.7971272662272912,0.15323368985997265,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-2\",\"origin\":[-1.6919846747472884,1.0664972129286523,0.0],\"vector\":[-0.012979154395876115,0.7662643108265664,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-3\",\"origin\":[1.3100094923633119,0.001630267346899075,0.0],\"vector\":[-0.07408693732130985,0.0008627836043008672,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-4\",\"origin\":[2.142088076637644,0.8479170009725383,0.0],\"vector\":[0.5601141744194059,0.48116231111184454,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"vv-nuclear-displacement-5\",\"origin\":[2.1401479016694367,-0.8501281039332672,0.0],\"vector\":[0.5357093153042594,-0.48012317168662266,0.0]}]",
+      "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{},\"vector\":[-0.009683250839126295,-0.009007645918302429,-0.0036736006227737063]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{},\"vector\":[-0.03644787740800253,0.28769049259698826,0.027540909134246686]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{},\"vector\":[0.1830526337431001,-0.08935743711541738,0.0037586758365583737]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{},\"vector\":[-0.008280501818797463,-0.002543205571782648,-0.001815777769663518]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{},\"vector\":[0.01223095434565146,-0.15391158625140092,0.008699139566990054]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{},\"vector\":[0.1262953277927563,0.13891730943958888,0.04715489911224196]}]",
       "vector_count": 6,
       "vector_renderer": "MatterVis native world-space vector_overlays",
       "pipeline_version": 2,
@@ -4494,14 +4494,14 @@
         "actual_backend": "cpu",
         "camera": {
           "position": [
-            15.580011083027273,
-            0.6041687259848842,
-            26.756803316802717
+            15.316373319374001,
+            0.3184337209591517,
+            27.154947859645752
           ],
           "target": [
-            7.032695494283347,
-            6.0433695551855635,
-            5.0
+            6.769057730630076,
+            5.757634550159831,
+            5.398144542843036
           ],
           "up": [
             0.0,
@@ -4512,7 +4512,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 2.35
+          "ortho_scale": 1.95
         },
         "source": {
           "path": null,

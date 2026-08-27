@@ -110,6 +110,8 @@ def make_vector_group(
     color: str,
     viewport_policy: str = "clip",
     tail_offset: float = 0.0,
+    opacity: float = 1.0,
+    style: dict | None = None,
 ) -> list[dict]:
     """Create one validated MatterVis native Cartesian vector group."""
     origins_array = np.asarray(origins, dtype=float)
@@ -124,6 +126,8 @@ def make_vector_group(
             "scale": float(scale),
             "viewport_policy": viewport_policy,
             "color": color,
+            "opacity": float(opacity),
+            "style": dict(style or {}),
             "arrows": [
                 {
                     "id": f"{group_id}-{index}",
@@ -171,6 +175,8 @@ def render_structure(
                 "origin": np.asarray(item["origin"], dtype=float).tolist(),
                 "vector": np.asarray(item["display_vector"], dtype=float).tolist(),
                 "color": item["color"],
+                "opacity": item["opacity"],
+                "style": item["style"],
             }
             for item in resolved_vectors
         ],
@@ -197,6 +203,7 @@ def render_structure(
             "id": "story-vectors",
             "name": "story vectors",
             "visible": True,
+            "magnitude_mode": "absolute",
             "scale": 1.0,
             "arrows": [
                 {
@@ -207,6 +214,9 @@ def render_structure(
                     ).tolist(),
                     "vector": np.asarray(item["display_vector"], dtype=float).tolist(),
                     "color": item["color"],
+                    "opacity": item["opacity"],
+                    "style": item["style"],
+                    "metadata": item["metadata"],
                     "visible": True,
                 }
                 for item in resolved_vectors
@@ -303,6 +313,8 @@ def render_density_cube(
                 "origin": np.asarray(item["origin"], dtype=float).tolist(),
                 "vector": np.asarray(item["display_vector"], dtype=float).tolist(),
                 "color": item["color"],
+                "opacity": item["opacity"],
+                "style": item["style"],
             }
             for item in resolved_vectors
         ],
@@ -346,6 +358,7 @@ def render_density_cube(
             "id": "story-vectors",
             "name": "story vectors",
             "visible": True,
+            "magnitude_mode": "absolute",
             "scale": 1.0,
             "arrows": [
                 {
@@ -357,6 +370,9 @@ def render_density_cube(
                         item["display_vector"], dtype=float
                     ).tolist(),
                     "color": item["color"],
+                    "opacity": item["opacity"],
+                    "style": item["style"],
+                    "metadata": item["metadata"],
                     "visible": True,
                 }
                 for item in resolved_vectors
