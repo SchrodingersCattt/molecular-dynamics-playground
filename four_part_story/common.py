@@ -485,7 +485,10 @@ def render_video(
             "failures": failures,
             "frames": frame_records,
         }
-        (qa_directory / "every_frame_qa.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+        (qa_directory / "every_frame_qa.json").write_text(
+            json.dumps(report, separators=(",", ":")) + "\n",
+            encoding="utf-8",
+        )
     if return_code != 0:
         raise RuntimeError(f"ffmpeg failed with exit code {return_code}")
     if failures or len(frame_records) != frames:

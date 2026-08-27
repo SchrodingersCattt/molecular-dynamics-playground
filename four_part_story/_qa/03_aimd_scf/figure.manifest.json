@@ -1,17 +1,180 @@
 {
   "version": 1,
-  "figure": {"canonical_stem": "03_aimd_scf"},
-  "outputs": [{"path": "../../figures/03_aimd_scf.png"}, {"path": "../../figures/03_aimd_scf.svg"}, {"path": "../../videos/03_aimd_scf.mp4"}],
-  "target": {"width_mm": 297.0, "qa_dpi": 300, "min_dpi": 295, "max_dpi": 305},
-  "panels": [
-    {"id": "md_loop", "source": "source/md_loop.png", "slot": [0.035, 0.20, 0.265, 0.85], "source_min_clearance_px": 24, "min_clearance_px": 24, "source_allow_touch_edges": [], "allow_touch_edges": []},
-    {"id": "dimer_density", "source": "source/dimer_density.png", "slot": [0.30, 0.16, 0.72, 0.88], "source_min_clearance_px": 24, "min_clearance_px": 24, "source_allow_touch_edges": [], "allow_touch_edges": []},
-    {"id": "scf_loop", "source": "source/scf_loop.png", "slot": [0.76, 0.22, 0.97, 0.83], "source_min_clearance_px": 24, "min_clearance_px": 24, "source_allow_touch_edges": [], "allow_touch_edges": []}
+  "figure": {
+    "canonical_stem": "03_aimd_scf"
+  },
+  "outputs": [
+    {
+      "path": "../../figures/03_aimd_scf.png"
+    },
+    {
+      "path": "../../figures/03_aimd_scf.svg"
+    },
+    {
+      "path": "../../videos/03_aimd_scf.mp4"
+    }
   ],
-  "checks": {"whitespace": {"background_threshold": 245, "min_ink_fraction": 0.025, "min_panel_bbox_fill": 0.38, "grid_rows": 14, "grid_columns": 24}, "boundaries": {"bands": [{"id": "left_gap", "rect": [0.275, 0.16, 0.292, 0.88], "max_ink_pixels": 0}, {"id": "right_gap", "rect": [0.73, 0.16, 0.75, 0.88], "max_ink_pixels": 0}]}, "colors": {"semantics": [{"id": "density", "color": "#183153", "min_pixels": 900}, {"id": "oxygen_force", "color": "#A32035", "min_pixels": 500}, {"id": "converged", "color": "#2F6B4F", "min_pixels": 500}]}},
-  "integrity": {"required_content": ["real_scf_history", "dimer_density_isosurface", "finite_difference_forces", "separate_md_and_scf_loops"], "evidence": {"real_scf_history": "data/h2o_dimer_scf.npz contains 19 stored generalized RHF iterations", "dimer_density_isosurface": "density grid is evaluated from the stored density matrix and contracted STO-3G basis", "finite_difference_forces": "data file stores central finite-difference forces with near-zero net force", "separate_md_and_scf_loops": "renderer assigns non-overlapping source panels and safety bands"}, "scientific_changes": []},
-  "consistency": {"constraints": ["separate A4 and 16:9 layouts", "fixed camera/viewport for the dimer", "shared four-story palette"], "evidence": {"renderer": "four_part_story/render_aimd_scf.py and common.py"}},
-  "quantitative": {"transformations": ["one isotropic orthographic projection", "density isosurface levels and force-arrow scale are declared"], "units": {"energy": "hartree", "force": "eV/angstrom", "coordinates": "angstrom", "density": "electrons/angstrom^3"}},
-  "deviations": {"records": [{"scope": "electronic-structure level", "reason": "pedagogical generalized RHF/STO-3G is used to expose the SCF loop", "mitigation": "the figure labels the level and does not call it production DFT", "follow_up": "replace the data source with a converged DFT calculation if quantitative chemistry is required"}]},
-  "review": {"render_sha256": "REPLACE_AFTER_RENDER", "problems": {"scientific_expression": "", "geometry": "", "annotations": "", "readability": "", "submission_quality": ""}, "action": "", "stop_condition": "fixed"}
+  "target": {
+    "width_mm": 297.0,
+    "qa_dpi": 300,
+    "min_dpi": 295,
+    "max_dpi": 305
+  },
+  "panels": [
+    {
+      "id": "md_loop",
+      "source": "source/md_loop.png",
+      "slot": [
+        0.035,
+        0.27,
+        0.265,
+        0.79
+      ],
+      "source_min_clearance_px": 24,
+      "min_clearance_px": 24,
+      "source_allow_touch_edges": [],
+      "allow_touch_edges": []
+    },
+    {
+      "id": "dimer_density",
+      "source": "source/dimer_density.png",
+      "slot": [
+        0.3,
+        0.2,
+        0.72,
+        0.88
+      ],
+      "source_min_clearance_px": 24,
+      "min_clearance_px": 24,
+      "source_allow_touch_edges": [],
+      "allow_touch_edges": []
+    },
+    {
+      "id": "scf_loop",
+      "source": "source/scf_loop.png",
+      "slot": [
+        0.76,
+        0.22,
+        0.97,
+        0.83
+      ],
+      "source_min_clearance_px": 24,
+      "min_clearance_px": 24,
+      "source_allow_touch_edges": [],
+      "allow_touch_edges": []
+    }
+  ],
+  "checks": {
+    "whitespace": {
+      "background_threshold": 245,
+      "min_ink_fraction": 0.025,
+      "min_panel_bbox_fill": 0.38,
+      "grid_rows": 14,
+      "grid_columns": 24
+    },
+    "boundaries": {
+      "bands": [
+        {
+          "id": "left_gap",
+          "rect": [
+            0.275,
+            0.2,
+            0.292,
+            0.88
+          ],
+          "max_ink_pixels": 0
+        },
+        {
+          "id": "right_gap",
+          "rect": [
+            0.73,
+            0.2,
+            0.75,
+            0.88
+          ],
+          "max_ink_pixels": 0
+        }
+      ]
+    },
+    "colors": {
+      "semantics": [
+        {
+          "id": "density",
+          "color": "#183153",
+          "min_pixels": 900
+        },
+        {
+          "id": "oxygen_force",
+          "color": "#A32035",
+          "min_pixels": 500
+        },
+        {
+          "id": "converged",
+          "color": "#2F6B4F",
+          "min_pixels": 500
+        }
+      ]
+    }
+  },
+  "integrity": {
+    "required_content": [
+      "real_scf_history",
+      "dimer_density_isosurface",
+      "finite_difference_forces",
+      "separate_md_and_scf_loops"
+    ],
+    "evidence": {
+      "real_scf_history": "data/aimd_h2o_dimer.npz contains 19 freshly recomputed generalized RHF iterations",
+      "dimer_density_isosurface": "six 68 x 50 x 42 density volumes are evaluated from stored AO density matrices and the contracted STO-3G basis",
+      "finite_difference_forces": "data/aimd_h2o_dimer.npz stores fresh central finite-difference forces from 12 displaced converged calculations",
+      "separate_md_and_scf_loops": "renderer assigns non-overlapping source panels and safety bands"
+    },
+    "scientific_changes": []
+  },
+  "consistency": {
+    "constraints": [
+      "separate A4 and 16:9 layouts",
+      "fixed camera/viewport for the dimer",
+      "shared four-story palette"
+    ],
+    "evidence": {
+      "renderer": "four_part_story/render_aimd_scf.py and common.py"
+    }
+  },
+  "quantitative": {
+    "transformations": [
+      "one isotropic orthographic projection from [1.55,-1.0,0.62]",
+      "density isosurface level 0.030 atomic units",
+      "force-arrow display scale 0.25",
+      "nuclear displacement display scale 60"
+    ],
+    "units": {
+      "energy": "hartree",
+      "force": "eV/angstrom",
+      "coordinates": "angstrom",
+      "density": "electrons/bohr^3"
+    }
+  },
+  "deviations": {
+    "records": [
+      {
+        "scope": "electronic-structure level",
+        "reason": "pedagogical generalized RHF/STO-3G is used to expose the SCF loop",
+        "mitigation": "the figure labels the level and does not call it production DFT",
+        "follow_up": "replace the data source with a converged DFT calculation if quantitative chemistry is required"
+      }
+    ]
+  },
+  "review": {
+    "render_sha256": "a4494a7c200a3193df68eebd84fe98333c6f563951f5c206d2fd9e64f8640175",
+    "problems": {
+      "scientific_expression": "The old composition did not make the cost multiplication explicit; the new figure separates one MD force request from a complete five-stage, 19-iteration SCF loop.",
+      "geometry": "The first rebuild squeezed full words into elliptical nodes; the final MD and SCF loops use true circular nodes with symbols inside and labels outside.",
+      "annotations": "The first video preview overlapped the right-panel heading with the density label; the redundant heading was removed and safety bands were rerun.",
+      "readability": "The dimer and density were initially too small; both now occupy the central panel at one fixed asymmetric camera, with force and motion arrows shown in separate phases.",
+      "submission_quality": "The A4 static figure and 17 s 16:9 video are independently composed, and all 408 frames are audited."
+    },
+    "action": "accepted after rebuilding both loops, enlarging the true 3D density scene, separating force and motion phases, and passing strict static plus every-frame QA",
+    "stop_condition": "fixed"
+  }
 }

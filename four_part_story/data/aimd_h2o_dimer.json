@@ -1,0 +1,35 @@
+{
+  "method": "RHF/STO-3G",
+  "engine": "project pure-NumPy Gaussian integral engine",
+  "atoms": [
+    "O",
+    "H",
+    "H",
+    "O",
+    "H",
+    "H"
+  ],
+  "iterations": 19,
+  "selected_density_iterations_zero_based": [
+    0,
+    2,
+    5,
+    9,
+    13,
+    18
+  ],
+  "density_grid_shape": [
+    68,
+    50,
+    42
+  ],
+  "density_grid_units": "electron density from AO density matrix on an angstrom coordinate grid",
+  "final_energy_hartree": -149.93375702830417,
+  "final_delta_energy_hartree": 4.2770693653437775e-09,
+  "density_mixing": 0.7,
+  "convergence_tolerance_hartree": 1e-08,
+  "force_method": "fresh central finite difference of converged RHF energy",
+  "force_delta_angstrom": 0.003,
+  "max_force_ev_per_angstrom": 3.0714442708205882,
+  "wall_seconds": 150.5792069999734
+}
