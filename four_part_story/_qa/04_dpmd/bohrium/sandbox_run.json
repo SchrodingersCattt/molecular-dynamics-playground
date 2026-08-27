@@ -1,0 +1,30 @@
+{
+  "schema": "four_part_story.bohrium_sandbox_provenance/v1",
+  "status": "completed_and_destroyed",
+  "sandbox_name": "default--ch4-deepmd-tc2d4",
+  "template": "ch4-deepmd",
+  "resource": "c2_m4_cpu",
+  "requested_lifetime_minutes": 30,
+  "deepmd_kit_version": "3.1.3",
+  "working_directory": "/workspace/dpmd",
+  "inputs": {
+    "water_box_64.npz": "bc350dd210575b2cea5d689075dcf62f15284faa3b91c36d48a19a307541689a",
+    "H2O-Phase-Diagram-model_compressed.pb": "435d8a455edea9908faf07bd7107cca24f28d7ec18e6abd37761324a4dcf7263",
+    "evaluate_water_box_deepmd.py": "39b725842e5b7bc7193a552b7888962de240a8809d72ab7c05e180173336facb"
+  },
+  "outputs": {
+    "dpmd_water_box_results.npz": "52de171ede0559e396e2a08fe3093ae012dab2a661e5ca6a1624b56d5f930492",
+    "dpmd_eval.json": "d49d4ac05bd5492d39b270206bd481a3b29b4a16e236fc51090df8790fe958e5",
+    "eval.log": "c02272d1b23a226ace982779507b9b11b550e3d8b4710f7802faa4e82aaf8899"
+  },
+  "result_summary": {
+    "n_atoms": 192,
+    "total_energy_ev": -1007.9069226533904,
+    "max_force_ev_per_angstrom": 1.2246452541839372,
+    "net_force_ev_per_angstrom": [-1.8041124150158794e-15, -1.637578961322106e-14, -3.0253577421035516e-15]
+  },
+  "cleanup": {
+    "verified_active_sandboxes": [],
+    "local_upload_staging_removed": true
+  }
+}

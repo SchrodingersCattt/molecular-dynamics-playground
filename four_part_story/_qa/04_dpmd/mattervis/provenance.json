@@ -1,0 +1,21 @@
+{
+  "schema": "four_part_story.mattervis_provenance/v1",
+  "input": "four_part_story/data/water_box_64.extxyz",
+  "input_sha256": "8f20d7d1ad1bb69e6ac991493520e0c0c56953275654a254041ae264407737e9",
+  "inspect": {
+    "parsed_atoms": 192,
+    "bond_records": 128,
+    "warnings": []
+  },
+  "render": {
+    "backend": "cpu",
+    "view": "unit_cell",
+    "projection": "orthographic",
+    "view_direction": [1.55, -1.0, 0.62],
+    "camera_up": [0.0, 0.0, 1.0],
+    "show_hydrogen": true,
+    "show_cell": true,
+    "output": "water_box.png",
+    "output_sha256": "2f607c9581ec5162658c496312c00db1ad1b5a57fbf82b9dd75682e3663bb97a"
+  }
+}

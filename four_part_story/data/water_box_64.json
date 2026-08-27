@@ -1,0 +1,14 @@
+{
+  "construction": "64 rigid H2O molecules on a perturbed 4x4x4 oxygen grid with deterministic random orientations",
+  "equilibration_status": "prepared visualization structure; not MD-equilibrated",
+  "n_water": 64,
+  "n_atoms": 192,
+  "box_length_angstrom": 12.429633119082435,
+  "density_g_cm3": 0.997,
+  "cutoff_angstrom": 6.0,
+  "central_source_id": 126,
+  "neighbor_atom_count": 83,
+  "seed": 20260826,
+  "stable_id_field": "source_id",
+  "molecule_id_field": "molecule_id"
+}

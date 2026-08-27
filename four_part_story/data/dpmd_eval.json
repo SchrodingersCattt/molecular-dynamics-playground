@@ -1,0 +1,19 @@
+{
+  "model": "H2O-Phase-Diagram-model_compressed.pb",
+  "model_type_map": [
+    "O",
+    "H"
+  ],
+  "n_atoms": 192,
+  "box_length_angstrom": 12.429633119082435,
+  "cutoff_angstrom": 6.0,
+  "total_energy_ev": -1007.9069226533904,
+  "atomic_energy_status": "model output",
+  "max_force_ev_per_angstrom": 1.2246452541839372,
+  "net_force_ev_per_angstrom": [
+    -1.8041124150158794e-15,
+    -1.637578961322106e-14,
+    -3.0253577421035516e-15
+  ],
+  "output": "dpmd_water_box_results.npz"
+}

@@ -25,7 +25,8 @@
 - Prepared 64-water box with PBC and stable source IDs; explicitly not claimed equilibrated.
 - Exact minimum-image 6.0 Å selection: 83 neighbors plus central atom.
 - Chemical-bond and neighbor-centric views use stored topology and one camera.
-- `D_i → epsilon_i`, `E=sum_i epsilon_i`, `F=-grad_R E`; no numerical model forces without successful inference.
+- `D_i → epsilon_i`, `E=sum_i epsilon_i`, `F=-grad_R E`.
+- Numerical energy and force marks must come only from the retained DeepMD inference result.
 
 ## Forbidden Changes
 
@@ -38,6 +39,7 @@
 - MatterVis inspect/preflight/render/verify with explicit asymmetric camera.
 - Static source/composite clipping, boundaries, colors, 297 mm print scale, strict QA, five-problem review.
 - Every video frame: visualize-data whitespace, clipping, boundaries, colors, registered text/arrow bounds, exact stable-ID selection and motion extrema.
+- DeepMD evidence: `data/dpmd_water_box_results.npz`, `data/dpmd_eval.json`, and `bohrium/sandbox_run.json` must agree on atom count, energy, forces, cutoff, model hash, and net force.
 
 ## Delivery Gate
 
@@ -45,4 +47,5 @@
 - [ ] Static strict QA and review hash pass.
 - [ ] Every video frame passes.
 - [ ] Neighbor and camera provenance is verified.
+- [ ] Real DeepMD energy and force provenance is verified.
 - [ ] Final static and motion are visually accepted.
