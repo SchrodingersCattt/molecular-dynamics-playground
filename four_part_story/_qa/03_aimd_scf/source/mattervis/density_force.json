@@ -1,0 +1,99 @@
+{
+  "schema": "mattervis.render-result/v1",
+  "backend": "cpu",
+  "format": "png",
+  "width": 1500,
+  "height": 950,
+  "plan_sha256": "b6ca5c47a99a962d90630d74c723c24b5b48bd92db6f187e6a6c15bc109c85e3",
+  "output_sha256": "2fe71fc3d038d3776cbe56125a606b844996092205552cd9650824868b80435d",
+  "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\density_force.png",
+  "source_sha256": "7b119faf46f3fdcde248775f305f32c953d85862df8a7e95d07263f45f6a6fb5",
+  "camera": {
+    "target": [
+      0.314861701684306,
+      0.15441954864030819,
+      0.0
+    ],
+    "ortho_scale": 2.35,
+    "direction": [
+      0.55,
+      -0.35,
+      1.4
+    ],
+    "up": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "scene_offset": [
+      3.3500002544006158,
+      2.349999792101853,
+      1.75000014917765
+    ]
+  },
+  "render_settings": {
+    "width": 1500,
+    "height": 950,
+    "atom_scale": 0.9,
+    "bond_radius": 0.105,
+    "isovalue": 0.03,
+    "opacity": 0.32
+  },
+  "vector_signature": "[{\"color\":\"#D98E98\",\"id\":\"rhf-nuclear-force-0\",\"origin\":[-1.5583330361557903,-0.14374962009434403,0.0],\"vector\":[-0.5516593570986903,-0.7320096049960865,0.0]},{\"color\":\"#D98E98\",\"id\":\"rhf-nuclear-force-1\",\"origin\":[-0.31623637197209864,0.03397969697354164,0.0],\"vector\":[0.6245801299814898,0.12006453923380836,0.0]},{\"color\":\"#D98E98\",\"id\":\"rhf-nuclear-force-2\",\"origin\":[-1.6926621064236278,1.1064914760963105,0.0],\"vector\":[-0.010169670870742303,0.6003978073932404,0.0]},{\"color\":\"#D98E98\",\"id\":\"rhf-nuclear-force-3\",\"origin\":[1.2700122044671152,0.002096058017441667,0.0],\"vector\":[-0.9213708056785104,0.010729875648297948,0.0]},{\"color\":\"#D98E98\",\"id\":\"rhf-nuclear-force-4\",\"origin\":[2.172429830821837,0.8739818806581613,0.0],\"vector\":[0.43887117990466007,0.37700933282432586,0.0]},{\"color\":\"#D98E98\",\"id\":\"rhf-nuclear-force-5\",\"origin\":[2.169935320148428,-0.8768247273219556,0.0],\"vector\":[0.41974902623594845,-0.376195126781236,0.0]}]",
+  "vector_count": 6,
+  "vector_renderer": "MatterVis native world-space vector_overlays",
+  "isosurface_renderer": "MatterVis native Cube isosurface mesh",
+  "isosurface_mesh_count": 1,
+  "pipeline_version": 3,
+  "warnings": [],
+  "metadata": {
+    "transparent_compositor": "per-pixel-fragment-list",
+    "scale": 1,
+    "actual_backend": "cpu",
+    "camera": {
+      "position": [
+        12.212177544828847,
+        -2.934781488458518,
+        23.50680346598037
+      ],
+      "target": [
+        3.6648619560849216,
+        2.504419340742161,
+        1.75000014917765
+      ],
+      "up": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "projection": "orthographic",
+      "fov_y_deg": 45.0,
+      "near": 0.01,
+      "far": 10000.0,
+      "ortho_scale": 2.35
+    },
+    "source": {
+      "path": null,
+      "input_format": null,
+      "frame": null
+    },
+    "requirements": {
+      "schema": "mattervis.requirements/v1",
+      "requested": [
+        "png"
+      ],
+      "capabilities": [
+        "core"
+      ],
+      "extras": [],
+      "available": true,
+      "missing_capabilities": [],
+      "install": "python -m pip install \"matter-vis\"",
+      "notes": [
+        "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+      ]
+    },
+    "install": "python -m pip install \"matter-vis\"",
+    "fallback": null
+  }
+}

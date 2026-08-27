@@ -1,4 +1,4 @@
-"""Render the independent A4 figure and 16:9 AIMD/SCF video."""
+"""Render the two-column AIMD/RHF density story."""
 
 from __future__ import annotations
 
@@ -7,9 +7,7 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.collections import PolyCollection
-from matplotlib.patches import Circle
-from skimage.measure import marching_cubes
+from matplotlib.patches import Ellipse
 
 from common import (
     CRIMSON,
@@ -21,39 +19,59 @@ from common import (
     NAVY,
     WHITE,
     LayoutRegistry,
-    add_footer,
-    add_page_title,
     axes_from_top_slot,
-    draw_ball_and_stick,
-    draw_three_step_loop,
-    draw_vector_arrow,
-    map_projected_to_rect,
     mix_hex,
     new_static_figure,
-    project_points,
     render_source_panel,
     render_video,
     save_static,
     smoothstep,
 )
+from mattervis_story import (
+    STATIC_LEFT,
+    STATIC_RIGHT,
+    VIDEO_LEFT,
+    VIDEO_RIGHT,
+    SceneCamera,
+    add_story_title,
+    camera_for_source,
+    draw_vv_loop,
+    make_vector_group,
+    place_render,
+    render_density_cube,
+    render_structure,
+    write_provenance_index,
+)
 
 
 ROOT = Path(__file__).resolve().parent
-DATA_PATH = ROOT / "data" / "aimd_h2o_dimer.npz"
-QA_DIR = ROOT / "_qa" / "03_aimd_scf"
 STEM = "03_aimd_scf"
+QA_DIR = ROOT / "_qa" / "03_aimd_scf"
+MATTERVIS_DIR = QA_DIR / "source" / "mattervis"
+CUBE_DIR = QA_DIR / "source" / "cubes"
+DATA_PATH = ROOT / "data" / "aimd_h2o_dimer.npz"
+MOTION_SOURCE = ROOT / "data" / "aimd_h2o_dimer_motion_display.extxyz"
 
-STATIC_LEFT = (0.035, 0.27, 0.265, 0.79)
-STATIC_MIDDLE = (0.30, 0.20, 0.72, 0.88)
-STATIC_RIGHT = (0.76, 0.22, 0.97, 0.83)
-VIDEO_LEFT = (0.030, 0.20, 0.270, 0.88)
-VIDEO_MIDDLE = (0.305, 0.20, 0.705, 0.88)
-VIDEO_RIGHT = (0.750, 0.20, 0.970, 0.86)
+SCENE_RECT = (0.00, 0.13, 0.65, 0.92)
+CAMERA_SCALE = 2.35
+DENSITY_ISOVALUE = 0.030
+DENSITY_OPACITY = 0.32
+PALE_FORCE = "#D98E98"
+FORCE_DISPLAY_SCALE = 0.30
+DISPLACEMENT_ARROW_SCALE = 320.0
+AIMD_CAMERA_DIRECTION = (0.55, -0.35, 1.40)
+AIMD_CAMERA_UP = (0.0, 1.0, 0.0)
 
-FORCE_DISPLAY_SCALE = 0.25
-MOVE_DISPLAY_SCALE = 60.0
-TIME_STEP_FS = 0.50
-ACCELERATION_FACTOR = 0.00964853322  # (eV/A)/amu -> A/fs^2
+INTRO_END = 1.0
+SCF_END = 11.45
+FORCE_END = 13.0
+VIDEO_DURATION = 15.0
+
+POSITION_EQUATION = (
+    r"$\mathbf{r}_{n+1}=\mathbf{r}_n+\mathbf{v}_n\Delta t+"
+    r"\frac{1}{2}\mathbf{a}_n\Delta t^2$"
+)
+ACCELERATION_EQUATION = r"$\mathbf{a}_{n}=\mathbf{F}_{\mathrm{RHF}}/m$"
 
 
 def load_data() -> dict[str, np.ndarray]:
@@ -61,181 +79,131 @@ def load_data() -> dict[str, np.ndarray]:
         return {key: archive[key] for key in archive.files}
 
 
-def precompute_surfaces(data: dict[str, np.ndarray]) -> list[tuple[np.ndarray, np.ndarray]]:
-    grid_x = data["grid_x"]
-    grid_y = data["grid_y"]
-    grid_z = data["grid_z"]
-    spacing = (float(np.diff(grid_x).mean()), float(np.diff(grid_y).mean()), float(np.diff(grid_z).mean()))
-    origin = np.array([grid_x[0], grid_y[0], grid_z[0]], dtype=float)
-    result = []
-    for volume in data["density_volumes"]:
-        vertices, faces, _, _ = marching_cubes(volume, level=0.030, spacing=spacing, step_size=2)
-        result.append((vertices + origin, faces.astype(int)))
-    return result
-
-
-def _surface_collection(
-    ax: plt.Axes,
-    surface: tuple[np.ndarray, np.ndarray],
-    *,
-    rect: tuple[float, float, float, float],
-    centre_3d: np.ndarray,
-    half_span: float,
-    alpha: float,
-) -> None:
-    vertices, faces = surface
-    projected, depth = project_points(vertices)
-    centre_projected, _ = project_points(centre_3d[None, :])
-    mapped = map_projected_to_rect(projected, rect, centre_projected[0], half_span)
-    order = np.argsort(depth[faces].mean(axis=1))
-    polygons = mapped[faces[order]]
-    collection = PolyCollection(
-        polygons,
-        facecolors=NAVY,
-        edgecolors=NAVY,
-        linewidths=0.16,
-        alpha=alpha,
-        zorder=2,
-    )
-    ax.add_collection(collection)
-
-
-def _motion_vectors(data: dict[str, np.ndarray]) -> np.ndarray:
-    masses = np.array([15.999 if element == "O" else 1.008 for element in data["elements"]])
-    acceleration = data["forces"] / masses[:, None] * ACCELERATION_FACTOR
-    return 0.5 * acceleration * TIME_STEP_FS**2
-
-
-def draw_dimer_density(
-    ax: plt.Axes,
-    registry: LayoutRegistry,
+def prepare_mattervis(
     data: dict[str, np.ndarray],
-    surfaces: list[tuple[np.ndarray, np.ndarray]],
-    *,
-    surface_index: int,
-    video: bool,
-    density_alpha: float = 0.18,
-    force_weight: float = 1.0,
-    move_weight: float = 0.0,
-) -> None:
-    centre = np.asarray(data["positions"], dtype=float).mean(axis=0)
-    rect = (0.025, 0.20 if video else 0.18, 0.975, 0.84 if video else 0.86)
-    half_span = 2.65
-    positions = np.asarray(data["positions"], dtype=float)
-    movement = _motion_vectors(data) * MOVE_DISPLAY_SCALE * move_weight
-    if density_alpha > 0.001:
-        _surface_collection(
-            ax,
-            surfaces[surface_index],
-            rect=rect,
-            centre_3d=centre,
-            half_span=half_span,
-            alpha=density_alpha,
-        )
-    if move_weight > 0.02:
-        draw_ball_and_stick(
-            ax,
-            positions,
-            data["elements"],
-            data["bonds"],
-            rect=rect,
-            centre_3d=centre,
-            half_span=half_span,
-            alpha=0.22,
-            atom_scale=1.00 if video else 0.65,
-            bond_alpha=0.25,
-            edge_color=LINE_GRAY,
-        )
-    atom_xy, _ = draw_ball_and_stick(
-        ax,
-        positions + movement,
-        data["elements"],
-        data["bonds"],
-        rect=rect,
-        centre_3d=centre,
-        half_span=half_span,
-        atom_scale=1.15 if video else 0.72,
+) -> tuple[dict[str, list[Path] | Path], SceneCamera]:
+    """Render density, force, and movement as complete MatterVis scenes."""
+    cube_paths = [
+        CUBE_DIR / f"rho_{iteration:02d}_display.cube"
+        for iteration in range(1, len(data["density_iterations"]) + 1)
+    ]
+    target = np.asarray(data["positions"], dtype=float).mean(axis=0)
+    camera = camera_for_source(
+        cube_paths[-1],
+        target=target,
+        ortho_scale=CAMERA_SCALE,
+        direction=AIMD_CAMERA_DIRECTION,
+        up=AIMD_CAMERA_UP,
     )
-    first, second = (int(value) for value in data["hydrogen_bond"])
-    ax.plot(
-        [atom_xy[first, 0], atom_xy[second, 0]],
-        [atom_xy[first, 1], atom_xy[second, 1]],
+    density_paths: list[Path] = []
+    records: list[dict] = []
+    for iteration, cube_path in enumerate(cube_paths, start=1):
+        output = MATTERVIS_DIR / f"density_{iteration:02d}.png"
+        records.append(
+            render_density_cube(
+                cube_path,
+                output,
+                camera=camera,
+                isovalue=DENSITY_ISOVALUE,
+                opacity=DENSITY_OPACITY,
+                width=1500,
+                height=950,
+            )
+        )
+        density_paths.append(output)
+
+    force_path = MATTERVIS_DIR / "density_force.png"
+    records.append(
+        render_density_cube(
+            cube_paths[-1],
+            force_path,
+            camera=camera,
+            isovalue=DENSITY_ISOVALUE,
+            opacity=DENSITY_OPACITY,
+            width=1500,
+            height=950,
+            vector_overlays=make_vector_group(
+                "rhf-nuclear-force",
+                data["positions"],
+                data["forces"],
+                scale=FORCE_DISPLAY_SCALE,
+                color=PALE_FORCE,
+                tail_offset=0.18,
+            ),
+        )
+    )
+
+    motion_target = np.asarray(data["display_motion_positions"], dtype=float).mean(
+        axis=(0, 1)
+    )
+    ghost_path = MATTERVIS_DIR / "motion_ghost.png"
+    ghost_camera = camera_for_source(
+        MOTION_SOURCE,
+        target=motion_target,
+        ortho_scale=CAMERA_SCALE,
+        frame=0,
+        direction=AIMD_CAMERA_DIRECTION,
+        up=AIMD_CAMERA_UP,
+    )
+    records.append(
+        render_structure(
+            MOTION_SOURCE,
+            ghost_path,
+            camera=ghost_camera,
+            frame=0,
+            width=1500,
+            height=950,
+            atom_scale=0.90,
+            bond_radius=0.105,
+        )
+    )
+    movement_paths: list[Path] = []
+    displacement_vectors = make_vector_group(
+        "vv-nuclear-displacement",
+        data["positions"],
+        data["vv_displacement"],
+        scale=DISPLACEMENT_ARROW_SCALE,
         color=GREEN,
-        lw=2.8 if video else 1.8,
-        ls=(0, (4, 5)),
-        alpha=0.60,
-        zorder=5,
+        tail_offset=0.14,
     )
-    if force_weight > 0.02:
-        for position, force in zip(positions, data["forces"]):
-            draw_vector_arrow(
-                ax,
-                registry,
-                position,
-                force,
-                colour=CRIMSON,
-                rect=rect,
-                centre_3d=centre,
-                half_span=half_span,
-                display_scale=FORCE_DISPLAY_SCALE,
-                video=video,
-                alpha=force_weight,
-            )
-    if move_weight > 0.02:
-        for position, displacement in zip(positions, _motion_vectors(data)):
-            draw_vector_arrow(
-                ax,
-                registry,
-                position,
-                displacement,
-                colour=GREEN,
-                rect=rect,
-                centre_3d=centre,
-                half_span=half_span,
-                display_scale=MOVE_DISPLAY_SCALE * move_weight,
-                video=video,
-                alpha=move_weight,
-            )
-
-
-def draw_md_loop(
-    ax: plt.Axes,
-    registry: LayoutRegistry,
-    *,
-    video: bool,
-) -> None:
-    ax.set_aspect("equal", adjustable="box")
-    radius = 0.125 if video else 0.105
-    nodes = [
-        (0.50, 0.79, r"$\mathbf{r}$", "position", DARK_GRAY),
-        (0.78, 0.31, r"$\mathbf{a}$", "acceleration", CRIMSON),
-        (0.22, 0.31, r"$\mathbf{v}$", "velocity", DARK_GRAY),
-    ]
-    paths = [
-        ((0.57, 0.72), (0.72, 0.42), -0.10),
-        ((0.66, 0.27), (0.34, 0.27), -0.10),
-        ((0.27, 0.42), (0.43, 0.72), -0.10),
-    ]
-    for start, end, curve in paths:
-        registry.arrow(
-            ax,
-            start,
-            end,
-            connectionstyle=f"arc3,rad={curve}",
-            arrowstyle="-|>",
-            mutation_scale=27 if video else 18,
-            lw=4.0 if video else 2.4,
-            color=LINE_GRAY,
-            zorder=2,
+    for frame in range(len(data["display_motion_positions"])):
+        frame_camera = camera_for_source(
+            MOTION_SOURCE,
+            target=motion_target,
+            ortho_scale=CAMERA_SCALE,
+            frame=frame,
+            direction=AIMD_CAMERA_DIRECTION,
+            up=AIMD_CAMERA_UP,
         )
-    for index, (x, y, symbol, label, label_colour) in enumerate(nodes):
-        active = index == 1
-        ax.add_patch(Circle((x, y), radius, fc=INK if active else LIGHT_GRAY, ec=LINE_GRAY, lw=2.8 if video else 1.8, zorder=4))
-        registry.text(ax, x, y, symbol, ha="center", va="center", fontsize=25 if video else 15, color=WHITE if active else DARK_GRAY, weight="bold", zorder=5)
-        label_y = y + radius + (0.060 if index == 0 else -2.0 * radius - 0.055)
-        registry.text(ax, x, label_y, label, ha="center", va="center", fontsize=18 if video else 10, color=label_colour, weight="bold" if active else "normal")
-    registry.text(ax, 0.50, 0.55, "one MD step", ha="center", va="center", fontsize=19 if video else 11, color=DARK_GRAY)
-    registry.text(ax, 0.50, 0.47, r"$\Delta t$", ha="center", va="center", fontsize=24 if video else 14, color=INK, weight="bold")
+        output = MATTERVIS_DIR / f"motion_{frame:02d}.png"
+        records.append(
+            render_structure(
+                MOTION_SOURCE,
+                output,
+                camera=frame_camera,
+                frame=frame,
+                width=1500,
+                height=950,
+                atom_scale=0.90,
+                bond_radius=0.105,
+                vector_overlays=displacement_vectors,
+            )
+        )
+        movement_paths.append(output)
+
+    write_provenance_index(MATTERVIS_DIR, records)
+    return {
+        "density": density_paths,
+        "force": force_path,
+        "ghost": ghost_path,
+        "movement": movement_paths,
+    }, camera
+
+
+def _axes_aspect(ax: plt.Axes) -> float:
+    figure_width, figure_height = ax.figure.canvas.get_width_height()
+    position = ax.get_position()
+    return (position.width * figure_width) / (position.height * figure_height)
 
 
 def draw_scf_loop(
@@ -246,43 +214,59 @@ def draw_scf_loop(
     active_stage: int | None,
     active_weight: float,
     iteration: int,
-    delta_energy: float,
     converged: bool,
 ) -> None:
-    ax.set_aspect("equal", adjustable="box")
-    nodes = [
-        (0.50, 0.82, r"$\rho^k$", "density", (0.50, 0.925)),
-        (0.80, 0.64, r"$F$", "build Fock", (0.80, 0.825)),
-        (0.69, 0.29, r"$C$", "solve", (0.84, 0.18)),
-        (0.31, 0.29, r"$\rho'$", "new density", (0.25, 0.12)),
-        (0.20, 0.64, r"$\Delta E$", "converged?", (0.24, 0.825)),
+    """Draw the small paper-space SCF loop; no molecular structure enters it."""
+    aspect = _axes_aspect(ax)
+    positions = [
+        (0.790, 0.78),
+        (0.880, 0.60),
+        (0.790, 0.42),
+        (0.700, 0.60),
     ]
-    radius = 0.080 if video else 0.061
-    paths = [
-        ((0.57, 0.78), (0.73, 0.68), -0.04),
-        ((0.78, 0.57), (0.72, 0.37), -0.04),
-        ((0.61, 0.29), (0.39, 0.29), -0.04),
-        ((0.28, 0.37), (0.22, 0.57), -0.04),
-        ((0.27, 0.68), (0.43, 0.78), -0.04),
+    labels = ["build Fock", "solve\norbitals", "update\ndensity", "check\nconvergence"]
+    symbols = [r"$F$", r"$C$", r"$\rho$", r"$?$" ]
+    arrows = [
+        ((0.820, 0.74), (0.855, 0.65)),
+        ((0.855, 0.55), (0.820, 0.46)),
+        ((0.760, 0.46), (0.725, 0.55)),
+        ((0.725, 0.65), (0.760, 0.74)),
     ]
-    for start, end, curve in paths:
+    for index, (start, end) in enumerate(arrows):
         registry.arrow(
             ax,
             start,
             end,
-            connectionstyle=f"arc3,rad={curve}",
             arrowstyle="-|>",
-            mutation_scale=26 if video else 17,
-            lw=3.8 if video else 2.2,
-            color=LINE_GRAY,
-            zorder=2,
+            mutation_scale=24 if video else 15,
+            lw=4.0 if video else 2.2,
+            color=INK if active_stage == index else LINE_GRAY,
+            zorder=3,
         )
-    for index, (x, y, symbol, label, label_position) in enumerate(nodes):
+    radius_x = 0.036 if video else 0.031
+    radius_y = radius_x * aspect
+    label_positions = [
+        (0.790, 0.895, "center"),
+        (0.925, 0.710, "center"),
+        (0.790, 0.285, "center"),
+        (0.665, 0.750, "center"),
+    ]
+    for index, ((x, y), symbol, label, label_position) in enumerate(
+        zip(positions, symbols, labels, label_positions)
+    ):
         weight = active_weight if active_stage == index else 0.0
-        fill = mix_hex(LIGHT_GRAY, INK, weight)
-        edge = GREEN if converged and index == 4 else LINE_GRAY
-        text_color = WHITE if weight > 0.48 else DARK_GRAY
-        ax.add_patch(Circle((x, y), radius, fc=fill, ec=edge, lw=3.0 if video else 2.0, zorder=4))
+        fill = mix_hex(WHITE, INK, weight)
+        ax.add_patch(
+            Ellipse(
+                (x, y),
+                2.0 * radius_x,
+                2.0 * radius_y,
+                fc=fill,
+                ec=INK if weight > 0.1 else LINE_GRAY,
+                lw=3.2 if video else 1.9,
+                zorder=4,
+            )
+        )
         registry.text(
             ax,
             x,
@@ -290,179 +274,339 @@ def draw_scf_loop(
             symbol,
             ha="center",
             va="center",
-            fontsize=18 if video else 10,
-            color=text_color,
+            fontsize=20 if video else 11,
+            color=WHITE if weight > 0.48 else DARK_GRAY,
             weight="bold",
             zorder=5,
         )
-        registry.text(ax, label_position[0], label_position[1], label, ha="center", va="center", fontsize=18 if video else 10, color=DARK_GRAY)
-    registry.text(ax, 0.50, 0.58, "SCF", ha="center", va="center", fontsize=25 if video else 14, color=INK, weight="bold")
-    registry.text(ax, 0.50, 0.49, f"iteration {iteration:02d}/19", ha="center", va="center", fontsize=18 if video else 10, color=DARK_GRAY)
-    delta_text = f"|ΔE| = {delta_energy:.1e} Ha" if np.isfinite(delta_energy) else "initial density"
-    registry.text(ax, 0.50, 0.025, delta_text, ha="center", va="center", fontsize=18 if video else 10, color=GREEN if converged else DARK_GRAY, weight="bold" if converged else "normal")
+        registry.text(
+            ax,
+            label_position[0],
+            label_position[1],
+            label,
+            ha=label_position[2],
+            va="center",
+            fontsize=18 if video else 10,
+            color=DARK_GRAY,
+            linespacing=0.95,
+        )
+    registry.text(
+        ax,
+        0.790,
+        0.60,
+        "SCF",
+        ha="center",
+        va="center",
+        fontsize=24 if video else 14,
+        color=INK,
+        weight="bold",
+    )
+    status = "converged" if converged else f"iteration {iteration:02d} / 19"
+    registry.text(
+        ax,
+        0.790,
+        0.205,
+        status,
+        ha="center",
+        va="center",
+        fontsize=18 if video else 10,
+        color=GREEN if converged else DARK_GRAY,
+        weight="bold" if converged else "normal",
+    )
 
 
-def _draw_md_source(ax: plt.Axes, registry: LayoutRegistry) -> None:
-    draw_md_loop(ax, registry, video=False)
+def draw_left(
+    ax: plt.Axes,
+    registry: LayoutRegistry,
+    *,
+    video: bool,
+    stage: int,
+) -> None:
+    equation = POSITION_EQUATION if stage == 0 else ACCELERATION_EQUATION
+    draw_vv_loop(
+        ax,
+        registry,
+        video=video,
+        active_stage=stage,
+        equation=equation,
+    )
 
 
-def _draw_density_source(ax: plt.Axes, registry: LayoutRegistry, data, surfaces) -> None:
-    registry.text(ax, 0.50, 0.975, "one concrete H₂O dimer", ha="center", va="top", fontsize=13, color=INK, weight="bold")
-    draw_dimer_density(ax, registry, data, surfaces, surface_index=-1, video=False, density_alpha=0.18, force_weight=1.0)
-    registry.text(ax, 0.50, 0.115, "3D electron-density isosurface · force arrows ×0.25", ha="center", va="center", fontsize=10, color=DARK_GRAY)
-    registry.text(ax, 0.50, 0.055, r"$\mathbf{F}=-\nabla_{\mathbf{R}}E_{\mathrm{SCF}}$", ha="center", va="center", fontsize=12, color=INK)
+def draw_case(
+    ax: plt.Axes,
+    registry: LayoutRegistry,
+    assets: dict[str, list[Path] | Path],
+    *,
+    video: bool,
+    mode: str,
+    iteration_index: int,
+    density_blend: float,
+    active_scf_stage: int | None,
+    active_scf_weight: float,
+    phase_progress: float,
+) -> None:
+    density_paths = assets["density"]
+    movement_paths = assets["movement"]
+    assert isinstance(density_paths, list) and isinstance(movement_paths, list)
+    force_path = assets["force"]
+    ghost_path = assets["ghost"]
+    assert isinstance(force_path, Path) and isinstance(ghost_path, Path)
 
+    if mode in {"intro", "scf"}:
+        current = min(iteration_index, len(density_paths) - 1)
+        following = min(current + 1, len(density_paths) - 1)
+        place_render(
+            ax,
+            density_paths[current],
+            SCENE_RECT,
+            alpha=1.0 - density_blend,
+            zorder=4,
+        )
+        if following != current and density_blend > 0.001:
+            place_render(
+                ax,
+                density_paths[following],
+                SCENE_RECT,
+                alpha=density_blend,
+                zorder=5,
+            )
+        heading = r"real $\rho^k(\mathbf{r})$ on one fixed 3D grid"
+        heading_color = NAVY
+        note = "coarse initial density becomes a stable, sharp isosurface"
+        converged = False
+    elif mode == "force":
+        place_render(ax, density_paths[-1], SCENE_RECT, zorder=4)
+        # The force step is a deliberate visual cut: the pale MatterVis arrows
+        # must be fully legible for every frame assigned to this stage.
+        place_render(ax, force_path, SCENE_RECT, zorder=5)
+        heading = r"converged $\rho(\mathbf{r})$ $\rightarrow$ nuclear forces"
+        heading_color = CRIMSON
+        note = "the SCF loop stops before forces return to the MD integrator"
+        converged = True
+    else:
+        fade = smoothstep(min(phase_progress / 0.22, 1.0))
+        place_render(ax, force_path, SCENE_RECT, alpha=1.0 - fade, zorder=3)
+        place_render(ax, ghost_path, SCENE_RECT, alpha=0.18 * fade, zorder=4)
+        frame = int(round(smoothstep(phase_progress) * (len(movement_paths) - 1)))
+        place_render(ax, movement_paths[frame], SCENE_RECT, alpha=fade, zorder=5)
+        heading = "forces return to Velocity Verlet"
+        heading_color = GREEN
+        note = "old nuclei remain as a faint reference while the new positions move"
+        converged = True
 
-def _draw_scf_source(ax: plt.Axes, registry: LayoutRegistry, data) -> None:
-    energies = data["energies"]
-    final_delta = abs(float(energies[-1] - energies[-2]))
+    registry.text(
+        ax,
+        0.34,
+        0.975,
+        heading,
+        ha="center",
+        va="top",
+        fontsize=25 if video else 13,
+        color=heading_color,
+        weight="bold",
+    )
+    registry.text(
+        ax,
+        0.34,
+        0.065,
+        note,
+        ha="center",
+        va="bottom",
+        fontsize=18 if video else 10,
+        color=DARK_GRAY,
+    )
     draw_scf_loop(
         ax,
         registry,
-        video=False,
-        active_stage=4,
-        active_weight=0.0,
-        iteration=len(energies),
-        delta_energy=final_delta,
-        converged=True,
+        video=video,
+        active_stage=active_scf_stage,
+        active_weight=active_scf_weight,
+        iteration=iteration_index + 1,
+        converged=converged,
     )
 
 
-def render_static(data, surfaces) -> None:
-    render_source_panel(QA_DIR / "source" / "md_loop.png", _draw_md_source, width_px=900, height_px=1400)
-    render_source_panel(QA_DIR / "source" / "dimer_density.png", lambda ax, reg: _draw_density_source(ax, reg, data, surfaces), width_px=1550, height_px=1450)
-    render_source_panel(QA_DIR / "source" / "scf_loop.png", lambda ax, reg: _draw_scf_source(ax, reg, data), width_px=900, height_px=1350)
+def render_static(
+    data: dict[str, np.ndarray],
+    assets: dict[str, list[Path] | Path],
+) -> None:
+    render_source_panel(
+        QA_DIR / "source" / "integrator.png",
+        lambda ax, registry: draw_left(ax, registry, video=False, stage=1),
+        width_px=900,
+        height_px=1400,
+    )
+    render_source_panel(
+        QA_DIR / "source" / "case.png",
+        lambda ax, registry: draw_case(
+            ax,
+            registry,
+            assets,
+            video=False,
+            mode="force",
+            iteration_index=len(data["density_iterations"]) - 1,
+            density_blend=0.0,
+            active_scf_stage=None,
+            active_scf_weight=0.0,
+            phase_progress=1.0,
+        ),
+        width_px=1800,
+        height_px=1400,
+    )
     fig = new_static_figure()
     registry = LayoutRegistry(min_font_pt=10, edge_pad_px=18)
-    add_page_title(fig, "03", "Ab initio molecular dynamics", "one nuclear force requires a self-consistent electronic calculation", video=False, registry=registry)
+    add_story_title(
+        fig,
+        registry,
+        "Ab initio MD: one force requires an SCF loop",
+        "A real RHF water-dimer density is rebuilt until self-consistent, then nuclei move",
+        video=False,
+    )
     left = axes_from_top_slot(fig, STATIC_LEFT)
-    middle = axes_from_top_slot(fig, STATIC_MIDDLE)
     right = axes_from_top_slot(fig, STATIC_RIGHT)
-    _draw_md_source(left, registry)
-    _draw_density_source(middle, registry, data, surfaces)
-    _draw_scf_source(right, registry, data)
-    add_footer(fig, "H₂O dimer · pedagogical RHF/STO-3G · 19 SCF iterations · repeated at every MD step", video=False, registry=registry)
+    draw_left(left, registry, video=False, stage=1)
+    draw_case(
+        right,
+        registry,
+        assets,
+        video=False,
+        mode="force",
+        iteration_index=len(data["density_iterations"]) - 1,
+        density_blend=0.0,
+        active_scf_stage=None,
+        active_scf_weight=0.0,
+        phase_progress=1.0,
+    )
     errors = registry.validate(fig)
     if errors:
         raise RuntimeError("Static layout failed:\n" + "\n".join(errors))
-    png, svg = save_static(fig, STEM)
-    print(f"figure: {png}")
-    print(f"vector: {svg}")
+    save_static(fig, STEM)
 
 
-def _video_state(time_seconds: float, energies: np.ndarray) -> tuple[str, int, int | None, float, bool]:
-    if time_seconds < 1.5:
-        return "request", 1, None, 0.0, False
-    if time_seconds < 14.8:
-        elapsed = time_seconds - 1.5
-        iteration_float = min(elapsed / 13.3 * len(energies), len(energies) - 1e-6)
-        iteration_zero = int(iteration_float)
-        within = iteration_float - iteration_zero
-        stage = min(int(within * 5.0), 4)
-        edge = min((within * 5.0) % 1.0 / 0.22, 1.0)
-        return "scf", iteration_zero + 1, stage, smoothstep(edge), False
-    return "converged", len(energies), None, 0.0, True
+def video_state(time_seconds: float, iteration_count: int) -> dict:
+    if time_seconds < INTRO_END:
+        return {
+            "mode": "intro",
+            "iteration": 0,
+            "blend": 0.0,
+            "active_stage": None,
+            "active_weight": 0.0,
+            "progress": time_seconds / INTRO_END,
+        }
+    if time_seconds < SCF_END:
+        local = (time_seconds - INTRO_END) / (SCF_END - INTRO_END)
+        iteration_float = min(local * iteration_count, iteration_count - 1.0e-6)
+        iteration = int(iteration_float)
+        within = iteration_float - iteration
+        stage_float = within * 4.0
+        active_stage = min(int(stage_float), 3)
+        stage_within = stage_float - active_stage
+        weight = smoothstep(min(stage_within / 0.24, 1.0))
+        return {
+            "mode": "scf",
+            "iteration": iteration,
+            "blend": smoothstep(within),
+            "active_stage": active_stage,
+            "active_weight": weight,
+            "progress": local,
+        }
+    if time_seconds < FORCE_END:
+        return {
+            "mode": "force",
+            "iteration": iteration_count - 1,
+            "blend": 0.0,
+            "active_stage": None,
+            "active_weight": 0.0,
+            "progress": (time_seconds - SCF_END) / (FORCE_END - SCF_END),
+        }
+    return {
+        "mode": "move",
+        "iteration": iteration_count - 1,
+        "blend": 0.0,
+        "active_stage": None,
+        "active_weight": 0.0,
+        "progress": min((time_seconds - FORCE_END) / (VIDEO_DURATION - FORCE_END), 1.0),
+    }
 
 
-def _surface_index(iteration_one_based: int, density_iterations: np.ndarray) -> int:
-    iteration_zero = max(iteration_one_based - 1, 0)
-    candidates = np.where(density_iterations <= iteration_zero)[0]
-    return int(candidates[-1]) if len(candidates) else 0
-
-
-def _draw_video_frame(fig, time_seconds, frame_index, registry, data, surfaces):
-    energies = np.asarray(data["energies"], dtype=float)
-    state, iteration, stage, active_weight, converged = _video_state(time_seconds, energies)
-    add_page_title(fig, "03", "Ab initio MD: the SCF loop", "a single nuclear force query repeatedly rebuilds the electronic state", video=True, registry=registry)
-    left = axes_from_top_slot(fig, VIDEO_LEFT)
-    middle = axes_from_top_slot(fig, VIDEO_MIDDLE)
-    right = axes_from_top_slot(fig, VIDEO_RIGHT)
-    draw_md_loop(left, registry, video=True)
-
-    if iteration <= 1:
-        delta = float("nan")
-    else:
-        delta = abs(float(energies[iteration - 1] - energies[iteration - 2]))
-    density_index = _surface_index(iteration, data["density_iterations"])
-    if converged:
-        force_in = smoothstep((time_seconds - 14.8) / 0.45)
-        force_out = smoothstep((time_seconds - 15.65) / 0.45)
-        force_weight = force_in * (1.0 - force_out)
-        move_weight = smoothstep((time_seconds - 15.65) / 0.70)
-        final_weight = max(force_in, move_weight)
-    else:
-        force_weight = 0.0
-        move_weight = 0.0
-        final_weight = 0.0
-    draw_dimer_density(
-        middle,
+def draw_video_frame(
+    fig: plt.Figure,
+    time_seconds: float,
+    frame_index: int,
+    registry: LayoutRegistry,
+    data: dict[str, np.ndarray],
+    assets: dict[str, list[Path] | Path],
+) -> list[dict]:
+    del frame_index
+    state = video_state(time_seconds, len(data["density_iterations"]))
+    add_story_title(
+        fig,
         registry,
-        data,
-        surfaces,
-        surface_index=density_index,
+        "Ab initio MD: one force requires an SCF loop",
+        "Watch one real electronic density become self-consistent before the nuclei move",
         video=True,
-        density_alpha=0.18 * (1.0 - 0.70 * final_weight),
-        force_weight=force_weight,
-        move_weight=move_weight,
     )
-    if state == "request":
-        headline, colour = "nuclei fixed: start electronic solve", NAVY
-    elif state == "scf":
-        headline, colour = f"SCF iteration {iteration:02d}/19", INK
-    elif time_seconds < 15.65:
-        headline, colour = "SCF converged → nuclear forces", CRIMSON
-    else:
-        headline, colour = "forces → move nuclei", GREEN
-    registry.text(middle, 0.50, 0.965, headline, ha="center", va="top", fontsize=24, color=colour, weight="bold")
-    if converged and time_seconds < 15.65:
-        registry.text(middle, 0.50, 0.105, "red force arrows ×0.25", ha="center", va="center", fontsize=18, color=DARK_GRAY)
-    elif converged:
-        registry.text(middle, 0.50, 0.105, "green nuclear move ×60 · old positions grey", ha="center", va="center", fontsize=18, color=DARK_GRAY)
-    else:
-        registry.text(middle, 0.50, 0.105, "true 3D density isosurface · nuclei remain fixed", ha="center", va="center", fontsize=18, color=DARK_GRAY)
-
-    draw_scf_loop(
+    left = axes_from_top_slot(fig, VIDEO_LEFT)
+    right = axes_from_top_slot(fig, VIDEO_RIGHT)
+    left_stage = 0 if state["mode"] == "move" else 1
+    draw_left(left, registry, video=True, stage=left_stage)
+    draw_case(
         right,
         registry,
+        assets,
         video=True,
-        active_stage=stage,
-        active_weight=active_weight,
-        iteration=iteration,
-        delta_energy=delta,
-        converged=converged,
+        mode=state["mode"],
+        iteration_index=state["iteration"],
+        density_blend=state["blend"],
+        active_scf_stage=state["active_stage"],
+        active_scf_weight=state["active_weight"],
+        phase_progress=state["progress"],
     )
-    add_footer(fig, "real H₂O dimer · RHF/STO-3G teaching calculation · fixed asymmetric orthographic camera", video=True, registry=registry)
     semantics = [
         {"id": "density", "color": NAVY, "min_pixels": 350},
-        {"id": "oxygen", "color": CRIMSON, "min_pixels": 260},
+        {"id": "oxygen", "color": CRIMSON, "min_pixels": 180},
     ]
-    if converged:
-        semantics.append({"id": "converged", "color": GREEN, "min_pixels": 260})
+    if state["mode"] == "move" and state["progress"] >= 0.18:
+        semantics.append({"id": "displacement", "color": GREEN, "min_pixels": 180})
+    if state["mode"] == "force":
+        semantics.append({"id": "nuclear_force", "color": PALE_FORCE, "min_pixels": 260})
     return semantics
 
 
-def render_animation(data, surfaces) -> None:
+def render_animation(
+    data: dict[str, np.ndarray],
+    assets: dict[str, list[Path] | Path],
+) -> None:
     audit_config = {
         "panels": [
-            {"id": "md_loop", "rect": list(VIDEO_LEFT), "min_clearance_px": 16},
-            {"id": "dimer_density", "rect": list(VIDEO_MIDDLE), "min_clearance_px": 16},
-            {"id": "scf_loop", "rect": list(VIDEO_RIGHT), "min_clearance_px": 16},
+            {"id": "integrator", "rect": list(VIDEO_LEFT), "min_clearance_px": 18},
+            {"id": "aimd_case", "rect": list(VIDEO_RIGHT), "min_clearance_px": 18},
         ],
-        "whitespace": {"background_threshold": 245, "min_ink_fraction": 0.020, "min_panel_bbox_fill": 0.30, "grid_rows": 12, "grid_columns": 24},
+        "whitespace": {
+            "background_threshold": 245,
+            "min_ink_fraction": 0.020,
+            "min_panel_bbox_fill": 0.24,
+            "grid_rows": 12,
+            "grid_columns": 20,
+        },
         "bands": [
-            {"id": "left_gap", "rect": [0.278, 0.205, 0.295, 0.88], "max_ink_pixels": 0},
-            {"id": "right_gap", "rect": [0.715, 0.205, 0.738, 0.88], "max_ink_pixels": 0},
+            {
+                "id": "column_gap",
+                "rect": [0.365, 0.19, 0.385, 0.90],
+                "max_ink_pixels": 0,
+            }
         ],
     }
-    output = render_video(
+    render_video(
         stem=STEM,
-        duration_seconds=17.0,
-        draw_frame=lambda fig, t, i, reg: _draw_video_frame(fig, t, i, reg, data, surfaces),
+        duration_seconds=VIDEO_DURATION,
+        draw_frame=lambda fig, time, index, registry: draw_video_frame(
+            fig, time, index, registry, data, assets
+        ),
         audit_config=audit_config,
         qa_directory=QA_DIR / "_qa",
-        representative_times=[0.8, 4.2, 9.0, 14.2, 16.2],
+        representative_times=[0.5, 2.5, 6.5, 10.8, 12.2, 14.2],
     )
-    print(f"video: {output}")
 
 
 def main() -> None:
@@ -470,10 +614,10 @@ def main() -> None:
     parser.add_argument("--static-only", action="store_true")
     args = parser.parse_args()
     data = load_data()
-    surfaces = precompute_surfaces(data)
-    render_static(data, surfaces)
+    assets, _camera = prepare_mattervis(data)
+    render_static(data, assets)
     if not args.static_only:
-        render_animation(data, surfaces)
+        render_animation(data, assets)
 
 
 if __name__ == "__main__":

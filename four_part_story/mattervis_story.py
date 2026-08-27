@@ -109,6 +109,7 @@ def make_vector_group(
     scale: float,
     color: str,
     viewport_policy: str = "clip",
+    tail_offset: float = 0.0,
 ) -> list[dict]:
     """Create one validated MatterVis native Cartesian vector group."""
     origins_array = np.asarray(origins, dtype=float)
@@ -128,6 +129,7 @@ def make_vector_group(
                     "id": f"{group_id}-{index}",
                     "origin": origin.tolist(),
                     "vector": vector.tolist(),
+                    "tail_offset": float(tail_offset),
                 }
                 for index, (origin, vector) in enumerate(
                     zip(origins_array, vectors_array)
@@ -276,26 +278,100 @@ def render_density_cube(
     opacity: float = 0.38,
     width: int = 1500,
     height: int = 1120,
+    atom_scale: float = 0.90,
+    bond_radius: float = 0.105,
+    vector_overlays: list[dict] | None = None,
 ) -> dict:
-    """Render a positive electron-density Cube with a navy MatterVis mesh."""
+    """Render one complete Cube/structure/vector scene through MatterVis."""
     from mat_viewer.cube.cpu import cube_isosurface_meshes
 
     output.parent.mkdir(parents=True, exist_ok=True)
+    source_hash = sha256_file(source)
+    render_settings = {
+        "width": int(width),
+        "height": int(height),
+        "atom_scale": float(atom_scale),
+        "bond_radius": float(bond_radius),
+        "isovalue": float(isovalue),
+        "opacity": float(opacity),
+    }
+    resolved_vectors = resolve_vector_overlays(vector_overlays or [])
+    vector_signature = json.dumps(
+        [
+            {
+                "id": item["arrow_id"],
+                "origin": np.asarray(item["origin"], dtype=float).tolist(),
+                "vector": np.asarray(item["display_vector"], dtype=float).tolist(),
+                "color": item["color"],
+            }
+            for item in resolved_vectors
+        ],
+        sort_keys=True,
+        separators=(",", ":"),
+    )
+    sidecar = output.with_suffix(".json")
+    if output.exists() and sidecar.exists():
+        previous = json.loads(sidecar.read_text(encoding="utf-8"))
+        if (
+            previous.get("source_sha256") == source_hash
+            and previous.get("camera") == asdict(camera)
+            and previous.get("render_settings") == render_settings
+            and previous.get("vector_signature") == vector_signature
+            and previous.get("pipeline_version") == 3
+            and int(np.count_nonzero(_rgba(output)[:, :, 3])) > 0
+        ):
+            return previous
     loaded = load_structure(source, input_format="cube")
-    for frame in loaded.frames:
-        bundle = frame.bundle
-        meshes = cube_isosurface_meshes(
-            bundle.cube_data,
-            isovalue=isovalue,
-            stride=1,
-            positive_color=NAVY,
-            negative_color=GREEN,
-            opacity=opacity,
-        )
-        bundle.cube_data.surface_meshes = meshes
-        bundle.scene["isosurfaces"] = meshes
+    bundle = loaded.frames[0].bundle
+    offset = np.asarray(camera.scene_offset, dtype=float)
+    meshes = cube_isosurface_meshes(
+        bundle.cube_data,
+        isovalue=isovalue,
+        stride=1,
+        positive_color=NAVY,
+        negative_color=GREEN,
+        opacity=opacity,
+    )
+    native_meshes = [
+        {
+            **mesh,
+            "vertices": (np.asarray(mesh["vertices"], dtype=float) + offset).tolist(),
+            "triangles": np.asarray(mesh["triangles"], dtype=np.int64).tolist(),
+            "normals": np.asarray(mesh["normals"], dtype=float).tolist(),
+        }
+        for mesh in meshes
+    ]
+    native_vectors = [
+        {
+            "id": "story-vectors",
+            "name": "story vectors",
+            "visible": True,
+            "scale": 1.0,
+            "arrows": [
+                {
+                    "id": item["arrow_id"],
+                    "origin": (
+                        np.asarray(item["origin"], dtype=float) + offset
+                    ).tolist(),
+                    "vector": np.asarray(
+                        item["display_vector"], dtype=float
+                    ).tolist(),
+                    "color": item["color"],
+                    "visible": True,
+                }
+                for item in resolved_vectors
+            ],
+        }
+    ] if resolved_vectors else []
+    scene = build_bundle_scene(
+        bundle,
+        display_mode="cluster",
+        show_hydrogen=True,
+    )
+    scene["isosurfaces"] = native_meshes
+    scene["vector_overlays"] = native_vectors
     result = render(
-        loaded,
+        scene,
         output=output,
         backend="cpu",
         view=ViewSpec(display="cluster"),
@@ -308,8 +384,8 @@ def render_density_cube(
             height=height,
             scale=1,
             background=(1.0, 1.0, 1.0, 0.0),
-            atom_scale=0.90,
-            bond_radius=0.105,
+            atom_scale=atom_scale,
+            bond_radius=bond_radius,
             show_hydrogen=True,
             show_cell=False,
             show_labels=False,
@@ -326,14 +402,21 @@ def render_density_cube(
         "plan_sha256": result.plan_sha256,
         "output_sha256": result.output_sha256,
         "output": str(output),
-        "source_sha256": sha256_file(source),
-        "isovalue": float(isovalue),
-        "opacity": float(opacity),
+        "source_sha256": source_hash,
         "camera": asdict(camera),
+        "render_settings": render_settings,
+        "vector_signature": vector_signature,
+        "vector_count": len(resolved_vectors),
+        "vector_renderer": "MatterVis native world-space vector_overlays",
+        "isosurface_renderer": "MatterVis native Cube isosurface mesh",
+        "isosurface_mesh_count": len(native_meshes),
+        "pipeline_version": 3,
         "warnings": list(result.warnings),
         "metadata": dict(result.metadata),
     }
-    json_dump(output.with_suffix(".json"), payload)
+    if int(np.count_nonzero(_rgba(output)[:, :, 3])) == 0:
+        raise RuntimeError(f"MatterVis produced an empty transparent render: {output}")
+    json_dump(sidecar, payload)
     return payload
 
 

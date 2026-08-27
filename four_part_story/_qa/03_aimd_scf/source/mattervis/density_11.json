@@ -1,0 +1,99 @@
+{
+  "schema": "mattervis.render-result/v1",
+  "backend": "cpu",
+  "format": "png",
+  "width": 1500,
+  "height": 950,
+  "plan_sha256": "d631b79ca28fa551e1078e7b955941fbbe1a9544f5d6899277e7b50c1db7051e",
+  "output_sha256": "aed143b1ecde3f3fb013c598584d34b237d3a59b0d7c6539cefe4ae7080fcbe0",
+  "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\density_11.png",
+  "source_sha256": "0f8925dcab3ee36a7e9de94dcb382c3b564d54a3f48b67d7fdc8d0410b5e0ae1",
+  "camera": {
+    "target": [
+      0.314861701684306,
+      0.15441954864030819,
+      0.0
+    ],
+    "ortho_scale": 2.35,
+    "direction": [
+      0.55,
+      -0.35,
+      1.4
+    ],
+    "up": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "scene_offset": [
+      3.3500002544006158,
+      2.349999792101853,
+      1.75000014917765
+    ]
+  },
+  "render_settings": {
+    "width": 1500,
+    "height": 950,
+    "atom_scale": 0.9,
+    "bond_radius": 0.105,
+    "isovalue": 0.03,
+    "opacity": 0.32
+  },
+  "vector_signature": "[]",
+  "vector_count": 0,
+  "vector_renderer": "MatterVis native world-space vector_overlays",
+  "isosurface_renderer": "MatterVis native Cube isosurface mesh",
+  "isosurface_mesh_count": 1,
+  "pipeline_version": 3,
+  "warnings": [],
+  "metadata": {
+    "transparent_compositor": "per-pixel-fragment-list",
+    "scale": 1,
+    "actual_backend": "cpu",
+    "camera": {
+      "position": [
+        12.212177544828847,
+        -2.934781488458518,
+        23.50680346598037
+      ],
+      "target": [
+        3.6648619560849216,
+        2.504419340742161,
+        1.75000014917765
+      ],
+      "up": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "projection": "orthographic",
+      "fov_y_deg": 45.0,
+      "near": 0.01,
+      "far": 10000.0,
+      "ortho_scale": 2.35
+    },
+    "source": {
+      "path": null,
+      "input_format": null,
+      "frame": null
+    },
+    "requirements": {
+      "schema": "mattervis.requirements/v1",
+      "requested": [
+        "png"
+      ],
+      "capabilities": [
+        "core"
+      ],
+      "extras": [],
+      "available": true,
+      "missing_capabilities": [],
+      "install": "python -m pip install \"matter-vis\"",
+      "notes": [
+        "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+      ]
+    },
+    "install": "python -m pip install \"matter-vis\"",
+    "fallback": null
+  }
+}

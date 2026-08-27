@@ -10,12 +10,25 @@
     "H"
   ],
   "iterations": 19,
-  "selected_density_iterations_zero_based": [
+  "saved_density_iterations_zero_based": [
     0,
+    1,
     2,
+    3,
+    4,
     5,
+    6,
+    7,
+    8,
     9,
+    10,
+    11,
+    12,
     13,
+    14,
+    15,
+    16,
+    17,
     18
   ],
   "density_grid_shape": [
@@ -24,12 +37,210 @@
     42
   ],
   "density_grid_units": "electron density from AO density matrix on an angstrom coordinate grid",
+  "density_visual_encoding": "Each displayed field is the real rho^k(r); Gaussian blur sigma is a monotonic function of the saved SCF density residual.",
+  "density_blur_sigma_voxels": [
+    3.0,
+    2.6896241331247737,
+    2.399968160944417,
+    2.1380508067500585,
+    1.916966645648779,
+    1.734854452064431,
+    1.5769373974266743,
+    1.4313022475593618,
+    1.2921556434884827,
+    1.1569244120234727,
+    1.0243066743420393,
+    0.893519733597007,
+    0.7640396885409764,
+    0.63550004563996,
+    0.5076407449927184,
+    0.38027632294371494,
+    0.253274006174648,
+    0.12653827679969512,
+    0.0
+  ],
+  "cube_records": [
+    {
+      "iteration_one_based": 1,
+      "residual": 0.3723340642305311,
+      "blur_sigma_voxels": 3.0,
+      "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_01_raw.cube",
+      "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_01_display.cube",
+      "raw_sha256": "aef52297b1489b62c96d0daa93454c26eaf36f4173d513f8becb6f922ca66ff9",
+      "display_sha256": "82560744cdad1e5e652a2a6f5b3e27c09da2e19996e286a702a05d867886954b"
+    },
+    {
+      "iteration_one_based": 2,
+      "residual": 0.10613657225966748,
+      "blur_sigma_voxels": 2.6896241331247737,
+      "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_02_raw.cube",
+      "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_02_display.cube",
+      "raw_sha256": "4546b6e09afdaf9edd6a00fd54400594f0a80bb30d28393de3c4265ba470f2b7",
+      "display_sha256": "8b9762fd64df309070c88300692f6c0919df63186c30aa943a96ea43d46e52cd"
+    },
+    {
+      "iteration_one_based": 3,
+      "residual": 0.03289914893384621,
+      "blur_sigma_voxels": 2.399968160944417,
+      "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_03_raw.cube",
+      "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_03_display.cube",
+      "raw_sha256": "1b334afdf4e52cb0cbb01b386df5f8ad597cdfd5a0456c5174f45c3e7d6fe433",
+      "display_sha256": "c38d2d179f7a75283037410a3b3d1c46958105c10bb9ad42ab162e02d930b10a"
+    },
+    {
+      "iteration_one_based": 4,
+      "residual": 0.011408210981577191,
+      "blur_sigma_voxels": 2.1380508067500585,
+      "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_04_raw.cube",
+      "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_04_display.cube",
+      "raw_sha256": "546bb1394afcf0a488e1ce10c38d5ff7189837dfab0e5114585ada60e9aeb556",
+      "display_sha256": "b99a809ee1ddedf0460865edcac7e7754ef2e219f6803cdd7aca686448998c35"
+    },
+    {
+      "iteration_one_based": 5,
+      "residual": 0.004666161721633947,
+      "blur_sigma_voxels": 1.916966645648779,
+      "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_05_raw.cube",
+      "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_05_display.cube",
+      "raw_sha256": "0424a98df79910de894088bd0c536155903f33f46e0f955b56235640a4c40ada",
+      "display_sha256": "a1dcf887d08373fccc1d98243401a8e524d25ed8afe22424ac0b872b54e430c7"
+    },
+    {
+      "iteration_one_based": 6,
+      "residual": 0.0022343067224046415,
+      "blur_sigma_voxels": 1.734854452064431,
+      "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_06_raw.cube",
+      "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_06_display.cube",
+      "raw_sha256": "31d66ffe0b2fd9e434d9649e33529c75a853c3f0f2c0969d1c59a370f4599a55",
+      "display_sha256": "7fcb116ec84cb08afea419cf98b1c84c2c8d67635523ea6f606746051fb839a5"
+    },
+    {
+      "iteration_one_based": 7,
+      "residual": 0.0011798211558869214,
+      "blur_sigma_voxels": 1.5769373974266743,
+      "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_07_raw.cube",
+      "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_07_display.cube",
+      "raw_sha256": "6da4d52323a7409ba6562fadcd2c9cab4748c1b862bc53cf7e241ea3a2fafd94",
+      "display_sha256": "3dfed44d038ccb681334009318f348c61e90ca566b8ec509cba7d48d1d1e3926"
+    },
+    {
+      "iteration_one_based": 8,
+      "residual": 0.0006547243280706405,
+      "blur_sigma_voxels": 1.4313022475593618,
+      "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_08_raw.cube",
+      "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_08_display.cube",
+      "raw_sha256": "9f44314a47cc790fb498dbba90a9d4f3bfb9a096f9b31fb8992f09c5c6b998b1",
+      "display_sha256": "b589b7aa1f6d6900312af99db6681fdbbcecc5ebacf3c0165c5726249d12c96d"
+    },
+    {
+      "iteration_one_based": 9,
+      "residual": 0.00037298868843394596,
+      "blur_sigma_voxels": 1.2921556434884827,
+      "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_09_raw.cube",
+      "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_09_display.cube",
+      "raw_sha256": "b43db89d3a450f0c0e3e23d2054db591169ca84ccc87053e2c1feca1ad562b40",
+      "display_sha256": "993b4c807badf87b6105b64f8409d8c24e8633d9b78b4390f021c2357c42bc2a"
+    },
+    {
+      "iteration_one_based": 10,
+      "residual": 0.00021587822560582937,
+      "blur_sigma_voxels": 1.1569244120234727,
+      "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_10_raw.cube",
+      "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_10_display.cube",
+      "raw_sha256": "318d65fe261cf98a0ad71d36c3a0d1e29e8590352ba08b584c7f96917770f6fe",
+      "display_sha256": "9bcd94df486f5c6211677d82615fd4439f6ccdc1fc0538338c9f59549c2b603a"
+    },
+    {
+      "iteration_one_based": 11,
+      "residual": 0.00012627335366452384,
+      "blur_sigma_voxels": 1.0243066743420393,
+      "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_11_raw.cube",
+      "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_11_display.cube",
+      "raw_sha256": "9059512e59498ec770a9e9ca4648e0947bb1b3693c7ed1defd94cd098ba9a57d",
+      "display_sha256": "0f8925dcab3ee36a7e9de94dcb382c3b564d54a3f48b67d7fdc8d0410b5e0ae1"
+    },
+    {
+      "iteration_one_based": 12,
+      "residual": 7.440973380181225e-05,
+      "blur_sigma_voxels": 0.893519733597007,
+      "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_12_raw.cube",
+      "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_12_display.cube",
+      "raw_sha256": "b7acde0e21e2fa9f947ba0f1a014174d2b3da2ca27405c067ccf1c2745020753",
+      "display_sha256": "577e62a75f7d1401fb37533de90f4b0624f1db40cfd24d6ead51d0ce7c4b5fa8"
+    },
+    {
+      "iteration_one_based": 13,
+      "residual": 4.4080133021957095e-05,
+      "blur_sigma_voxels": 0.7640396885409764,
+      "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_13_raw.cube",
+      "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_13_display.cube",
+      "raw_sha256": "d1444174cf907b96080dc73b64f5455ed358cb3aac090b3cb72646add0297404",
+      "display_sha256": "17a437900a51d397f00e82602a7cd4ef4f72059b00ee669eb188d1fc380e3b87"
+    },
+    {
+      "iteration_one_based": 14,
+      "residual": 2.621244502736365e-05,
+      "blur_sigma_voxels": 0.63550004563996,
+      "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_14_raw.cube",
+      "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_14_display.cube",
+      "raw_sha256": "a5478a987f700deed2bd5e89915857eb33babf9ed2fc049335a218fee5c96559",
+      "display_sha256": "7ad282d6ae89ae9dcd4557fad7a2273a35a29a67db68c4a32c7f952cd5be4466"
+    },
+    {
+      "iteration_one_based": 15,
+      "residual": 1.563028706977728e-05,
+      "blur_sigma_voxels": 0.5076407449927184,
+      "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_15_raw.cube",
+      "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_15_display.cube",
+      "raw_sha256": "e8a58ac2a9a7b1924f129ceb1316f1df5c200f329df655b15052ff676dda243a",
+      "display_sha256": "f27a1c6ff3a5260be03b34b485b089d0263ce5454125ee4eaf701a5a65baae7c"
+    },
+    {
+      "iteration_one_based": 16,
+      "residual": 9.338894281073123e-06,
+      "blur_sigma_voxels": 0.38027632294371494,
+      "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_16_raw.cube",
+      "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_16_display.cube",
+      "raw_sha256": "68db0b8afe39038798290a70fec9ad9f6ab763510ff6bcb88ef77abe5a1696a5",
+      "display_sha256": "0aea9ccc9a3762cf2f2c1ccae4abcb8ebff41351e5279cc87ca85dbcde3ee33b"
+    },
+    {
+      "iteration_one_based": 17,
+      "residual": 5.588044761387177e-06,
+      "blur_sigma_voxels": 0.253274006174648,
+      "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_17_raw.cube",
+      "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_17_display.cube",
+      "raw_sha256": "599cd38d29c68fd83994e62fd3e7769db061bf9a57caf41a307e93c70ea944e0",
+      "display_sha256": "1df6771477f31470dabf456e6a0114d37170dbbe7f638b0b0ad16ca0615c4ace"
+    },
+    {
+      "iteration_one_based": 18,
+      "residual": 3.3472832309970337e-06,
+      "blur_sigma_voxels": 0.12653827679969512,
+      "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_18_raw.cube",
+      "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_18_display.cube",
+      "raw_sha256": "d9f05c3a5a91f648e8acafaa54ffba3da08368e94b37accf5a6afab6962e5556",
+      "display_sha256": "c3818d728b9ca8e3a4b5146b0da84e117c59c1dd8714d73d27481267f43a98da"
+    },
+    {
+      "iteration_one_based": 19,
+      "residual": 2.006650808743569e-06,
+      "blur_sigma_voxels": 0.0,
+      "raw_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_19_raw.cube",
+      "display_cube": "_qa\\03_aimd_scf\\source\\cubes\\rho_19_display.cube",
+      "raw_sha256": "3b74830b9e0b15ddf511d65c2c64faa8733fd502da7da378fcccb1043996729e",
+      "display_sha256": "7b119faf46f3fdcde248775f305f32c953d85862df8a7e95d07263f45f6a6fb5"
+    }
+  ],
   "final_energy_hartree": -149.93375702830417,
   "final_delta_energy_hartree": 4.2770693653437775e-09,
   "density_mixing": 0.7,
   "convergence_tolerance_hartree": 1e-08,
-  "force_method": "fresh central finite difference of converged RHF energy",
+  "force_method": "verified prior central finite difference of converged RHF energy",
   "force_delta_angstrom": 0.003,
   "max_force_ev_per_angstrom": 3.0714442708205882,
-  "wall_seconds": 150.5792069999734
+  "time_step_fs": 0.5,
+  "display_motion_scale": 80.0,
+  "max_true_vv_displacement_angstrom": 0.0025366309362131662,
+  "wall_seconds": 25.237229700025637
 }

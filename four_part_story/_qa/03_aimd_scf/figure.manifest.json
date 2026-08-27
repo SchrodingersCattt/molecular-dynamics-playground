@@ -1,23 +1,147 @@
 {
   "version": 1,
-  "figure": {"canonical_stem": "03_aimd_scf"},
+  "figure": {
+    "canonical_stem": "03_aimd_scf"
+  },
   "outputs": [
-    {"path": "../../figures/03_aimd_scf.png"},
-    {"path": "../../figures/03_aimd_scf.svg"}
+    {
+      "path": "../../figures/03_aimd_scf.png"
+    },
+    {
+      "path": "../../figures/03_aimd_scf.svg"
+    }
   ],
-  "target": {"width_mm": 297, "qa_dpi": 300, "min_dpi": 200, "max_dpi": 600},
+  "target": {
+    "width_mm": 297,
+    "qa_dpi": 300,
+    "min_dpi": 200,
+    "max_dpi": 600
+  },
   "panels": [
-    {"id": "integrator", "source": "source/integrator.png", "slot": [0.045, 0.19, 0.355, 0.89], "source_min_clearance_px": 12, "min_clearance_px": 18, "source_allow_touch_edges": [], "allow_touch_edges": []},
-    {"id": "rhf_density", "source": "source/case.png", "slot": [0.40, 0.19, 0.965, 0.89], "source_min_clearance_px": 12, "min_clearance_px": 18, "source_allow_touch_edges": [], "allow_touch_edges": []}
+    {
+      "id": "integrator",
+      "source": "source/integrator.png",
+      "slot": [
+        0.045,
+        0.19,
+        0.355,
+        0.89
+      ],
+      "source_min_clearance_px": 12,
+      "min_clearance_px": 18,
+      "source_allow_touch_edges": [],
+      "allow_touch_edges": []
+    },
+    {
+      "id": "rhf_density",
+      "source": "source/case.png",
+      "slot": [
+        0.4,
+        0.19,
+        0.965,
+        0.89
+      ],
+      "source_min_clearance_px": 12,
+      "min_clearance_px": 18,
+      "source_allow_touch_edges": [],
+      "allow_touch_edges": []
+    }
   ],
   "checks": {
-    "whitespace": {"background_threshold": 245, "min_ink_fraction": 0.02, "min_panel_bbox_fill": 0.30, "grid_rows": 12, "grid_columns": 20},
-    "boundaries": {"bands": [{"id": "column_gap", "rect": [0.365, 0.19, 0.385, 0.89], "max_ink_pixels": 0}]},
-    "colors": {"semantics": [{"id": "density", "color": "#183153", "min_pixels": 700}, {"id": "oxygen_force", "color": "#A32035", "min_pixels": 200}]}
+    "whitespace": {
+      "background_threshold": 245,
+      "min_ink_fraction": 0.02,
+      "min_panel_bbox_fill": 0.3,
+      "grid_rows": 12,
+      "grid_columns": 20
+    },
+    "boundaries": {
+      "bands": [
+        {
+          "id": "column_gap",
+          "rect": [
+            0.365,
+            0.19,
+            0.385,
+            0.89
+          ],
+          "max_ink_pixels": 0
+        }
+      ]
+    },
+    "colors": {
+      "semantics": [
+        {
+          "id": "density",
+          "color": "#183153",
+          "min_pixels": 700
+        },
+        {
+          "id": "oxygen",
+          "color": "#A32035",
+          "min_pixels": 120
+        },
+        {
+          "id": "nuclear_force",
+          "color": "#D98E98",
+          "min_pixels": 200
+        }
+      ]
+    }
   },
-  "integrity": {"required_content": ["nineteen_real_density_iterates", "mattervis_cube", "residual_driven_blur", "finite_difference_forces"], "evidence": {"nineteen_real_density_iterates": "../../data/aimd_h2o_dimer.json", "mattervis_cube": "source/mattervis/provenance.json", "residual_driven_blur": "source/density_encoding.json", "finite_difference_forces": "../../data/aimd_h2o_dimer.json"}, "scientific_changes": ["Gaussian blur is a disclosed display encoding; raw densities are retained unchanged"]},
-  "consistency": {"constraints": ["fixed_camera", "fixed_grid", "fixed_nuclear_geometry", "one_density_object"], "evidence": {}},
-  "quantitative": {"transformations": ["residual-mapped Gaussian blur for display only", "visual arrow amplification"], "units": {"density": "electron/bohr^3", "energy": "hartree", "force": "eV/angstrom"}},
-  "deviations": {"records": []},
-  "review": {"render_sha256": "REPLACE_AFTER_RENDER", "problems": {"scientific_expression": "pending", "geometry": "pending", "annotations": "pending", "readability": "pending", "submission_quality": "pending"}, "action": "pending", "stop_condition": "fixed"}
+  "integrity": {
+    "required_content": [
+      "nineteen_real_density_iterates",
+      "mattervis_cube",
+      "residual_driven_blur",
+      "finite_difference_forces"
+    ],
+    "evidence": {
+      "nineteen_real_density_iterates": "../../data/aimd_h2o_dimer.json",
+      "mattervis_cube": "source/mattervis/provenance.json",
+      "residual_driven_blur": "../../data/aimd_h2o_dimer.json",
+      "finite_difference_forces": "../../data/aimd_h2o_dimer.json"
+    },
+    "scientific_changes": [
+      {
+        "description": "Gaussian blur is a disclosed display encoding driven by the real SCF residual; raw densities are retained unchanged.",
+        "approved": true
+      }
+    ]
+  },
+  "consistency": {
+    "constraints": [
+      "fixed_camera",
+      "fixed_grid",
+      "fixed_nuclear_geometry",
+      "one_density_object"
+    ],
+    "evidence": {}
+  },
+  "quantitative": {
+    "transformations": [
+      "residual-mapped Gaussian blur for display only",
+      "visual arrow amplification"
+    ],
+    "units": {
+      "density": "electron/bohr^3",
+      "energy": "hartree",
+      "force": "eV/angstrom"
+    }
+  },
+  "deviations": {
+    "records": []
+  },
+  "review": {
+    "render_sha256": "ad7a2c7f778ef75367fe247189a4f01c54fae8508e88d6456b54d1a2a1ad9758",
+    "problems": {
+      "scientific_expression": "The previous concept sampled only a few SCF states and did not make it visually evident that every surface came from a real RHF density iterate.",
+      "geometry": "The previous near-axial water-dimer view compressed the H-O-H geometry and made several force arrows disappear behind atomic spheres.",
+      "annotations": "The earlier SCF labels crowded the density object and the relationship between the four electronic steps and the outer MD loop was ambiguous.",
+      "readability": "Dark red force arrows were too close to the oxygen color and too short to read reliably at A4 scale.",
+      "submission_quality": "The prior assets mixed provisional projections with stale source panels and lacked a traceable all-iteration Cube provenance set."
+    },
+    "action": "Recomputed and retained all 19 RHF/STO-3G density matrices on one fixed grid; rendered every Cube, molecule, and force arrow through MatterVis; changed to an asymmetric dimer camera; offset and enlarged pale dusty-rose force arrows; simplified the SCF loop to four nodes outside the structure; moved the solve-orbitals label inward to preserve print clearance; and regenerated independent A4 source panels with provenance sidecars.",
+    "stop_condition": "fixed"
+  }
 }
