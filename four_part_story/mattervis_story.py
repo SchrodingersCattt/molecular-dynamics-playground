@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import asdict, dataclass
+from functools import lru_cache
 from pathlib import Path
 from typing import Iterable
 
@@ -99,6 +100,12 @@ def camera_for_source(
 def _rgba(path: Path) -> np.ndarray:
     with Image.open(path) as image:
         return np.asarray(image.convert("RGBA"))
+
+
+@lru_cache(maxsize=128)
+def _composition_rgba(path: Path) -> np.ndarray:
+    """Decode immutable source art once for repeated animation composition."""
+    return _rgba(path)
 
 
 def make_vector_group(
@@ -444,7 +451,7 @@ def place_render(
     alpha: float = 1.0,
     zorder: float = 4.0,
 ) -> tuple[float, float, float, float]:
-    image = _rgba(image_path)
+    image = _composition_rgba(image_path)
     image_aspect = image.shape[1] / image.shape[0]
     figure_width, figure_height = ax.figure.canvas.get_width_height()
     position = ax.get_position()

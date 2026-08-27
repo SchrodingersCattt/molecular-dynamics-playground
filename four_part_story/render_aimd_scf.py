@@ -10,7 +10,6 @@ import numpy as np
 from matplotlib.patches import Ellipse
 
 from common import (
-    CRIMSON,
     DARK_GRAY,
     GREEN,
     INK,
@@ -399,7 +398,7 @@ def draw_case(
         place_render(ax, movement_paths[frame], SCENE_RECT, alpha=fade, zorder=5)
         heading = "forces return to Velocity Verlet"
         heading_color = POSITION_LAKE
-        note = "old nuclei remain as a faint reference while the new positions move"
+        note = "faint old nuclei mark the one-step displacement"
         converged = True
 
     registry.text(
@@ -415,7 +414,7 @@ def draw_case(
     )
     registry.text(
         ax,
-        0.34,
+        0.40 if video else 0.34,
         0.065,
         note,
         ha="center",
@@ -572,7 +571,6 @@ def draw_video_frame(
     )
     semantics = [
         {"id": "density", "color": NAVY, "min_pixels": 350},
-        {"id": "oxygen", "color": CRIMSON, "min_pixels": 180},
     ]
     if state["mode"] == "move" and state["progress"] >= 0.18:
         semantics.append({"id": "displacement", "color": POSITION_LAKE, "min_pixels": 180})
