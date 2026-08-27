@@ -4,7 +4,7 @@
     {
       "check": "outputs",
       "passed": true,
-      "duration_seconds": 0.015213499951642007,
+      "duration_seconds": 0.0189764000242576,
       "metrics": {
         "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\figures\\04_deep_potential_md.png": {
           "bytes": 637985,
@@ -24,7 +24,7 @@
     {
       "check": "print",
       "passed": true,
-      "duration_seconds": 2.600002335384488e-05,
+      "duration_seconds": 1.2699980288743973e-05,
       "metrics": {
         "width_px": 3508,
         "height_px": 2480,
@@ -36,7 +36,7 @@
     {
       "check": "whitespace",
       "passed": true,
-      "duration_seconds": 0.6596347999875434,
+      "duration_seconds": 0.4282863999833353,
       "metrics": {
         "width": 3508,
         "height": 2480,
@@ -433,7 +433,7 @@
     {
       "check": "clipping",
       "passed": true,
-      "duration_seconds": 0.3349060999462381,
+      "duration_seconds": 0.37970489996951073,
       "metrics": {
         "md_loop": {
           "clearances_px": {
@@ -468,7 +468,7 @@
     {
       "check": "boundaries",
       "passed": true,
-      "duration_seconds": 0.237768099992536,
+      "duration_seconds": 0.21728659997461364,
       "metrics": {
         "left_gap": {
           "ink_pixels": 0,
@@ -484,7 +484,7 @@
     {
       "check": "colors",
       "passed": true,
-      "duration_seconds": 3.0362441000179388,
+      "duration_seconds": 2.5904285000287928,
       "metrics": {
         "hydrogen_cutoff": {
           "pixels": 80268,
@@ -507,7 +507,7 @@
     {
       "check": "integrity",
       "passed": true,
-      "duration_seconds": 3.070000093430281e-05,
+      "duration_seconds": 3.8700003642588854e-05,
       "metrics": {
         "required_content": [
           "periodic_water_box",
@@ -524,7 +524,7 @@
     {
       "check": "clipping",
       "passed": true,
-      "duration_seconds": 0.07162980001885444,
+      "duration_seconds": 0.06246839999221265,
       "metrics": {
         "md_loop": {
           "clearances_px": {
@@ -541,7 +541,7 @@
     {
       "check": "clipping",
       "passed": true,
-      "duration_seconds": 0.10127380001358688,
+      "duration_seconds": 0.08254590001888573,
       "metrics": {
         "water_environment": {
           "clearances_px": {
@@ -558,7 +558,7 @@
     {
       "check": "clipping",
       "passed": true,
-      "duration_seconds": 0.07087590004084632,
+      "duration_seconds": 0.05170969996834174,
       "metrics": {
         "learned_model": {
           "clearances_px": {
@@ -633,11 +633,11 @@
     {
       "check": "review",
       "passed": true,
-      "duration_seconds": 4.9799971748143435e-05,
+      "duration_seconds": 1.750001683831215e-05,
       "metrics": {},
       "findings": []
     }
   ],
-  "duration_seconds": 4.527652599965222,
-  "wall_seconds": 9.29119299998274
+  "duration_seconds": 3.83147569996072,
+  "wall_seconds": 8.407586800050922
 }

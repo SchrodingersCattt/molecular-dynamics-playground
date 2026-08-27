@@ -4,7 +4,7 @@
     {
       "check": "outputs",
       "passed": true,
-      "duration_seconds": 0.03193009999813512,
+      "duration_seconds": 0.01976739999372512,
       "metrics": {
         "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\figures\\02_classical_lj.png": {
           "bytes": 210355,
@@ -24,7 +24,7 @@
     {
       "check": "print",
       "passed": true,
-      "duration_seconds": 8.200004231184721e-06,
+      "duration_seconds": 1.6600009985268116e-05,
       "metrics": {
         "width_px": 3508,
         "height_px": 2480,
@@ -36,7 +36,7 @@
     {
       "check": "whitespace",
       "passed": true,
-      "duration_seconds": 0.1697021999862045,
+      "duration_seconds": 0.36887389997718856,
       "metrics": {
         "width": 3508,
         "height": 2480,
@@ -373,7 +373,7 @@
     {
       "check": "clipping",
       "passed": true,
-      "duration_seconds": 0.1277303000097163,
+      "duration_seconds": 0.3100472999503836,
       "metrics": {
         "lj_curve": {
           "clearances_px": {
@@ -399,7 +399,7 @@
     {
       "check": "boundaries",
       "passed": true,
-      "duration_seconds": 0.12352000002283603,
+      "duration_seconds": 0.2659853000077419,
       "metrics": {
         "column_gap": {
           "ink_pixels": 0,
@@ -411,7 +411,7 @@
     {
       "check": "colors",
       "passed": true,
-      "duration_seconds": 1.054874799971003,
+      "duration_seconds": 3.3673248999984935,
       "metrics": {
         "potential": {
           "pixels": 6463,
@@ -434,7 +434,7 @@
     {
       "check": "integrity",
       "passed": true,
-      "duration_seconds": 1.0100018698722124e-05,
+      "duration_seconds": 5.449994932860136e-05,
       "metrics": {
         "required_content": [
           "lj_12_6",
@@ -448,7 +448,7 @@
     {
       "check": "clipping",
       "passed": true,
-      "duration_seconds": 0.036033500044140965,
+      "duration_seconds": 0.07905980001669377,
       "metrics": {
         "lj_curve": {
           "clearances_px": {
@@ -465,7 +465,7 @@
     {
       "check": "clipping",
       "passed": true,
-      "duration_seconds": 0.03044280002359301,
+      "duration_seconds": 0.09884150000289083,
       "metrics": {
         "argon_pair": {
           "clearances_px": {
@@ -530,11 +530,11 @@
     {
       "check": "review",
       "passed": true,
-      "duration_seconds": 8.000002708286047e-06,
+      "duration_seconds": 0.00014859996736049652,
       "metrics": {},
       "findings": []
     }
   ],
-  "duration_seconds": 1.5742600000812672,
-  "wall_seconds": 2.747818800038658
+  "duration_seconds": 4.510119799873792,
+  "wall_seconds": 10.393879700044636
 }

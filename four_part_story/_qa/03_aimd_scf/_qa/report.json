@@ -4,7 +4,7 @@
     {
       "check": "outputs",
       "passed": true,
-      "duration_seconds": 0.019353699986822903,
+      "duration_seconds": 0.011735600011888891,
       "metrics": {
         "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\figures\\03_aimd_scf.png": {
           "bytes": 643388,
@@ -24,7 +24,7 @@
     {
       "check": "print",
       "passed": true,
-      "duration_seconds": 1.179997343569994e-05,
+      "duration_seconds": 3.0499999411404133e-05,
       "metrics": {
         "width_px": 3508,
         "height_px": 2480,
@@ -36,7 +36,7 @@
     {
       "check": "whitespace",
       "passed": true,
-      "duration_seconds": 0.41905020002741367,
+      "duration_seconds": 0.38772910000989214,
       "metrics": {
         "width": 3508,
         "height": 2480,
@@ -433,7 +433,7 @@
     {
       "check": "clipping",
       "passed": true,
-      "duration_seconds": 0.3512352999532595,
+      "duration_seconds": 0.3216757000191137,
       "metrics": {
         "md_loop": {
           "clearances_px": {
@@ -468,7 +468,7 @@
     {
       "check": "boundaries",
       "passed": true,
-      "duration_seconds": 0.2677220000186935,
+      "duration_seconds": 0.2638276999932714,
       "metrics": {
         "left_gap": {
           "ink_pixels": 0,
@@ -484,7 +484,7 @@
     {
       "check": "colors",
       "passed": true,
-      "duration_seconds": 2.742284700041637,
+      "duration_seconds": 3.0411586000118405,
       "metrics": {
         "density": {
           "pixels": 26120,
@@ -507,7 +507,7 @@
     {
       "check": "integrity",
       "passed": true,
-      "duration_seconds": 3.44999716617167e-05,
+      "duration_seconds": 5.989999044686556e-05,
       "metrics": {
         "required_content": [
           "real_scf_history",
@@ -521,7 +521,7 @@
     {
       "check": "clipping",
       "passed": true,
-      "duration_seconds": 0.044525900040753186,
+      "duration_seconds": 0.04605120001360774,
       "metrics": {
         "md_loop": {
           "clearances_px": {
@@ -538,7 +538,7 @@
     {
       "check": "clipping",
       "passed": true,
-      "duration_seconds": 0.09816329996101558,
+      "duration_seconds": 0.07797400001436472,
       "metrics": {
         "dimer_density": {
           "clearances_px": {
@@ -555,7 +555,7 @@
     {
       "check": "clipping",
       "passed": true,
-      "duration_seconds": 0.04306180001003668,
+      "duration_seconds": 0.03467209998052567,
       "metrics": {
         "scf_loop": {
           "clearances_px": {
@@ -630,11 +630,11 @@
     {
       "check": "review",
       "passed": true,
-      "duration_seconds": 4.650000482797623e-05,
+      "duration_seconds": 8.030002936720848e-05,
       "metrics": {},
       "findings": []
     }
   ],
-  "duration_seconds": 3.9854896999895573,
-  "wall_seconds": 8.312031100038439
+  "duration_seconds": 4.18499470007373,
+  "wall_seconds": 8.804634700005408
 }

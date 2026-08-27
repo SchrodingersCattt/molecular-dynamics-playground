@@ -4,7 +4,7 @@
     {
       "check": "outputs",
       "passed": true,
-      "duration_seconds": 0.003953399951569736,
+      "duration_seconds": 0.03855900000780821,
       "metrics": {
         "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\figures\\01_velocity_verlet.png": {
           "bytes": 261126,
@@ -24,7 +24,7 @@
     {
       "check": "print",
       "passed": true,
-      "duration_seconds": 1.1300027836114168e-05,
+      "duration_seconds": 2.2499996703118086e-05,
       "metrics": {
         "width_px": 3508,
         "height_px": 2480,
@@ -36,7 +36,7 @@
     {
       "check": "whitespace",
       "passed": true,
-      "duration_seconds": 0.16026390000479296,
+      "duration_seconds": 0.5222524999990128,
       "metrics": {
         "width": 3508,
         "height": 2480,
@@ -373,7 +373,7 @@
     {
       "check": "clipping",
       "passed": true,
-      "duration_seconds": 0.12545529997441918,
+      "duration_seconds": 0.40592029999243096,
       "metrics": {
         "abstract_loop": {
           "clearances_px": {
@@ -399,7 +399,7 @@
     {
       "check": "boundaries",
       "passed": true,
-      "duration_seconds": 0.11281129997223616,
+      "duration_seconds": 0.29743799997959286,
       "metrics": {
         "column_gap": {
           "ink_pixels": 0,
@@ -411,7 +411,7 @@
     {
       "check": "colors",
       "passed": true,
-      "duration_seconds": 0.9411959999706596,
+      "duration_seconds": 3.7204243000014685,
       "metrics": {
         "position": {
           "pixels": 44468,
@@ -434,7 +434,7 @@
     {
       "check": "integrity",
       "passed": true,
-      "duration_seconds": 9.999959729611874e-06,
+      "duration_seconds": 1.9499973859637976e-05,
       "metrics": {
         "required_content": [
           "three_step_velocity_verlet",
@@ -448,7 +448,7 @@
     {
       "check": "clipping",
       "passed": true,
-      "duration_seconds": 0.02655609999783337,
+      "duration_seconds": 0.07771699997829273,
       "metrics": {
         "abstract_loop": {
           "clearances_px": {
@@ -465,7 +465,7 @@
     {
       "check": "clipping",
       "passed": true,
-      "duration_seconds": 0.054581700009293854,
+      "duration_seconds": 0.15157290000934154,
       "metrics": {
         "concrete_h2o": {
           "clearances_px": {
@@ -531,11 +531,11 @@
     {
       "check": "review",
       "passed": true,
-      "duration_seconds": 8.300004992634058e-06,
+      "duration_seconds": 3.100000321865082e-05,
       "metrics": {},
       "findings": []
     }
   ],
-  "duration_seconds": 1.4248472998733632,
-  "wall_seconds": 2.671736599993892
+  "duration_seconds": 5.213956999941729,
+  "wall_seconds": 10.271271399979014
 }
