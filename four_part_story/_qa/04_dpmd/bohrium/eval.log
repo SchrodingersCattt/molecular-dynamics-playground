@@ -1,0 +1,33 @@
+2026-08-27 00:56:28.682042: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:467] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1787792188.699124     118 cuda_dnn.cc:8579] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+E0000 00:00:1787792188.706350     118 cuda_blas.cc:1407] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+W0000 00:00:1787792188.804563     118 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+W0000 00:00:1787792188.804599     118 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+W0000 00:00:1787792188.804602     118 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+W0000 00:00:1787792188.804604     118 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+2026-08-27 00:56:28.815215: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX512F, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+To get the best performance, it is recommended to adjust the number of threads by setting the environment variables OMP_NUM_THREADS, DP_INTRA_OP_PARALLELISM_THREADS, and DP_INTER_OP_PARALLELISM_THREADS. See https://deepmd.rtfd.io/parallelism/ for more information.
+DeePMD-kit: Successfully load libcudart.so.12
+2026-08-27 00:56:33.905228: E external/local_xla/xla/stream_executor/cuda/cuda_platform.cc:51] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: UNKNOWN ERROR (303)
+You can use the environment variable DP_INFER_BATCH_SIZE tocontrol the inference batch size (nframes * natoms). The default value is 1024.
+{
+  "model": "H2O-Phase-Diagram-model_compressed.pb",
+  "model_type_map": [
+    "O",
+    "H"
+  ],
+  "n_atoms": 192,
+  "box_length_angstrom": 12.429633119082435,
+  "cutoff_angstrom": 6.0,
+  "total_energy_ev": -1007.9069226533904,
+  "atomic_energy_status": "model output",
+  "max_force_ev_per_angstrom": 1.2246452541839372,
+  "net_force_ev_per_angstrom": [
+    -1.8041124150158794e-15,
+    -1.637578961322106e-14,
+    -3.0253577421035516e-15
+  ],
+  "output": "dpmd_water_box_results.npz"
+}
