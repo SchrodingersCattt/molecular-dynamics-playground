@@ -4,10 +4,10 @@
     {
       "check": "review",
       "passed": true,
-      "duration_seconds": 5.599984433501959e-06,
+      "duration_seconds": 2.7499976567924023e-05,
       "metrics": {},
       "findings": []
     }
   ],
-  "duration_seconds": 5.599984433501959e-06
+  "duration_seconds": 2.7499976567924023e-05
 }

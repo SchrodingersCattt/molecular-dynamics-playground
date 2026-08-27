@@ -4,17 +4,17 @@
   "format": "png",
   "width": 1800,
   "height": 700,
-  "plan_sha256": "361299e182838ed616d62cda12406560a8b27df40a3ceb724e08acc72c5b4830",
-  "output_sha256": "15ad88c12a5623cdd9a3bbe0d1c49f1a970d118fd920b597d1006232f20f9723",
+  "plan_sha256": "17f0fb16901d5cd747a4cd9c7e5c6237fcd273f532cf9f71214a5476173f6076",
+  "output_sha256": "3b640a805b6af6656a110435ed47d156d3b6698241678c6cea9392752d027cfe",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis\\velocity.png",
-  "source_sha256": "8d8ad364a881f892433fa9fcae452e7339bb6c110ca9936097143ae3fe522603",
+  "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
   "frame": 24,
   "view": "cluster",
   "camera": {
     "target": [
-      0.3148617016843061,
-      0.15441954864030827,
-      0.0
+      0.3148617016843059,
+      0.15441954864030816,
+      1.3877787807814457e-19
     ],
     "ortho_scale": 1.5,
     "direction": [
@@ -28,9 +28,9 @@
       1.0
     ],
     "scene_offset": [
-      6.6598336863,
-      5.7566899221,
-      5.0
+      6.6898336863,
+      5.7472030891,
+      5.0284604989
     ]
   },
   "render_settings": {
@@ -40,7 +40,7 @@
     "bond_radius": 0.13,
     "show_cell": false
   },
-  "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"rigid-water-velocity-0\",\"origin\":[-1.4202200224295258,0.0,0.0],\"vector\":[0.8106197304097813,0.0,0.0]},{\"color\":\"#2F6B4F\",\"id\":\"rigid-water-velocity-1\",\"origin\":[1.4202200224295258,0.0,0.0],\"vector\":[-0.8106197304097813,0.0,0.0]}]",
+  "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"rigid-water-velocity-0\",\"origin\":[-1.4502200224295259,-0.009486832980505138,0.02846049894151541],\"vector\":[-0.012065474789427894,-0.26092725406443545,0.7827817621933063]},{\"color\":\"#2F6B4F\",\"id\":\"rigid-water-velocity-1\",\"origin\":[1.4502200224295259,0.009486832980505138,-0.02846049894151541],\"vector\":[0.012065474789427894,0.26092725406443545,-0.7827817621933063]}]",
   "vector_count": 2,
   "vector_renderer": "MatterVis native world-space vector_overlays",
   "pipeline_version": 2,
@@ -51,14 +51,14 @@
     "actual_backend": "cpu",
     "camera": {
       "position": [
-        26.090871434553573,
-        -6.42190733349793,
-        12.646470418627707
+        26.120871434553575,
+        -6.431394166497929,
+        12.674930917527707
       ],
       "target": [
-        6.974695387984306,
-        5.911109470740308,
-        5.0
+        7.004695387984306,
+        5.901622637740308,
+        5.0284604989
       ],
       "up": [
         0.0,

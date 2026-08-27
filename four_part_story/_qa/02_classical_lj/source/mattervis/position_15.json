@@ -4,17 +4,17 @@
   "format": "png",
   "width": 1800,
   "height": 700,
-  "plan_sha256": "e1f7096c6a8b14ed6e6b2c3c977fa8bb58aacaba4aad9135f6de76a914bf1620",
-  "output_sha256": "15bb08dd78c48fed50614e42729daf96ed86e63af6ada10039419d7f110875c5",
+  "plan_sha256": "3908d04b8f96bd42c565869ff2d7a19e8abe6cc99ee72366f593ffb9c18a981d",
+  "output_sha256": "ead21ac63171e0d4af36c4b0957b779be288894f3d896bcee90e4dc7fe1d37e7",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis\\position_15.png",
-  "source_sha256": "8d8ad364a881f892433fa9fcae452e7339bb6c110ca9936097143ae3fe522603",
+  "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
   "frame": 15,
   "view": "cluster",
   "camera": {
     "target": [
-      0.3148617016843061,
-      0.15441954864030827,
-      0.0
+      0.3148617016843059,
+      0.15441954864030816,
+      1.3877787807814457e-19
     ],
     "ortho_scale": 1.5,
     "direction": [
@@ -28,9 +28,9 @@
       1.0
     ],
     "scene_offset": [
-      6.6709496101,
-      5.7566899221,
-      5.0
+      6.6896996101,
+      5.7507606515,
+      5.0177878118
     ]
   },
   "render_settings": {
@@ -40,7 +40,7 @@
     "bond_radius": 0.13,
     "show_cell": false
   },
-  "vector_signature": "[{\"color\":\"#183153\",\"id\":\"oxygen-displacement-0\",\"origin\":[-1.45,0.0,0.0],\"vector\":[0.714719461691379,0.0,0.0]},{\"color\":\"#183153\",\"id\":\"oxygen-displacement-1\",\"origin\":[1.45,0.0,0.0],\"vector\":[-0.714719461691379,0.0,0.0]}]",
+  "vector_signature": "[{\"color\":\"#183153\",\"id\":\"oxygen-displacement-0\",\"origin\":[-1.45,0.0,0.0],\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#183153\",\"id\":\"oxygen-displacement-1\",\"origin\":[1.45,0.0,0.0],\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
   "vector_count": 2,
   "vector_renderer": "MatterVis native world-space vector_overlays",
   "pipeline_version": 2,
@@ -51,14 +51,14 @@
     "actual_backend": "cpu",
     "camera": {
       "position": [
-        26.101987358353576,
-        -6.42190733349793,
-        12.646470418627707
+        26.120737358353573,
+        -6.427836604097929,
+        12.664258230427707
       ],
       "target": [
-        6.985811311784306,
-        5.911109470740308,
-        5.0
+        7.004561311784306,
+        5.905180200140308,
+        5.0177878118
       ],
       "up": [
         0.0,

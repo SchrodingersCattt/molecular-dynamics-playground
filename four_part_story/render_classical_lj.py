@@ -43,7 +43,7 @@ MATTERVIS_DIR = QA_DIR / "source" / "mattervis"
 SCENE_RECT = (0.03, 0.09, 0.97, 0.91)
 CAMERA_SCALE = 1.50
 EQUATIONS = (
-    r"$r_{\mathrm{OO}}=|\mathbf{r}_{\mathrm O_2}-\mathbf{r}_{\mathrm O_1}|$",
+    r"$r_{\mathrm{OO}}=|\mathbf{r}_{\mathrm{O}_2}-\mathbf{r}_{\mathrm{O}_1}|$",
     r"$U_{\mathrm{LJ}}(r_{\mathrm{OO}})\;\rightarrow\;\mathbf{F}=-\frac{\partial U}{\partial r}\,\hat{\mathbf{r}}\;\rightarrow\;\mathbf{a}$",
     r"$\mathbf{v}_{n+1}=\mathbf{v}_n+\frac{1}{2}(\mathbf{a}_n+\mathbf{a}_{n+1})\Delta t$",
 )
@@ -342,7 +342,7 @@ def draw_static_case(
     registry.text(
         ax,
         0.50,
-        0.002,
+        0.025,
         "Highlighted term only; TIP3P water also contains electrostatics.",
         ha="center",
         va="bottom",
@@ -453,7 +453,7 @@ def draw_video_frame(
     registry.text(
         right,
         0.50,
-        0.018,
+        0.075,
         "Highlighted LJ term only · TIP3P also contains electrostatics",
         ha="center",
         va="bottom",

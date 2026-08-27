@@ -8,19 +8,19 @@
   "dt_fs": 2.0,
   "oo_separation_angstrom": {
     "before": 2.9,
-    "after": 2.8404400448590517
+    "after": 2.9010605739663515
   },
   "lj_energy_ev": {
     "before": 0.027950189611699924,
-    "after": 0.04236838181856585
+    "after": 0.027732958526671164
   },
   "radial_force_on_right_ev_per_angstrom": {
     "before": 0.20540975679530948,
-    "after": 0.2827797569315076
+    "after": 0.20423948196577502
   },
-  "analytic_vs_finite_difference_max_error": 1.3267842380315642e-10,
-  "maximum_rigid_translation_angstrom": 0.029779977570474125,
-  "one_step_total_energy_drift_ev": -9.985144460217255e-05,
+  "analytic_vs_finite_difference_max_error": 9.976849901782714e-11,
+  "maximum_rigid_translation_angstrom": 0.030000806820308923,
+  "one_step_total_energy_drift_ev": -6.424403345417495e-07,
   "display_scales": {
     "displacement": 24.0,
     "force": 4.0,

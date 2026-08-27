@@ -36,7 +36,7 @@ KCAL_PER_MOL_TO_EV = 0.0433641153087705
 EPSILON_EV = EPSILON_KCAL_PER_MOL * KCAL_PER_MOL_TO_EV
 
 DT_FS = 2.0
-APPROACH_SPEED_ANGSTROM_PER_FS = 0.015
+TANGENTIAL_SPEED_ANGSTROM_PER_FS = 0.015
 MOTION_FRAMES = 25
 DISPLAY_FORCE_SCALE = 4.0
 DISPLAY_DISPLACEMENT_SCALE = 24.0
@@ -97,10 +97,17 @@ def main() -> None:
     atomic_reference = dimer_geometry()
     q0 = atomic_reference[OXYGENS].copy()
     axis0 = (q0[1] - q0[0]) / np.linalg.norm(q0[1] - q0[0])
+    # Give the two rigid waters equal and opposite transverse velocities.  The
+    # out-of-plane component keeps the native 3-D arrows clear of both O--H
+    # bonds in the fixed MatterVis camera while remaining perpendicular to the
+    # O...O interaction coordinate.
+    tangent0 = np.array([0.0, -1.0, 3.0], dtype=float)
+    tangent0 -= np.dot(tangent0, axis0) * axis0
+    tangent0 /= np.linalg.norm(tangent0)
     v0 = np.vstack(
         (
-            APPROACH_SPEED_ANGSTROM_PER_FS * axis0,
-            -APPROACH_SPEED_ANGSTROM_PER_FS * axis0,
+            TANGENTIAL_SPEED_ANGSTROM_PER_FS * tangent0,
+            -TANGENTIAL_SPEED_ANGSTROM_PER_FS * tangent0,
         )
     )
     f0 = generalized_forces(q0)

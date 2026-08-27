@@ -1,23 +1,141 @@
 {
   "version": 1,
-  "figure": {"canonical_stem": "02_classical_lj"},
+  "figure": {
+    "canonical_stem": "02_classical_lj"
+  },
   "outputs": [
-    {"path": "../../figures/02_classical_lj.png"},
-    {"path": "../../figures/02_classical_lj.svg"}
+    {
+      "path": "../../figures/02_classical_lj.png"
+    },
+    {
+      "path": "../../figures/02_classical_lj.svg"
+    }
   ],
-  "target": {"width_mm": 297, "qa_dpi": 300, "min_dpi": 200, "max_dpi": 600},
+  "target": {
+    "width_mm": 297,
+    "qa_dpi": 300,
+    "min_dpi": 200,
+    "max_dpi": 600
+  },
   "panels": [
-    {"id": "integrator", "source": "source/integrator.png", "slot": [0.045, 0.19, 0.355, 0.89], "source_min_clearance_px": 12, "min_clearance_px": 18, "source_allow_touch_edges": [], "allow_touch_edges": []},
-    {"id": "mattervis_dimer", "source": "source/case.png", "slot": [0.40, 0.19, 0.965, 0.89], "source_min_clearance_px": 12, "min_clearance_px": 18, "source_allow_touch_edges": [], "allow_touch_edges": []}
+    {
+      "id": "integrator",
+      "source": "source/integrator.png",
+      "slot": [
+        0.045,
+        0.19,
+        0.355,
+        0.89
+      ],
+      "source_min_clearance_px": 12,
+      "min_clearance_px": 18,
+      "source_allow_touch_edges": [],
+      "allow_touch_edges": []
+    },
+    {
+      "id": "mattervis_dimer",
+      "source": "source/case.png",
+      "slot": [
+        0.4,
+        0.19,
+        0.965,
+        0.89
+      ],
+      "source_min_clearance_px": 12,
+      "min_clearance_px": 18,
+      "source_allow_touch_edges": [],
+      "allow_touch_edges": []
+    }
   ],
   "checks": {
-    "whitespace": {"background_threshold": 245, "min_ink_fraction": 0.02, "min_panel_bbox_fill": 0.28, "grid_rows": 12, "grid_columns": 20},
-    "boundaries": {"bands": [{"id": "column_gap", "rect": [0.365, 0.19, 0.385, 0.89], "max_ink_pixels": 0}]},
-    "colors": {"semantics": [{"id": "separation", "color": "#183153", "min_pixels": 180}, {"id": "force", "color": "#A32035", "min_pixels": 250}, {"id": "velocity", "color": "#2F6B4F", "min_pixels": 150}]}
+    "whitespace": {
+      "background_threshold": 245,
+      "min_ink_fraction": 0.02,
+      "min_panel_bbox_fill": 0.28,
+      "grid_rows": 12,
+      "grid_columns": 20
+    },
+    "boundaries": {
+      "bands": [
+        {
+          "id": "column_gap",
+          "rect": [
+            0.365,
+            0.19,
+            0.385,
+            0.89
+          ],
+          "max_ink_pixels": 0
+        }
+      ]
+    },
+    "colors": {
+      "semantics": [
+        {
+          "id": "separation",
+          "color": "#183153",
+          "min_pixels": 180
+        },
+        {
+          "id": "force",
+          "color": "#A32035",
+          "min_pixels": 250
+        },
+        {
+          "id": "velocity",
+          "color": "#2F6B4F",
+          "min_pixels": 150
+        }
+      ]
+    }
   },
-  "integrity": {"required_content": ["mattervis_dimer", "tip3p_oo_lj", "analytic_force", "electrostatic_scope_note"], "evidence": {"mattervis_dimer": "source/mattervis/provenance.json", "tip3p_oo_lj": "../../data/classical_lj.json", "analytic_force": "../../data/classical_lj.json", "electrostatic_scope_note": "main figure caption"}, "scientific_changes": []},
-  "consistency": {"constraints": ["same_integrator_geometry", "fixed_camera", "stable_atom_ids"], "evidence": {}},
-  "quantitative": {"transformations": ["rigid water translations", "visual arrow amplification"], "units": {"distance": "angstrom", "energy": "eV", "force": "eV/angstrom"}},
-  "deviations": {"records": []},
-  "review": {"render_sha256": "REPLACE_AFTER_RENDER", "problems": {"scientific_expression": "pending", "geometry": "pending", "annotations": "pending", "readability": "pending", "submission_quality": "pending"}, "action": "pending", "stop_condition": "fixed"}
+  "integrity": {
+    "required_content": [
+      "mattervis_dimer",
+      "tip3p_oo_lj",
+      "analytic_force",
+      "electrostatic_scope_note"
+    ],
+    "evidence": {
+      "mattervis_dimer": "source/mattervis/provenance.json",
+      "tip3p_oo_lj": "../../data/classical_lj.json",
+      "analytic_force": "../../data/classical_lj.json",
+      "electrostatic_scope_note": "main figure caption"
+    },
+    "scientific_changes": []
+  },
+  "consistency": {
+    "constraints": [
+      "same_integrator_geometry",
+      "fixed_camera",
+      "stable_atom_ids"
+    ],
+    "evidence": {}
+  },
+  "quantitative": {
+    "transformations": [
+      "rigid water translations",
+      "visual arrow amplification"
+    ],
+    "units": {
+      "distance": "angstrom",
+      "energy": "eV",
+      "force": "eV/angstrom"
+    }
+  },
+  "deviations": {
+    "records": []
+  },
+  "review": {
+    "render_sha256": "60e82428ef75607e24ba79feae759159355a00b35909f63a458da525707a87dd",
+    "problems": {
+      "scientific_expression": "Superseded draft disconnected an Ar-pair LJ curve from the requested water-dimer Velocity Verlet case.",
+      "geometry": "Superseded square render made the dimer small and projected the O...O guide with the wrong source aspect ratio.",
+      "annotations": "Superseded radial motion vectors collided with the O...O guide and O-H bonds.",
+      "readability": "Superseded arrows were hard to distinguish and the bottom scope note violated panel clearance.",
+      "submission_quality": "Superseded video and frame audit referred to the radial-motion draft rather than the corrected native-vector render."
+    },
+    "action": "Replaced the disconnected Ar curve with a real TIP3P water dimer, rendered all physical vectors as MatterVis native vector_overlays, used a wide fixed camera and a transverse true VV step, corrected the O...O projection, raised the scope note, and regenerated the canonical static output.",
+    "stop_condition": "fixed"
+  }
 }
