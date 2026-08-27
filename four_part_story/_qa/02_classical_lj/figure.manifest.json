@@ -1,146 +1,23 @@
 {
   "version": 1,
-  "figure": {
-    "canonical_stem": "02_classical_lj"
-  },
+  "figure": {"canonical_stem": "02_classical_lj"},
   "outputs": [
-    {
-      "path": "../../figures/02_classical_lj.png"
-    },
-    {
-      "path": "../../figures/02_classical_lj.svg"
-    },
-    {
-      "path": "../../videos/02_classical_lj.mp4"
-    }
+    {"path": "../../figures/02_classical_lj.png"},
+    {"path": "../../figures/02_classical_lj.svg"}
   ],
-  "target": {
-    "width_mm": 297.0,
-    "qa_dpi": 300,
-    "min_dpi": 295,
-    "max_dpi": 305
-  },
+  "target": {"width_mm": 297, "qa_dpi": 300, "min_dpi": 200, "max_dpi": 600},
   "panels": [
-    {
-      "id": "lj_curve",
-      "source": "source/lj_curve.png",
-      "slot": [
-        0.045,
-        0.2,
-        0.53,
-        0.86
-      ],
-      "source_min_clearance_px": 24,
-      "min_clearance_px": 24,
-      "source_allow_touch_edges": [],
-      "allow_touch_edges": []
-    },
-    {
-      "id": "argon_pair",
-      "source": "source/argon_pair.png",
-      "slot": [
-        0.57,
-        0.18,
-        0.965,
-        0.86
-      ],
-      "source_min_clearance_px": 24,
-      "min_clearance_px": 24,
-      "source_allow_touch_edges": [],
-      "allow_touch_edges": []
-    }
+    {"id": "integrator", "source": "source/integrator.png", "slot": [0.045, 0.19, 0.355, 0.89], "source_min_clearance_px": 12, "min_clearance_px": 18, "source_allow_touch_edges": [], "allow_touch_edges": []},
+    {"id": "mattervis_dimer", "source": "source/case.png", "slot": [0.40, 0.19, 0.965, 0.89], "source_min_clearance_px": 12, "min_clearance_px": 18, "source_allow_touch_edges": [], "allow_touch_edges": []}
   ],
   "checks": {
-    "whitespace": {
-      "background_threshold": 245,
-      "min_ink_fraction": 0.025,
-      "min_panel_bbox_fill": 0.42,
-      "grid_rows": 14,
-      "grid_columns": 20
-    },
-    "boundaries": {
-      "bands": [
-        {
-          "id": "column_gap",
-          "rect": [
-            0.54,
-            0.18,
-            0.56,
-            0.87
-          ],
-          "max_ink_pixels": 0
-        }
-      ]
-    },
-    "colors": {
-      "semantics": [
-        {
-          "id": "potential",
-          "color": "#183153",
-          "min_pixels": 700
-        },
-        {
-          "id": "repulsion",
-          "color": "#A32035",
-          "min_pixels": 500
-        },
-        {
-          "id": "attraction",
-          "color": "#2F6B4F",
-          "min_pixels": 500
-        }
-      ]
-    }
+    "whitespace": {"background_threshold": 245, "min_ink_fraction": 0.02, "min_panel_bbox_fill": 0.28, "grid_rows": 12, "grid_columns": 20},
+    "boundaries": {"bands": [{"id": "column_gap", "rect": [0.365, 0.19, 0.385, 0.89], "max_ink_pixels": 0}]},
+    "colors": {"semantics": [{"id": "separation", "color": "#183153", "min_pixels": 180}, {"id": "force", "color": "#A32035", "min_pixels": 250}, {"id": "velocity", "color": "#2F6B4F", "min_pixels": 150}]}
   },
-  "integrity": {
-    "required_content": [
-      "lj_12_6",
-      "argon_parameters",
-      "exact_force_sign",
-      "shared_frame_state"
-    ],
-    "evidence": {
-      "lj_12_6": "generate_classical_lj.py evaluates the analytic 12-6 form",
-      "argon_parameters": "data/classical_lj.json records sigma and epsilon",
-      "exact_force_sign": "numeric derivative and analytic force agree in the data checks",
-      "shared_frame_state": "curve point, atom separation, and arrows read the same frame record"
-    },
-    "scientific_changes": []
-  },
-  "consistency": {
-    "constraints": [
-      "separate A4 and 16:9 layouts",
-      "fixed axes and camera",
-      "shared four-story palette"
-    ],
-    "evidence": {
-      "renderer": "four_part_story/render_classical_lj.py and common.py"
-    }
-  },
-  "quantitative": {
-    "transformations": [
-      "orthographic 3D projection",
-      "force arrows use one declared display scale"
-    ],
-    "units": {
-      "distance": "angstrom",
-      "energy": "eV",
-      "force": "eV/angstrom"
-    }
-  },
-  "deviations": {
-    "records": []
-  },
-  "review": {
-    "render_sha256": "8fc99bc0eaca0bb97ef717e26869c1722a284eb9df541cc70582a237b0e53c4f",
-    "problems": {
-      "scientific_expression": "The earlier classical example used a softened molecular force field; the replacement uses the explicit 12-6 Lennard-Jones energy and its analytic radial force.",
-      "geometry": "The Ar pair now uses one 3D axis and one physical distance scale across repulsive, equilibrium, and attractive states, with no artificial covalent bond.",
-      "annotations": "The first video draft crowded the title and equation and touched plot boundaries; the plot was inset and the equation moved into reserved space.",
-      "readability": "The zero-force equilibrium frame initially looked too empty; the real atoms and equation were enlarged without adding a fictitious force arrow.",
-      "submission_quality": "The static A4 figure and standalone 16:9 MP4 share one canonical stem, and all 216 video frames pass the strict checks."
-    },
-    "action": "accepted after replacing the prior classical example, fixing panel clearances, and rerunning strict static and every-frame video QA",
-    "stop_condition": "fixed"
-  }
+  "integrity": {"required_content": ["mattervis_dimer", "tip3p_oo_lj", "analytic_force", "electrostatic_scope_note"], "evidence": {"mattervis_dimer": "source/mattervis/provenance.json", "tip3p_oo_lj": "../../data/classical_lj.json", "analytic_force": "../../data/classical_lj.json", "electrostatic_scope_note": "main figure caption"}, "scientific_changes": []},
+  "consistency": {"constraints": ["same_integrator_geometry", "fixed_camera", "stable_atom_ids"], "evidence": {}},
+  "quantitative": {"transformations": ["rigid water translations", "visual arrow amplification"], "units": {"distance": "angstrom", "energy": "eV", "force": "eV/angstrom"}},
+  "deviations": {"records": []},
+  "review": {"render_sha256": "REPLACE_AFTER_RENDER", "problems": {"scientific_expression": "pending", "geometry": "pending", "annotations": "pending", "readability": "pending", "submission_quality": "pending"}, "action": "pending", "stop_condition": "fixed"}
 }

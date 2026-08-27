@@ -1,47 +1,44 @@
-# Figure Contract — 02 Classical Lennard-Jones Potential
+# Figure Contract — Classical Lennard–Jones MD
 
 ## Output
 
-- Canonical stem: `02_classical_lj`.
-- Formats: A4-width PNG/SVG and independent 16:9 MP4.
-- Final files: `figures/02_classical_lj.png`, `.svg`, `videos/02_classical_lj.mp4`.
+- Canonical stem: `02_classical_lj`
+- Formats: PNG, SVG, MP4
+- Final files: `figures/02_classical_lj.{png,svg}`, `videos/02_classical_lj.mp4`
+- Intermediate files: `_qa/02_classical_lj/source/` and `_qa/02_classical_lj/_qa/`
 
 ## Target Size
 
-- Static: 297 × 210 mm, 3508 × 2480 px at 300 dpi; minimum text 10 pt.
-- Video: 1920 × 1080, 24 fps, minimum text 18 pt.
-- Static and video use separate compositions.
+- Static: A4 landscape, 297 × 210 mm, 300 dpi, minimum 10 pt
+- Video: 1920 × 1080, 24 fps, minimum 18 pt
 
 ## Panels
 
 | Panel | Role | Required content | Comparison constraints |
 |---|---|---|---|
-| a | potential definition | Large Ar 12-6 LJ curve with repulsive, equilibrium, attractive regions and moving exact `(r,U)` point | axes and units fixed across animation |
-| b | concrete interaction | Large 3D Ar pair, separation bracket and large force arrows | fixed asymmetric orthographic camera and physical sphere scale |
+| a | abstract integrator | same empty `r → a → v` loop | identical to panel a in the other stories |
+| b | concrete empirical potential | MatterVis H2O dimer, O···O distance, LJ forces and one rigid-body VV step | same camera and viewport throughout |
 
 ## Required Elements
 
-- `U(r)=4 epsilon[(sigma/r)^12-(sigma/r)^6]` and `F=-dU/dr`.
-- Argon parameters `sigma=3.405 Å`, `epsilon=0.0103 eV`, equilibrium `r_m=2^(1/6)sigma`.
-- Force arrows reverse direction on opposite sides of equilibrium and vanish at equilibrium.
-- Exact curve point, separation, force sign, and displayed atom positions share one `r` value per frame.
+- TIP3P O–O LJ term applied to a real water-dimer geometry.
+- Direct structural mapping `rOO → U_LJ → F → a`; no standalone curve.
+- MatterVis standard atom colours and two-colour bonds.
 
 ## Forbidden Changes
 
-- No softened or mock LJ values and no force direction chosen from screen position.
-- No hidden axis truncation; the plotted domain and clipped repulsive branch are explicitly stated.
-- No non-proportional scaling or independent camera fitting.
+- No Ar pair, independent potential graph, hand-drawn structure or molecule inside the loop.
+- Do not imply that the highlighted LJ term is the complete water force field.
 
 ## QA Plan
 
-- MatterVis inspect/preflight/source render for the Ar pair.
-- Static strict QA at 297 mm and five-problem review.
-- Every video frame: visualize-data whitespace, clipping, boundaries, colors, registered text/arrow bounds, and exact `r-U-F` consistency.
+- Analytic LJ force must agree with central finite difference.
+- O···O line and force origins use the same projected world coordinates as MatterVis.
+- Run strict source/composite and every-frame checks, then final-size review.
 
 ## Delivery Gate
 
 - [ ] Canonical outputs exist.
-- [ ] Static strict QA and review hash pass.
-- [ ] Every video frame passes.
-- [ ] LJ signs and equilibrium are numerically verified.
-- [ ] Final static and motion are visually accepted.
+- [ ] Scientific derivative and strict visual QA pass.
+- [ ] Five-problem review matches the latest render hash.
+

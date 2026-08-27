@@ -1,17 +1,23 @@
 {
   "version": 1,
   "figure": {"canonical_stem": "04_deep_potential_md"},
-  "outputs": [{"path": "../../figures/04_deep_potential_md.png"}, {"path": "../../figures/04_deep_potential_md.svg"}, {"path": "../../videos/04_deep_potential_md.mp4"}],
-  "target": {"width_mm": 297.0, "qa_dpi": 300, "min_dpi": 295, "max_dpi": 305},
-  "panels": [
-    {"id": "md_loop", "source": "source/md_loop.png", "slot": [0.035, 0.245, 0.255, 0.835], "source_min_clearance_px": 24, "min_clearance_px": 24, "source_allow_touch_edges": [], "allow_touch_edges": []},
-    {"id": "water_environment", "source": "source/water_environment.png", "slot": [0.285, 0.185, 0.715, 0.895], "source_min_clearance_px": 24, "min_clearance_px": 24, "source_allow_touch_edges": [], "allow_touch_edges": []},
-    {"id": "learned_model", "source": "source/learned_model.png", "slot": [0.75, 0.215, 0.97, 0.855], "source_min_clearance_px": 24, "min_clearance_px": 24, "source_allow_touch_edges": [], "allow_touch_edges": []}
+  "outputs": [
+    {"path": "../../figures/04_deep_potential_md.png"},
+    {"path": "../../figures/04_deep_potential_md.svg"}
   ],
-  "checks": {"whitespace": {"background_threshold": 245, "min_ink_fraction": 0.025, "min_panel_bbox_fill": 0.34, "grid_rows": 14, "grid_columns": 24}, "boundaries": {"bands": [{"id": "left_gap", "rect": [0.263, 0.19, 0.277, 0.89], "max_ink_pixels": 0}, {"id": "right_gap", "rect": [0.723, 0.19, 0.742, 0.89], "max_ink_pixels": 0}]}, "colors": {"semantics": [{"id": "hydrogen_cutoff", "color": "#183153", "min_pixels": 900}, {"id": "oxygen", "color": "#A32035", "min_pixels": 700}, {"id": "atomic_energy", "color": "#2F6B4F", "min_pixels": 500}]}},
-  "integrity": {"required_content": ["periodic_water_box", "stable_central_atom", "exact_cutoff_selection", "bond_and_neighbor_views", "deep_potential_pipeline", "real_deepmd_inference", "no_fabricated_forces"], "evidence": {"periodic_water_box": "data/water_box_64.extxyz contains 64 waters in a 12.4296 angstrom cubic PBC cell", "stable_central_atom": "source ID 126 is fixed across all stages", "exact_cutoff_selection": "minimum-image mask contains exactly 83 neighbors within 6.0 angstrom", "bond_and_neighbor_views": "stored O-H bonds and stable-ID neighbor vectors are separate semantic layers", "deep_potential_pipeline": "renderer shows local coordinates, descriptor, shared atomic network, atomic energies, total energy and differentiation", "real_deepmd_inference": "data/dpmd_water_box_results.npz contains one 192-atom DeepMD inference; data/dpmd_eval.json records E=-1007.9069226533904 eV and max|F|=1.2246452541839372 eV/A", "no_fabricated_forces": "all numerical force arrows are selected directly from forces_ev_per_angstrom in the retained result"}, "scientific_changes": []},
-  "consistency": {"constraints": ["separate A4 and 16:9 layouts", "fixed asymmetric camera and physical scale", "shared four-story palette"], "evidence": {"renderer": "four_part_story/render_dpmd.py and common.py"}},
-  "quantitative": {"transformations": ["one orthographic projection from [1.55,-1.0,0.62]", "minimum-image neighbor coordinates retain stable IDs", "displayed force arrows use one disclosed constant scale"], "units": {"coordinates": "angstrom", "cutoff": "angstrom", "density": "g/cm^3", "energy": "eV", "force": "eV/angstrom"}},
-  "deviations": {"records": [{"scope": "Bohrium batch-job route", "reason": "the Windows bohr uploader failed before job creation with a temporary-directory access error", "mitigation": "the identical evaluator, water box, and model were run successfully in a time-limited Bohrium sandbox", "follow_up": "none; sandbox output was downloaded, hashed, and the sandbox destroyed"}]},
-  "review": {"render_sha256": "621d845d2688cfa29dd0dc1acfd90865c92b6594a9a4bdc67cf9e66a48b0f2a6", "problems": {"scientific_expression": "The initial contract allowed only symbolic output; the final figure is tied to a retained 192-atom DeepMD inference with exact energy and force arrays.", "geometry": "The first draft used large packed atoms and a faint cutoff surface; atom radii were reduced and the true 3D sphere silhouette plus latitude/longitude mesh was strengthened without changing the camera.", "annotations": "The first draft put long node labels inside circles and let the center caption cross both safety bands; symbols now sit inside circles and the caption is split within its own panel.", "readability": "A stage-four heading reached both panel edges and cutoff state briefly reset at stage boundaries; the heading was shortened and sphere, fade, spokes, and forces now transition independently.", "submission_quality": "The final A4 figure passes strict source and composite checks, while the 16 s video is independently composed and all 384 frames pass the same frame-level gates."}, "action": "accepted after two visual-review passes, real DeepMD provenance checks, fixed-camera MatterVis verification, strict A4 QA, and 384-of-384 video-frame QA", "stop_condition": "fixed"}
+  "target": {"width_mm": 297, "qa_dpi": 300, "min_dpi": 200, "max_dpi": 600},
+  "panels": [
+    {"id": "integrator", "source": "source/integrator.png", "slot": [0.045, 0.19, 0.355, 0.89], "source_min_clearance_px": 12, "min_clearance_px": 18, "source_allow_touch_edges": [], "allow_touch_edges": []},
+    {"id": "mattervis_water_box", "source": "source/case.png", "slot": [0.40, 0.19, 0.965, 0.89], "source_min_clearance_px": 12, "min_clearance_px": 18, "source_allow_touch_edges": [], "allow_touch_edges": []}
+  ],
+  "checks": {
+    "whitespace": {"background_threshold": 245, "min_ink_fraction": 0.02, "min_panel_bbox_fill": 0.30, "grid_rows": 12, "grid_columns": 20},
+    "boundaries": {"bands": [{"id": "column_gap", "rect": [0.365, 0.19, 0.385, 0.89], "max_ink_pixels": 0}]},
+    "colors": {"semantics": [{"id": "cutoff", "color": "#183153", "min_pixels": 450}, {"id": "oxygen", "color": "#A32035", "min_pixels": 500}, {"id": "neighbors", "color": "#2F6B4F", "min_pixels": 350}]}
+  },
+  "integrity": {"required_content": ["equilibrated_dp_trajectory", "mattervis_periodic_box", "stable_central_atom", "exact_cutoff_selection", "real_deepmd_forces"], "evidence": {"equilibrated_dp_trajectory": "bohrium/equilibration.json", "mattervis_periodic_box": "source/mattervis/provenance.json", "stable_central_atom": "../../data/water_box_64.json", "exact_cutoff_selection": "../../data/water_box_64.json", "real_deepmd_forces": "../../data/dpmd_eval.json"}, "scientific_changes": []},
+  "consistency": {"constraints": ["fixed_camera", "stable_source_ids", "minimum_image_neighbors", "fixed_cutoff"], "evidence": {}},
+  "quantitative": {"transformations": ["outside-context opacity change", "visual arrow amplification"], "units": {"distance": "angstrom", "energy": "eV", "force": "eV/angstrom", "time": "fs"}},
+  "deviations": {"records": []},
+  "review": {"render_sha256": "REPLACE_AFTER_RENDER", "problems": {"scientific_expression": "pending", "geometry": "pending", "annotations": "pending", "readability": "pending", "submission_quality": "pending"}, "action": "pending", "stop_condition": "fixed"}
 }

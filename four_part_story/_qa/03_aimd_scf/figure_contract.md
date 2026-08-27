@@ -1,48 +1,45 @@
-# Figure Contract — 03 AIMD and the SCF Loop
+# Figure Contract — AIMD RHF–SCF
 
 ## Output
 
-- Canonical stem: `03_aimd_scf`.
-- Formats: A4-width PNG/SVG and independent 16:9 MP4.
-- Final files: `figures/03_aimd_scf.png`, `.svg`, `videos/03_aimd_scf.mp4`.
+- Canonical stem: `03_aimd_scf`
+- Formats: PNG, SVG, MP4
+- Final files: `figures/03_aimd_scf.{png,svg}`, `videos/03_aimd_scf.mp4`
+- Intermediate files: Cube files, MatterVis frames and checks under `_qa/03_aimd_scf/`
 
 ## Target Size
 
-- Static: 297 × 210 mm, 3508 × 2480 px at 300 dpi; minimum text 10 pt.
-- Video: 1920 × 1080, 24 fps; minimum text 18 pt.
-- Static is a separate explanatory composition, not a video screenshot.
+- Static: A4 landscape, 297 × 210 mm, 300 dpi, minimum 10 pt
+- Video: 1920 × 1080, 24 fps, minimum 18 pt
 
 ## Panels
 
 | Panel | Role | Required content | Comparison constraints |
 |---|---|---|---|
-| a | outer MD loop | Empty position → acceleration/force → velocity loop | no molecule or density inside |
-| b | concrete quantum calculation | Large 3D H2O dimer plus large electron-density isosurface and large force/motion arrows | fixed camera and isotropic scale |
-| c | inner SCF loop | Small independent density → Fock → solve → new density loop with convergence readout | no structure inside the loop |
+| a | outer MD loop | same empty `r → a → v` loop | fixed across the series |
+| b | electronic solve | large MatterVis dimer and one evolving `ρᵏ(r)` plus separate small SCF loop | fixed camera, viewport, grid and nuclei for every iteration |
 
 ## Required Elements
 
-- Real 19-iteration generalized RHF/STO-3G SCF history and finite-difference forces.
-- Density isosurface derived from the stored converged density matrix/basis, not an illustrative blob.
-- The SCF loop is visibly nested inside one outer force evaluation without geometric overlap.
-- Atom motion after the force evaluation is visible and arrows have large heads.
+- All 19 real RHF/STO-3G density iterates on one Cartesian grid.
+- One density object evolving from broad/blurred to crisp; no convergence curve or competing Δρ object.
+- Blur is a disclosed residual-driven visual encoding applied to each real `ρᵏ`, not a change in basis or SCF grid.
+- Converged forces appear before nuclear displacement, never simultaneously.
 
 ## Forbidden Changes
 
-- No structure inside either loop and no 2D density contour substituted for the requested 3D view.
-- No claim that RHF/STO-3G is production DFT; label the pedagogical electronic-structure level.
-- No independent camera/scale changes between SCF stages and no invented forces.
+- No fabricated density, molecule inside either loop or per-frame camera fitting.
+- Do not present render sharpness as adaptive electronic-structure resolution.
 
 ## QA Plan
 
-- MatterVis inspect/preflight/source render for the dimer; verify density grid and isosurface bounds separately.
-- Static strict QA, geometry endpoints, source/composite clipping, five-problem review.
-- Every video frame: visualize-data whitespace, clipping, boundaries, colors, text/arrow bounds, SCF-iteration/state consistency, and motion extrema.
+- Verify density matrices, grids, Cube hashes, residual-to-blur mapping and force provenance.
+- MatterVis inspect/render every source; strict source/composite and every-frame checks.
+- Inspect animation for genuinely visible coarse-to-fine evolution.
 
 ## Delivery Gate
 
-- [ ] Canonical outputs exist.
-- [ ] Static strict QA and review hash pass.
-- [ ] Every video frame passes.
-- [ ] SCF and force provenance is verified.
-- [ ] Final static and motion are visually accepted.
+- [ ] Nineteen iteration densities and provenance exist.
+- [ ] Strict static and every-frame QA pass.
+- [ ] Five-problem review matches the latest render hash.
+

@@ -15,6 +15,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.patches import Circle, FancyArrowPatch
+from PIL import Image
 
 
 ROOT = Path(__file__).resolve().parent
@@ -422,6 +423,7 @@ def render_video(
     fig = new_video_figure()
     frame_records = []
     failures = []
+    contact_thumbnails: list[Image.Image] = []
     try:
         for frame_index in range(frames):
             fig.clear()
@@ -431,6 +433,8 @@ def render_video(
             layout_errors = registry.validate(fig)
             rgba = np.asarray(fig.canvas.buffer_rgba())
             rgb = np.ascontiguousarray(rgba[:, :, :3])
+            thumbnail = Image.fromarray(rgb).resize((240, 135), Image.Resampling.LANCZOS)
+            contact_thumbnails.append(thumbnail)
             checks = _frame_checks(rgb, audit_config, semantics)
             check_errors = [
                 f"{result.check}: {finding.message}"
@@ -489,6 +493,16 @@ def render_video(
             json.dumps(report, separators=(",", ":")) + "\n",
             encoding="utf-8",
         )
+        contact_dir = qa_directory / "contact_sheets"
+        contact_dir.mkdir(parents=True, exist_ok=True)
+        per_page = 48
+        columns = 8
+        rows = 6
+        for page_index, start in enumerate(range(0, len(contact_thumbnails), per_page)):
+            page = Image.new("RGB", (columns * 240, rows * 135), WHITE)
+            for offset, thumb in enumerate(contact_thumbnails[start : start + per_page]):
+                page.paste(thumb, ((offset % columns) * 240, (offset // columns) * 135))
+            page.save(contact_dir / f"contact_{page_index:02d}.jpg", quality=92, subsampling=0)
     if return_code != 0:
         raise RuntimeError(f"ffmpeg failed with exit code {return_code}")
     if failures or len(frame_records) != frames:

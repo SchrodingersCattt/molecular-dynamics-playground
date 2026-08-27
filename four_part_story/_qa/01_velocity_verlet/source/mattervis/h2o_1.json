@@ -1,0 +1,91 @@
+{
+  "schema": "mattervis.render-result/v1",
+  "backend": "cpu",
+  "format": "png",
+  "width": 1500,
+  "height": 1120,
+  "plan_sha256": "7c81da35fbd5818778b9b007a963549f1ddf7bb6840957134edf539391aa35cf",
+  "output_sha256": "bec11b2ea6996b244e3ab0b4757cda60395a830ddfca5994a7a34bb7789fbd80",
+  "output": "four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\h2o_1.png",
+  "source_sha256": "39446e55e15a203f3b8b674c7622031fb477ead23d7b5c033c3bb4b4230d588d",
+  "frame": 1,
+  "view": "cluster",
+  "camera": {
+    "target": [
+      -0.0041121683077796475,
+      0.02142571888146973,
+      -0.28307104794072147
+    ],
+    "ortho_scale": 2.25,
+    "direction": [
+      0.7965073352737195,
+      -0.5138757001765932,
+      0.3186029341094878
+    ],
+    "up": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "scene_offset": [
+      5.0267252119,
+      5.7424803271,
+      5.4934453742
+    ]
+  },
+  "warnings": [],
+  "metadata": {
+    "transparent_compositor": "per-pixel-fragment-list",
+    "scale": 1,
+    "actual_backend": "cpu",
+    "camera": {
+      "position": [
+        24.138789090161488,
+        -6.569110758256768,
+        12.856844744886986
+      ],
+      "target": [
+        5.02261304359222,
+        5.76390604598147,
+        5.210374326259279
+      ],
+      "up": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "projection": "orthographic",
+      "fov_y_deg": 45.0,
+      "near": 0.01,
+      "far": 10000.0,
+      "ortho_scale": 2.25
+    },
+    "source": {
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\vv_h2o_step.extxyz",
+      "input_format": "ase-auto",
+      "frame": 1,
+      "selected_frames": [
+        1
+      ],
+      "sha256": "39446e55e15a203f3b8b674c7622031fb477ead23d7b5c033c3bb4b4230d588d"
+    },
+    "requirements": {
+      "schema": "mattervis.requirements/v1",
+      "requested": [
+        "png"
+      ],
+      "capabilities": [
+        "core"
+      ],
+      "extras": [],
+      "available": true,
+      "missing_capabilities": [],
+      "install": "python -m pip install \"matter-vis\"",
+      "notes": [
+        "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+      ]
+    },
+    "install": "python -m pip install \"matter-vis\"",
+    "fallback": null
+  }
+}

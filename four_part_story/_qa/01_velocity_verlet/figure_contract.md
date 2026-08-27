@@ -1,51 +1,52 @@
-# Figure Contract — 01 Velocity Verlet
+# Figure Contract — Velocity Verlet
 
 ## Output
 
 - Canonical stem: `01_velocity_verlet`
-- Formats: A4-width PNG/SVG plus an independent 16:9 MP4.
-- Final files: `figures/01_velocity_verlet.png`, `.svg`, and `videos/01_velocity_verlet.mp4`.
-- Intermediate files: source panels, MatterVis provenance, geometry metadata, decoded QA frames, and reports only under `_qa/01_velocity_verlet/`.
+- Formats: PNG, SVG, MP4
+- Final files: `figures/01_velocity_verlet.{png,svg}`, `videos/01_velocity_verlet.mp4`
+- Intermediate files: `_qa/01_velocity_verlet/source/` and `_qa/01_velocity_verlet/_qa/`
+- Files that must not be delivered: failed frames and exploratory suffix variants
 
 ## Target Size
 
-- Static: A4 landscape, 297 × 210 mm, 3508 × 2480 px at 300 dpi; minimum text 10 pt.
-- Video: 1920 × 1080, H.264/yuv420p, 24 fps; minimum text 18 pt.
-- Static and video have separate layouts; the static figure is not a captured video frame.
+- Static: A4 landscape, 297 × 210 mm, 300 dpi, minimum 10 pt
+- Video: 1920 × 1080, 24 fps, minimum 18 pt
 
 ## Panels
 
 | Panel | Role | Required content | Comparison constraints |
 |---|---|---|---|
-| a | abstract integrator | Empty three-node loop: position → acceleration → velocity; compact equations in reserved centre whitespace | no atoms or molecular geometry in the loop |
-| b | concrete step | Large 3D H2O before/after state, displacement, acceleration, and velocity arrows | one fixed asymmetric orthographic camera and isotropic scale |
+| a | abstract integrator | empty `r → a → v` loop and exact equations | fixed geometry across all four stories |
+| b | concrete step | MatterVis H2O, old/new position, acceleration, velocity | one camera, viewport, atom IDs and physical geometry |
 
 ## Required Elements
 
-- Exact three-step Velocity Verlet equations and one numerically verified step.
-- Stable O/H atom IDs and stored O-H bonds.
-- Position stage: old state as ghost, new state solid, large displacement arrows.
-- Acceleration stage: `a = F/m` arrows anchored at the new positions.
-- Velocity stage: old and new velocity arrows with a clear update.
-- Active stage changes light grey to black; physical accents remain navy/crimson/green.
+- MatterVis red O, white H and two-colour O–H half-bonds.
+- Navy displacement, crimson acceleration and green velocity arrows.
+- Old pose ghost and new pose solid; arrows are visually amplified without numeric labels.
 
 ## Forbidden Changes
 
-- No structure inside the abstract loop.
-- No Euler update substituted for Velocity Verlet; no missing second acceleration.
-- No non-proportional scaling, independent camera fitting, or screen-distance bonds.
-- Arrow display scaling must be declared and constant within each vector type.
+- No hand-drawn atoms or bonds; no molecule inside the loop.
+- No incorrect `r → v → a` ordering and no non-proportional image stretching.
+- Do not alter stored coordinates, velocities or accelerations for readability.
+
+## Style
+
+- White background; inactive loop light grey; active stage charcoal/black.
+- MatterVis orthographic camera direction `[1.55,-1.0,0.62]`, up `[0,0,1]`.
+- Arrow shafts at least 8 px and heads at least 20 px in video.
 
 ## QA Plan
 
-- MatterVis inspect, CPU preflight, explicit-camera source render, output/hash verification.
-- Static: source clipping, composite clipping, boundaries, colors, 297 mm print scale, strict QA, five-problem review.
-- Video: decode every frame; run visualize-data whitespace, clipping, boundary, and color gates on every frame; validate registered text/arrow bounds and inspect motion extrema.
+- MatterVis inspect/render JSON, source and composite clipping, strict manifest QA.
+- Every encoded frame receives layout, whitespace, clipping, boundary and colour checks.
+- Inspect full-frame contact sheets and the video as motion at final display size.
 
 ## Delivery Gate
 
 - [ ] Canonical outputs exist.
-- [ ] Static strict QA and review hash pass.
-- [ ] Every video frame passes the declared gates.
-- [ ] Minimum font sizes and arrowhead sizes pass metadata checks.
-- [ ] Final static and full motion were inspected at delivery size.
+- [ ] Strict static and every-frame video QA pass.
+- [ ] Final-size five-problem review matches the latest render hash.
+
