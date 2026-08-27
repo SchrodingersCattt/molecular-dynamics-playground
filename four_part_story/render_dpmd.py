@@ -227,7 +227,10 @@ def draw_water_scene(
     rect,
     video: bool,
     mode: str,
-    reveal: float = 1.0,
+    sphere_reveal: float = 1.0,
+    outside_fade: float = 1.0,
+    neighbor_weight: float = 1.0,
+    force_weight: float = 1.0,
 ) -> None:
     length = float(data["box_length"])
     cutoff = float(data["cutoff"])
@@ -246,10 +249,19 @@ def draw_water_scene(
         return
 
     positions = np.asarray(data["positions_neighbor_view"], dtype=float)
-    outside_alpha = 1.0 - 0.92 * smoothstep(reveal)
+    outside_alpha = 1.0 - 0.92 * smoothstep(outside_fade)
     alpha = np.where(neighbor_mask | (np.arange(len(positions)) == central), 1.0, outside_alpha)
     _draw_cell(ax, length, rect, centre, half_span, video=video, alpha=0.78)
-    _draw_sphere(ax, centre, cutoff, rect, half_span, video=video, alpha=smoothstep(reveal), reveal=reveal)
+    _draw_sphere(
+        ax,
+        centre,
+        cutoff,
+        rect,
+        half_span,
+        video=video,
+        alpha=smoothstep(sphere_reveal),
+        reveal=sphere_reveal,
+    )
     xy, depth = _map_points(positions, rect, centre, half_span)
     if mode in {"neighbors", "forces"}:
         for index in np.where(neighbor_mask)[0][np.argsort(depth[neighbor_mask])]:
@@ -258,7 +270,7 @@ def draw_water_scene(
                 [xy[central, 1], xy[index, 1]],
                 color=NAVY,
                 lw=1.5 if video else 0.85,
-                alpha=0.18 + 0.22 * smoothstep(reveal),
+                alpha=0.40 * smoothstep(neighbor_weight),
                 zorder=4,
             )
     _draw_atoms(ax, positions, elements, rect, centre, half_span, video=video, alpha=alpha, central_index=central)
@@ -276,7 +288,7 @@ def draw_water_scene(
                 mutation_scale=24 if video else 14,
                 lw=3.5 if video else 2.0,
                 color=GREEN,
-                alpha=smoothstep(reveal),
+                alpha=smoothstep(force_weight),
                 zorder=18,
             )
 
@@ -337,8 +349,8 @@ def draw_dp_pipeline(
     registry.text(
         ax,
         0.50,
-        0.005,
-        f"real inference: E = {energy:.3f} eV\nmax |F| = {max_force:.3f} eV Å⁻¹",
+        0.022,
+        f"DeepMD E = {energy:.3f} eV\nmax |F| = {max_force:.3f} eV Å⁻¹",
         ha="center",
         va="bottom",
         fontsize=18 if video else 10,
@@ -396,7 +408,7 @@ def _draw_environment_source(ax: plt.Axes, registry: LayoutRegistry, data) -> No
         ax,
         0.50,
         0.020,
-        "central source ID 126 · exact 6.0 Å sphere · 83 minimum-image neighbors",
+        "central source ID 126 · 83 exact neighbors\n6.0 Å sphere · minimum-image convention",
         ha="center",
         va="bottom",
         fontsize=10,
@@ -494,10 +506,16 @@ def _draw_video_frame(fig, time_seconds, frame_index, registry, data):
         colour = NAVY
     else:
         mode = "forces"
-        headline = "4 · the learned energy returns real forces"
+        headline = "4 · learned energy returns real forces"
         detail = "12 local force vectors shown · one fixed display scale"
         colour = GREEN
-    registry.text(middle, 0.50, 0.985, headline, ha="center", va="top", fontsize=25, color=colour, weight="bold")
+    registry.text(middle, 0.50, 0.965, headline, ha="center", va="top", fontsize=25, color=colour, weight="bold")
+    scene_weights = {
+        0: {"sphere_reveal": 1.0, "outside_fade": 0.0, "neighbor_weight": 0.0, "force_weight": 0.0},
+        1: {"sphere_reveal": fade, "outside_fade": fade, "neighbor_weight": 0.0, "force_weight": 0.0},
+        2: {"sphere_reveal": 1.0, "outside_fade": 1.0, "neighbor_weight": fade, "force_weight": 0.0},
+        3: {"sphere_reveal": 1.0, "outside_fade": 1.0, "neighbor_weight": 1.0, "force_weight": fade},
+    }[stage]
     draw_water_scene(
         middle,
         registry,
@@ -505,7 +523,7 @@ def _draw_video_frame(fig, time_seconds, frame_index, registry, data):
         rect=(0.015, 0.115, 0.985, 0.905),
         video=True,
         mode=mode,
-        reveal=fade if stage in {1, 2, 3} else 1.0,
+        **scene_weights,
     )
     registry.text(middle, 0.50, 0.035, detail, ha="center", va="bottom", fontsize=18, color=DARK_GRAY)
 

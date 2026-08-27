@@ -43,9 +43,9 @@
 
 ## Delivery Gate
 
-- [ ] Canonical outputs exist.
-- [ ] Static strict QA and review hash pass.
-- [ ] Every video frame passes.
-- [ ] Neighbor and camera provenance is verified.
-- [ ] Real DeepMD energy and force provenance is verified.
-- [ ] Final static and motion are visually accepted.
+- [x] Canonical outputs exist.
+- [x] Static strict QA and review hash pass.
+- [x] Every video frame passes.
+- [x] Neighbor and camera provenance is verified.
+- [x] Real DeepMD energy and force provenance is verified.
+- [x] Final static and motion are visually accepted.
