@@ -1,23 +1,141 @@
 {
   "version": 1,
-  "figure": {"canonical_stem": "01_velocity_verlet"},
+  "figure": {
+    "canonical_stem": "01_velocity_verlet"
+  },
   "outputs": [
-    {"path": "../../figures/01_velocity_verlet.png"},
-    {"path": "../../figures/01_velocity_verlet.svg"}
+    {
+      "path": "../../figures/01_velocity_verlet.png"
+    },
+    {
+      "path": "../../figures/01_velocity_verlet.svg"
+    }
   ],
-  "target": {"width_mm": 297, "qa_dpi": 300, "min_dpi": 200, "max_dpi": 600},
+  "target": {
+    "width_mm": 297,
+    "qa_dpi": 300,
+    "min_dpi": 200,
+    "max_dpi": 600
+  },
   "panels": [
-    {"id": "integrator", "source": "source/integrator.png", "slot": [0.045, 0.19, 0.355, 0.89], "source_min_clearance_px": 12, "min_clearance_px": 18, "source_allow_touch_edges": [], "allow_touch_edges": []},
-    {"id": "mattervis_h2o", "source": "source/case.png", "slot": [0.40, 0.19, 0.965, 0.89], "source_min_clearance_px": 12, "min_clearance_px": 18, "source_allow_touch_edges": [], "allow_touch_edges": []}
+    {
+      "id": "integrator",
+      "source": "source/integrator.png",
+      "slot": [
+        0.045,
+        0.19,
+        0.355,
+        0.89
+      ],
+      "source_min_clearance_px": 12,
+      "min_clearance_px": 18,
+      "source_allow_touch_edges": [],
+      "allow_touch_edges": []
+    },
+    {
+      "id": "mattervis_h2o",
+      "source": "source/case.png",
+      "slot": [
+        0.4,
+        0.19,
+        0.965,
+        0.89
+      ],
+      "source_min_clearance_px": 12,
+      "min_clearance_px": 18,
+      "source_allow_touch_edges": [],
+      "allow_touch_edges": []
+    }
   ],
   "checks": {
-    "whitespace": {"background_threshold": 245, "min_ink_fraction": 0.02, "min_panel_bbox_fill": 0.28, "grid_rows": 12, "grid_columns": 20},
-    "boundaries": {"bands": [{"id": "column_gap", "rect": [0.365, 0.19, 0.385, 0.89], "max_ink_pixels": 0}]},
-    "colors": {"semantics": [{"id": "position", "color": "#183153", "min_pixels": 250}, {"id": "oxygen_acceleration", "color": "#A32035", "min_pixels": 250}, {"id": "velocity", "color": "#2F6B4F", "min_pixels": 200}]}
+    "whitespace": {
+      "background_threshold": 245,
+      "min_ink_fraction": 0.018,
+      "min_panel_bbox_fill": 0.2,
+      "grid_rows": 12,
+      "grid_columns": 20
+    },
+    "boundaries": {
+      "bands": [
+        {
+          "id": "column_gap",
+          "rect": [
+            0.365,
+            0.19,
+            0.385,
+            0.89
+          ],
+          "max_ink_pixels": 0
+        }
+      ]
+    },
+    "colors": {
+      "semantics": [
+        {
+          "id": "position",
+          "color": "#183153",
+          "min_pixels": 250
+        },
+        {
+          "id": "oxygen_acceleration",
+          "color": "#A32035",
+          "min_pixels": 250
+        },
+        {
+          "id": "velocity",
+          "color": "#2F6B4F",
+          "min_pixels": 200
+        }
+      ]
+    }
   },
-  "integrity": {"required_content": ["mattervis_structure", "two_colour_bonds", "exact_velocity_verlet", "no_hand_drawn_atoms"], "evidence": {"mattervis_structure": "source/mattervis/provenance.json", "two_colour_bonds": "MatterVis bond records", "exact_velocity_verlet": "../../data/vv_h2o_step.json", "no_hand_drawn_atoms": "renderer imports MatterVis base frames only"}, "scientific_changes": []},
-  "consistency": {"constraints": ["fixed_camera", "fixed_viewport", "stable_atom_ids", "uniform_arrow_scale_per_semantic"], "evidence": {}},
-  "quantitative": {"transformations": ["visual arrow amplification only; no geometry scaling"], "units": {"position": "angstrom", "velocity": "angstrom/fs", "acceleration": "angstrom/fs^2"}},
-  "deviations": {"records": []},
-  "review": {"render_sha256": "REPLACE_AFTER_RENDER", "problems": {"scientific_expression": "pending", "geometry": "pending", "annotations": "pending", "readability": "pending", "submission_quality": "pending"}, "action": "pending", "stop_condition": "fixed"}
+  "integrity": {
+    "required_content": [
+      "mattervis_structure",
+      "two_colour_bonds",
+      "exact_velocity_verlet",
+      "no_hand_drawn_atoms"
+    ],
+    "evidence": {
+      "mattervis_structure": "source/mattervis/provenance.json",
+      "two_colour_bonds": "MatterVis bond records",
+      "exact_velocity_verlet": "../../data/vv_h2o_step.json",
+      "no_hand_drawn_atoms": "renderer imports MatterVis base frames only"
+    },
+    "scientific_changes": []
+  },
+  "consistency": {
+    "constraints": [
+      "fixed_camera",
+      "fixed_viewport",
+      "stable_atom_ids",
+      "uniform_arrow_scale_per_semantic"
+    ],
+    "evidence": {}
+  },
+  "quantitative": {
+    "transformations": [
+      "visual arrow amplification only; no geometry scaling"
+    ],
+    "units": {
+      "position": "angstrom",
+      "velocity": "angstrom/fs",
+      "acceleration": "angstrom/fs^2"
+    }
+  },
+  "deviations": {
+    "records": []
+  },
+  "review": {
+    "render_sha256": "1ad187afd541fcba0a9eff8440ae77fb6956da42c6ad265296330fe6410ce617",
+    "problems": {
+      "scientific_expression": "Superseded draft used post-rendered vectors instead of the molecular 3D scene.",
+      "geometry": "Superseded draft loop was visually elliptical and its vectors did not share MatterVis occlusion.",
+      "annotations": "Superseded 2D arrowheads obscured atoms and were visually detached from physical anchors.",
+      "readability": "Superseded draft made the molecule and one-step motion too small for the available panel.",
+      "submission_quality": "Superseded review and video QA did not document MatterVis native vector rendering."
+    },
+    "action": "Rebuilt all world-space arrows with MatterVis native vector_overlays, corrected the circular loop, enlarged the real case, and regenerated the static and all 216 video-frame QA artifacts.",
+    "stop_condition": "fixed"
+  }
 }
