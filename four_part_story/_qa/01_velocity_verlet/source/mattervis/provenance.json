@@ -1,0 +1,4747 @@
+{
+  "renderer": "MatterVis public CPU backend",
+  "camera_direction": [
+    0.7965073352737195,
+    -0.5138757001765932,
+    0.3186029341094878
+  ],
+  "camera_up": [
+    0.0,
+    0.0,
+    1.0
+  ],
+  "records": [
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "b8f59e874b14545183da5c0fae21dc3c02a40461f6c0c4d5357e02e720f9a2e5",
+      "output_sha256": "0dee5ee5a90edfedffa8661523a9b5768edb379f349971269de2fac5430b638e",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\motion_00.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 0,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0,
+          5.7137861877,
+          5.4429769721
+        ]
+      },
+      "vector_signature": "[]",
+      "vector_count": 0,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.112063878261488,
+            -6.618379429580052,
+            12.832697542170894
+          ],
+          "target": [
+            4.995887831692221,
+            5.714637374658185,
+            5.186227123543186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "25f8cb61c0902a237e0acc5429dc81bbb14ded99c44cf26df2bfd1e8b7202bc7",
+      "output_sha256": "f91661c55597e943c2fe4b351b461a860b8c263ebae5a30c382249f1b69f3daf",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\position_00.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 0,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0,
+          5.7137861877,
+          5.4429769721
+        ]
+      },
+      "vector_signature": "[{\"color\":\"#183153\",\"id\":\"displacement-0\",\"origin\":[0.0,0.0,0.119],\"vector\":[0.039815457809866416,-0.00824149107851571,0.01063639031972441]},{\"color\":\"#183153\",\"id\":\"displacement-1\",\"origin\":[0.0,0.7137861877137688,-0.44297697209696985],\"vector\":[0.009437390940570077,0.3663496359795362,0.287531887754358]},{\"color\":\"#183153\",\"id\":\"displacement-2\",\"origin\":[0.0,-0.7137861877137688,-0.44297697209696985],\"vector\":[-0.6414050850707056,-0.23553722292238977,-0.4563571489462217]}]",
+      "vector_count": 3,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.112063878261488,
+            -6.618379429580052,
+            12.832697542170894
+          ],
+          "target": [
+            4.995887831692221,
+            5.714637374658185,
+            5.186227123543186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "825061c9218c30d9b8f817a0e565fc62799a62e156d05a4557a870a1ab4381d2",
+      "output_sha256": "407c286acf287faa01c9afa607ef44797a0e720dfe6b7db642eb44e5b278ba12",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\motion_01.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 1,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0011135505,
+          5.7141285395,
+          5.4437168494
+        ]
+      },
+      "vector_signature": "[]",
+      "vector_count": 0,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.11317742876149,
+            -6.618037077780053,
+            12.833437419470894
+          ],
+          "target": [
+            4.997001382192221,
+            5.714979726458185,
+            5.186967000843186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "c35ddc2fb0c7fe489339b909e08df9f23b5b4d266e5b7cb91e62b0662f20f3f2",
+      "output_sha256": "8b77b769462fa61b78a5d69fec2ff1bc725470d15def5495bd37842fe1960782",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\position_01.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 1,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0011135505,
+          5.7141285395,
+          5.4437168494
+        ]
+      },
+      "vector_signature": "[{\"color\":\"#183153\",\"id\":\"displacement-0\",\"origin\":[0.0,0.0,0.119],\"vector\":[0.039815457809866416,-0.00824149107851571,0.01063639031972441]},{\"color\":\"#183153\",\"id\":\"displacement-1\",\"origin\":[0.0,0.7137861877137688,-0.44297697209696985],\"vector\":[0.009437390940570077,0.3663496359795362,0.287531887754358]},{\"color\":\"#183153\",\"id\":\"displacement-2\",\"origin\":[0.0,-0.7137861877137688,-0.44297697209696985],\"vector\":[-0.6414050850707056,-0.23553722292238977,-0.4563571489462217]}]",
+      "vector_count": 3,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.11317742876149,
+            -6.618037077780053,
+            12.833437419470894
+          ],
+          "target": [
+            4.997001382192221,
+            5.714979726458185,
+            5.186967000843186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "aa3fb03b30330facab94e97b5e80ab51b90ff4d0d27ffb7be1b92fc16c7443f4",
+      "output_sha256": "db10da5f884799b7a8b1cba744da915949ef4070b7266f669f4ee6c5de7dcb60",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\motion_02.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 2,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.002227101,
+          5.7144766797,
+          5.444461284
+        ]
+      },
+      "vector_signature": "[]",
+      "vector_count": 0,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.11429097926149,
+            -6.617688937580053,
+            12.834181854070893
+          ],
+          "target": [
+            4.9981149326922205,
+            5.715327866658185,
+            5.187711435443186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "c5fa3bf4612fc61d9bacf493402d2eefe2769113bea1544f62876438371a8aae",
+      "output_sha256": "5f69b949bace508d0f92f8ddd54c74ec24a48a92e65eaebf7ec2dde62ea3769c",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\position_02.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 2,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.002227101,
+          5.7144766797,
+          5.444461284
+        ]
+      },
+      "vector_signature": "[{\"color\":\"#183153\",\"id\":\"displacement-0\",\"origin\":[0.0,0.0,0.119],\"vector\":[0.039815457809866416,-0.00824149107851571,0.01063639031972441]},{\"color\":\"#183153\",\"id\":\"displacement-1\",\"origin\":[0.0,0.7137861877137688,-0.44297697209696985],\"vector\":[0.009437390940570077,0.3663496359795362,0.287531887754358]},{\"color\":\"#183153\",\"id\":\"displacement-2\",\"origin\":[0.0,-0.7137861877137688,-0.44297697209696985],\"vector\":[-0.6414050850707056,-0.23553722292238977,-0.4563571489462217]}]",
+      "vector_count": 3,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.11429097926149,
+            -6.617688937580053,
+            12.834181854070893
+          ],
+          "target": [
+            4.9981149326922205,
+            5.715327866658185,
+            5.187711435443186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "b7c8e8996b350c1b9a6d1f38059f39c1707273dc0f96758628d224be9bef13dd",
+      "output_sha256": "149278624010c76829662d6a74749c004f8e32f54a6d49be5680d1b309b72342",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\motion_03.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 3,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0033406515,
+          5.7148306083,
+          5.4452102759
+        ]
+      },
+      "vector_signature": "[]",
+      "vector_count": 0,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.11540452976149,
+            -6.617335008980053,
+            12.834930845970893
+          ],
+          "target": [
+            4.999228483192221,
+            5.715681795258185,
+            5.188460427343186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "b538504641a1ee45fcf151a1a648beccdc9548aadca73a2a7604d6d8c1fcdd1c",
+      "output_sha256": "d2cd45804a1f109eee619a32dc7ae6102c5a5a2c688475e1e7947e273ce98059",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\position_03.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 3,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0033406515,
+          5.7148306083,
+          5.4452102759
+        ]
+      },
+      "vector_signature": "[{\"color\":\"#183153\",\"id\":\"displacement-0\",\"origin\":[0.0,0.0,0.119],\"vector\":[0.039815457809866416,-0.00824149107851571,0.01063639031972441]},{\"color\":\"#183153\",\"id\":\"displacement-1\",\"origin\":[0.0,0.7137861877137688,-0.44297697209696985],\"vector\":[0.009437390940570077,0.3663496359795362,0.287531887754358]},{\"color\":\"#183153\",\"id\":\"displacement-2\",\"origin\":[0.0,-0.7137861877137688,-0.44297697209696985],\"vector\":[-0.6414050850707056,-0.23553722292238977,-0.4563571489462217]}]",
+      "vector_count": 3,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.11540452976149,
+            -6.617335008980053,
+            12.834930845970893
+          ],
+          "target": [
+            4.999228483192221,
+            5.715681795258185,
+            5.188460427343186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "3132357c4b157945581c2633c90b0662352cc7be56b8a7df53a7c686459a536d",
+      "output_sha256": "8842ba26f50e77f804878112607d65321fa1fc525409181652f94d7a4e128528",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\motion_04.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 4,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.004454202,
+          5.7151903254,
+          5.4459638252
+        ]
+      },
+      "vector_signature": "[]",
+      "vector_count": 0,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.11651808026149,
+            -6.616975291880053,
+            12.835684395270892
+          ],
+          "target": [
+            5.00034203369222,
+            5.716041512358185,
+            5.1892139766431855
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "a54d0fae5405cb9c189b22d5cc144ab5fdc2fd33af4a15eb4ad616dde5f5fc1e",
+      "output_sha256": "02697cc82c93744198f43cfc0880a63592cccef1328e1f36717683e989450986",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\position_04.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 4,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.004454202,
+          5.7151903254,
+          5.4459638252
+        ]
+      },
+      "vector_signature": "[{\"color\":\"#183153\",\"id\":\"displacement-0\",\"origin\":[0.0,0.0,0.119],\"vector\":[0.039815457809866416,-0.00824149107851571,0.01063639031972441]},{\"color\":\"#183153\",\"id\":\"displacement-1\",\"origin\":[0.0,0.7137861877137688,-0.44297697209696985],\"vector\":[0.009437390940570077,0.3663496359795362,0.287531887754358]},{\"color\":\"#183153\",\"id\":\"displacement-2\",\"origin\":[0.0,-0.7137861877137688,-0.44297697209696985],\"vector\":[-0.6414050850707056,-0.23553722292238977,-0.4563571489462217]}]",
+      "vector_count": 3,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.11651808026149,
+            -6.616975291880053,
+            12.835684395270892
+          ],
+          "target": [
+            5.00034203369222,
+            5.716041512358185,
+            5.1892139766431855
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "c5097098499cdd53ddaf91f1fcac2d09f88702fd6621ba7f2dfa412d6b8030f6",
+      "output_sha256": "d3df52436229a487d417bbaee62f158eabb6636724805db3c3fd7bf5700377ba",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\motion_05.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 5,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0055677525,
+          5.7155558309,
+          5.4467219319
+        ]
+      },
+      "vector_signature": "[]",
+      "vector_count": 0,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.11763163076149,
+            -6.616609786380053,
+            12.836442501970893
+          ],
+          "target": [
+            5.001455584192221,
+            5.7164070178581845,
+            5.189972083343186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "f05be6e93617f3e36feae9c1c93c945a01df0f15f86de844e7c890ca5e2db1a2",
+      "output_sha256": "2dfb1e83c8532210689fe80c9f7f54c58501e299d20ef5b253939b4c7d703fe9",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\position_05.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 5,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0055677525,
+          5.7155558309,
+          5.4467219319
+        ]
+      },
+      "vector_signature": "[{\"color\":\"#183153\",\"id\":\"displacement-0\",\"origin\":[0.0,0.0,0.119],\"vector\":[0.039815457809866416,-0.00824149107851571,0.01063639031972441]},{\"color\":\"#183153\",\"id\":\"displacement-1\",\"origin\":[0.0,0.7137861877137688,-0.44297697209696985],\"vector\":[0.009437390940570077,0.3663496359795362,0.287531887754358]},{\"color\":\"#183153\",\"id\":\"displacement-2\",\"origin\":[0.0,-0.7137861877137688,-0.44297697209696985],\"vector\":[-0.6414050850707056,-0.23553722292238977,-0.4563571489462217]}]",
+      "vector_count": 3,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.11763163076149,
+            -6.616609786380053,
+            12.836442501970893
+          ],
+          "target": [
+            5.001455584192221,
+            5.7164070178581845,
+            5.189972083343186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "d87a2fa8987542604669fc80796604ea50ee9b3e0fdc0e94c73f60711b746054",
+      "output_sha256": "05a4d377817b597d105c30b6fc8b4945ca0b164c2707f48955f9b7c963a3dd20",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\motion_06.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 6,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.006681302999999,
+          5.7159271248,
+          5.4474845959
+        ]
+      },
+      "vector_signature": "[]",
+      "vector_count": 0,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.118745181261488,
+            -6.616238492480052,
+            12.837205165970893
+          ],
+          "target": [
+            5.002569134692219,
+            5.716778311758185,
+            5.1907347473431855
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "1067766f53551a02d72101df307608d7cc4469df0064ca61843f021721e1ecfc",
+      "output_sha256": "bb3092cfc27d72a3dd71b16ca045f2b10971d1101878b6423f6796714c5fce55",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\position_06.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 6,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.006681302999999,
+          5.7159271248,
+          5.4474845959
+        ]
+      },
+      "vector_signature": "[{\"color\":\"#183153\",\"id\":\"displacement-0\",\"origin\":[0.0,0.0,0.119],\"vector\":[0.039815457809866416,-0.00824149107851571,0.01063639031972441]},{\"color\":\"#183153\",\"id\":\"displacement-1\",\"origin\":[0.0,0.7137861877137688,-0.44297697209696985],\"vector\":[0.009437390940570077,0.3663496359795362,0.287531887754358]},{\"color\":\"#183153\",\"id\":\"displacement-2\",\"origin\":[0.0,-0.7137861877137688,-0.44297697209696985],\"vector\":[-0.6414050850707056,-0.23553722292238977,-0.4563571489462217]}]",
+      "vector_count": 3,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.118745181261488,
+            -6.616238492480052,
+            12.837205165970893
+          ],
+          "target": [
+            5.002569134692219,
+            5.716778311758185,
+            5.1907347473431855
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "ae41a0d39f8ad3c471d06f5593fd3c7c4ca2a55891f5cadd1c07157f684ef9f7",
+      "output_sha256": "cf4516fd41421c7ef1296ba5069657657c127242c8cf70a4786d26be80e38bee",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\motion_07.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 7,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0077948535,
+          5.7163042072,
+          5.4482518172
+        ]
+      },
+      "vector_signature": "[]",
+      "vector_count": 0,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.11985873176149,
+            -6.615861410080052,
+            12.837972387270893
+          ],
+          "target": [
+            5.003682685192221,
+            5.717155394158185,
+            5.191501968643186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "e1f4d4309c57776de4158f3f19c63a8e3a2a459998aaf6867fbb7ef054fc4b6e",
+      "output_sha256": "0ce24ec5e4b24ee0278574b623f996176401150e7771d245fb822ec6cbbe9c7a",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\position_07.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 7,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0077948535,
+          5.7163042072,
+          5.4482518172
+        ]
+      },
+      "vector_signature": "[{\"color\":\"#183153\",\"id\":\"displacement-0\",\"origin\":[0.0,0.0,0.119],\"vector\":[0.039815457809866416,-0.00824149107851571,0.01063639031972441]},{\"color\":\"#183153\",\"id\":\"displacement-1\",\"origin\":[0.0,0.7137861877137688,-0.44297697209696985],\"vector\":[0.009437390940570077,0.3663496359795362,0.287531887754358]},{\"color\":\"#183153\",\"id\":\"displacement-2\",\"origin\":[0.0,-0.7137861877137688,-0.44297697209696985],\"vector\":[-0.6414050850707056,-0.23553722292238977,-0.4563571489462217]}]",
+      "vector_count": 3,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.11985873176149,
+            -6.615861410080052,
+            12.837972387270893
+          ],
+          "target": [
+            5.003682685192221,
+            5.717155394158185,
+            5.191501968643186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "58edff07237d5d3577e4bcf73467eed6e328702541db86265c08848ab82887d3",
+      "output_sha256": "a07029eed0f9a8539b68ec57a42cf31b40cac9402b83d95296d9854a29e38be0",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\motion_08.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 8,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.008908404,
+          5.716687078,
+          5.4490235959
+        ]
+      },
+      "vector_signature": "[]",
+      "vector_count": 0,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.12097228226149,
+            -6.615478539280053,
+            12.838744165970894
+          ],
+          "target": [
+            5.00479623569222,
+            5.7175382649581845,
+            5.192273747343186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "b88e1179662344dc57bd15f9dd0db32dfa48ec52ac34a2ee14edd28bb880a6fe",
+      "output_sha256": "b2683283f2206fa8e59dad359e2c20636eb5d4ce69bafb3d45aec241b7093009",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\position_08.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 8,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.008908404,
+          5.716687078,
+          5.4490235959
+        ]
+      },
+      "vector_signature": "[{\"color\":\"#183153\",\"id\":\"displacement-0\",\"origin\":[0.0,0.0,0.119],\"vector\":[0.039815457809866416,-0.00824149107851571,0.01063639031972441]},{\"color\":\"#183153\",\"id\":\"displacement-1\",\"origin\":[0.0,0.7137861877137688,-0.44297697209696985],\"vector\":[0.009437390940570077,0.3663496359795362,0.287531887754358]},{\"color\":\"#183153\",\"id\":\"displacement-2\",\"origin\":[0.0,-0.7137861877137688,-0.44297697209696985],\"vector\":[-0.6414050850707056,-0.23553722292238977,-0.4563571489462217]}]",
+      "vector_count": 3,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.12097228226149,
+            -6.615478539280053,
+            12.838744165970894
+          ],
+          "target": [
+            5.00479623569222,
+            5.7175382649581845,
+            5.192273747343186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "4eac288d70557923d741f25fc78d7b2c6b585d63d4bf9311acd4f2a64e36ca91",
+      "output_sha256": "90513b8a3a6babd322ffcea2cc34f8c7d536bac0f6da043130a041c81415f4d6",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\motion_09.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 9,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0100219545,
+          5.7170757373,
+          5.4497999319
+        ]
+      },
+      "vector_signature": "[]",
+      "vector_count": 0,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.12208583276149,
+            -6.615089879980053,
+            12.839520501970894
+          ],
+          "target": [
+            5.005909786192221,
+            5.717926924258185,
+            5.193050083343186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "1565bad2a9b97ab65cff3debce68943a8ca9c8f88ced210139f13fe23349c2f5",
+      "output_sha256": "62b6314a304752f17206848fd206059f97d82fd4944671f79f53f5ea3ac39788",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\position_09.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 9,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0100219545,
+          5.7170757373,
+          5.4497999319
+        ]
+      },
+      "vector_signature": "[{\"color\":\"#183153\",\"id\":\"displacement-0\",\"origin\":[0.0,0.0,0.119],\"vector\":[0.039815457809866416,-0.00824149107851571,0.01063639031972441]},{\"color\":\"#183153\",\"id\":\"displacement-1\",\"origin\":[0.0,0.7137861877137688,-0.44297697209696985],\"vector\":[0.009437390940570077,0.3663496359795362,0.287531887754358]},{\"color\":\"#183153\",\"id\":\"displacement-2\",\"origin\":[0.0,-0.7137861877137688,-0.44297697209696985],\"vector\":[-0.6414050850707056,-0.23553722292238977,-0.4563571489462217]}]",
+      "vector_count": 3,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.12208583276149,
+            -6.615089879980053,
+            12.839520501970894
+          ],
+          "target": [
+            5.005909786192221,
+            5.717926924258185,
+            5.193050083343186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "6fafe1f7ab927ef15e0c3bea86d99694b6e2a8fd1c4afb1fb7a9c8fe769df29d",
+      "output_sha256": "38ce5a5c4bb08b8cf6ed682cfd17b20a6f07256bd33715a7eed62da7d7fdef27",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\motion_10.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 10,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0111355049,
+          5.717470185,
+          5.4505808252
+        ]
+      },
+      "vector_signature": "[]",
+      "vector_count": 0,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.12319938316149,
+            -6.614695432280053,
+            12.840301395270894
+          ],
+          "target": [
+            5.007023336592221,
+            5.718321371958185,
+            5.193830976643186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "cfc51ba3b6664b27da77e4fcc0f39bb245b1fb103765b259b14ae56ea10db410",
+      "output_sha256": "959c12c1cd943cc162e85f8c18c7232bbfa4f0bd8f8be21bfb1fc91eac9f091b",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\position_10.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 10,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0111355049,
+          5.717470185,
+          5.4505808252
+        ]
+      },
+      "vector_signature": "[{\"color\":\"#183153\",\"id\":\"displacement-0\",\"origin\":[0.0,0.0,0.119],\"vector\":[0.039815457809866416,-0.00824149107851571,0.01063639031972441]},{\"color\":\"#183153\",\"id\":\"displacement-1\",\"origin\":[0.0,0.7137861877137688,-0.44297697209696985],\"vector\":[0.009437390940570077,0.3663496359795362,0.287531887754358]},{\"color\":\"#183153\",\"id\":\"displacement-2\",\"origin\":[0.0,-0.7137861877137688,-0.44297697209696985],\"vector\":[-0.6414050850707056,-0.23553722292238977,-0.4563571489462217]}]",
+      "vector_count": 3,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.12319938316149,
+            -6.614695432280053,
+            12.840301395270894
+          ],
+          "target": [
+            5.007023336592221,
+            5.718321371958185,
+            5.193830976643186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "5e456c520833c10df1b37c83c82f9f310d33acbf6589140fe7bfb1b048939462",
+      "output_sha256": "f07a1be390e0621d4cfeea1809940168c2ceae845d94ff4e7fc450bcb9d09886",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\motion_11.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 11,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0122490554,
+          5.7178704211,
+          5.4513662759
+        ]
+      },
+      "vector_signature": "[]",
+      "vector_count": 0,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.12431293366149,
+            -6.614295196180053,
+            12.841086845970892
+          ],
+          "target": [
+            5.0081368870922205,
+            5.718721608058185,
+            5.194616427343186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "738e998a372362c06d670f2453aae6711a1b1be668398c788beebc4fc9e2a9cb",
+      "output_sha256": "63796b9427a8a7c0dfddbd4d26e0b7746e9238955a085816f71fd8c13efec854",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\position_11.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 11,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0122490554,
+          5.7178704211,
+          5.4513662759
+        ]
+      },
+      "vector_signature": "[{\"color\":\"#183153\",\"id\":\"displacement-0\",\"origin\":[0.0,0.0,0.119],\"vector\":[0.039815457809866416,-0.00824149107851571,0.01063639031972441]},{\"color\":\"#183153\",\"id\":\"displacement-1\",\"origin\":[0.0,0.7137861877137688,-0.44297697209696985],\"vector\":[0.009437390940570077,0.3663496359795362,0.287531887754358]},{\"color\":\"#183153\",\"id\":\"displacement-2\",\"origin\":[0.0,-0.7137861877137688,-0.44297697209696985],\"vector\":[-0.6414050850707056,-0.23553722292238977,-0.4563571489462217]}]",
+      "vector_count": 3,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.12431293366149,
+            -6.614295196180053,
+            12.841086845970892
+          ],
+          "target": [
+            5.0081368870922205,
+            5.718721608058185,
+            5.194616427343186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "5d6e6b7b132371e5446a490c186b3786476b2c74c298e4e29227a3087a2d2a14",
+      "output_sha256": "4a2abda44a05bab637feda790ba6ac4f5ed6b0e27537b006f99b9f7b3085c5ea",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\motion_12.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 12,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0133626059,
+          5.7182764457,
+          5.452156284
+        ]
+      },
+      "vector_signature": "[]",
+      "vector_count": 0,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.12542648416149,
+            -6.613889171580053,
+            12.841876854070893
+          ],
+          "target": [
+            5.009250437592221,
+            5.719127632658185,
+            5.195406435443186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "f0327fc30f0fb819abaa8ca4c25a47bd51374221898bc08713fba0f813a94d1f",
+      "output_sha256": "abb54fbc4e577805fc0b2839544e99ca26e66865541ac9ca2b35979841f2a692",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\position_12.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 12,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0133626059,
+          5.7182764457,
+          5.452156284
+        ]
+      },
+      "vector_signature": "[{\"color\":\"#183153\",\"id\":\"displacement-0\",\"origin\":[0.0,0.0,0.119],\"vector\":[0.039815457809866416,-0.00824149107851571,0.01063639031972441]},{\"color\":\"#183153\",\"id\":\"displacement-1\",\"origin\":[0.0,0.7137861877137688,-0.44297697209696985],\"vector\":[0.009437390940570077,0.3663496359795362,0.287531887754358]},{\"color\":\"#183153\",\"id\":\"displacement-2\",\"origin\":[0.0,-0.7137861877137688,-0.44297697209696985],\"vector\":[-0.6414050850707056,-0.23553722292238977,-0.4563571489462217]}]",
+      "vector_count": 3,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.12542648416149,
+            -6.613889171580053,
+            12.841876854070893
+          ],
+          "target": [
+            5.009250437592221,
+            5.719127632658185,
+            5.195406435443186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "a07827466af5df41758ab78b945431111d5cd53289e00eb1e35bad33095c13f2",
+      "output_sha256": "79765db2dc8d06b9a67d4ff27b0cb073eb32a88a52d9e65f066d10196a10f0c5",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\motion_13.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 13,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0144761564,
+          5.7186882587,
+          5.4529508494
+        ]
+      },
+      "vector_signature": "[]",
+      "vector_count": 0,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.126540034661488,
+            -6.613477358580052,
+            12.842671419470893
+          ],
+          "target": [
+            5.01036398809222,
+            5.719539445658185,
+            5.196201000843185
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "b0971e5290fdbbd1983cb7f231fc6226c509393205202d08ca2e338bd14dd87b",
+      "output_sha256": "ab4c4ea0c5af3a44c39982aeff9f2e398651ae825f88d3fdbb8828ef7eb33544",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\position_13.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 13,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0144761564,
+          5.7186882587,
+          5.4529508494
+        ]
+      },
+      "vector_signature": "[{\"color\":\"#183153\",\"id\":\"displacement-0\",\"origin\":[0.0,0.0,0.119],\"vector\":[0.039815457809866416,-0.00824149107851571,0.01063639031972441]},{\"color\":\"#183153\",\"id\":\"displacement-1\",\"origin\":[0.0,0.7137861877137688,-0.44297697209696985],\"vector\":[0.009437390940570077,0.3663496359795362,0.287531887754358]},{\"color\":\"#183153\",\"id\":\"displacement-2\",\"origin\":[0.0,-0.7137861877137688,-0.44297697209696985],\"vector\":[-0.6414050850707056,-0.23553722292238977,-0.4563571489462217]}]",
+      "vector_count": 3,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.126540034661488,
+            -6.613477358580052,
+            12.842671419470893
+          ],
+          "target": [
+            5.01036398809222,
+            5.719539445658185,
+            5.196201000843185
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "11d297efde1cfc1d5b84c19326af3b22a56235734347db602aa180aaab0680fc",
+      "output_sha256": "9a6e8cca1b3b467342ecee762a66fed523893a2f2335c5e5e491c8596e76d3eb",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\motion_14.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 14,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0155897069,
+          5.7191058601,
+          5.4537499721
+        ]
+      },
+      "vector_signature": "[]",
+      "vector_count": 0,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.12765358516149,
+            -6.613059757180053,
+            12.843470542170893
+          ],
+          "target": [
+            5.011477538592221,
+            5.719957047058185,
+            5.1970001235431855
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "6e79389cb701403f711f18a3a20ed646959d6160d15c183e6629cb3e89bd5b4f",
+      "output_sha256": "6cc2cc3576fdffbe52c6ecc7ef52cfd9f16e687e2424f6aecfd30dce53261beb",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\position_14.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 14,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0155897069,
+          5.7191058601,
+          5.4537499721
+        ]
+      },
+      "vector_signature": "[{\"color\":\"#183153\",\"id\":\"displacement-0\",\"origin\":[0.0,0.0,0.119],\"vector\":[0.039815457809866416,-0.00824149107851571,0.01063639031972441]},{\"color\":\"#183153\",\"id\":\"displacement-1\",\"origin\":[0.0,0.7137861877137688,-0.44297697209696985],\"vector\":[0.009437390940570077,0.3663496359795362,0.287531887754358]},{\"color\":\"#183153\",\"id\":\"displacement-2\",\"origin\":[0.0,-0.7137861877137688,-0.44297697209696985],\"vector\":[-0.6414050850707056,-0.23553722292238977,-0.4563571489462217]}]",
+      "vector_count": 3,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.12765358516149,
+            -6.613059757180053,
+            12.843470542170893
+          ],
+          "target": [
+            5.011477538592221,
+            5.719957047058185,
+            5.1970001235431855
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "ed1cf86c4f611027344c1c1c2c7cb6d8d104ece01e419ebfc7a655973ee8b33c",
+      "output_sha256": "91cc23ed8627cb51797a0697a38fcc193eca10165d4db21069f5928348c63a2f",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\motion_15.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 15,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0167032574,
+          5.71952925,
+          5.4545536521999995
+        ]
+      },
+      "vector_signature": "[]",
+      "vector_count": 0,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.12876713566149,
+            -6.612636367280053,
+            12.844274222270894
+          ],
+          "target": [
+            5.01259108909222,
+            5.720380436958185,
+            5.197803803643185
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "ed00a7f0edb734a2bf7d94b41d5775ac921f9a433e6c90d0774d8d13ff769aaf",
+      "output_sha256": "635cf70d1833714717fed8391a4f05caf59e30de0050a3b2b956b568f975716b",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\position_15.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 15,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0167032574,
+          5.71952925,
+          5.4545536521999995
+        ]
+      },
+      "vector_signature": "[{\"color\":\"#183153\",\"id\":\"displacement-0\",\"origin\":[0.0,0.0,0.119],\"vector\":[0.039815457809866416,-0.00824149107851571,0.01063639031972441]},{\"color\":\"#183153\",\"id\":\"displacement-1\",\"origin\":[0.0,0.7137861877137688,-0.44297697209696985],\"vector\":[0.009437390940570077,0.3663496359795362,0.287531887754358]},{\"color\":\"#183153\",\"id\":\"displacement-2\",\"origin\":[0.0,-0.7137861877137688,-0.44297697209696985],\"vector\":[-0.6414050850707056,-0.23553722292238977,-0.4563571489462217]}]",
+      "vector_count": 3,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.12876713566149,
+            -6.612636367280053,
+            12.844274222270894
+          ],
+          "target": [
+            5.01259108909222,
+            5.720380436958185,
+            5.197803803643185
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "f845df4b1c15288cb47a1077b41dd96b8c83f9db6e62f6980f6a991cd85ce8f6",
+      "output_sha256": "0fdb6596e8565cd9d03dbd505b528c3ef430b19e7e1c5029aeac9d4dc7dd9cb8",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\motion_16.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 16,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0178168079,
+          5.7199584283,
+          5.4553618896
+        ]
+      },
+      "vector_signature": "[]",
+      "vector_count": 0,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.12988068616149,
+            -6.612207188980053,
+            12.845082459670893
+          ],
+          "target": [
+            5.013704639592221,
+            5.720809615258185,
+            5.1986120410431855
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "e6eadde0197dcd73d3ef0c352fead4d5f2a50abc233d049dea86c19ab63883cd",
+      "output_sha256": "b6691811cc1e559d09dc4c183de6170dd5201a17ffae8f3982d167c3591c5196",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\position_16.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 16,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0178168079,
+          5.7199584283,
+          5.4553618896
+        ]
+      },
+      "vector_signature": "[{\"color\":\"#183153\",\"id\":\"displacement-0\",\"origin\":[0.0,0.0,0.119],\"vector\":[0.039815457809866416,-0.00824149107851571,0.01063639031972441]},{\"color\":\"#183153\",\"id\":\"displacement-1\",\"origin\":[0.0,0.7137861877137688,-0.44297697209696985],\"vector\":[0.009437390940570077,0.3663496359795362,0.287531887754358]},{\"color\":\"#183153\",\"id\":\"displacement-2\",\"origin\":[0.0,-0.7137861877137688,-0.44297697209696985],\"vector\":[-0.6414050850707056,-0.23553722292238977,-0.4563571489462217]}]",
+      "vector_count": 3,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.12988068616149,
+            -6.612207188980053,
+            12.845082459670893
+          ],
+          "target": [
+            5.013704639592221,
+            5.720809615258185,
+            5.1986120410431855
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "1df692766a904e62b39d78b8e83ebc23f514b437327f59c46a6d8296b8eda99c",
+      "output_sha256": "67ce27a54ef7141c2660968f0486bde4083cf9b339237ce7798bdb03fb9d75f9",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\motion_17.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 17,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0189303584,
+          5.7203933951,
+          5.4561746844
+        ]
+      },
+      "vector_signature": "[]",
+      "vector_count": 0,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.13099423666149,
+            -6.611772222180052,
+            12.845895254470893
+          ],
+          "target": [
+            5.01481819009222,
+            5.721244582058185,
+            5.199424835843185
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "2fab8e3e7a9961d5185c5070be6df89a1792f889f54eeb929e83e225a99ad038",
+      "output_sha256": "a8e6ed880ef958fb8c23d4da8976c44ff427d27e95b9035ad53d596328b18cdc",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\position_17.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 17,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0189303584,
+          5.7203933951,
+          5.4561746844
+        ]
+      },
+      "vector_signature": "[{\"color\":\"#183153\",\"id\":\"displacement-0\",\"origin\":[0.0,0.0,0.119],\"vector\":[0.039815457809866416,-0.00824149107851571,0.01063639031972441]},{\"color\":\"#183153\",\"id\":\"displacement-1\",\"origin\":[0.0,0.7137861877137688,-0.44297697209696985],\"vector\":[0.009437390940570077,0.3663496359795362,0.287531887754358]},{\"color\":\"#183153\",\"id\":\"displacement-2\",\"origin\":[0.0,-0.7137861877137688,-0.44297697209696985],\"vector\":[-0.6414050850707056,-0.23553722292238977,-0.4563571489462217]}]",
+      "vector_count": 3,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.13099423666149,
+            -6.611772222180052,
+            12.845895254470893
+          ],
+          "target": [
+            5.01481819009222,
+            5.721244582058185,
+            5.199424835843185
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "60264a37552ec42bc3c44a82f36d6b9c4cf1dc3c013398e2fccdd3074abc8dd4",
+      "output_sha256": "8fcdee7e2c55e812ba09f72042521834bb0a652ab288a87539ceac5dffe2da3d",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\motion_18.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 18,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0200439089,
+          5.7208341503,
+          5.4569920365
+        ]
+      },
+      "vector_signature": "[]",
+      "vector_count": 0,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.132107787161488,
+            -6.611331466980053,
+            12.846712606570893
+          ],
+          "target": [
+            5.015931740592221,
+            5.721685337258185,
+            5.200242187943186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "a36ab7c0ec8cf58113f73dcfa89df8909ffe7e57e82d8a9f031d8edb2ed95c4b",
+      "output_sha256": "41c15e88ad6b4f371dfe737789166cc3f3eb55aa00b411c1099ae7c4cfc45dad",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\position_18.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 18,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0200439089,
+          5.7208341503,
+          5.4569920365
+        ]
+      },
+      "vector_signature": "[{\"color\":\"#183153\",\"id\":\"displacement-0\",\"origin\":[0.0,0.0,0.119],\"vector\":[0.039815457809866416,-0.00824149107851571,0.01063639031972441]},{\"color\":\"#183153\",\"id\":\"displacement-1\",\"origin\":[0.0,0.7137861877137688,-0.44297697209696985],\"vector\":[0.009437390940570077,0.3663496359795362,0.287531887754358]},{\"color\":\"#183153\",\"id\":\"displacement-2\",\"origin\":[0.0,-0.7137861877137688,-0.44297697209696985],\"vector\":[-0.6414050850707056,-0.23553722292238977,-0.4563571489462217]}]",
+      "vector_count": 3,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.132107787161488,
+            -6.611331466980053,
+            12.846712606570893
+          ],
+          "target": [
+            5.015931740592221,
+            5.721685337258185,
+            5.200242187943186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "4e7acbb4e1030739babbae34d286bd84d9d6fd8e501fe109dab50626bfd8a7c9",
+      "output_sha256": "79c85e201d186cbe7db99932c9d8e9284d2db5541c50e594fd4d96d1ae35d3ff",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\motion_19.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 19,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0211574594,
+          5.7212806939,
+          5.4578139459
+        ]
+      },
+      "vector_signature": "[]",
+      "vector_count": 0,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.13322133766149,
+            -6.610884923380053,
+            12.847534515970892
+          ],
+          "target": [
+            5.017045291092221,
+            5.722131880858185,
+            5.201064097343186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "da21c6f203c6f08b928e9e952a09330ca5fee2b6ecf567e5c15fe08b5d4f737a",
+      "output_sha256": "e70d9fe2a1c5a7a5e135f29bec339475cdaa50db0119598f3402c9f963ed599c",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\position_19.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 19,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0211574594,
+          5.7212806939,
+          5.4578139459
+        ]
+      },
+      "vector_signature": "[{\"color\":\"#183153\",\"id\":\"displacement-0\",\"origin\":[0.0,0.0,0.119],\"vector\":[0.039815457809866416,-0.00824149107851571,0.01063639031972441]},{\"color\":\"#183153\",\"id\":\"displacement-1\",\"origin\":[0.0,0.7137861877137688,-0.44297697209696985],\"vector\":[0.009437390940570077,0.3663496359795362,0.287531887754358]},{\"color\":\"#183153\",\"id\":\"displacement-2\",\"origin\":[0.0,-0.7137861877137688,-0.44297697209696985],\"vector\":[-0.6414050850707056,-0.23553722292238977,-0.4563571489462217]}]",
+      "vector_count": 3,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.13322133766149,
+            -6.610884923380053,
+            12.847534515970892
+          ],
+          "target": [
+            5.017045291092221,
+            5.722131880858185,
+            5.201064097343186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "05136024e8e32a035de2af80699d642e466daeb1d5bdf4af39de62998e88fda2",
+      "output_sha256": "41fdd67aab800fa5bbb0e00444bf6fc45bf9136aaa5b0c04fe4451da58b3d3b5",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\motion_20.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 20,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0222710099,
+          5.721733026,
+          5.4586404127
+        ]
+      },
+      "vector_signature": "[]",
+      "vector_count": 0,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.13433488816149,
+            -6.610432591280053,
+            12.848360982770894
+          ],
+          "target": [
+            5.0181588415922205,
+            5.722584212958185,
+            5.201890564143186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "9cfc4d1066836e3a61d412a45978f440bcf6d53c02bee280e6201ee0acc517a4",
+      "output_sha256": "55ac1a47c67e9b3905197d653ebb569d0577441e966f363cecc5b5ccd7b96136",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\position_20.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 20,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0222710099,
+          5.721733026,
+          5.4586404127
+        ]
+      },
+      "vector_signature": "[{\"color\":\"#183153\",\"id\":\"displacement-0\",\"origin\":[0.0,0.0,0.119],\"vector\":[0.039815457809866416,-0.00824149107851571,0.01063639031972441]},{\"color\":\"#183153\",\"id\":\"displacement-1\",\"origin\":[0.0,0.7137861877137688,-0.44297697209696985],\"vector\":[0.009437390940570077,0.3663496359795362,0.287531887754358]},{\"color\":\"#183153\",\"id\":\"displacement-2\",\"origin\":[0.0,-0.7137861877137688,-0.44297697209696985],\"vector\":[-0.6414050850707056,-0.23553722292238977,-0.4563571489462217]}]",
+      "vector_count": 3,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.13433488816149,
+            -6.610432591280053,
+            12.848360982770894
+          ],
+          "target": [
+            5.0181588415922205,
+            5.722584212958185,
+            5.201890564143186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "75818b40b98dd26a5d5aed32765458552ee5522a0c3837828350266031f63f77",
+      "output_sha256": "f9adbed947ea453da1fc448c2bc8afc6245e538af5aba5c8c698bb6b224cdbeb",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\motion_21.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 21,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0233845604,
+          5.7221911465,
+          5.4594714368
+        ]
+      },
+      "vector_signature": "[]",
+      "vector_count": 0,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.13544843866149,
+            -6.6099744707800525,
+            12.849192006870894
+          ],
+          "target": [
+            5.019272392092221,
+            5.723042333458185,
+            5.202721588243186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "ad9d06d78a67adefc1fe9a6614b8d5adfa7ac44b3c1237d9ddc956d6af2601cb",
+      "output_sha256": "c8d989146ea6eeeab960f3a9aac066012d092b52d264eadcc38335d5a09d5dec",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\position_21.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 21,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0233845604,
+          5.7221911465,
+          5.4594714368
+        ]
+      },
+      "vector_signature": "[{\"color\":\"#183153\",\"id\":\"displacement-0\",\"origin\":[0.0,0.0,0.119],\"vector\":[0.039815457809866416,-0.00824149107851571,0.01063639031972441]},{\"color\":\"#183153\",\"id\":\"displacement-1\",\"origin\":[0.0,0.7137861877137688,-0.44297697209696985],\"vector\":[0.009437390940570077,0.3663496359795362,0.287531887754358]},{\"color\":\"#183153\",\"id\":\"displacement-2\",\"origin\":[0.0,-0.7137861877137688,-0.44297697209696985],\"vector\":[-0.6414050850707056,-0.23553722292238977,-0.4563571489462217]}]",
+      "vector_count": 3,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.13544843866149,
+            -6.6099744707800525,
+            12.849192006870894
+          ],
+          "target": [
+            5.019272392092221,
+            5.723042333458185,
+            5.202721588243186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "9202f8848c6c9a59b1c0f0509a2a1a2024f14d25b2d53ab4466a82ce08daf369",
+      "output_sha256": "e508a5699074030cdb569c49a7dd6ca5ad66dc208848ee6ef448e6e28206b85c",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\motion_22.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 22,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0244981109,
+          5.7226550555,
+          5.4603070183
+        ]
+      },
+      "vector_signature": "[]",
+      "vector_count": 0,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.13656198916149,
+            -6.609510561780053,
+            12.850027588370892
+          ],
+          "target": [
+            5.02038594259222,
+            5.723506242458185,
+            5.203557169743186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "159ea48fae1664feebc5457f28501162ceb62e9b2f25eb1167232b0df5cc9f63",
+      "output_sha256": "d8227be8f1a875e304f813f12e0aa53c5d91f6acea10cdc26838fcf9a3d9caf1",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\position_22.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 22,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0244981109,
+          5.7226550555,
+          5.4603070183
+        ]
+      },
+      "vector_signature": "[{\"color\":\"#183153\",\"id\":\"displacement-0\",\"origin\":[0.0,0.0,0.119],\"vector\":[0.039815457809866416,-0.00824149107851571,0.01063639031972441]},{\"color\":\"#183153\",\"id\":\"displacement-1\",\"origin\":[0.0,0.7137861877137688,-0.44297697209696985],\"vector\":[0.009437390940570077,0.3663496359795362,0.287531887754358]},{\"color\":\"#183153\",\"id\":\"displacement-2\",\"origin\":[0.0,-0.7137861877137688,-0.44297697209696985],\"vector\":[-0.6414050850707056,-0.23553722292238977,-0.4563571489462217]}]",
+      "vector_count": 3,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.13656198916149,
+            -6.609510561780053,
+            12.850027588370892
+          ],
+          "target": [
+            5.02038594259222,
+            5.723506242458185,
+            5.203557169743186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "b16b05fa871a041c7de752efb979ec152576ae3bd329c7cc4a21e5825cd3e4f1",
+      "output_sha256": "e5bf3a332a7ecffa0c2a9b07accedcc3e1bef88a12f60399cceb765acf7a1f4c",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\motion_23.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 23,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0256116614,
+          5.7231247528,
+          5.4611471571
+        ]
+      },
+      "vector_signature": "[]",
+      "vector_count": 0,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.13767553966149,
+            -6.609040864480052,
+            12.850867727170893
+          ],
+          "target": [
+            5.021499493092221,
+            5.723975939758185,
+            5.204397308543186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "669a621691673cbbeb4bf853948840141447b5be99286f3287f92725b41bcdf2",
+      "output_sha256": "02115aead1c5ee0004111e1fea4593f7c00fe2be1605909c748af9dcc7559e4d",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\position_23.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 23,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0256116614,
+          5.7231247528,
+          5.4611471571
+        ]
+      },
+      "vector_signature": "[{\"color\":\"#183153\",\"id\":\"displacement-0\",\"origin\":[0.0,0.0,0.119],\"vector\":[0.039815457809866416,-0.00824149107851571,0.01063639031972441]},{\"color\":\"#183153\",\"id\":\"displacement-1\",\"origin\":[0.0,0.7137861877137688,-0.44297697209696985],\"vector\":[0.009437390940570077,0.3663496359795362,0.287531887754358]},{\"color\":\"#183153\",\"id\":\"displacement-2\",\"origin\":[0.0,-0.7137861877137688,-0.44297697209696985],\"vector\":[-0.6414050850707056,-0.23553722292238977,-0.4563571489462217]}]",
+      "vector_count": 3,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.13767553966149,
+            -6.609040864480052,
+            12.850867727170893
+          ],
+          "target": [
+            5.021499493092221,
+            5.723975939758185,
+            5.204397308543186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "fb87f1fdce5981af46cc051759508e28a1ff4524fb6b598416658c58bf343713",
+      "output_sha256": "4b9333e0dec3cef402a18906309b700271b70561a12091aab3da57838bc00b6e",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\motion_24.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 24,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0267252119,
+          5.7236002387,
+          5.461991853300001
+        ]
+      },
+      "vector_signature": "[]",
+      "vector_count": 0,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.138789090161488,
+            -6.608565378580053,
+            12.851712423370895
+          ],
+          "target": [
+            5.02261304359222,
+            5.724451425658184,
+            5.205242004743186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "f958181e18add4ba094ec69539b6cfa478c53ff005c4c7356f0a7b54e530806d",
+      "output_sha256": "72b1dc003709d2237be81e85798db251816843d2e1af0ae974fc1140cba2916e",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\position_24.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 24,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0267252119,
+          5.7236002387,
+          5.461991853300001
+        ]
+      },
+      "vector_signature": "[{\"color\":\"#183153\",\"id\":\"displacement-0\",\"origin\":[0.0,0.0,0.119],\"vector\":[0.039815457809866416,-0.00824149107851571,0.01063639031972441]},{\"color\":\"#183153\",\"id\":\"displacement-1\",\"origin\":[0.0,0.7137861877137688,-0.44297697209696985],\"vector\":[0.009437390940570077,0.3663496359795362,0.287531887754358]},{\"color\":\"#183153\",\"id\":\"displacement-2\",\"origin\":[0.0,-0.7137861877137688,-0.44297697209696985],\"vector\":[-0.6414050850707056,-0.23553722292238977,-0.4563571489462217]}]",
+      "vector_count": 3,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.138789090161488,
+            -6.608565378580053,
+            12.851712423370895
+          ],
+          "target": [
+            5.02261304359222,
+            5.724451425658184,
+            5.205242004743186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "d31a47a609823ee6d0183df971bf29151119d0696ad9c13d2afcb658389444a3",
+      "output_sha256": "4377a7950e1277a1c987c3b2012e0e62d32ba4b4003f1a594f7067742a11d573",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\acceleration.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 24,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0267252119,
+          5.7236002387,
+          5.461991853300001
+        ]
+      },
+      "vector_signature": "[{\"color\":\"#A32035\",\"id\":\"acceleration-0\",\"origin\":[0.001658977408744434,-0.00034339546160482124,0.11944318292998851],\"vector\":[0.0010858009296973103,-0.010905880840258784,0.04880562275975134]},{\"color\":\"#A32035\",\"id\":\"acceleration-1\",\"origin\":[0.0003932246225237532,0.7290507558795828,-0.4309964767738716],\"vector\":[-0.0020999282423514965,0.528339281894895,-0.44370774859074136]},{\"color\":\"#A32035\",\"id\":\"acceleration-2\",\"origin\":[-0.02672521187794607,-0.7236002386688684,-0.4619918533030624],\"vector\":[-0.015134360839592107,-0.355236553803986,-0.33095562520128774]}]",
+      "vector_count": 3,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.138789090161488,
+            -6.608565378580053,
+            12.851712423370895
+          ],
+          "target": [
+            5.02261304359222,
+            5.724451425658184,
+            5.205242004743186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    },
+    {
+      "schema": "mattervis.render-result/v1",
+      "backend": "cpu",
+      "format": "png",
+      "width": 1500,
+      "height": 1120,
+      "plan_sha256": "d733b467697e4cb1d500041e37ede08c27f73bf2ec82ad9b9f8d527780f085fe",
+      "output_sha256": "3eebdf76d74ff830673f3fc87a337770683182bf0259891b1149b864feaefea5",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\velocity.png",
+      "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+      "frame": 24,
+      "view": "cluster",
+      "camera": {
+        "target": [
+          -0.0041121683077796475,
+          0.0008511869581849426,
+          -0.2567498485568142
+        ],
+        "ortho_scale": 1.55,
+        "direction": [
+          0.7965073352737195,
+          -0.5138757001765932,
+          0.3186029341094878
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scene_offset": [
+          5.0267252119,
+          5.7236002387,
+          5.461991853300001
+        ]
+      },
+      "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"velocity-0\",\"origin\":[0.001658977408744434,-0.00034339546160482124,0.11944318292998851],\"vector\":[0.0265918963590086,-0.005979033200799753,0.009260065669138538]},{\"color\":\"#2F6B4F\",\"id\":\"velocity-1\",\"origin\":[0.0003932246225237532,0.7290507558795828,-0.4309964767738716],\"vector\":[0.00619826381627554,0.2677148365150206,0.1719675807877613]},{\"color\":\"#2F6B4F\",\"id\":\"velocity-2\",\"origin\":[-0.02672521187794607,-0.7236002386688684,-0.4619918533030624],\"vector\":[-0.42827602830667455,-0.17281310656177098,-0.31894723819531595]}]",
+      "vector_count": 3,
+      "vector_renderer": "MatterVis native world-space vector_overlays",
+      "pipeline_version": 2,
+      "warnings": [],
+      "metadata": {
+        "transparent_compositor": "per-pixel-fragment-list",
+        "scale": 1,
+        "actual_backend": "cpu",
+        "camera": {
+          "position": [
+            24.138789090161488,
+            -6.608565378580053,
+            12.851712423370895
+          ],
+          "target": [
+            5.02261304359222,
+            5.724451425658184,
+            5.205242004743186
+          ],
+          "up": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "projection": "orthographic",
+          "fov_y_deg": 45.0,
+          "near": 0.01,
+          "far": 10000.0,
+          "ortho_scale": 1.55
+        },
+        "source": {
+          "path": null,
+          "input_format": null,
+          "frame": null
+        },
+        "requirements": {
+          "schema": "mattervis.requirements/v1",
+          "requested": [
+            "png"
+          ],
+          "capabilities": [
+            "core"
+          ],
+          "extras": [],
+          "available": true,
+          "missing_capabilities": [],
+          "install": "python -m pip install \"matter-vis\"",
+          "notes": [
+            "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+          ]
+        },
+        "install": "python -m pip install \"matter-vis\"",
+        "fallback": null
+      }
+    }
+  ]
+}

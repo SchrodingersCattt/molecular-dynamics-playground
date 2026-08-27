@@ -4,22 +4,22 @@
   "initial_temperature_sampling_K": 1200.0,
   "seed": 20260827,
   "display_scales": {
-    "displacement": 12.0,
-    "acceleration": 25.0,
-    "velocity": 5.0
+    "displacement": 24.0,
+    "acceleration": 45.0,
+    "velocity": 8.0
   },
-  "maximum_physical_displacement_angstrom": 0.03369362980465113,
-  "maximum_acceleration_angstrom_per_fs2": 0.015738836417413204,
-  "maximum_velocity_angstrom_per_fs": 0.06791984388603843,
+  "maximum_physical_displacement_angstrom": 0.034236212602334,
+  "maximum_acceleration_angstrom_per_fs2": 0.01533209934891784,
+  "maximum_velocity_angstrom_per_fs": 0.07015741975350963,
   "energy_eV": {
-    "before": 0.36848339249776035,
-    "after": 0.36811220082167906,
-    "one_step_drift": -0.000371191676081295
+    "before": 0.4111082174977606,
+    "after": 0.4101856207954113,
+    "one_step_drift": -0.0009225967023492876
   },
   "equation_residuals": {
-    "position_max_abs_angstrom": 5.551115123125783e-17,
+    "position_max_abs_angstrom": 1.1102230246251565e-16,
     "velocity_max_abs_angstrom_per_fs": 6.938893903907228e-18,
-    "force_max_abs_ev_per_angstrom": 2.220446049250313e-16
+    "force_max_abs_ev_per_angstrom": 3.774758283725532e-15
   },
   "camera": {
     "projection": "orthographic",

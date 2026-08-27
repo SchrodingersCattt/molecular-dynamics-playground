@@ -1,8 +1,8 @@
 """Shared MatterVis-first visual language for the four MD stories.
 
-MatterVis owns atoms, chemical bonds, unit cells and density isosurfaces.  This
-module only composes those verified renders with paper-space loops and
-world-space annotations whose projection is fixed by the same camera contract.
+MatterVis owns atoms, chemical bonds, unit cells, density isosurfaces, and all
+world-space vector arrows.  This module only composes complete MatterVis scene
+renders with paper-space explanatory diagrams.
 """
 
 from __future__ import annotations
@@ -14,11 +14,13 @@ from typing import Iterable
 
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.patches import Circle, FancyArrowPatch
+from matplotlib.patches import Arc, Ellipse, FancyArrowPatch
 from PIL import Image
 
 from mat_viewer import load_structure, render
+from mat_viewer.loader import build_bundle_scene
 from mat_viewer.render.contracts import CameraSpec, RenderSpec, ViewSpec
+from mat_viewer.renderer import resolve_vector_overlays
 
 from common import (
     CRIMSON,
@@ -111,12 +113,68 @@ def render_structure(
     atom_scale: float = 1.10,
     bond_radius: float = 0.13,
     show_cell: bool = False,
+    vector_overlays: list[dict] | None = None,
 ) -> dict:
-    """Render one transparent structure frame through public MatterVis APIs."""
+    """Render a complete structure/vector scene through public MatterVis APIs."""
     output.parent.mkdir(parents=True, exist_ok=True)
+    source_hash = sha256_file(source)
+    resolved_vectors = resolve_vector_overlays(vector_overlays or [])
+    vector_signature = json.dumps(
+        [
+            {
+                "id": item["arrow_id"],
+                "origin": np.asarray(item["origin"], dtype=float).tolist(),
+                "vector": np.asarray(item["display_vector"], dtype=float).tolist(),
+                "color": item["color"],
+            }
+            for item in resolved_vectors
+        ],
+        sort_keys=True,
+        separators=(",", ":"),
+    )
+    sidecar = output.with_suffix(".json")
+    if output.exists() and sidecar.exists():
+        previous = json.loads(sidecar.read_text(encoding="utf-8"))
+        if (
+            previous.get("source_sha256") == source_hash
+            and previous.get("frame") == frame
+            and previous.get("view") == view
+            and previous.get("camera") == asdict(camera)
+            and previous.get("vector_signature") == vector_signature
+            and previous.get("pipeline_version") == 2
+            and int(np.count_nonzero(_rgba(output)[:, :, 3])) > 0
+        ):
+            return previous
     loaded = load_structure(source, frame=frame)
+    native_vectors = [
+        {
+            "id": "story-vectors",
+            "name": "story vectors",
+            "visible": True,
+            "scale": 1.0,
+            "arrows": [
+                {
+                    "id": item["arrow_id"],
+                    "origin": (
+                        np.asarray(item["origin"], dtype=float)
+                        + np.asarray(camera.scene_offset, dtype=float)
+                    ).tolist(),
+                    "vector": np.asarray(item["display_vector"], dtype=float).tolist(),
+                    "color": item["color"],
+                    "visible": True,
+                }
+                for item in resolved_vectors
+            ],
+        }
+    ] if resolved_vectors else []
+    scene = build_bundle_scene(
+        loaded.frames[0].bundle,
+        display_mode=view,
+        show_hydrogen=True,
+    )
+    scene["vector_overlays"] = native_vectors
     result = render(
-        loaded,
+        scene,
         output=output,
         backend="cpu",
         view=ViewSpec(display=view),
@@ -147,16 +205,20 @@ def render_structure(
         "plan_sha256": result.plan_sha256,
         "output_sha256": result.output_sha256,
         "output": str(output),
-        "source_sha256": sha256_file(source),
+        "source_sha256": source_hash,
         "frame": frame,
         "view": view,
         "camera": asdict(camera),
+        "vector_signature": vector_signature,
+        "vector_count": len(resolved_vectors),
+        "vector_renderer": "MatterVis native world-space vector_overlays",
+        "pipeline_version": 2,
         "warnings": list(result.warnings),
         "metadata": dict(result.metadata),
     }
     if int(np.count_nonzero(_rgba(output)[:, :, 3])) == 0:
         raise RuntimeError(f"MatterVis produced an empty transparent render: {output}")
-    json_dump(output.with_suffix(".json"), payload)
+    json_dump(sidecar, payload)
     return payload
 
 
@@ -237,10 +299,26 @@ def place_render(
     *,
     alpha: float = 1.0,
     zorder: float = 4.0,
-) -> None:
+) -> tuple[float, float, float, float]:
+    image = _rgba(image_path)
+    image_aspect = image.shape[1] / image.shape[0]
+    figure_width, figure_height = ax.figure.canvas.get_width_height()
+    position = ax.get_position()
+    axes_aspect = (position.width * figure_width) / (position.height * figure_height)
     x0, y0, x1, y1 = rect
+    width = x1 - x0
+    height = y1 - y0
+    required_normalized_ratio = image_aspect / axes_aspect
+    if width / height > required_normalized_ratio:
+        fitted_width = height * required_normalized_ratio
+        centre = 0.5 * (x0 + x1)
+        x0, x1 = centre - 0.5 * fitted_width, centre + 0.5 * fitted_width
+    else:
+        fitted_height = width / required_normalized_ratio
+        centre = 0.5 * (y0 + y1)
+        y0, y1 = centre - 0.5 * fitted_height, centre + 0.5 * fitted_height
     ax.imshow(
-        _rgba(image_path),
+        image,
         extent=(x0, x1, y0, y1),
         origin="upper",
         interpolation="lanczos",
@@ -248,6 +326,7 @@ def place_render(
         zorder=zorder,
         aspect="auto",
     )
+    return (x0, y0, x1, y1)
 
 
 def camera_basis(camera: SceneCamera) -> tuple[np.ndarray, np.ndarray]:
@@ -304,14 +383,14 @@ def draw_world_arrow(
         camera=camera,
         rect=rect,
     )
-    linewidth = 7.5 if video else 4.2
-    head = 34 if video else 22
+    linewidth = 7.5 if video else 2.8
+    head = 34 if video else 12
     halo = FancyArrowPatch(
         tuple(xy[0]),
         tuple(xy[1]),
         arrowstyle="-|>",
-        mutation_scale=head + (8 if video else 5),
-        linewidth=linewidth + (6 if video else 3),
+        mutation_scale=head + (8 if video else 4),
+        linewidth=linewidth + (6 if video else 2.5),
         color=WHITE,
         alpha=0.96 * alpha,
         zorder=zorder,
@@ -377,27 +456,46 @@ def draw_vv_loop(
     equation: str | None = None,
 ) -> None:
     """Draw the shared empty three-stage Velocity Verlet loop."""
-    nodes = [(0.50, 0.79, r"$\mathbf{r}$", "position"), (0.78, 0.43, r"$\mathbf{a}$", "acceleration"), (0.22, 0.43, r"$\mathbf{v}$", "velocity")]
-    paths = [((0.56, 0.75), (0.73, 0.50), -0.12), ((0.70, 0.39), (0.30, 0.39), -0.10), ((0.27, 0.50), (0.44, 0.75), -0.12)]
-    for index, (start, end, bend) in enumerate(paths):
-        active = active_stage == index
+    figure_width, figure_height = ax.figure.canvas.get_width_height()
+    position = ax.get_position()
+    axes_aspect = (position.width * figure_width) / (position.height * figure_height)
+    centre_x, centre_y = 0.50, 0.64
+    radius_x = 0.31
+    radius_y = radius_x * axes_aspect
+    arc_ranges = ((-30, 90), (210, 330), (90, 210))
+    ax.add_patch(Arc((centre_x, centre_y), 2 * radius_x, 2 * radius_y, theta1=0, theta2=360, color=LINE_GRAY, lw=4.0 if video else 2.4, zorder=1))
+    if active_stage is not None:
+        theta1, theta2 = arc_ranges[active_stage]
+        ax.add_patch(Arc((centre_x, centre_y), 2 * radius_x, 2 * radius_y, theta1=theta1, theta2=theta2, color=INK, lw=5.0 if video else 3.0, zorder=2))
+    tangent_angles = ((38, 24), (-82, -98), (-202, -218))
+    for index, (start_angle, end_angle) in enumerate(tangent_angles):
+        def point(angle: float) -> tuple[float, float]:
+            radians = np.deg2rad(angle)
+            return centre_x + radius_x * np.cos(radians), centre_y + radius_y * np.sin(radians)
         registry.arrow(
             ax,
-            start,
-            end,
-            connectionstyle=f"arc3,rad={bend}",
+            point(start_angle),
+            point(end_angle),
             arrowstyle="-|>",
-            mutation_scale=28 if video else 18,
-            lw=4.2 if video else 2.5,
-            color=INK if active else LINE_GRAY,
-            zorder=2,
+            mutation_scale=25 if video else 16,
+            lw=4.5 if video else 2.6,
+            color=INK if active_stage == index else LINE_GRAY,
+            zorder=3,
         )
+    nodes = [
+        (centre_x, centre_y + radius_y, r"$\mathbf{r}$", "position"),
+        (centre_x + radius_x * np.cos(np.deg2rad(-30)), centre_y + radius_y * np.sin(np.deg2rad(-30)), r"$\mathbf{a}$", "acceleration"),
+        (centre_x + radius_x * np.cos(np.deg2rad(210)), centre_y + radius_y * np.sin(np.deg2rad(210)), r"$\mathbf{v}$", "velocity"),
+    ]
+    node_half_width = 0.075 if video else 0.062
+    node_half_height = node_half_width * axes_aspect
     for index, (x, y, symbol, label) in enumerate(nodes):
         active = active_stage == index
         ax.add_patch(
-            Circle(
+            Ellipse(
                 (x, y),
-                0.082 if video else 0.068,
+                width=2.0 * node_half_width,
+                height=2.0 * node_half_height,
                 fc=INK if active else WHITE,
                 ec=INK if active else LINE_GRAY,
                 lw=4.0 if video else 2.3,
@@ -419,7 +517,7 @@ def draw_vv_loop(
         registry.text(
             ax,
             x,
-            y - (0.125 if video else 0.108),
+            y - node_half_height - (0.035 if video else 0.025),
             label,
             ha="center",
             va="top",
@@ -430,7 +528,7 @@ def draw_vv_loop(
     registry.text(
         ax,
         0.50,
-        0.57,
+        centre_y,
         "Velocity\nVerlet",
         ha="center",
         va="center",

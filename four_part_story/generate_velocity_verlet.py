@@ -19,15 +19,19 @@ MASS = np.array([15.9994, 1.008, 1.008], dtype=float)
 ELEMENTS = np.array(["O", "H", "H"])
 BONDS = np.array([[0, 1], [0, 2]], dtype=int)
 DT_FS = 0.5
-DISPLAY_SCALES = {"displacement": 12.0, "acceleration": 25.0, "velocity": 5.0}
+DISPLAY_SCALES = {"displacement": 24.0, "acceleration": 45.0, "velocity": 8.0}
+MOTION_FRAMES = 25
 
 
 def prepared_state() -> tuple[np.ndarray, np.ndarray]:
     positions = WATER_EQ.copy()
     first = positions[1] - positions[0]
     second = positions[2] - positions[0]
-    positions[1] += 0.05 * first / np.linalg.norm(first)
-    positions[2] -= 0.03 * second / np.linalg.norm(second)
+    # Start from a symmetric, slightly compressed molecule.  The real harmonic
+    # O-H restoring forces then point outward, so MatterVis can show both
+    # acceleration vectors without hiding them inside the chemical bonds.
+    positions[1] -= 0.055 * first / np.linalg.norm(first)
+    positions[2] -= 0.055 * second / np.linalg.norm(second)
     velocities = maxwell_boltzmann_velocities(MASS, 1200.0, seed=20260827)
     return positions, velocities
 
@@ -56,6 +60,12 @@ def main() -> None:
     f1 = forces(r1)
     a1 = f1 * CONV_ACCEL / MASS[:, None]
     v1 = v0 + 0.5 * (a0 + a1) * DT_FS
+    motion_times = np.linspace(0.0, DT_FS, MOTION_FRAMES)
+    motion_positions = np.asarray(
+        [r0 + v0 * time + 0.5 * a0 * time**2 for time in motion_times]
+    )
+    if not np.allclose(motion_positions[-1], r1, atol=1.0e-12):
+        raise RuntimeError("Position-stage interpolation does not end at r[n+1]")
 
     r_engine, v_engine, f_engine = velocity_verlet_step(r0, v0, forces, MASS, DT_FS)
     residuals = {
@@ -79,6 +89,8 @@ def main() -> None:
         velocities=np.stack((v0, v1)),
         accelerations=np.stack((a0, a1)),
         forces=np.stack((f0, f1)),
+        motion_times_fs=motion_times,
+        motion_positions=motion_positions,
         display_displacement_scale=DISPLAY_SCALES["displacement"],
         display_acceleration_scale=DISPLAY_SCALES["acceleration"],
         display_velocity_scale=DISPLAY_SCALES["velocity"],
@@ -98,6 +110,7 @@ def main() -> None:
     }
     (output_dir / "vv_h2o_step.json").write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")
     write_extxyz(output_dir / "vv_h2o_step.extxyz", np.stack((r0, r1)))
+    write_extxyz(output_dir / "vv_h2o_motion.extxyz", motion_positions)
     print(json.dumps(metadata, indent=2))
 
 

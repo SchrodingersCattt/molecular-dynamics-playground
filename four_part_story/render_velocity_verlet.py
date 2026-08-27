@@ -10,31 +10,39 @@ from common import (
     DARK_GRAY,
     GREEN,
     INK,
-    LIGHT_GRAY,
     NAVY,
-    WHITE,
     LayoutRegistry,
-    add_footer,
-    add_page_title,
     axes_from_top_slot,
-    draw_ball_and_stick,
-    draw_three_step_loop,
-    draw_vector_arrow,
     new_static_figure,
     render_source_panel,
     render_video,
     save_static,
     smoothstep,
 )
+from mattervis_story import (
+    STATIC_LEFT,
+    STATIC_RIGHT,
+    VIDEO_LEFT,
+    VIDEO_RIGHT,
+    add_story_title,
+    camera_for_source,
+    draw_vv_loop,
+    place_render,
+    render_structure,
+    write_provenance_index,
+)
 
 
 ROOT = Path(__file__).resolve().parent
 STEM = "01_velocity_verlet"
 QA_DIR = ROOT / "_qa" / "01_velocity_verlet"
-STATIC_LEFT = (0.045, 0.20, 0.39, 0.86)
-STATIC_RIGHT = (0.43, 0.20, 0.965, 0.88)
-VIDEO_LEFT = (0.035, 0.20, 0.375, 0.88)
-VIDEO_RIGHT = (0.425, 0.20, 0.965, 0.88)
+MATTERVIS_DIR = QA_DIR / "source" / "mattervis"
+SCENE_RECT = (0.04, 0.09, 0.96, 0.91)
+EQUATIONS = (
+    r"$\mathbf{r}_{n+1}=\mathbf{r}_n+\mathbf{v}_n\Delta t+\frac{1}{2}\mathbf{a}_n\Delta t^2$",
+    r"$\mathbf{a}_{n+1}=\mathbf{F}(\mathbf{r}_{n+1})/m$",
+    r"$\mathbf{v}_{n+1}=\mathbf{v}_n+\frac{1}{2}(\mathbf{a}_n+\mathbf{a}_{n+1})\Delta t$",
+)
 
 
 def load_data() -> dict[str, np.ndarray]:
@@ -42,138 +50,230 @@ def load_data() -> dict[str, np.ndarray]:
     return {key: source[key] for key in source.files}
 
 
-def _draw_loop_source(ax, registry: LayoutRegistry) -> None:
-    draw_three_step_loop(ax, registry, video=False, active_stage=None)
-    registry.text(ax, 0.50, 0.965, "abstract update", ha="center", va="top", fontsize=13, color=INK, weight="bold")
-    registry.text(ax, 0.50, 0.075, r"$\mathbf{r}\rightarrow\mathbf{a}\rightarrow\mathbf{v}\rightarrow\mathbf{r}$", ha="center", va="center", fontsize=12, color=DARK_GRAY)
-
-
-def _draw_static_concrete(ax, registry: LayoutRegistry, data: dict[str, np.ndarray]) -> None:
-    r0, r1 = data["positions"]
-    v0, v1 = data["velocities"]
-    _, a1 = data["accelerations"]
-    elements = data["elements"]
-    bonds = data["bonds"]
-    centre = np.mean(np.vstack((r0, r1)), axis=0)
-    columns = [
-        (0.035, 0.335, "1  position", NAVY, r"$\mathbf{r}_{n+1}=\mathbf{r}_n+\mathbf{v}_n\Delta t+\frac{1}{2}\mathbf{a}_n\Delta t^2$"),
-        (0.350, 0.650, "2  acceleration", CRIMSON, r"$\mathbf{a}_{n+1}=\mathbf{F}(\mathbf{r}_{n+1})/m$"),
-        (0.670, 0.970, "3  velocity", GREEN, r"$\mathbf{v}_{n+1}=\mathbf{v}_n+\frac{1}{2}(\mathbf{a}_n+\mathbf{a}_{n+1})\Delta t$"),
+def vector_group(
+    group_id: str,
+    origins: np.ndarray,
+    vectors: np.ndarray,
+    *,
+    scale: float,
+    color: str,
+) -> list[dict]:
+    return [
+        {
+            "id": group_id,
+            "name": group_id,
+            "magnitude_mode": "scaled",
+            "scale": float(scale),
+            "viewport_policy": "clip",
+            "color": color,
+            "arrows": [
+                {
+                    "id": f"{group_id}-{index}",
+                    "origin": np.asarray(origin, dtype=float).tolist(),
+                    "vector": np.asarray(vector, dtype=float).tolist(),
+                }
+                for index, (origin, vector) in enumerate(zip(origins, vectors))
+            ],
+        }
     ]
-    for index, (x0, x1, label, colour, equation) in enumerate(columns):
-        registry.text(ax, (x0 + x1) / 2, 0.965, label, ha="center", va="top", fontsize=13, color=colour, weight="bold")
-        molecule_rect = (x0 + 0.01, 0.23, x1 - 0.01, 0.87)
-        if index == 0:
-            draw_ball_and_stick(ax, r0, elements, bonds, rect=molecule_rect, centre_3d=centre, half_span=1.30, alpha=0.18, atom_scale=0.72, bond_alpha=0.32, edge_color=LIGHT_GRAY)
-            draw_ball_and_stick(ax, r1, elements, bonds, rect=molecule_rect, centre_3d=centre, half_span=1.30, alpha=1.0, atom_scale=0.72)
-            for atom in range(3):
-                draw_vector_arrow(ax, registry, r0[atom], r1[atom] - r0[atom], colour=NAVY, rect=molecule_rect, centre_3d=centre, half_span=1.30, display_scale=float(data["display_displacement_scale"]), video=False)
-            registry.text(ax, (x0 + x1) / 2, 0.185, "old → new · Δr arrows ×12", ha="center", va="center", fontsize=10, color=DARK_GRAY)
-        elif index == 1:
-            draw_ball_and_stick(ax, r1, elements, bonds, rect=molecule_rect, centre_3d=centre, half_span=1.30, atom_scale=0.72)
-            for atom in range(3):
-                draw_vector_arrow(ax, registry, r1[atom], a1[atom], colour=CRIMSON, rect=molecule_rect, centre_3d=centre, half_span=1.30, display_scale=float(data["display_acceleration_scale"]), video=False)
-            registry.text(ax, (x0 + x1) / 2, 0.185, "a arrows ×25", ha="center", va="center", fontsize=10, color=DARK_GRAY)
-        else:
-            draw_ball_and_stick(ax, r1, elements, bonds, rect=molecule_rect, centre_3d=centre, half_span=1.30, atom_scale=0.72)
-            for atom in range(3):
-                draw_vector_arrow(ax, registry, r1[atom], v0[atom], colour=LIGHT_GRAY, rect=molecule_rect, centre_3d=centre, half_span=1.30, display_scale=float(data["display_velocity_scale"]), video=False, alpha=0.95)
-                draw_vector_arrow(ax, registry, r1[atom], v1[atom], colour=GREEN, rect=molecule_rect, centre_3d=centre, half_span=1.30, display_scale=float(data["display_velocity_scale"]), video=False)
-            registry.text(ax, (x0 + x1) / 2, 0.185, "v old grey · new green · ×5", ha="center", va="center", fontsize=10, color=DARK_GRAY)
-        registry.text(ax, (x0 + x1) / 2, 0.085, equation, ha="center", va="center", fontsize=10, color=INK)
 
 
-def render_static(data: dict[str, np.ndarray]) -> None:
-    render_source_panel(QA_DIR / "source" / "abstract_loop.png", _draw_loop_source, width_px=1000, height_px=1400)
-    render_source_panel(QA_DIR / "source" / "concrete_h2o.png", lambda ax, reg: _draw_static_concrete(ax, reg, data), width_px=1900, height_px=1450)
+def prepare_mattervis(data: dict[str, np.ndarray]) -> dict[str, list[Path] | Path]:
+    source = ROOT / "data" / "vv_h2o_motion.extxyz"
+    target = np.mean(data["positions"], axis=(0, 1))
+    plain_paths: list[Path] = []
+    position_paths: list[Path] = []
+    records: list[dict] = []
+    displacement_overlays = vector_group(
+        "displacement",
+        data["positions"][0],
+        data["positions"][1] - data["positions"][0],
+        scale=float(data["display_displacement_scale"]),
+        color=NAVY,
+    )
+    for frame in range(len(data["motion_positions"])):
+        camera = camera_for_source(source, target=target, ortho_scale=1.55, frame=frame)
+        plain_path = MATTERVIS_DIR / f"motion_{frame:02d}.png"
+        position_path = MATTERVIS_DIR / f"position_{frame:02d}.png"
+        records.append(render_structure(source, plain_path, camera=camera, frame=frame))
+        records.append(
+            render_structure(
+                source,
+                position_path,
+                camera=camera,
+                frame=frame,
+                vector_overlays=displacement_overlays,
+            )
+        )
+        plain_paths.append(plain_path)
+        position_paths.append(position_path)
+    final_frame = len(data["motion_positions"]) - 1
+    final_camera = camera_for_source(
+        source,
+        target=target,
+        ortho_scale=1.55,
+        frame=final_frame,
+    )
+    acceleration_path = MATTERVIS_DIR / "acceleration.png"
+    velocity_path = MATTERVIS_DIR / "velocity.png"
+    records.append(
+        render_structure(
+            source,
+            acceleration_path,
+            camera=final_camera,
+            frame=final_frame,
+            vector_overlays=vector_group(
+                "acceleration",
+                data["positions"][1],
+                data["accelerations"][1],
+                scale=float(data["display_acceleration_scale"]),
+                color=CRIMSON,
+            ),
+        )
+    )
+    records.append(
+        render_structure(
+            source,
+            velocity_path,
+            camera=final_camera,
+            frame=final_frame,
+            vector_overlays=vector_group(
+                "velocity",
+                data["positions"][1],
+                data["velocities"][1],
+                scale=float(data["display_velocity_scale"]),
+                color=GREEN,
+            ),
+        )
+    )
+    write_provenance_index(MATTERVIS_DIR, records)
+    return {
+        "plain": plain_paths,
+        "position": position_paths,
+        "acceleration": acceleration_path,
+        "velocity": velocity_path,
+    }
+
+
+def draw_formula_stack(ax, registry: LayoutRegistry, *, video: bool, active: int | None) -> None:
+    if video:
+        if active is not None:
+            registry.text(ax, 0.50, 0.12, EQUATIONS[active], ha="center", va="center", fontsize=19, color=INK)
+        return
+    for index, equation in enumerate(EQUATIONS):
+        registry.text(
+            ax,
+            0.50,
+            0.205 - 0.075 * index,
+            equation,
+            ha="center",
+            va="center",
+            fontsize=10,
+            color=INK,
+        )
+
+
+def draw_static_left(ax, registry: LayoutRegistry) -> None:
+    draw_vv_loop(ax, registry, video=False, active_stage=None)
+    draw_formula_stack(ax, registry, video=False, active=None)
+
+
+def draw_stage(
+    ax,
+    registry: LayoutRegistry,
+    data: dict[str, np.ndarray],
+    scenes: dict[str, list[Path] | Path],
+    *,
+    stage: int,
+    rect: tuple[float, float, float, float],
+    video: bool,
+    progress: float = 1.0,
+) -> None:
+    del registry, data, video
+    plain_paths = scenes["plain"]
+    position_paths = scenes["position"]
+    assert isinstance(plain_paths, list) and isinstance(position_paths, list)
+    if stage == 0:
+        place_render(ax, plain_paths[0], rect, alpha=0.16, zorder=3)
+        index = int(round(smoothstep(progress) * (len(position_paths) - 1)))
+        place_render(ax, position_paths[index], rect, alpha=1.0, zorder=5)
+    elif stage == 1:
+        acceleration_path = scenes["acceleration"]
+        assert isinstance(acceleration_path, Path)
+        place_render(ax, acceleration_path, rect, zorder=5)
+    else:
+        velocity_path = scenes["velocity"]
+        assert isinstance(velocity_path, Path)
+        place_render(ax, velocity_path, rect, zorder=5)
+
+
+def draw_static_case(
+    ax,
+    registry: LayoutRegistry,
+    data: dict[str, np.ndarray],
+    scenes: dict[str, list[Path] | Path],
+) -> None:
+    labels = (("position", NAVY), ("force → acceleration", CRIMSON), ("velocity", GREEN))
+    rows = ((0.045, 0.685, 0.955, 0.965), (0.045, 0.365, 0.955, 0.645), (0.045, 0.045, 0.955, 0.325))
+    for stage, (label, color) in enumerate(labels):
+        registry.text(ax, 0.055, rows[stage][3] - 0.015, label, ha="left", va="top", fontsize=12, color=color, weight="bold")
+        draw_stage(ax, registry, data, scenes, stage=stage, rect=rows[stage], video=False)
+
+
+def render_static(data: dict[str, np.ndarray], scenes: dict[str, list[Path] | Path]) -> None:
+    render_source_panel(QA_DIR / "source" / "integrator.png", draw_static_left, width_px=1000, height_px=1500)
+    render_source_panel(QA_DIR / "source" / "case.png", lambda ax, reg: draw_static_case(ax, reg, data, scenes), width_px=1800, height_px=1500)
     fig = new_static_figure()
     registry = LayoutRegistry(min_font_pt=10, edge_pad_px=18)
-    add_page_title(fig, "01", "Velocity Verlet", "one exact step, reduced to position → acceleration → velocity", video=False, registry=registry)
-    left = axes_from_top_slot(fig, STATIC_LEFT)
-    right = axes_from_top_slot(fig, STATIC_RIGHT)
-    _draw_loop_source(left, registry)
-    _draw_static_concrete(right, registry, data)
-    add_footer(fig, r"H$_2$O · $\Delta t=0.5$ fs · equation residuals $<6\times10^{-17}$ in stored units", video=False, registry=registry)
+    add_story_title(fig, registry, "Velocity Verlet", "One exact molecular step: position → acceleration → velocity", video=False)
+    draw_static_left(axes_from_top_slot(fig, STATIC_LEFT), registry)
+    draw_static_case(axes_from_top_slot(fig, STATIC_RIGHT), registry, data, scenes)
     errors = registry.validate(fig)
     if errors:
         raise RuntimeError("Static layout failed:\n" + "\n".join(errors))
-    png, svg = save_static(fig, STEM)
-    print(f"figure: {png}")
-    print(f"vector: {svg}")
+    save_static(fig, STEM)
 
 
-def _draw_video_frame(fig, time_seconds: float, frame_index: int, registry: LayoutRegistry, data: dict[str, np.ndarray]) -> list[dict]:
+def draw_video_frame(
+    fig,
+    time_seconds: float,
+    frame_index: int,
+    registry: LayoutRegistry,
+    data: dict[str, np.ndarray],
+    scenes: dict[str, list[Path] | Path],
+) -> list[dict]:
+    del frame_index
     stage = min(int(time_seconds // 3.0), 2)
-    local = (time_seconds - stage * 3.0) / 3.0
-    active_weight = smoothstep(min(local / 0.18, 1.0))
-    add_page_title(fig, "01", "Velocity Verlet", "the integrator is abstract; the H₂O step on the right is concrete", video=True, registry=registry)
+    progress = (time_seconds - 3.0 * stage) / 3.0
+    add_story_title(fig, registry, "Velocity Verlet", "The same three operations advance a real H₂O structure", video=True)
     left = axes_from_top_slot(fig, VIDEO_LEFT)
     right = axes_from_top_slot(fig, VIDEO_RIGHT)
-    draw_three_step_loop(left, registry, video=True, active_stage=stage, active_weight=active_weight)
-
-    r0, r1 = data["positions"]
-    v0, v1 = data["velocities"]
-    _, a1 = data["accelerations"]
-    elements = data["elements"]
-    bonds = data["bonds"]
-    centre = np.mean(np.vstack((r0, r1)), axis=0)
-    molecule_rect = (0.04, 0.20, 0.96, 0.92)
-    labels = ["update position", "evaluate force → acceleration", "finish velocity"]
-    colours = [NAVY, CRIMSON, GREEN]
-    equations = [
-        r"$\mathbf{r}_{n+1}=\mathbf{r}_n+\mathbf{v}_n\Delta t+\frac{1}{2}\mathbf{a}_n\Delta t^2$",
-        r"$\mathbf{a}_{n+1}=\mathbf{F}(\mathbf{r}_{n+1})/m$",
-        r"$\mathbf{v}_{n+1}=\mathbf{v}_n+\frac{1}{2}(\mathbf{a}_n+\mathbf{a}_{n+1})\Delta t$",
-    ]
-    registry.text(right, 0.50, 0.965, labels[stage], ha="center", va="top", fontsize=26, color=colours[stage], weight="bold")
-    registry.text(right, 0.50, 0.115, equations[stage], ha="center", va="center", fontsize=20, color=INK)
-    if stage == 0:
-        move = smoothstep(min(local / 0.72, 1.0))
-        current = r0 + move * (r1 - r0)
-        draw_ball_and_stick(right, r0, elements, bonds, rect=molecule_rect, centre_3d=centre, half_span=1.15, alpha=0.16, atom_scale=1.40, bond_alpha=0.25, edge_color=LIGHT_GRAY)
-        draw_ball_and_stick(right, current, elements, bonds, rect=molecule_rect, centre_3d=centre, half_span=1.15, atom_scale=1.40)
-        for atom in range(3):
-            draw_vector_arrow(right, registry, r0[atom], r1[atom] - r0[atom], colour=NAVY, rect=molecule_rect, centre_3d=centre, half_span=1.15, display_scale=float(data["display_displacement_scale"]), video=True, alpha=max(0.35, move))
-        registry.text(right, 0.50, 0.185, "physical move ≤ 0.034 Å · displacement arrows ×12", ha="center", va="center", fontsize=18, color=DARK_GRAY)
-    elif stage == 1:
-        draw_ball_and_stick(right, r1, elements, bonds, rect=molecule_rect, centre_3d=centre, half_span=1.15, atom_scale=1.40)
-        for atom in range(3):
-            draw_vector_arrow(right, registry, r1[atom], a1[atom], colour=CRIMSON, rect=molecule_rect, centre_3d=centre, half_span=1.15, display_scale=float(data["display_acceleration_scale"]), video=True, alpha=active_weight)
-        registry.text(right, 0.50, 0.185, r"$\mathbf{a}_{n+1}$ arrows ×25 · positions fixed", ha="center", va="center", fontsize=18, color=DARK_GRAY)
-    else:
-        draw_ball_and_stick(right, r1, elements, bonds, rect=molecule_rect, centre_3d=centre, half_span=1.15, atom_scale=1.40)
-        for atom in range(3):
-            draw_vector_arrow(right, registry, r1[atom], v0[atom], colour=LIGHT_GRAY, rect=molecule_rect, centre_3d=centre, half_span=1.15, display_scale=float(data["display_velocity_scale"]), video=True, alpha=0.95)
-            draw_vector_arrow(right, registry, r1[atom], v1[atom], colour=GREEN, rect=molecule_rect, centre_3d=centre, half_span=1.15, display_scale=float(data["display_velocity_scale"]), video=True, alpha=active_weight)
-        registry.text(right, 0.50, 0.185, r"grey $\mathbf{v}_n$ · green $\mathbf{v}_{n+1}$ · arrows ×5", ha="center", va="center", fontsize=18, color=DARK_GRAY)
-    add_footer(fig, r"verified H$_2$O step · $\Delta t=0.5$ fs · fixed asymmetric orthographic camera", video=True, registry=registry)
-    semantics = [
-        {"id": "hydrogen_or_position", "color": NAVY, "min_pixels": 150},
-        {"id": "oxygen", "color": CRIMSON, "min_pixels": 150},
-    ]
-    if stage == 2:
-        semantics.append({"id": "velocity", "color": GREEN, "min_pixels": 120})
-    return semantics
+    draw_vv_loop(left, registry, video=True, active_stage=stage)
+    draw_formula_stack(left, registry, video=True, active=stage)
+    headings = ("position update", "force → acceleration", "velocity update")
+    colors = (NAVY, CRIMSON, GREEN)
+    registry.text(right, 0.50, 0.965, headings[stage], ha="center", va="top", fontsize=27, color=colors[stage], weight="bold")
+    draw_stage(right, registry, data, scenes, stage=stage, rect=SCENE_RECT, video=True, progress=progress)
+    return [{"id": headings[stage], "color": colors[stage], "min_pixels": 160}]
 
 
-def render_animation(data: dict[str, np.ndarray]) -> None:
-    audit_config = {
+def render_animation(data: dict[str, np.ndarray], scenes: dict[str, list[Path] | Path]) -> None:
+    audit = {
         "panels": [
-            {"id": "abstract_loop", "rect": list(VIDEO_LEFT), "min_clearance_px": 18},
-            {"id": "concrete_h2o", "rect": list(VIDEO_RIGHT), "min_clearance_px": 18},
+            {"id": "integrator", "rect": list(VIDEO_LEFT), "min_clearance_px": 18},
+            {"id": "mattervis_h2o", "rect": list(VIDEO_RIGHT), "min_clearance_px": 18},
         ],
-        "whitespace": {"background_threshold": 245, "min_ink_fraction": 0.02, "min_panel_bbox_fill": 0.38, "grid_rows": 12, "grid_columns": 20},
-        "bands": [{"id": "column_gap", "rect": [0.387, 0.20, 0.413, 0.89], "max_ink_pixels": 0}],
+        "whitespace": {"background_threshold": 245, "min_ink_fraction": 0.018, "min_panel_bbox_fill": 0.20, "grid_rows": 12, "grid_columns": 20},
+        "bands": [{"id": "column_gap", "rect": [0.365, 0.19, 0.385, 0.90], "max_ink_pixels": 0}],
     }
-    output = render_video(
+    render_video(
         stem=STEM,
         duration_seconds=9.0,
-        draw_frame=lambda fig, t, i, reg: _draw_video_frame(fig, t, i, reg, data),
-        audit_config=audit_config,
+        draw_frame=lambda fig, t, i, reg: draw_video_frame(fig, t, i, reg, data, scenes),
+        audit_config=audit,
         qa_directory=QA_DIR / "_qa",
         representative_times=[1.5, 4.5, 7.5],
     )
-    print(f"video: {output}")
 
 
 def main() -> None:
@@ -181,9 +281,10 @@ def main() -> None:
     parser.add_argument("--static-only", action="store_true")
     args = parser.parse_args()
     data = load_data()
-    render_static(data)
+    scenes = prepare_mattervis(data)
+    render_static(data, scenes)
     if not args.static_only:
-        render_animation(data)
+        render_animation(data, scenes)
 
 
 if __name__ == "__main__":
