@@ -10,202 +10,494 @@ from common import (
     DARK_GRAY,
     GREEN,
     INK,
-    LIGHT_GRAY,
-    LINE_GRAY,
     NAVY,
-    WHITE,
     LayoutRegistry,
-    add_footer,
-    add_page_title,
     axes_from_top_slot,
-    draw_ball_and_stick,
     new_static_figure,
-    project_points,
-    map_projected_to_rect,
     render_source_panel,
     render_video,
     save_static,
     smoothstep,
+)
+from mattervis_story import (
+    STATIC_LEFT,
+    STATIC_RIGHT,
+    VIDEO_LEFT,
+    VIDEO_RIGHT,
+    SceneCamera,
+    add_story_title,
+    camera_for_source,
+    draw_vv_loop,
+    draw_world_segment,
+    make_vector_group,
+    place_render,
+    render_structure,
+    write_provenance_index,
 )
 
 
 ROOT = Path(__file__).resolve().parent
 STEM = "02_classical_lj"
 QA_DIR = ROOT / "_qa" / "02_classical_lj"
-STATIC_LEFT = (0.045, 0.20, 0.53, 0.86)
-STATIC_CURVE_INNER = (0.065, 0.23, 0.51, 0.83)
-STATIC_RIGHT = (0.57, 0.18, 0.965, 0.86)
-VIDEO_LEFT = (0.045, 0.20, 0.55, 0.86)
-VIDEO_CURVE_INNER = (0.068, 0.23, 0.53, 0.83)
-VIDEO_RIGHT = (0.60, 0.18, 0.965, 0.87)
+MATTERVIS_DIR = QA_DIR / "source" / "mattervis"
+SCENE_RECT = (0.03, 0.09, 0.97, 0.91)
+CAMERA_SCALE = 1.50
+EQUATIONS = (
+    r"$r_{\mathrm{OO}}=|\mathbf{r}_{\mathrm O_2}-\mathbf{r}_{\mathrm O_1}|$",
+    r"$U_{\mathrm{LJ}}(r_{\mathrm{OO}})\;\rightarrow\;\mathbf{F}=-\frac{\partial U}{\partial r}\,\hat{\mathbf{r}}\;\rightarrow\;\mathbf{a}$",
+    r"$\mathbf{v}_{n+1}=\mathbf{v}_n+\frac{1}{2}(\mathbf{a}_n+\mathbf{a}_{n+1})\Delta t$",
+)
 
 
 def load_data() -> dict[str, np.ndarray]:
-    source = np.load(ROOT / "data" / "classical_lj.npz")
+    source = np.load(ROOT / "data" / "classical_lj.npz", allow_pickle=True)
     return {key: source[key] for key in source.files}
 
 
-def potential(r: np.ndarray | float, sigma: float, epsilon: float):
-    ratio = sigma / np.asarray(r)
-    return 4.0 * epsilon * (ratio**12 - ratio**6)
+def prepare_mattervis(
+    data: dict[str, np.ndarray],
+) -> tuple[dict[str, list[Path] | Path], SceneCamera]:
+    source = ROOT / "data" / "classical_lj_motion.extxyz"
+    target = np.mean(data["motion_atomic_positions"], axis=(0, 1))
+    overlay_camera = SceneCamera(target=tuple(target), ortho_scale=CAMERA_SCALE)
+    q0, q1 = data["oxygen_positions"]
+    displacement = q1 - q0
+    position_overlays = make_vector_group(
+        "oxygen-displacement",
+        q0,
+        displacement,
+        scale=float(data["display_displacement_scale"]),
+        color=NAVY,
+    )
+    plain_paths: list[Path] = []
+    position_paths: list[Path] = []
+    records: list[dict] = []
+    frame_count = len(data["motion_atomic_positions"])
+    for frame in range(frame_count):
+        camera = camera_for_source(
+            source,
+            target=target,
+            ortho_scale=CAMERA_SCALE,
+            frame=frame,
+        )
+        plain_path = MATTERVIS_DIR / f"motion_{frame:02d}.png"
+        position_path = MATTERVIS_DIR / f"position_{frame:02d}.png"
+        records.append(
+            render_structure(
+                source,
+                plain_path,
+                camera=camera,
+                frame=frame,
+                view="cluster",
+                width=1800,
+                height=700,
+            )
+        )
+        records.append(
+            render_structure(
+                source,
+                position_path,
+                camera=camera,
+                frame=frame,
+                view="cluster",
+                width=1800,
+                height=700,
+                vector_overlays=position_overlays,
+            )
+        )
+        plain_paths.append(plain_path)
+        position_paths.append(position_path)
+
+    final_frame = frame_count - 1
+    final_camera = camera_for_source(
+        source,
+        target=target,
+        ortho_scale=CAMERA_SCALE,
+        frame=final_frame,
+    )
+    force_path = MATTERVIS_DIR / "lj_force.png"
+    velocity_path = MATTERVIS_DIR / "velocity.png"
+    records.append(
+        render_structure(
+            source,
+            force_path,
+            camera=final_camera,
+            frame=final_frame,
+            view="cluster",
+            width=1800,
+            height=700,
+            vector_overlays=make_vector_group(
+                "tip3p-oo-force",
+                q1,
+                data["molecule_forces"][1],
+                scale=float(data["display_force_scale"]),
+                color=CRIMSON,
+            ),
+        )
+    )
+    records.append(
+        render_structure(
+            source,
+            velocity_path,
+            camera=final_camera,
+            frame=final_frame,
+            view="cluster",
+            width=1800,
+            height=700,
+            vector_overlays=make_vector_group(
+                "rigid-water-velocity",
+                q1,
+                data["molecule_velocities"][1],
+                scale=float(data["display_velocity_scale"]),
+                color=GREEN,
+            ),
+        )
+    )
+    write_provenance_index(MATTERVIS_DIR, records)
+    return (
+        {
+            "plain": plain_paths,
+            "position": position_paths,
+            "force": force_path,
+            "velocity": velocity_path,
+        },
+        overlay_camera,
+    )
 
 
-def force(r: np.ndarray | float, sigma: float, epsilon: float):
-    ratio = sigma / np.asarray(r)
-    return 24.0 * epsilon / np.asarray(r) * (2.0 * ratio**12 - ratio**6)
+def draw_formula(
+    ax,
+    registry: LayoutRegistry,
+    *,
+    video: bool,
+    active_stage: int | None,
+) -> None:
+    if video:
+        if active_stage is not None:
+            registry.text(
+                ax,
+                0.50,
+                0.12,
+                EQUATIONS[active_stage],
+                ha="center",
+                va="center",
+                fontsize=18,
+                color=INK,
+            )
+        return
+    registry.text(
+        ax,
+        0.50,
+        0.155,
+        r"$r_{\mathrm{OO}}\;\rightarrow\;U_{\mathrm{LJ}}(r_{\mathrm{OO}})$",
+        ha="center",
+        va="center",
+        fontsize=10,
+        color=INK,
+    )
+    registry.text(
+        ax,
+        0.50,
+        0.085,
+        r"$\mathbf{F}=-\partial U/\partial r\;\rightarrow\;\mathbf{a}=\mathbf{F}/M_{\mathrm{H_2O}}$",
+        ha="center",
+        va="center",
+        fontsize=10,
+        color=INK,
+    )
 
 
-def _style_curve_axis(ax, *, video: bool) -> None:
-    ax.spines[["top", "right"]].set_visible(False)
-    ax.spines[["left", "bottom"]].set_color(DARK_GRAY)
-    ax.spines[["left", "bottom"]].set_linewidth(1.8 if video else 1.2)
-    ax.tick_params(axis="both", labelsize=18 if video else 10, colors=DARK_GRAY, length=5, width=1.2)
-    ax.set_xlabel(r"separation  $r$  (Å)", fontsize=20 if video else 11, color=DARK_GRAY, labelpad=8)
-    ax.set_ylabel(r"pair energy  $U$  (eV)", fontsize=20 if video else 11, color=DARK_GRAY, labelpad=8)
-    ax.grid(False)
+def draw_left(
+    ax,
+    registry: LayoutRegistry,
+    *,
+    video: bool,
+    active_stage: int | None,
+) -> None:
+    draw_vv_loop(ax, registry, video=video, active_stage=active_stage)
+    draw_formula(ax, registry, video=video, active_stage=active_stage)
 
 
-def _draw_curve(ax, registry: LayoutRegistry, data: dict[str, np.ndarray], *, video: bool, current_r: float | None = None) -> None:
-    sigma = float(data["sigma_angstrom"])
-    epsilon = float(data["epsilon_ev"])
-    r_min = float(data["r_min_angstrom"])
-    r = data["r_curve"]
-    u = data["u_curve"]
-    ax.set_xlim(float(r.min()), float(r.max()))
-    ax.set_ylim(-0.0125, 0.0145)
-    _style_curve_axis(ax, video=video)
-    left = r <= r_min
-    right = r >= r_min
-    ax.plot(r[left], u[left], color=CRIMSON, lw=4.5 if video else 2.8)
-    ax.plot(r[right], u[right], color=GREEN, lw=4.5 if video else 2.8)
-    ax.axhline(0.0, color=LINE_GRAY, lw=1.5)
-    ax.axvline(r_min, color=LINE_GRAY, lw=1.6, ls="--")
-    ax.scatter([r_min], [-epsilon], s=170 if video else 90, c=NAVY, edgecolors=WHITE, linewidths=1.5, zorder=6)
-    registry.text(ax, r_min, -0.0118, r"$r_m=2^{1/6}\sigma$", ha="center", va="top", fontsize=18 if video else 10, color=NAVY)
-    registry.text(ax, 0.90 * r_min, 0.0118, "repulsive", ha="center", va="center", fontsize=19 if video else 10, color=CRIMSON, weight="bold")
-    registry.text(ax, 1.38 * r_min, -0.0067, "attractive", ha="center", va="center", fontsize=19 if video else 10, color=GREEN, weight="bold")
-    if current_r is not None:
-        current_u = float(potential(current_r, sigma, epsilon))
-        ax.scatter([current_r], [current_u], s=300 if video else 130, c=INK, edgecolors=WHITE, linewidths=2.0, zorder=8)
+def draw_oo_distance(
+    ax,
+    registry: LayoutRegistry,
+    oxygen_positions: np.ndarray,
+    *,
+    camera: SceneCamera,
+    rect: tuple[float, float, float, float],
+    video: bool,
+) -> None:
+    xy = draw_world_segment(
+        ax,
+        oxygen_positions[0],
+        oxygen_positions[1],
+        camera=camera,
+        rect=rect,
+        color=NAVY,
+        linewidth=5.5 if video else 3.0,
+        linestyle="--",
+        zorder=11,
+        image_aspect=1800.0 / 700.0,
+    )
+    midpoint = 0.5 * (xy[0] + xy[1])
+    registry.text(
+        ax,
+        float(midpoint[0]),
+        float(midpoint[1] + (0.055 if video else 0.032)),
+        r"$r_{\mathrm{OO}}$",
+        ha="center",
+        va="bottom",
+        fontsize=19 if video else 10,
+        color=NAVY,
+        weight="bold",
+        zorder=14,
+    )
 
 
-def _draw_pair(
+def draw_stage(
     ax,
     registry: LayoutRegistry,
     data: dict[str, np.ndarray],
+    scenes: dict[str, list[Path] | Path],
+    camera: SceneCamera,
     *,
-    r: float,
+    stage: int,
     rect: tuple[float, float, float, float],
     video: bool,
-    label: str,
-    colour: str,
+    progress: float = 1.0,
 ) -> None:
-    axis = data["pair_axis"]
-    positions = np.vstack((-0.5 * r * axis, 0.5 * r * axis))
-    centre = np.zeros(3)
-    half_span = 3.10
-    xy, _ = draw_ball_and_stick(ax, positions, ["Ar", "Ar"], np.empty((0, 2), dtype=int), rect=rect, centre_3d=centre, half_span=half_span, atom_scale=1.35 if video else 0.58)
-    scalar_force = float(force(r, float(data["sigma_angstrom"]), float(data["epsilon_ev"])))
-    projected_axis, _ = project_points(np.vstack((np.zeros(3), axis)))
-    centre_projected, _ = project_points(np.zeros((1, 3)))
-    screen = map_projected_to_rect(projected_axis, rect, centre_projected[0], half_span)
-    direction_2d = screen[1] - screen[0]
-    direction_2d /= np.linalg.norm(direction_2d)
-    force_length = 0.115 if video else 0.075
-    if abs(scalar_force) > 1.0e-8:
-        sign = np.sign(scalar_force)
-        for atom, atom_sign in [(0, -1.0), (1, 1.0)]:
-            start = xy[atom]
-            end = start + atom_sign * sign * force_length * direction_2d
-            registry.arrow(ax, tuple(start), tuple(end), arrowstyle="-|>", mutation_scale=30 if video else 16, lw=5.0 if video else 3.0, color=colour, zorder=15)
-        force_text = f"|F| = {abs(scalar_force):.4f} eV/Å"
+    plain_paths = scenes["plain"]
+    position_paths = scenes["position"]
+    assert isinstance(plain_paths, list) and isinstance(position_paths, list)
+    if stage == 0:
+        place_render(ax, plain_paths[0], rect, alpha=0.15, zorder=3)
+        index = int(round(smoothstep(progress) * (len(position_paths) - 1)))
+        fitted = place_render(ax, position_paths[index], rect, zorder=5)
+        draw_oo_distance(
+            ax,
+            registry,
+            data["motion_oxygen_positions"][index],
+            camera=camera,
+            rect=fitted,
+            video=video,
+        )
+    elif stage == 1:
+        force_path = scenes["force"]
+        assert isinstance(force_path, Path)
+        fitted = place_render(ax, force_path, rect, zorder=5)
+        draw_oo_distance(
+            ax,
+            registry,
+            data["oxygen_positions"][1],
+            camera=camera,
+            rect=fitted,
+            video=video,
+        )
     else:
-        force_text = "F = 0"
-    x0, y0, x1, y1 = rect
-    registry.text(ax, (x0 + x1) / 2, y1 + (0.045 if video else 0.025), label, ha="center", va="bottom", fontsize=24 if video else 12, color=colour, weight="bold")
-    registry.text(ax, (x0 + x1) / 2, y0 - (0.045 if video else 0.022), f"r = {r:.3f} Å · {force_text}", ha="center", va="top", fontsize=18 if video else 10, color=DARK_GRAY)
+        velocity_path = scenes["velocity"]
+        assert isinstance(velocity_path, Path)
+        place_render(ax, plain_paths[0], rect, alpha=0.15, zorder=3)
+        place_render(ax, velocity_path, rect, zorder=5)
 
 
-def _draw_curve_source(ax, registry: LayoutRegistry, data: dict[str, np.ndarray]) -> None:
-    _draw_curve(ax, registry, data, video=False, current_r=float(data["r_min_angstrom"]))
+def draw_static_case(
+    ax,
+    registry: LayoutRegistry,
+    data: dict[str, np.ndarray],
+    scenes: dict[str, list[Path] | Path],
+    camera: SceneCamera,
+) -> None:
+    labels = (
+        ("O···O geometry", NAVY),
+        ("TIP3P O–O LJ → force", CRIMSON),
+        ("one Velocity Verlet step", GREEN),
+    )
+    rows = (
+        (0.035, 0.685, 0.965, 0.965),
+        (0.035, 0.365, 0.965, 0.645),
+        (0.035, 0.045, 0.965, 0.325),
+    )
+    for stage, (label, color) in enumerate(labels):
+        registry.text(
+            ax,
+            0.055,
+            rows[stage][3] - 0.012,
+            label,
+            ha="left",
+            va="top",
+            fontsize=12,
+            color=color,
+            weight="bold",
+        )
+        draw_stage(
+            ax,
+            registry,
+            data,
+            scenes,
+            camera,
+            stage=stage,
+            rect=rows[stage],
+            video=False,
+        )
+    registry.text(
+        ax,
+        0.50,
+        0.002,
+        "Highlighted term only; TIP3P water also contains electrostatics.",
+        ha="center",
+        va="bottom",
+        fontsize=10,
+        color=DARK_GRAY,
+    )
 
 
-def _draw_pair_source(ax, registry: LayoutRegistry, data: dict[str, np.ndarray]) -> None:
-    states = data["state_r"]
-    rows = [
-        ((0.08, 0.72, 0.92, 0.90), "repulsive", CRIMSON),
-        ((0.08, 0.40, 0.92, 0.58), "equilibrium", NAVY),
-        ((0.08, 0.08, 0.92, 0.26), "attractive", GREEN),
-    ]
-    for r, (rect, label, colour) in zip(states, rows):
-        _draw_pair(ax, registry, data, r=float(r), rect=rect, video=False, label=label, colour=colour)
-
-
-def render_static(data: dict[str, np.ndarray]) -> None:
-    render_source_panel(QA_DIR / "source" / "lj_curve.png", lambda ax, reg: _draw_curve_source(ax, reg, data), width_px=1500, height_px=1350)
-    render_source_panel(QA_DIR / "source" / "argon_pair.png", lambda ax, reg: _draw_pair_source(ax, reg, data), width_px=1250, height_px=1450)
+def render_static(
+    data: dict[str, np.ndarray],
+    scenes: dict[str, list[Path] | Path],
+    camera: SceneCamera,
+) -> None:
+    render_source_panel(
+        QA_DIR / "source" / "integrator.png",
+        lambda ax, registry: draw_left(
+            ax, registry, video=False, active_stage=None
+        ),
+        width_px=1000,
+        height_px=1500,
+    )
+    render_source_panel(
+        QA_DIR / "source" / "case.png",
+        lambda ax, registry: draw_static_case(
+            ax, registry, data, scenes, camera
+        ),
+        width_px=1800,
+        height_px=1500,
+    )
     fig = new_static_figure()
     registry = LayoutRegistry(min_font_pt=10, edge_pad_px=18)
-    add_page_title(fig, "02", "Classical potential", "Lennard-Jones turns geometry into energy and force without an electronic loop", video=False, registry=registry)
-    left = axes_from_top_slot(fig, STATIC_CURVE_INNER)
-    right = axes_from_top_slot(fig, STATIC_RIGHT)
-    _draw_curve_source(left, registry, data)
-    _draw_pair_source(right, registry, data)
-    add_footer(fig, r"Ar–Ar · $\sigma=3.405$ Å · $\varepsilon=0.0103$ eV · $\mathbf{F}=-\nabla U$", video=False, registry=registry)
+    add_story_title(
+        fig,
+        registry,
+        "Classical MD: Lennard–Jones",
+        "On a real water dimer, O···O geometry becomes energy, force, and motion",
+        video=False,
+    )
+    draw_left(
+        axes_from_top_slot(fig, STATIC_LEFT),
+        registry,
+        video=False,
+        active_stage=None,
+    )
+    draw_static_case(
+        axes_from_top_slot(fig, STATIC_RIGHT),
+        registry,
+        data,
+        scenes,
+        camera,
+    )
     errors = registry.validate(fig)
     if errors:
         raise RuntimeError("Static layout failed:\n" + "\n".join(errors))
-    png, svg = save_static(fig, STEM)
-    print(f"figure: {png}")
-    print(f"vector: {svg}")
+    save_static(fig, STEM)
 
 
-def _state_r(time_seconds: float, states: np.ndarray) -> tuple[int, float]:
+def draw_video_frame(
+    fig,
+    time_seconds: float,
+    frame_index: int,
+    registry: LayoutRegistry,
+    data: dict[str, np.ndarray],
+    scenes: dict[str, list[Path] | Path],
+    camera: SceneCamera,
+) -> list[dict]:
+    del frame_index
     stage = min(int(time_seconds // 3.0), 2)
-    local = (time_seconds - stage * 3.0) / 3.0
-    target = float(states[stage])
-    previous = float(states[stage - 1]) if stage > 0 else target
-    interpolation = smoothstep(min(local / 0.35, 1.0))
-    return stage, previous + interpolation * (target - previous)
-
-
-def _draw_video_frame(fig, time_seconds: float, frame_index: int, registry: LayoutRegistry, data: dict[str, np.ndarray]) -> list[dict]:
-    stage, r = _state_r(time_seconds, data["state_r"])
-    add_page_title(fig, "02", "Classical potential: Lennard-Jones", "one analytic function supplies both energy and force", video=True, registry=registry)
-    left = axes_from_top_slot(fig, VIDEO_CURVE_INNER)
+    progress = (time_seconds - 3.0 * stage) / 3.0
+    add_story_title(
+        fig,
+        registry,
+        "Classical MD: Lennard–Jones",
+        "The TIP3P O–O LJ term supplies a force inside the same Velocity Verlet loop",
+        video=True,
+    )
+    left = axes_from_top_slot(fig, VIDEO_LEFT)
     right = axes_from_top_slot(fig, VIDEO_RIGHT)
-    _draw_curve(left, registry, data, video=True, current_r=r)
-    labels = ["repulsive", "equilibrium", "attractive"]
-    colours = [CRIMSON, NAVY, GREEN]
-    _draw_pair(right, registry, data, r=r, rect=(0.02, 0.24, 0.98, 0.75), video=True, label=labels[stage], colour=colours[stage])
-    registry.text(right, 0.50, 0.94, r"$U(r)=4\varepsilon\left[\left(\frac{\sigma}{r}\right)^{12}-\left(\frac{\sigma}{r}\right)^6\right]$", ha="center", va="top", fontsize=24, color=INK)
-    registry.text(right, 0.50, 0.10, r"$\mathbf{F}_{ij}=-\frac{\mathrm{d}U}{\mathrm{d}r}\,\hat{\mathbf{r}}_{ij}$", ha="center", va="center", fontsize=22, color=INK)
-    add_footer(fig, r"same $r$ drives the curve point, 3D separation and force arrows · fixed axes and camera", video=True, registry=registry)
-    return [
-        {"id": "potential", "color": NAVY, "min_pixels": 120},
-        {"id": "repulsive", "color": CRIMSON, "min_pixels": 140},
-        {"id": "attractive", "color": GREEN, "min_pixels": 140},
-    ]
+    draw_left(left, registry, video=True, active_stage=stage)
+    headings = (
+        "O···O geometry",
+        "LJ force → acceleration",
+        "velocity update",
+    )
+    colors = (NAVY, CRIMSON, GREEN)
+    registry.text(
+        right,
+        0.50,
+        0.965,
+        headings[stage],
+        ha="center",
+        va="top",
+        fontsize=27,
+        color=colors[stage],
+        weight="bold",
+    )
+    draw_stage(
+        right,
+        registry,
+        data,
+        scenes,
+        camera,
+        stage=stage,
+        rect=SCENE_RECT,
+        video=True,
+        progress=progress,
+    )
+    registry.text(
+        right,
+        0.50,
+        0.018,
+        "Highlighted LJ term only · TIP3P also contains electrostatics",
+        ha="center",
+        va="bottom",
+        fontsize=18,
+        color=DARK_GRAY,
+    )
+    return [{"id": headings[stage], "color": colors[stage], "min_pixels": 150}]
 
 
-def render_animation(data: dict[str, np.ndarray]) -> None:
-    audit_config = {
+def render_animation(
+    data: dict[str, np.ndarray],
+    scenes: dict[str, list[Path] | Path],
+    camera: SceneCamera,
+) -> None:
+    audit = {
         "panels": [
-            {"id": "lj_curve", "rect": list(VIDEO_LEFT), "min_clearance_px": 18},
-            {"id": "argon_pair", "rect": list(VIDEO_RIGHT), "min_clearance_px": 18},
+            {"id": "integrator", "rect": list(VIDEO_LEFT), "min_clearance_px": 18},
+            {"id": "mattervis_dimer", "rect": list(VIDEO_RIGHT), "min_clearance_px": 18},
         ],
-        "whitespace": {"background_threshold": 245, "min_ink_fraction": 0.02, "min_panel_bbox_fill": 0.40, "grid_rows": 12, "grid_columns": 20},
-        "bands": [{"id": "column_gap", "rect": [0.565, 0.18, 0.585, 0.88], "max_ink_pixels": 0}],
+        "whitespace": {
+            "background_threshold": 245,
+            "min_ink_fraction": 0.02,
+            "min_panel_bbox_fill": 0.20,
+            "grid_rows": 12,
+            "grid_columns": 20,
+        },
+        "bands": [
+            {
+                "id": "column_gap",
+                "rect": [0.365, 0.19, 0.385, 0.90],
+                "max_ink_pixels": 0,
+            }
+        ],
     }
-    output = render_video(
+    render_video(
         stem=STEM,
         duration_seconds=9.0,
-        draw_frame=lambda fig, t, i, reg: _draw_video_frame(fig, t, i, reg, data),
-        audit_config=audit_config,
+        draw_frame=lambda fig, time, index, registry: draw_video_frame(
+            fig, time, index, registry, data, scenes, camera
+        ),
+        audit_config=audit,
         qa_directory=QA_DIR / "_qa",
         representative_times=[1.5, 4.5, 7.5],
     )
-    print(f"video: {output}")
 
 
 def main() -> None:
@@ -213,9 +505,10 @@ def main() -> None:
     parser.add_argument("--static-only", action="store_true")
     args = parser.parse_args()
     data = load_data()
-    render_static(data)
+    scenes, camera = prepare_mattervis(data)
+    render_static(data, scenes, camera)
     if not args.static_only:
-        render_animation(data)
+        render_animation(data, scenes, camera)
 
 
 if __name__ == "__main__":

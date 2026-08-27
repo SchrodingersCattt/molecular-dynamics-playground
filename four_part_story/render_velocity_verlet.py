@@ -27,6 +27,7 @@ from mattervis_story import (
     add_story_title,
     camera_for_source,
     draw_vv_loop,
+    make_vector_group,
     place_render,
     render_structure,
     write_provenance_index,
@@ -50,41 +51,13 @@ def load_data() -> dict[str, np.ndarray]:
     return {key: source[key] for key in source.files}
 
 
-def vector_group(
-    group_id: str,
-    origins: np.ndarray,
-    vectors: np.ndarray,
-    *,
-    scale: float,
-    color: str,
-) -> list[dict]:
-    return [
-        {
-            "id": group_id,
-            "name": group_id,
-            "magnitude_mode": "scaled",
-            "scale": float(scale),
-            "viewport_policy": "clip",
-            "color": color,
-            "arrows": [
-                {
-                    "id": f"{group_id}-{index}",
-                    "origin": np.asarray(origin, dtype=float).tolist(),
-                    "vector": np.asarray(vector, dtype=float).tolist(),
-                }
-                for index, (origin, vector) in enumerate(zip(origins, vectors))
-            ],
-        }
-    ]
-
-
 def prepare_mattervis(data: dict[str, np.ndarray]) -> dict[str, list[Path] | Path]:
     source = ROOT / "data" / "vv_h2o_motion.extxyz"
     target = np.mean(data["positions"], axis=(0, 1))
     plain_paths: list[Path] = []
     position_paths: list[Path] = []
     records: list[dict] = []
-    displacement_overlays = vector_group(
+    displacement_overlays = make_vector_group(
         "displacement",
         data["positions"][0],
         data["positions"][1] - data["positions"][0],
@@ -122,7 +95,7 @@ def prepare_mattervis(data: dict[str, np.ndarray]) -> dict[str, list[Path] | Pat
             acceleration_path,
             camera=final_camera,
             frame=final_frame,
-            vector_overlays=vector_group(
+            vector_overlays=make_vector_group(
                 "acceleration",
                 data["positions"][1],
                 data["accelerations"][1],
@@ -137,7 +110,7 @@ def prepare_mattervis(data: dict[str, np.ndarray]) -> dict[str, list[Path] | Pat
             velocity_path,
             camera=final_camera,
             frame=final_frame,
-            vector_overlays=vector_group(
+            vector_overlays=make_vector_group(
                 "velocity",
                 data["positions"][1],
                 data["velocities"][1],

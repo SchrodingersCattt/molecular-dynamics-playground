@@ -101,6 +101,42 @@ def _rgba(path: Path) -> np.ndarray:
         return np.asarray(image.convert("RGBA"))
 
 
+def make_vector_group(
+    group_id: str,
+    origins: np.ndarray,
+    vectors: np.ndarray,
+    *,
+    scale: float,
+    color: str,
+    viewport_policy: str = "clip",
+) -> list[dict]:
+    """Create one validated MatterVis native Cartesian vector group."""
+    origins_array = np.asarray(origins, dtype=float)
+    vectors_array = np.asarray(vectors, dtype=float)
+    if origins_array.shape != vectors_array.shape or origins_array.ndim != 2:
+        raise ValueError("origins and vectors must have matching shape (N, 3)")
+    return [
+        {
+            "id": group_id,
+            "name": group_id,
+            "magnitude_mode": "scaled",
+            "scale": float(scale),
+            "viewport_policy": viewport_policy,
+            "color": color,
+            "arrows": [
+                {
+                    "id": f"{group_id}-{index}",
+                    "origin": origin.tolist(),
+                    "vector": vector.tolist(),
+                }
+                for index, (origin, vector) in enumerate(
+                    zip(origins_array, vectors_array)
+                )
+            ],
+        }
+    ]
+
+
 def render_structure(
     source: Path,
     output: Path,
@@ -118,6 +154,13 @@ def render_structure(
     """Render a complete structure/vector scene through public MatterVis APIs."""
     output.parent.mkdir(parents=True, exist_ok=True)
     source_hash = sha256_file(source)
+    render_settings = {
+        "width": int(width),
+        "height": int(height),
+        "atom_scale": float(atom_scale),
+        "bond_radius": float(bond_radius),
+        "show_cell": bool(show_cell),
+    }
     resolved_vectors = resolve_vector_overlays(vector_overlays or [])
     vector_signature = json.dumps(
         [
@@ -140,6 +183,7 @@ def render_structure(
             and previous.get("frame") == frame
             and previous.get("view") == view
             and previous.get("camera") == asdict(camera)
+            and previous.get("render_settings") == render_settings
             and previous.get("vector_signature") == vector_signature
             and previous.get("pipeline_version") == 2
             and int(np.count_nonzero(_rgba(output)[:, :, 3])) > 0
@@ -209,6 +253,7 @@ def render_structure(
         "frame": frame,
         "view": view,
         "camera": asdict(camera),
+        "render_settings": render_settings,
         "vector_signature": vector_signature,
         "vector_count": len(resolved_vectors),
         "vector_renderer": "MatterVis native world-space vector_overlays",
@@ -422,8 +467,14 @@ def draw_world_segment(
     linestyle: str = "--",
     alpha: float = 1.0,
     zorder: float = 12.0,
+    image_aspect: float = 1500.0 / 1120.0,
 ) -> np.ndarray:
-    xy = project_world(np.vstack((first, second)), camera=camera, rect=rect)
+    xy = project_world(
+        np.vstack((first, second)),
+        camera=camera,
+        rect=rect,
+        image_aspect=image_aspect,
+    )
     ax.plot(
         xy[:, 0],
         xy[:, 1],
