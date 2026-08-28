@@ -4,7 +4,7 @@
   "format": "png",
   "width": 1500,
   "height": 950,
-  "plan_sha256": "f305c9386e6aca6d14f7fd04defeb1d286ab1ba54d7fbb66f8a35c4f132d5fa7",
+  "plan_sha256": "89876b1bc49f6d0b316a03ad80e1e90f265b1e144416956924a3e15af1c90263",
   "output_sha256": "ae4da0f6e4e7a2f0dac060ec0fcd1c5d893dc1e36f45ff075047941c24294697",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_structure.png",
   "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
@@ -43,7 +43,7 @@
   "vector_signature": "[]",
   "vector_count": 0,
   "vector_renderer": "MatterVis native world-space vector_overlays",
-  "pipeline_version": 2,
+  "pipeline_version": 3,
   "warnings": [],
   "metadata": {
     "transparent_compositor": "per-pixel-fragment-list",

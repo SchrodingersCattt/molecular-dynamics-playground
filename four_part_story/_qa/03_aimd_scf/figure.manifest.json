@@ -22,10 +22,10 @@
       "id": "integrator",
       "source": "source/integrator.png",
       "slot": [
-        0.045,
-        0.19,
-        0.355,
-        0.89
+        0.035,
+        0.2,
+        0.31,
+        0.91
       ],
       "source_min_clearance_px": 12,
       "min_clearance_px": 18,
@@ -36,13 +36,41 @@
       "id": "rhf_density",
       "source": "source/case.png",
       "slot": [
-        0.4,
-        0.19,
-        0.965,
-        0.89
+        0.325,
+        0.18,
+        0.715,
+        0.91
       ],
       "source_min_clearance_px": 12,
       "min_clearance_px": 18,
+      "source_allow_touch_edges": [],
+      "allow_touch_edges": []
+    },
+    {
+      "id": "scf_energy",
+      "source": "source/energy.png",
+      "slot": [
+        0.745,
+        0.18,
+        0.965,
+        0.49
+      ],
+      "source_min_clearance_px": 12,
+      "min_clearance_px": 12,
+      "source_allow_touch_edges": [],
+      "allow_touch_edges": []
+    },
+    {
+      "id": "scf_loop",
+      "source": "source/scf_loop.png",
+      "slot": [
+        0.755,
+        0.52,
+        0.955,
+        0.91
+      ],
+      "source_min_clearance_px": 12,
+      "min_clearance_px": 12,
       "source_allow_touch_edges": [],
       "allow_touch_edges": []
     }
@@ -58,12 +86,32 @@
     "boundaries": {
       "bands": [
         {
-          "id": "column_gap",
+          "id": "gap_a_b",
           "rect": [
-            0.365,
-            0.19,
-            0.385,
-            0.89
+            0.31,
+            0.2,
+            0.325,
+            0.91
+          ],
+          "max_ink_pixels": 0
+        },
+        {
+          "id": "gap_b_right",
+          "rect": [
+            0.715,
+            0.18,
+            0.745,
+            0.91
+          ],
+          "max_ink_pixels": 0
+        },
+        {
+          "id": "gap_c_d",
+          "rect": [
+            0.745,
+            0.49,
+            0.965,
+            0.52
           ],
           "max_ink_pixels": 0
         }
@@ -91,6 +139,7 @@
       "mattervis_structures_and_vectors",
       "residual_driven_blur",
       "analytic_rhf_gradients",
+      "real_scf_energy_curves",
       "velocity_verlet_chain"
     ],
     "evidence": {
@@ -99,6 +148,7 @@
       "mattervis_structures_and_vectors": "source/mattervis_multistep/provenance.json",
       "residual_driven_blur": "../../data/aimd_multistep_h2o_dimer_metadata.json",
       "analytic_rhf_gradients": "../../data/aimd_multistep_h2o_dimer.npz",
+      "real_scf_energy_curves": "../../data/aimd_multistep_h2o_dimer.npz",
       "velocity_verlet_chain": "../../data/aimd_multistep_h2o_dimer_metadata.json"
     },
     "scientific_changes": [
@@ -114,6 +164,7 @@
       "fixed_grid",
       "one_density_object_per_ionic_step",
       "fixed_world_space_vector_scales",
+      "current_ionic_step_energy_curve",
       "explicit_ionic_step_boundaries"
     ],
     "evidence": {}

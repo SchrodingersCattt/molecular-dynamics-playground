@@ -200,7 +200,7 @@ def render_structure(
             and previous.get("camera") == asdict(camera)
             and previous.get("render_settings") == render_settings
             and previous.get("vector_signature") == vector_signature
-            and previous.get("pipeline_version") == 2
+            and previous.get("pipeline_version") == 3
             and int(np.count_nonzero(_rgba(output)[:, :, 3])) > 0
         ):
             return previous
@@ -276,7 +276,7 @@ def render_structure(
         "vector_signature": vector_signature,
         "vector_count": len(resolved_vectors),
         "vector_renderer": "MatterVis native world-space vector_overlays",
-        "pipeline_version": 2,
+        "pipeline_version": 3,
         "warnings": list(result.warnings),
         "metadata": dict(result.metadata),
     }
@@ -668,13 +668,15 @@ def draw_vv_loop(
     video: bool,
     active_stage: int | None,
     equation: str | None = None,
+    centre_text: str | None = None,
+    centre_y: float = 0.64,
+    radius_x: float = 0.31,
 ) -> None:
     """Draw the shared empty three-stage Velocity Verlet loop."""
     figure_width, figure_height = ax.figure.canvas.get_width_height()
     position = ax.get_position()
     axes_aspect = (position.width * figure_width) / (position.height * figure_height)
-    centre_x, centre_y = 0.50, 0.64
-    radius_x = 0.31
+    centre_x = 0.50
     radius_y = radius_x * axes_aspect
     arc_ranges = ((-30, 90), (210, 330), (90, 210))
     ax.add_patch(Arc((centre_x, centre_y), 2 * radius_x, 2 * radius_y, theta1=0, theta2=360, color=LINE_GRAY, lw=4.0 if video else 2.4, zorder=1))
@@ -743,13 +745,13 @@ def draw_vv_loop(
         ax,
         0.50,
         centre_y,
-        "Velocity\nVerlet",
+        centre_text or "Velocity\nVerlet",
         ha="center",
         va="center",
-        fontsize=25 if video else 15,
+        fontsize=(18 if video else 10) if centre_text else (25 if video else 15),
         color=INK,
-        weight="bold",
-        linespacing=1.0,
+        weight="normal" if centre_text else "bold",
+        linespacing=1.15 if centre_text else 1.0,
     )
     if equation:
         registry.text(

@@ -8,7 +8,7 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.patches import Ellipse
+from matplotlib.patches import Ellipse, Rectangle
 from PIL import Image
 from scipy import ndimage
 
@@ -31,8 +31,6 @@ from common import (
     smoothstep,
 )
 from mattervis_story import (
-    STATIC_LEFT,
-    STATIC_RIGHT,
     SceneCamera,
     add_story_title,
     camera_for_source,
@@ -53,10 +51,18 @@ MATTERVIS_DIR = QA_DIR / "source" / "mattervis_multistep"
 DATA_PATH = ROOT / "data" / "aimd_multistep_h2o_dimer.npz"
 MOTION_SOURCE = ROOT / "data" / "aimd_multistep_h2o_dimer.extxyz"
 
-STATIC_SCENE_RECT = (0.02, 0.12, 0.75, 0.88)
-VIDEO_SCENE_RECT = (0.01, 0.08, 0.755, 0.87)
-AIMD_VIDEO_LEFT = (0.045, 0.21, 0.275, 0.90)
-AIMD_VIDEO_RIGHT = (0.30, 0.17, 0.965, 0.91)
+STATIC_SCENE_RECT = (0.04, 0.10, 0.96, 0.87)
+VIDEO_SCENE_RECT = (0.04, 0.10, 0.96, 0.87)
+
+STATIC_A = (0.035, 0.20, 0.310, 0.91)
+STATIC_B = (0.325, 0.18, 0.715, 0.91)
+STATIC_C = (0.745, 0.18, 0.965, 0.49)
+STATIC_D = (0.755, 0.52, 0.955, 0.91)
+
+VIDEO_A = (0.035, 0.20, 0.310, 0.91)
+VIDEO_B = (0.325, 0.18, 0.715, 0.91)
+VIDEO_C = (0.745, 0.18, 0.965, 0.49)
+VIDEO_D = (0.755, 0.52, 0.955, 0.91)
 
 CAMERA_SCALE = 1.72
 POSITION_LAKE = "#4E9BB5"
@@ -300,9 +306,9 @@ def prepare_mattervis(
         density_paths.append(ion_paths)
 
     arrow_style = {
-        "shaft_radius": 0.065,
+        "shaft_radius": 0.052,
         "head_length_ratio": 0.28,
-        "head_radius_ratio": 2.4,
+        "head_radius_ratio": 2.25,
         "sides": 18,
     }
     force_paths: list[Path] = []
@@ -411,39 +417,23 @@ def draw_scf_loop(
     iteration_count: int,
     converged: bool,
 ) -> None:
-    """Draw the electronic loop beside, never around, the molecule."""
+    """Draw the electronic loop in its own lower-right panel."""
     aspect = _axes_aspect(ax)
     symbols = [r"$F$", r"$C$", r"$\rho$", r"$?$"]
-    if video:
-        positions = [
-            (0.855, 0.755),
-            (0.925, 0.615),
-            (0.855, 0.475),
-            (0.785, 0.615),
-        ]
-        arrows = [
-            ((0.878, 0.715), (0.905, 0.655)),
-            ((0.905, 0.575), (0.878, 0.515)),
-            ((0.832, 0.515), (0.805, 0.575)),
-            ((0.805, 0.655), (0.832, 0.715)),
-        ]
-        radius_x = 0.024
-        centre_x = 0.855
-    else:
-        positions = [
-            (0.815, 0.76),
-            (0.905, 0.59),
-            (0.815, 0.42),
-            (0.725, 0.59),
-        ]
-        arrows = [
-            ((0.845, 0.72), (0.875, 0.63)),
-            ((0.875, 0.55), (0.845, 0.46)),
-            ((0.785, 0.46), (0.755, 0.55)),
-            ((0.755, 0.63), (0.785, 0.72)),
-        ]
-        radius_x = 0.030
-        centre_x = 0.815
+    positions = [
+        (0.50, 0.78),
+        (0.78, 0.55),
+        (0.50, 0.32),
+        (0.22, 0.55),
+    ]
+    arrows = [
+        ((0.565, 0.725), (0.715, 0.605)),
+        ((0.715, 0.495), (0.565, 0.375)),
+        ((0.435, 0.375), (0.285, 0.495)),
+        ((0.285, 0.605), (0.435, 0.725)),
+    ]
+    radius_x = 0.072 if video else 0.064
+    centre_x = 0.50
     for index, (start, end) in enumerate(arrows):
         arrow_weight = max(stage_weights[index], stage_weights[(index + 1) % 4])
         registry.arrow(
@@ -451,8 +441,8 @@ def draw_scf_loop(
             start,
             end,
             arrowstyle="-|>",
-            mutation_scale=21 if video else 15,
-            lw=3.4 if video else 2.2,
+            mutation_scale=19 if video else 13,
+            lw=2.6 if video else 1.6,
             color=mix_hex(LINE_GRAY, INK, arrow_weight),
             zorder=3,
         )
@@ -467,7 +457,7 @@ def draw_scf_loop(
                 2.0 * radius_y,
                 fc=fill,
                 ec=mix_hex(LINE_GRAY, INK, weight),
-                lw=3.0 if video else 1.9,
+                lw=2.4 if video else 1.5,
                 zorder=4,
             )
         )
@@ -478,7 +468,7 @@ def draw_scf_loop(
             symbol,
             ha="center",
             va="center",
-            fontsize=20 if video else 11,
+            fontsize=20 if video else 10,
             color=WHITE if weight > 0.48 else DARK_GRAY,
             weight="bold",
             zorder=5,
@@ -486,7 +476,7 @@ def draw_scf_loop(
     registry.text(
         ax,
         centre_x,
-        0.615 if video else 0.59,
+        0.55,
         "SCF",
         ha="center",
         va="center",
@@ -494,29 +484,11 @@ def draw_scf_loop(
         color=INK,
         weight="bold",
     )
-    if video:
-        if converged:
-            active_label = "density converged"
-        elif max(stage_weights) <= 0.0:
-            active_label = "initial density guess"
-        else:
-            active_label = "electronic iteration"
-        registry.text(
-            ax,
-            centre_x,
-            0.345,
-            active_label,
-            ha="center",
-            va="center",
-            fontsize=18,
-            color=GREEN if converged else INK,
-            weight="bold",
-        )
     status = "converged" if converged else f"SCF {iteration:02d} / {iteration_count:02d}"
     registry.text(
         ax,
         centre_x,
-        0.285 if video else 0.25,
+        0.10,
         status,
         ha="center",
         va="center",
@@ -540,20 +512,10 @@ def draw_left(
         registry,
         video=video,
         active_stage=stage,
-        equation=None if video else equation,
+        centre_text=equation,
+        centre_y=0.54,
+        radius_x=0.40,
     )
-    if video:
-        registry.text(
-            ax,
-            0.50,
-            0.20,
-            equation,
-            ha="center",
-            va="center",
-            fontsize=18,
-            color=INK,
-            linespacing=1.25,
-        )
 
 
 def _nested_paths(assets: dict[str, object], key: str) -> list:
@@ -575,8 +537,6 @@ def draw_case(
     density_blend: float,
     scf_stage_weights: tuple[float, float, float, float],
     phase_progress: float,
-    scf_progress: float,
-    rapid: bool,
 ) -> None:
     all_density_paths = _nested_paths(assets, "density")
     structure_paths = _nested_paths(assets, "structure")
@@ -587,6 +547,17 @@ def draw_case(
     if not isinstance(density_paths, list):
         raise TypeError("Density assets must be nested by ionic step")
     scene_rect = VIDEO_SCENE_RECT if video else STATIC_SCENE_RECT
+    ax.add_patch(
+        Rectangle(
+            (0.04, 0.04),
+            0.92,
+            0.92,
+            fill=False,
+            ec=LINE_GRAY,
+            lw=2.0 if video else 1.1,
+            zorder=20,
+        )
+    )
 
     if mode in {"scf", "pause"}:
         if mode == "pause":
@@ -605,88 +576,162 @@ def draw_case(
             blend=blend,
             zorder=4,
         )
-        qualifier = "fast " if rapid else ""
-        heading = (
-            f"{qualifier}ionic step {ion_index + 1} · electronic SCF"
-        )
         if mode == "pause":
-            state_label = "self-consistent density"
-            heading_color = GREEN
-        elif scf_progress < 0.22:
-            state_label = "coarse density guess"
-            heading_color = DENSITY_COLORS[-1]
-        elif scf_progress < 0.78:
-            state_label = "density resolves as the residual falls"
-            heading_color = DENSITY_COLORS[-1]
+            stage_text = f"Iteration {iteration_index + 1:02d} · SCF converged"
         else:
-            state_label = "fine contours approach self-consistency"
-            heading_color = NAVY
+            actions = (
+                "build Fock matrix",
+                "solve orbitals",
+                "update density",
+                "check convergence",
+            )
+            action = actions[int(np.argmax(scf_stage_weights))]
+            stage_text = f"Iteration {iteration_index + 1:02d} · {action}"
     elif mode == "force":
         place_render(ax, force_paths[ion_index], scene_rect, zorder=5)
-        heading = f"ionic step {ion_index + 1} · energy gradient → force"
-        state_label = r"$-\nabla_R E(\mathbf{R}_n)=\mathbf{F}_n$"
-        heading_color = FORCE_OLIVE
+        stage_text = f"Ionic step {ion_index + 1:02d} · evaluate nuclear forces"
     elif mode == "velocity":
         place_render(ax, velocity_paths[ion_index], scene_rect, zorder=5)
-        heading = f"ionic step {ion_index + 1} · velocity half-kick"
-        state_label = "emerald vectors are anchored at the nuclei"
-        heading_color = VELOCITY_EMERALD
+        stage_text = f"Ionic step {ion_index + 1:02d} · update velocity"
     elif mode == "move":
-        fade = smoothstep(phase_progress)
-        place_render(
-            ax,
-            structure_paths[ion_index],
-            scene_rect,
-            alpha=0.20,
-            zorder=3,
+        fade = smoothstep(np.clip(phase_progress / 0.35, 0.0, 1.0))
+        old_fade = 1.0 - smoothstep(
+            np.clip((phase_progress - 0.42) / 0.42, 0.0, 1.0)
         )
         place_render(
             ax,
             movement_paths[ion_index],
             scene_rect,
-            alpha=0.35 + 0.65 * fade,
+            alpha=0.72 + 0.28 * fade,
             zorder=5,
         )
-        heading = (
-            f"ionic step {ion_index + 1} → {ion_index + 2} · position drift"
+        place_render(
+            ax,
+            structure_paths[ion_index],
+            scene_rect,
+            alpha=0.44 * old_fade,
+            zorder=6,
         )
-        state_label = "lake-blue arrows start at the previous nuclei"
-        heading_color = POSITION_LAKE
+        stage_text = (
+            f"Ionic step {ion_index + 1:02d} → {ion_index + 2:02d} · "
+            "update position"
+        )
     else:
         raise ValueError(f"Unknown AIMD mode: {mode}")
 
     registry.text(
         ax,
-        0.48 if video else 0.50,
-        0.970,
-        heading,
+        0.50,
+        0.925,
+        stage_text,
         ha="center",
-        va="top",
-        fontsize=25 if video else 13,
-        color=heading_color,
-        weight="bold",
+        va="center",
+        fontsize=22 if video else 11,
+        color=INK,
+        weight="normal",
+        zorder=21,
+    )
+
+
+def draw_energy_curve(
+    ax: plt.Axes,
+    registry: LayoutRegistry,
+    data: dict[str, np.ndarray],
+    *,
+    video: bool,
+    mode: str,
+    ion_index: int,
+    iteration_index: int,
+    density_blend: float,
+) -> None:
+    """Draw the real SCF energy convergence for the current ionic step."""
+    ax.add_patch(
+        Rectangle(
+            (0.04, 0.04),
+            0.92,
+            0.92,
+            fill=False,
+            ec=LINE_GRAY,
+            lw=2.0 if video else 1.1,
+            zorder=2,
+        )
     )
     registry.text(
         ax,
-        0.48 if video else 0.50,
-        0.900 if video else 0.075,
-        state_label,
+        0.50,
+        0.90,
+        f"Ionic step {ion_index + 1:02d} · SCF energy",
         ha="center",
-        va="top" if video else "bottom",
+        va="center",
         fontsize=18 if video else 10,
-        color=DARK_GRAY,
-        weight="bold" if video else "normal",
+        color=INK,
+        weight="normal",
+        zorder=4,
     )
-    if mode in {"scf", "pause"}:
-        draw_scf_loop(
-            ax,
-            registry,
-            video=video,
-            stage_weights=scf_stage_weights,
-            iteration=iteration_index + 1,
-            iteration_count=len(density_paths),
-            converged=mode == "pause",
+
+    count = int(data["scf_counts"][ion_index])
+    energies = np.asarray(data["scf_energies_eh"][ion_index, :count], dtype=float)
+    error = np.abs(energies - energies[-1])
+    display_error = np.maximum(error, 1.0e-10)
+    iterations = np.arange(1, count + 1, dtype=float)
+
+    if mode == "scf":
+        progress_index = min(
+            iteration_index + float(density_blend),
+            count - 1.0,
         )
+    else:
+        progress_index = count - 1.0
+    current = int(np.floor(progress_index))
+    fraction = progress_index - current
+    visible_x = list(iterations[: current + 1])
+    visible_y = list(display_error[: current + 1])
+    if current < count - 1 and fraction > 1.0e-6:
+        visible_x.append(current + 1.0 + fraction)
+        log_y = (1.0 - fraction) * np.log(display_error[current])
+        log_y += fraction * np.log(display_error[current + 1])
+        visible_y.append(float(np.exp(log_y)))
+
+    plot_ax = ax.inset_axes((0.30, 0.22, 0.61, 0.55))
+    plot_ax.set_yscale("log")
+    plot_ax.plot(
+        iterations,
+        display_error,
+        color="#D5D8DC",
+        lw=2.0 if video else 1.1,
+        marker="o",
+        markersize=3.5 if video else 2.0,
+        zorder=1,
+    )
+    plot_ax.plot(
+        visible_x,
+        visible_y,
+        color=NAVY,
+        lw=2.8 if video else 1.5,
+        zorder=2,
+    )
+    marker_color = GREEN if mode == "pause" else NAVY
+    plot_ax.scatter(
+        [visible_x[-1]],
+        [visible_y[-1]],
+        s=55 if video else 18,
+        color=marker_color,
+        edgecolors=WHITE,
+        linewidths=1.0 if video else 0.5,
+        zorder=3,
+    )
+    plot_ax.set_xlim(0.6, count + 0.4)
+    plot_ax.set_ylim(5.0e-11, 2.0)
+    plot_ax.set_xticks(sorted(set((1, 4, 8, count))))
+    plot_ax.set_yticks((1.0, 1.0e-3, 1.0e-6, 1.0e-9))
+    font_size = 18 if video else 10
+    plot_ax.tick_params(axis="both", labelsize=font_size, colors=DARK_GRAY, width=1.0)
+    plot_ax.set_xlabel("SCF iteration", fontsize=font_size, color=INK, labelpad=3)
+    plot_ax.set_ylabel(r"$|E^k-E^*|$ / Eh", fontsize=font_size, color=INK, labelpad=3)
+    plot_ax.grid(axis="y", color="#E6E8EA", lw=0.8, zorder=0)
+    for spine in plot_ax.spines.values():
+        spine.set_color(LINE_GRAY)
+        spine.set_linewidth(1.2 if video else 0.8)
 
 
 def render_static(
@@ -713,11 +758,38 @@ def render_static(
             density_blend=0.0,
             scf_stage_weights=(0.0, 0.0, 0.0, 0.0),
             phase_progress=1.0,
-            scf_progress=1.0,
-            rapid=False,
         ),
         width_px=1800,
         height_px=1400,
+    )
+    render_source_panel(
+        QA_DIR / "source" / "energy.png",
+        lambda ax, registry: draw_energy_curve(
+            ax,
+            registry,
+            data,
+            video=False,
+            mode="pause",
+            ion_index=0,
+            iteration_index=first_count - 1,
+            density_blend=0.0,
+        ),
+        width_px=1100,
+        height_px=800,
+    )
+    render_source_panel(
+        QA_DIR / "source" / "scf_loop.png",
+        lambda ax, registry: draw_scf_loop(
+            ax,
+            registry,
+            video=False,
+            stage_weights=(0.0, 0.0, 0.0, 0.0),
+            iteration=first_count,
+            iteration_count=first_count,
+            converged=True,
+        ),
+        width_px=900,
+        height_px=1000,
     )
     fig = new_static_figure()
     registry = LayoutRegistry(min_font_pt=10, edge_pad_px=18)
@@ -728,11 +800,13 @@ def render_static(
         "Real RHF/STO-3G water-dimer density converges before the nuclei advance",
         video=False,
     )
-    left = axes_from_top_slot(fig, STATIC_LEFT)
-    right = axes_from_top_slot(fig, STATIC_RIGHT)
-    draw_left(left, registry, video=False, stage=1)
+    panel_a = axes_from_top_slot(fig, STATIC_A)
+    panel_b = axes_from_top_slot(fig, STATIC_B)
+    panel_c = axes_from_top_slot(fig, STATIC_C)
+    panel_d = axes_from_top_slot(fig, STATIC_D)
+    draw_left(panel_a, registry, video=False, stage=1)
     draw_case(
-        right,
+        panel_b,
         registry,
         assets,
         video=False,
@@ -742,8 +816,25 @@ def render_static(
         density_blend=0.0,
         scf_stage_weights=(0.0, 0.0, 0.0, 0.0),
         phase_progress=1.0,
-        scf_progress=1.0,
-        rapid=False,
+    )
+    draw_energy_curve(
+        panel_c,
+        registry,
+        data,
+        video=False,
+        mode="pause",
+        ion_index=0,
+        iteration_index=first_count - 1,
+        density_blend=0.0,
+    )
+    draw_scf_loop(
+        panel_d,
+        registry,
+        video=False,
+        stage_weights=(0.0, 0.0, 0.0, 0.0),
+        iteration=first_count,
+        iteration_count=first_count,
+        converged=True,
     )
     errors = registry.validate(fig)
     if errors:
@@ -813,41 +904,41 @@ def video_state(time_seconds: float, scf_counts: np.ndarray) -> dict:
         ion_index = int(bounded // DETAILED_BLOCK_SECONDS)
         local = bounded - ion_index * DETAILED_BLOCK_SECONDS
         count = int(scf_counts[ion_index])
-        if local < 3.15:
+        if local < 2.92:
             return _scf_state(
                 ion_index=ion_index,
-                progress=local / 3.15,
+                progress=local / 2.92,
                 iteration_count=count,
                 rapid=False,
             )
-        if local < 3.48:
+        if local < 3.58:
             return _phase_state(
                 "pause",
                 ion_index=ion_index,
-                progress=(local - 3.15) / 0.33,
+                progress=(local - 2.92) / 0.66,
                 iteration_count=count,
                 rapid=False,
             )
-        if local < 3.98:
+        if local < 4.04:
             return _phase_state(
                 "force",
                 ion_index=ion_index,
-                progress=(local - 3.48) / 0.50,
+                progress=(local - 3.58) / 0.46,
                 iteration_count=count,
                 rapid=False,
             )
-        if local < 4.46:
+        if local < 4.48:
             return _phase_state(
                 "velocity",
                 ion_index=ion_index,
-                progress=(local - 3.98) / 0.48,
+                progress=(local - 4.04) / 0.44,
                 iteration_count=count,
                 rapid=False,
             )
         return _phase_state(
             "move",
             ion_index=ion_index,
-            progress=(local - 4.46) / 0.54,
+            progress=(local - 4.48) / 0.52,
             iteration_count=count,
             rapid=False,
         )
@@ -857,18 +948,18 @@ def video_state(time_seconds: float, scf_counts: np.ndarray) -> dict:
     ion_index = 2 + rapid_index
     local = rapid_time - rapid_index * RAPID_BLOCK_SECONDS
     count = int(scf_counts[ion_index])
-    if local < 0.58:
+    if local < 0.50:
         return _scf_state(
             ion_index=ion_index,
-            progress=local / 0.58,
+            progress=local / 0.50,
             iteration_count=count,
             rapid=True,
         )
-    if local < 0.68:
+    if local < 0.70:
         return _phase_state(
             "pause",
             ion_index=ion_index,
-            progress=(local - 0.58) / 0.10,
+            progress=(local - 0.50) / 0.20,
             iteration_count=count,
             rapid=True,
         )
@@ -876,22 +967,22 @@ def video_state(time_seconds: float, scf_counts: np.ndarray) -> dict:
         return _phase_state(
             "force",
             ion_index=ion_index,
-            progress=(local - 0.68) / 0.20,
+            progress=(local - 0.70) / 0.18,
             iteration_count=count,
             rapid=True,
         )
-    if local < 1.05:
+    if local < 1.04:
         return _phase_state(
             "velocity",
             ion_index=ion_index,
-            progress=(local - 0.88) / 0.17,
+            progress=(local - 0.88) / 0.16,
             iteration_count=count,
             rapid=True,
         )
     return _phase_state(
         "move",
         ion_index=ion_index,
-        progress=(local - 1.05) / 0.20,
+        progress=(local - 1.04) / 0.21,
         iteration_count=count,
         rapid=True,
     )
@@ -917,8 +1008,10 @@ def draw_video_frame(
         ),
         video=True,
     )
-    left = axes_from_top_slot(fig, AIMD_VIDEO_LEFT)
-    right = axes_from_top_slot(fig, AIMD_VIDEO_RIGHT)
+    panel_a = axes_from_top_slot(fig, VIDEO_A)
+    panel_b = axes_from_top_slot(fig, VIDEO_B)
+    panel_c = axes_from_top_slot(fig, VIDEO_C)
+    panel_d = axes_from_top_slot(fig, VIDEO_D)
     stage_for_mode = {
         "scf": 1,
         "pause": 1,
@@ -926,9 +1019,9 @@ def draw_video_frame(
         "velocity": 2,
         "move": 0,
     }
-    draw_left(left, registry, video=True, stage=stage_for_mode[state["mode"]])
+    draw_left(panel_a, registry, video=True, stage=stage_for_mode[state["mode"]])
     draw_case(
-        right,
+        panel_b,
         registry,
         assets,
         video=True,
@@ -938,8 +1031,26 @@ def draw_video_frame(
         density_blend=state["blend"],
         scf_stage_weights=state["stage_weights"],
         phase_progress=state["progress"],
-        scf_progress=state["scf_progress"],
-        rapid=state["rapid"],
+    )
+    draw_energy_curve(
+        panel_c,
+        registry,
+        data,
+        video=True,
+        mode=state["mode"],
+        ion_index=state["ion"],
+        iteration_index=state["iteration"],
+        density_blend=state["blend"],
+    )
+    count = int(data["scf_counts"][state["ion"]])
+    draw_scf_loop(
+        panel_d,
+        registry,
+        video=True,
+        stage_weights=state["stage_weights"],
+        iteration=state["iteration"] + 1,
+        iteration_count=count,
+        converged=state["mode"] != "scf",
     )
     if state["mode"] in {"scf", "pause"}:
         return [
@@ -976,17 +1087,17 @@ def draw_video_frame(
 
 KEYFRAME_TIMES = [
     0.10,
-    1.60,
-    3.20,
-    3.65,
-    4.18,
+    1.45,
+    3.12,
+    3.80,
+    4.25,
     4.75,
     5.10,
-    6.65,
-    8.20,
-    8.70,
-    9.20,
-    9.72,
+    6.45,
+    8.12,
+    8.80,
+    9.25,
+    9.75,
     10.12,
     11.18,
     12.42,
@@ -1055,13 +1166,23 @@ def render_animation(
         "panels": [
             {
                 "id": "integrator",
-                "rect": list(AIMD_VIDEO_LEFT),
-                "min_clearance_px": 18,
+                "rect": list(VIDEO_A),
+                "min_clearance_px": 12,
             },
             {
                 "id": "aimd_case",
-                "rect": list(AIMD_VIDEO_RIGHT),
-                "min_clearance_px": 18,
+                "rect": list(VIDEO_B),
+                "min_clearance_px": 12,
+            },
+            {
+                "id": "scf_energy",
+                "rect": list(VIDEO_C),
+                "min_clearance_px": 12,
+            },
+            {
+                "id": "scf_loop",
+                "rect": list(VIDEO_D),
+                "min_clearance_px": 12,
             },
         ],
         "whitespace": {
@@ -1073,8 +1194,18 @@ def render_animation(
         },
         "bands": [
             {
-                "id": "column_gap",
-                "rect": [0.275, 0.19, 0.300, 0.90],
+                "id": "gap_a_b",
+                "rect": [0.310, 0.20, 0.325, 0.91],
+                "max_ink_pixels": 0,
+            },
+            {
+                "id": "gap_b_right",
+                "rect": [0.715, 0.18, 0.745, 0.91],
+                "max_ink_pixels": 0,
+            },
+            {
+                "id": "gap_c_d",
+                "rect": [0.745, 0.49, 0.965, 0.52],
                 "max_ink_pixels": 0,
             }
         ],

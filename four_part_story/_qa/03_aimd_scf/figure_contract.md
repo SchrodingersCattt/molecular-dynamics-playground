@@ -16,15 +16,20 @@
 
 | Panel | Role | Required content | Comparison constraints |
 |---|---|---|---|
-| a | outer MD loop | same empty `r → a → v` loop | fixed across the series |
-| b | electronic solve and nuclear update | large MatterVis dimer, one evolving `ρᵏ(r)`, native vectors and a separate small SCF loop | fixed camera, viewport, grid and scale across every frame |
+| A | Velocity Verlet loop | large `r → a → v` circle with the active equation inside | fixed size across the series |
+| B | molecular case | large MatterVis dimer, one evolving `ρᵏ(r)`, native vectors and one black stage line | fixed camera, viewport, grid and scale across every frame |
+| C | electronic convergence | real `|Eᵏ-E*|` versus SCF iteration for the current ionic step | fixed logarithmic energy scale |
+| D | SCF loop | separate `F → C → ρ → ?` electronic loop | never contains the molecule or density |
 
 ## Required Elements
 
 - Seven real RHF/STO-3G water-dimer geometries linked by six 0.5 fs Velocity Verlet updates.
 - The first ten seconds contain two complete SCF cycles; the final five seconds contain four faster ionic updates.
 - Every SCF frame uses its real density on one shared molecular-plane grid. Residual-driven contour count, tone and blur encode coarse-to-converged state without replacing the density.
+- Every ionic step uses its real RHF energy sequence in panel C; a navy trace and marker reveal only progress through the current SCF solve.
 - After each detailed SCF convergence: pause, show the nuclear gradient/force, update the half-step velocity, then update position.
+- The convergence pause is doubled relative to the previous cut while the total animation remains 15 seconds.
+- During position drift, the previous and updated MatterVis structures coexist briefly as a controlled ghosted transition.
 - MatterVis owns every atom, two-colour bond and atom-centred world-space vector. Density contours remain outside the SCF loop.
 
 ## Forbidden Changes
