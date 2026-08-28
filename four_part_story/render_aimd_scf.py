@@ -8,6 +8,8 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.patches import Ellipse
+from PIL import Image
+from scipy import ndimage
 
 from common import (
     DARK_GRAY,
@@ -35,7 +37,6 @@ from mattervis_story import (
     draw_vv_loop,
     make_vector_group,
     place_render,
-    render_density_cube,
     render_structure,
     write_provenance_index,
 )
@@ -53,17 +54,18 @@ STATIC_SCENE_RECT = (0.00, 0.13, 0.65, 0.92)
 VIDEO_SCENE_RECT = (0.00, 0.10, 0.78, 0.92)
 AIMD_VIDEO_LEFT = (0.045, 0.21, 0.275, 0.90)
 AIMD_VIDEO_RIGHT = (0.30, 0.17, 0.965, 0.91)
-CAMERA_SCALE = 1.85
-DENSITY_ISOVALUE = 0.220
-DENSITY_OPACITY = 0.55
-DENSITY_PALE_NAVY = "#9BB2C4"
+CAMERA_SCALE = 1.50
 POSITION_LAKE = "#4E9BB5"
 FORCE_OLIVE = "#A99C50"
 VELOCITY_EMERALD = "#2F8562"
 FORCE_DISPLAY_SCALE = 1.35
-DISPLACEMENT_ARROW_SCALE = 400.0
-AIMD_CAMERA_DIRECTION = (0.55, -0.35, 1.40)
-AIMD_CAMERA_UP = (0.0, 1.0, 0.0)
+DISPLACEMENT_ARROW_SCALE = 700.0
+BOHR_TO_ANGSTROM = 0.529177210903
+DENSITY_LEVELS = np.asarray([0.003, 0.007, 0.015, 0.035, 0.080, 0.180, 0.400, 0.900])
+DENSITY_COLORS = (
+    "#DDE5EA", "#CEDAE1", "#BCCDD7", "#A8BDCA",
+    "#91AABB", "#7894A8", "#607E94", "#49687F",
+)
 
 INTRO_END = 1.0
 SCF_END = 11.45
@@ -77,6 +79,124 @@ POSITION_EQUATION = (
 ACCELERATION_EQUATION = r"$\mathbf{a}_{n}=\mathbf{F}_{\mathrm{RHF}}/m$"
 
 
+def molecular_plane(
+    positions: np.ndarray,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """Return the fixed molecular-plane camera basis for the water dimer."""
+    xyz = np.asarray(positions, dtype=float)
+    centre = 0.5 * (xyz[0] + xyz[3])
+    horizontal = xyz[3] - xyz[0]
+    horizontal /= np.linalg.norm(horizontal)
+    _, _, right_vectors = np.linalg.svd(xyz - xyz.mean(axis=0), full_matrices=False)
+    normal = right_vectors[-1]
+    if normal[2] < 0.0:
+        normal = -normal
+    vertical = np.cross(normal, horizontal)
+    vertical /= np.linalg.norm(vertical)
+    normal = np.cross(horizontal, vertical)
+    normal /= np.linalg.norm(normal)
+    return centre, horizontal, vertical, normal
+
+
+def parse_cube(path: Path) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    lines = path.read_text(encoding="utf-8").splitlines()
+    atom_count, *origin = lines[2].split()
+    atom_count = abs(int(atom_count))
+    shape: list[int] = []
+    axes: list[list[float]] = []
+    for line in lines[3:6]:
+        count, *axis = line.split()
+        shape.append(abs(int(count)))
+        axes.append([float(value) for value in axis[:3]])
+    values = np.fromstring(" ".join(lines[6 + atom_count :]), sep=" ")
+    if values.size != int(np.prod(shape)):
+        raise ValueError(f"Unexpected cube data size in {path}")
+    return values.reshape(tuple(shape)), np.asarray(origin[:3], float), np.asarray(axes, float)
+
+
+def oxygen_pixel_centres(path: Path) -> tuple[np.ndarray, tuple[int, int]]:
+    rgb = np.asarray(Image.open(path).convert("RGB"), dtype=np.uint8)
+    red = (
+        (rgb[:, :, 0] > 105)
+        & (rgb[:, :, 0].astype(float) > 1.12 * rgb[:, :, 1])
+        & (rgb[:, :, 0].astype(float) > 1.05 * rgb[:, :, 2])
+    )
+    labels, count = ndimage.label(red)
+    centres: list[tuple[int, np.ndarray]] = []
+    for label in range(1, count + 1):
+        component = labels == label
+        area = int(component.sum())
+        if area < 250:
+            continue
+        distance = ndimage.distance_transform_edt(component)
+        row, column = np.unravel_index(int(np.argmax(distance)), distance.shape)
+        centres.append((area, np.asarray([float(column), float(row)])))
+    if len(centres) < 2:
+        raise RuntimeError("Could not locate both MatterVis oxygen centres")
+    result = np.asarray([item[1] for item in sorted(centres, reverse=True)[:2]])
+    return result[np.argsort(result[:, 0])], (rgb.shape[1], rgb.shape[0])
+
+
+def render_density_plane_scene(
+    cube_path: Path,
+    structure_image: Path,
+    output: Path,
+    *,
+    positions: np.ndarray,
+) -> dict:
+    """Render a real cube slice beneath an aligned MatterVis structure."""
+    oxygen_pixels, (width, height) = oxygen_pixel_centres(structure_image)
+    centre, horizontal, vertical, _ = molecular_plane(positions)
+    oxygen_distance = float(np.linalg.norm(positions[3] - positions[0]))
+    pixel_scale = float((oxygen_pixels[1, 0] - oxygen_pixels[0, 0]) / oxygen_distance)
+    pixel_origin = oxygen_pixels.mean(axis=0)
+    density, cube_origin, cube_axes = parse_cube(cube_path)
+    sample_width = 600
+    sample_height = int(round(sample_width * height / width))
+    pixel_x = np.linspace(0.0, width - 1.0, sample_width)
+    pixel_y = np.linspace(0.0, height - 1.0, sample_height)
+    grid_x, grid_y = np.meshgrid(pixel_x, pixel_y)
+    plane_x = (grid_x - pixel_origin[0]) / pixel_scale
+    plane_y = -(grid_y - pixel_origin[1]) / pixel_scale
+    points = (
+        centre + plane_x[:, :, None] * horizontal + plane_y[:, :, None] * vertical
+    ) / BOHR_TO_ANGSTROM
+    indices = (points - cube_origin) @ np.linalg.inv(cube_axes)
+    sampled = ndimage.map_coordinates(
+        density,
+        [indices[:, :, 0], indices[:, :, 1], indices[:, :, 2]],
+        order=1,
+        mode="constant",
+        cval=0.0,
+    )
+    figure = plt.figure(figsize=(width / 100.0, height / 100.0), dpi=100, facecolor="white")
+    axes = figure.add_axes([0.0, 0.0, 1.0, 1.0])
+    axes.set_xlim(0.0, width - 1.0)
+    axes.set_ylim(height - 1.0, 0.0)
+    axes.contour(
+        grid_x, grid_y, sampled, levels=DENSITY_LEVELS, colors=DENSITY_COLORS,
+        linewidths=np.linspace(1.1, 2.2, len(DENSITY_LEVELS)), antialiased=True,
+    )
+    axes.axis("off")
+    figure.canvas.draw()
+    base = Image.fromarray(np.asarray(figure.canvas.buffer_rgba()).copy(), mode="RGBA")
+    plt.close(figure)
+    structure = np.asarray(Image.open(structure_image).convert("RGBA"), dtype=np.uint8).copy()
+    structure[:, :, 3] = np.where(
+        np.max(255 - structure[:, :, :3], axis=2) > 3, 255, 0
+    ).astype(np.uint8)
+    base.alpha_composite(Image.fromarray(structure, mode="RGBA"))
+    output.parent.mkdir(parents=True, exist_ok=True)
+    base.convert("RGB").save(output)
+    return {
+        "source": str(cube_path),
+        "structure_source": str(structure_image),
+        "output": str(output),
+        "levels": DENSITY_LEVELS.tolist(),
+        "pixels_per_angstrom": pixel_scale,
+    }
+
+
 def load_data() -> dict[str, np.ndarray]:
     with np.load(DATA_PATH, allow_pickle=False) as archive:
         return {key: archive[key] for key in archive.files}
@@ -85,33 +205,43 @@ def load_data() -> dict[str, np.ndarray]:
 def prepare_mattervis(
     data: dict[str, np.ndarray],
 ) -> tuple[dict[str, list[Path] | Path], SceneCamera]:
-    """Render density, force, and movement as complete MatterVis scenes."""
+    """Render planar density, force, and movement with one fixed camera."""
     cube_paths = [
         CUBE_DIR / f"rho_{iteration:02d}_display.cube"
         for iteration in range(1, len(data["density_iterations"]) + 1)
     ]
-    target = np.asarray(data["positions"], dtype=float).mean(axis=0)
+    target, _horizontal, vertical, normal = molecular_plane(data["positions"])
     camera = camera_for_source(
-        cube_paths[-1],
+        MOTION_SOURCE,
         target=target,
         ortho_scale=CAMERA_SCALE,
-        direction=AIMD_CAMERA_DIRECTION,
-        up=AIMD_CAMERA_UP,
+        frame=0,
+        direction=tuple(normal),
+        up=tuple(vertical),
+    )
+    records: list[dict] = []
+    density_structure_path = MATTERVIS_DIR / "density_structure_plane.png"
+    records.append(
+        render_structure(
+            MOTION_SOURCE,
+            density_structure_path,
+            camera=camera,
+            frame=0,
+            width=1500,
+            height=950,
+            atom_scale=0.82,
+            bond_radius=0.090,
+        )
     )
     density_paths: list[Path] = []
-    records: list[dict] = []
     for iteration, cube_path in enumerate(cube_paths, start=1):
-        output = MATTERVIS_DIR / f"density_{iteration:02d}.png"
+        output = MATTERVIS_DIR / f"density_plane_{iteration:02d}.png"
         records.append(
-            render_density_cube(
+            render_density_plane_scene(
                 cube_path,
+                density_structure_path,
                 output,
-                camera=camera,
-                isovalue=DENSITY_ISOVALUE,
-                opacity=DENSITY_OPACITY,
-                positive_color=DENSITY_PALE_NAVY,
-                width=1500,
-                height=950,
+                positions=data["positions"],
             )
         )
         density_paths.append(output)
@@ -130,38 +260,12 @@ def prepare_mattervis(
             "sides": 18,
         },
     )
-    density_force_path = MATTERVIS_DIR / "density_force.png"
-    records.append(
-        render_density_cube(
-            cube_paths[-1],
-            density_force_path,
-            camera=camera,
-            isovalue=DENSITY_ISOVALUE,
-            opacity=DENSITY_OPACITY,
-            positive_color=DENSITY_PALE_NAVY,
-            width=1500,
-            height=950,
-            vector_overlays=force_vectors,
-        )
-    )
-
-    motion_target = np.asarray(data["display_motion_positions"], dtype=float).mean(
-        axis=(0, 1)
-    )
     ghost_path = MATTERVIS_DIR / "motion_ghost.png"
-    ghost_camera = camera_for_source(
-        MOTION_SOURCE,
-        target=motion_target,
-        ortho_scale=CAMERA_SCALE,
-        frame=0,
-        direction=AIMD_CAMERA_DIRECTION,
-        up=AIMD_CAMERA_UP,
-    )
     records.append(
         render_structure(
             MOTION_SOURCE,
             ghost_path,
-            camera=ghost_camera,
+            camera=camera,
             frame=0,
             width=1500,
             height=950,
@@ -174,7 +278,7 @@ def prepare_mattervis(
         render_structure(
             MOTION_SOURCE,
             force_path,
-            camera=ghost_camera,
+            camera=camera,
             frame=0,
             width=1500,
             height=950,
@@ -199,20 +303,12 @@ def prepare_mattervis(
         },
     )
     for frame in range(len(data["display_motion_positions"])):
-        frame_camera = camera_for_source(
-            MOTION_SOURCE,
-            target=motion_target,
-            ortho_scale=CAMERA_SCALE,
-            frame=frame,
-            direction=AIMD_CAMERA_DIRECTION,
-            up=AIMD_CAMERA_UP,
-        )
         output = MATTERVIS_DIR / f"motion_{frame:02d}.png"
         records.append(
             render_structure(
                 MOTION_SOURCE,
                 output,
-                camera=frame_camera,
+                camera=camera,
                 frame=frame,
                 width=1500,
                 height=950,
@@ -227,7 +323,7 @@ def prepare_mattervis(
     return {
         "density": density_paths,
         "force": force_path,
-        "density_force": density_force_path,
+        "density_force": force_path,
         "ghost": ghost_path,
         "movement": movement_paths,
     }, camera
@@ -343,11 +439,12 @@ def draw_scf_loop(
         weight="bold",
     )
     if video:
-        active_label = (
-            labels[active_stage].replace("\n", " ")
-            if active_stage is not None
-            else "self-consistent force"
-        )
+        if active_stage is not None:
+            active_label = labels[active_stage].replace("\n", " ")
+        elif converged:
+            active_label = "force from converged density"
+        else:
+            active_label = "initial density guess"
         registry.text(
             ax,
             centre_x,
@@ -393,8 +490,19 @@ def draw_left(
         registry,
         video=video,
         active_stage=stage,
-        equation=equation,
+        equation=None if video else equation,
     )
+    if video:
+        registry.text(
+            ax,
+            0.50,
+            0.22,
+            equation,
+            ha="center",
+            va="center",
+            fontsize=18,
+            color=INK,
+        )
 
 
 def draw_case(
@@ -438,9 +546,9 @@ def draw_case(
                 alpha=density_blend,
                 zorder=5,
             )
-        heading = r"real $\rho^k(\mathbf{r})$ on one fixed 3D grid"
+        heading = r"real $\rho^k(\mathbf{r})$ on one fixed molecular-plane slice"
         heading_color = NAVY
-        note = "coarse initial density becomes a stable, sharp isosurface"
+        note = "round initial contours resolve into the converged bonding density"
         converged = False
     elif mode == "force":
         # Video cuts cleanly from the converged density to atom-centred forces.
@@ -636,7 +744,7 @@ def draw_video_frame(
         phase_progress=state["progress"],
     )
     semantics = [
-        {"id": "density", "color": DENSITY_PALE_NAVY, "min_pixels": 350},
+        {"id": "density_contours", "color": DENSITY_COLORS[-1], "min_pixels": 80},
     ]
     if state["mode"] == "move" and state["progress"] >= 0.18:
         semantics.append({"id": "displacement", "color": POSITION_LAKE, "min_pixels": 180})
