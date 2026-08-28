@@ -10,14 +10,16 @@
 ## Target Size
 
 - Static: A4 landscape, 297 × 210 mm, 300 dpi, minimum 10 pt
-- Video: 1920 × 1080, 24 fps, minimum 18 pt
+- Video: 1920 × 1080, 24 fps; all text 10–16 pt
 
 ## Panels
 
 | Panel | Role | Required content | Comparison constraints |
 |---|---|---|---|
-| a | abstract integrator | same empty `r → a → v` loop | identical to panel a in the other stories |
-| b | concrete empirical potential | MatterVis H2O dimer, O···O distance, LJ forces and one rigid-body VV step | same camera and viewport throughout |
+| A | abstract integrator | same `r → a → v` loop with the active equation inside | identical to panel A in the other stories |
+| B | concrete empirical potential | MatterVis H2O dimer, top physical-action label and lower-left `Simulation step` | same camera and viewport throughout |
+| C | LJ relation | compact `rOO → U_LJ → F → a` map and scope note | fixed upper-right slot |
+| D | LJ loop | compact `rOO → U_LJ → F` evaluation loop | fixed lower-right slot |
 
 ## Required Elements
 
@@ -29,6 +31,7 @@
 
 - No Ar pair, independent potential graph, hand-drawn structure or molecule inside the loop.
 - Do not imply that the highlighted LJ term is the complete water force field.
+- No page header; one type family throughout; every label is between 10 and 16 pt.
 
 ## QA Plan
 
@@ -41,4 +44,3 @@
 - [ ] Canonical outputs exist.
 - [ ] Scientific derivative and strict visual QA pass.
 - [ ] Five-problem review matches the latest render hash.
-

@@ -4,7 +4,7 @@
   "format": "png",
   "width": 1800,
   "height": 700,
-  "plan_sha256": "101dee46feecd335754bc939fa3c4de0c24e65e2cf3be93a699b6426824c5082",
+  "plan_sha256": "23455b9f87d0fecb5a80c134e2b3d15e95f4e53d19e81e804b6af18ddb7faf4f",
   "output_sha256": "d2624a255dcb4141e816ceb0e3681d7605b3bf0ad6b32a2b6dffd96f620bf2c7",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis\\position_06.png",
   "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
@@ -40,10 +40,10 @@
     "bond_radius": 0.13,
     "show_cell": false
   },
-  "vector_signature": "[{\"color\":\"#183153\",\"id\":\"oxygen-displacement-0\",\"origin\":[-1.45,0.0,0.0],\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#183153\",\"id\":\"oxygen-displacement-1\",\"origin\":[1.45,0.0,0.0],\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
+  "vector_signature": "[{\"color\":\"#183153\",\"id\":\"oxygen-displacement-0\",\"opacity\":1.0,\"origin\":[-1.45,0.0,0.0],\"style\":{},\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#183153\",\"id\":\"oxygen-displacement-1\",\"opacity\":1.0,\"origin\":[1.45,0.0,0.0],\"style\":{},\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
   "vector_count": 2,
   "vector_renderer": "MatterVis native world-space vector_overlays",
-  "pipeline_version": 2,
+  "pipeline_version": 3,
   "warnings": [],
   "metadata": {
     "transparent_compositor": "per-pixel-fragment-list",

@@ -27,10 +27,10 @@ Action taken: replaced the disconnected case with a real H2O dimer; used the ana
 1. Scientific expression problem: no remaining blocking issue; the saved O--O distance feeds the LJ energy, analytic force, acceleration, and one verified rigid-water Velocity Verlet step.
 2. Geometric or data-coordinate correctness problem: no remaining blocking issue; atoms, red/white half-bonds, and all physical arrows share the same fixed asymmetric MatterVis camera, while the O--O guide uses the matching source aspect ratio.
 3. Label, leader, legend, or panel-letter placement problem: no remaining blocking issue; transverse native arrows remain clear of the O--O guide, O--H bonds, headings, and left abstract loop.
-4. Readability or print-scale problem: no remaining blocking issue; A4 text is at least 10 pt, video text is at least 18 pt, and arrowheads remain conspicuous without numeric magnification labels.
+4. Readability or print-scale problem: no remaining blocking issue; the header-free A/B/C/D layout keeps the real dimer dominant and every static/video label stays within the common 10--16 pt range.
 5. Submission-quality or filename/output-discipline problem: no remaining blocking issue after regenerating the canonical PNG, SVG, MP4, MatterVis provenance, 216-frame audit, and all-frame contact sheets.
 
-Action taken: stop after the fresh render and full-frame audit because all first-pass problems are fixed and no new blocking issue is visible.
+Action taken: moved the compact LJ relation and evaluation loop into C/D, fixed Simulation step at B lower-left, removed the page header, and stopped after the fresh render and full-frame audit because no new blocking issue is visible.
 
 ## Stop Conditions
 

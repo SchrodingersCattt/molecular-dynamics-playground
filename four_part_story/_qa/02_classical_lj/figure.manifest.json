@@ -22,10 +22,10 @@
       "id": "integrator",
       "source": "source/integrator.png",
       "slot": [
-        0.045,
-        0.19,
-        0.355,
-        0.89
+        0.035,
+        0.055,
+        0.31,
+        0.955
       ],
       "source_min_clearance_px": 12,
       "min_clearance_px": 18,
@@ -36,13 +36,41 @@
       "id": "mattervis_dimer",
       "source": "source/case.png",
       "slot": [
-        0.4,
-        0.19,
-        0.965,
-        0.89
+        0.325,
+        0.045,
+        0.715,
+        0.955
       ],
       "source_min_clearance_px": 12,
       "min_clearance_px": 18,
+      "source_allow_touch_edges": [],
+      "allow_touch_edges": []
+    },
+    {
+      "id": "lj_relation",
+      "source": "source/lj_relation.png",
+      "slot": [
+        0.745,
+        0.045,
+        0.965,
+        0.405
+      ],
+      "source_min_clearance_px": 12,
+      "min_clearance_px": 12,
+      "source_allow_touch_edges": [],
+      "allow_touch_edges": []
+    },
+    {
+      "id": "lj_loop",
+      "source": "source/lj_loop.png",
+      "slot": [
+        0.755,
+        0.445,
+        0.955,
+        0.955
+      ],
+      "source_min_clearance_px": 12,
+      "min_clearance_px": 12,
       "source_allow_touch_edges": [],
       "allow_touch_edges": []
     }
@@ -58,12 +86,32 @@
     "boundaries": {
       "bands": [
         {
-          "id": "column_gap",
+          "id": "a_b_gap",
           "rect": [
-            0.365,
-            0.19,
-            0.385,
-            0.89
+            0.31,
+            0.055,
+            0.325,
+            0.955
+          ],
+          "max_ink_pixels": 0
+        },
+        {
+          "id": "b_right_gap",
+          "rect": [
+            0.715,
+            0.045,
+            0.745,
+            0.955
+          ],
+          "max_ink_pixels": 0
+        },
+        {
+          "id": "c_d_gap",
+          "rect": [
+            0.745,
+            0.405,
+            0.965,
+            0.445
           ],
           "max_ink_pixels": 0
         }
@@ -127,15 +175,15 @@
     "records": []
   },
   "review": {
-    "render_sha256": "60e82428ef75607e24ba79feae759159355a00b35909f63a458da525707a87dd",
+    "render_sha256": "a16a3ab4ddbf5b8a201abcbd481df9d343ae62103281c7e28e40e2141de12abf",
     "problems": {
-      "scientific_expression": "Superseded draft disconnected an Ar-pair LJ curve from the requested water-dimer Velocity Verlet case.",
-      "geometry": "Superseded square render made the dimer small and projected the O...O guide with the wrong source aspect ratio.",
-      "annotations": "Superseded radial motion vectors collided with the O...O guide and O-H bonds.",
-      "readability": "Superseded arrows were hard to distinguish and the bottom scope note violated panel clearance.",
-      "submission_quality": "Superseded video and frame audit referred to the radial-motion draft rather than the corrected native-vector render."
+      "scientific_expression": "The earlier composition did not isolate the LJ mapping and its force-evaluation loop from the concrete dimer step.",
+      "geometry": "The earlier slots did not match the shared A/B/C/D proportions requested for all four stories.",
+      "annotations": "The relation, scope note, and loop competed with the water-dimer scene.",
+      "readability": "The page header reduced useful area and the previous video typography did not obey the common 16 pt ceiling.",
+      "submission_quality": "The previous QA manifest omitted exact C/D source panels for the redesigned composition."
     },
-    "action": "Replaced the disconnected Ar curve with a real TIP3P water dimer, rendered all physical vectors as MatterVis native vector_overlays, used a wide fixed camera and a transverse true VV step, corrected the O...O projection, raised the scope note, and regenerated the canonical static output.",
+    "action": "Adopted the header-free A/B/C/D layout, kept Simulation step fixed at B lower-left, isolated the LJ relation and loop in C/D, split the scope note to preserve clearance, enforced 10--16 pt typography, and regenerated canonical outputs and audits.",
     "stop_condition": "fixed"
   }
 }

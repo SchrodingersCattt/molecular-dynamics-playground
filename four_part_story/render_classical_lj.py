@@ -237,7 +237,17 @@ def draw_relation_panel(ax, registry: LayoutRegistry, *, video: bool) -> None:
     registry.text(ax, 0.50, 0.82, "TIP3P O–O term", ha="center", va="center", fontsize=14 if video else 10, color=INK)
     registry.text(ax, 0.50, 0.54, r"$r_{\mathrm{OO}}\;\rightarrow\;U_{\mathrm{LJ}}(r_{\mathrm{OO}})$", ha="center", va="center", fontsize=14 if video else 10, color=NAVY)
     registry.text(ax, 0.50, 0.34, r"$\mathbf{F}=-\partial U/\partial r\;\rightarrow\;\mathbf{a}$", ha="center", va="center", fontsize=12 if video else 10, color=CRIMSON)
-    registry.text(ax, 0.50, 0.10, "LJ term shown · electrostatics omitted", ha="center", va="center", fontsize=10, color=DARK_GRAY)
+    registry.text(
+        ax,
+        0.50,
+        0.12,
+        "LJ term shown\nelectrostatics omitted",
+        ha="center",
+        va="center",
+        fontsize=10,
+        color=DARK_GRAY,
+        linespacing=1.15,
+    )
 
 
 def draw_lj_loop(ax, registry: LayoutRegistry, *, video: bool, active_stage: int | None) -> None:
@@ -376,6 +386,8 @@ def render_static(
         width_px=1800,
         height_px=1500,
     )
+    render_source_panel(QA_DIR / "source" / "lj_relation.png", lambda ax, reg: draw_relation_panel(ax, reg, video=False), width_px=1100, height_px=700)
+    render_source_panel(QA_DIR / "source" / "lj_loop.png", lambda ax, reg: draw_lj_loop(ax, reg, video=False, active_stage=1), width_px=1000, height_px=1100)
     fig = new_static_figure()
     registry = LayoutRegistry(min_font_pt=10, edge_pad_px=18)
     draw_left(

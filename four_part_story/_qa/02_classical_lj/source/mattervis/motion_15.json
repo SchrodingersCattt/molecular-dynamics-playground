@@ -4,7 +4,7 @@
   "format": "png",
   "width": 1800,
   "height": 700,
-  "plan_sha256": "80c8eeb72aa348d236e9f209288afa1fc71af88280ac52788910db3a6880fb94",
+  "plan_sha256": "d9496a670b9bf8943a0e77ba71bf98f2b88e8ca75acbf800fca2002cef5da485",
   "output_sha256": "a648ceb16929834098cdef8144057b14471ea79c7f8fc899fcc916c3329390ce",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis\\motion_15.png",
   "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
@@ -43,7 +43,7 @@
   "vector_signature": "[]",
   "vector_count": 0,
   "vector_renderer": "MatterVis native world-space vector_overlays",
-  "pipeline_version": 2,
+  "pipeline_version": 3,
   "warnings": [],
   "metadata": {
     "transparent_compositor": "per-pixel-fragment-list",
