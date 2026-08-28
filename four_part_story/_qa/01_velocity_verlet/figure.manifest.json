@@ -22,10 +22,10 @@
       "id": "integrator",
       "source": "source/integrator.png",
       "slot": [
-        0.045,
-        0.19,
-        0.355,
-        0.89
+        0.035,
+        0.055,
+        0.31,
+        0.955
       ],
       "source_min_clearance_px": 12,
       "min_clearance_px": 18,
@@ -36,13 +36,41 @@
       "id": "mattervis_h2o",
       "source": "source/case.png",
       "slot": [
-        0.4,
-        0.19,
-        0.965,
-        0.89
+        0.325,
+        0.045,
+        0.715,
+        0.955
       ],
       "source_min_clearance_px": 12,
       "min_clearance_px": 18,
+      "source_allow_touch_edges": [],
+      "allow_touch_edges": []
+    },
+    {
+      "id": "known_state",
+      "source": "source/known_state.png",
+      "slot": [
+        0.745,
+        0.045,
+        0.965,
+        0.405
+      ],
+      "source_min_clearance_px": 12,
+      "min_clearance_px": 12,
+      "source_allow_touch_edges": [],
+      "allow_touch_edges": []
+    },
+    {
+      "id": "updated_state",
+      "source": "source/updated_state.png",
+      "slot": [
+        0.755,
+        0.445,
+        0.955,
+        0.955
+      ],
+      "source_min_clearance_px": 12,
+      "min_clearance_px": 12,
       "source_allow_touch_edges": [],
       "allow_touch_edges": []
     }
@@ -58,12 +86,32 @@
     "boundaries": {
       "bands": [
         {
-          "id": "column_gap",
+          "id": "a_b_gap",
           "rect": [
-            0.365,
-            0.19,
-            0.385,
-            0.89
+            0.31,
+            0.055,
+            0.325,
+            0.955
+          ],
+          "max_ink_pixels": 0
+        },
+        {
+          "id": "b_right_gap",
+          "rect": [
+            0.715,
+            0.045,
+            0.745,
+            0.955
+          ],
+          "max_ink_pixels": 0
+        },
+        {
+          "id": "c_d_gap",
+          "rect": [
+            0.745,
+            0.405,
+            0.965,
+            0.445
           ],
           "max_ink_pixels": 0
         }
@@ -127,15 +175,15 @@
     "records": []
   },
   "review": {
-    "render_sha256": "1ad187afd541fcba0a9eff8440ae77fb6956da42c6ad265296330fe6410ce617",
+    "render_sha256": "cbeeaa86a2932a2b4b97b6d16a0b218f60999854292fe22794ee0774fe187828",
     "problems": {
-      "scientific_expression": "Superseded draft used post-rendered vectors instead of the molecular 3D scene.",
-      "geometry": "Superseded draft loop was visually elliptical and its vectors did not share MatterVis occlusion.",
-      "annotations": "Superseded 2D arrowheads obscured atoms and were visually detached from physical anchors.",
-      "readability": "Superseded draft made the molecule and one-step motion too small for the available panel.",
-      "submission_quality": "Superseded review and video QA did not document MatterVis native vector rendering."
+      "scientific_expression": "The earlier two-column composition did not make the three exact Velocity Verlet state transitions independently readable.",
+      "geometry": "The earlier slots did not match the shared A/B/C/D proportions requested for all four stories.",
+      "annotations": "Known and updated state labels competed with the concrete molecular case.",
+      "readability": "The page header reduced useful area and the previous video typography did not obey the common 16 pt ceiling.",
+      "submission_quality": "The previous QA manifest omitted exact C/D source panels for the redesigned composition."
     },
-    "action": "Rebuilt all world-space arrows with MatterVis native vector_overlays, corrected the circular loop, enlarged the real case, and regenerated the static and all 216 video-frame QA artifacts.",
+    "action": "Adopted the header-free A/B/C/D layout, kept Simulation step fixed at B lower-left, moved known and updated states into C/D, enforced 10--16 pt typography, and regenerated canonical outputs and audits.",
     "stop_condition": "fixed"
   }
 }

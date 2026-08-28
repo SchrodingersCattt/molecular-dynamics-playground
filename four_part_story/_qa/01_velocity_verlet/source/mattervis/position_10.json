@@ -4,7 +4,7 @@
   "format": "png",
   "width": 1500,
   "height": 1120,
-  "plan_sha256": "cfc51ba3b6664b27da77e4fcc0f39bb245b1fb103765b259b14ae56ea10db410",
+  "plan_sha256": "465041bb33826c0ad8fe791c89a82e22be381e398a9199886c9529225f200bc9",
   "output_sha256": "959c12c1cd943cc162e85f8c18c7232bbfa4f0bd8f8be21bfb1fc91eac9f091b",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\position_10.png",
   "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
@@ -33,10 +33,17 @@
       5.4505808252
     ]
   },
-  "vector_signature": "[{\"color\":\"#183153\",\"id\":\"displacement-0\",\"origin\":[0.0,0.0,0.119],\"vector\":[0.039815457809866416,-0.00824149107851571,0.01063639031972441]},{\"color\":\"#183153\",\"id\":\"displacement-1\",\"origin\":[0.0,0.7137861877137688,-0.44297697209696985],\"vector\":[0.009437390940570077,0.3663496359795362,0.287531887754358]},{\"color\":\"#183153\",\"id\":\"displacement-2\",\"origin\":[0.0,-0.7137861877137688,-0.44297697209696985],\"vector\":[-0.6414050850707056,-0.23553722292238977,-0.4563571489462217]}]",
+  "render_settings": {
+    "width": 1500,
+    "height": 1120,
+    "atom_scale": 1.1,
+    "bond_radius": 0.13,
+    "show_cell": false
+  },
+  "vector_signature": "[{\"color\":\"#183153\",\"id\":\"displacement-0\",\"opacity\":1.0,\"origin\":[0.0,0.0,0.119],\"style\":{},\"vector\":[0.039815457809866416,-0.00824149107851571,0.01063639031972441]},{\"color\":\"#183153\",\"id\":\"displacement-1\",\"opacity\":1.0,\"origin\":[0.0,0.7137861877137688,-0.44297697209696985],\"style\":{},\"vector\":[0.009437390940570077,0.3663496359795362,0.287531887754358]},{\"color\":\"#183153\",\"id\":\"displacement-2\",\"opacity\":1.0,\"origin\":[0.0,-0.7137861877137688,-0.44297697209696985],\"style\":{},\"vector\":[-0.6414050850707056,-0.23553722292238977,-0.4563571489462217]}]",
   "vector_count": 3,
   "vector_renderer": "MatterVis native world-space vector_overlays",
-  "pipeline_version": 2,
+  "pipeline_version": 3,
   "warnings": [],
   "metadata": {
     "transparent_compositor": "per-pixel-fragment-list",

@@ -10,14 +10,16 @@
 ## Target Size
 
 - Static: A4 landscape, 297 × 210 mm, 300 dpi, minimum 10 pt
-- Video: 1920 × 1080, 24 fps, minimum 18 pt
+- Video: 1920 × 1080, 24 fps; all text 10–16 pt
 
 ## Panels
 
 | Panel | Role | Required content | Comparison constraints |
 |---|---|---|---|
-| a | abstract integrator | same empty `r → a → v` loop | fixed across the series |
-| b | learned local potential | equilibrated MatterVis 64-water box, selected atom, true 6 Å sphere, neighbour and model views | stable source IDs, one camera and viewport |
+| A | abstract integrator | same `r → a → v` loop with the active equation inside | fixed across the series |
+| B | learned local potential | 64-water periodic box, top physical-action label and lower-left `Simulation step` | stable source IDs, one camera and viewport |
+| C | local environment | selected centre, 6 Å cutoff and minimum-image neighbour count | fixed upper-right slot |
+| D | learned model | `descriptor → shared network → atomic energy → energy/force` | fixed lower-right slot |
 
 ## Required Elements
 
@@ -29,6 +31,7 @@
 
 - No synthetic force arrows, screen-space neighbour selection, hand-drawn atoms/bonds or `[1,1,1]` camera.
 - Do not destroy a Bohrium sandbox before all results and hashes are downloaded.
+- No page header; one type family throughout; every label is between 10 and 16 pt.
 
 ## QA Plan
 
@@ -41,4 +44,3 @@
 - [ ] Equilibrated trajectory and real inference provenance exist.
 - [ ] Strict static and every-frame QA pass.
 - [ ] Five-problem review matches the latest render hash.
-

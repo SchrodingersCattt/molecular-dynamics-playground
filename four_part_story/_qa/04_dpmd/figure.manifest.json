@@ -1,23 +1,193 @@
 {
   "version": 1,
-  "figure": {"canonical_stem": "04_deep_potential_md"},
+  "figure": {
+    "canonical_stem": "04_deep_potential_md"
+  },
   "outputs": [
-    {"path": "../../figures/04_deep_potential_md.png"},
-    {"path": "../../figures/04_deep_potential_md.svg"}
+    {
+      "path": "../../figures/04_deep_potential_md.png"
+    },
+    {
+      "path": "../../figures/04_deep_potential_md.svg"
+    }
   ],
-  "target": {"width_mm": 297, "qa_dpi": 300, "min_dpi": 200, "max_dpi": 600},
+  "target": {
+    "width_mm": 297,
+    "qa_dpi": 300,
+    "min_dpi": 200,
+    "max_dpi": 600
+  },
   "panels": [
-    {"id": "integrator", "source": "source/integrator.png", "slot": [0.045, 0.19, 0.355, 0.89], "source_min_clearance_px": 12, "min_clearance_px": 18, "source_allow_touch_edges": [], "allow_touch_edges": []},
-    {"id": "mattervis_water_box", "source": "source/case.png", "slot": [0.40, 0.19, 0.965, 0.89], "source_min_clearance_px": 12, "min_clearance_px": 18, "source_allow_touch_edges": [], "allow_touch_edges": []}
+    {
+      "id": "integrator",
+      "source": "source/md_loop.png",
+      "slot": [
+        0.035,
+        0.055,
+        0.31,
+        0.955
+      ],
+      "source_min_clearance_px": 12,
+      "min_clearance_px": 18,
+      "source_allow_touch_edges": [],
+      "allow_touch_edges": []
+    },
+    {
+      "id": "mattervis_water_box",
+      "source": "source/water_environment.png",
+      "slot": [
+        0.325,
+        0.045,
+        0.715,
+        0.955
+      ],
+      "source_min_clearance_px": 12,
+      "min_clearance_px": 18,
+      "source_allow_touch_edges": [],
+      "allow_touch_edges": []
+    },
+    {
+      "id": "local_environment",
+      "source": "source/local_environment.png",
+      "slot": [
+        0.745,
+        0.045,
+        0.965,
+        0.405
+      ],
+      "source_min_clearance_px": 12,
+      "min_clearance_px": 12,
+      "source_allow_touch_edges": [],
+      "allow_touch_edges": []
+    },
+    {
+      "id": "learned_model",
+      "source": "source/learned_model.png",
+      "slot": [
+        0.755,
+        0.445,
+        0.955,
+        0.955
+      ],
+      "source_min_clearance_px": 12,
+      "min_clearance_px": 12,
+      "source_allow_touch_edges": [],
+      "allow_touch_edges": []
+    }
   ],
   "checks": {
-    "whitespace": {"background_threshold": 245, "min_ink_fraction": 0.02, "min_panel_bbox_fill": 0.30, "grid_rows": 12, "grid_columns": 20},
-    "boundaries": {"bands": [{"id": "column_gap", "rect": [0.365, 0.19, 0.385, 0.89], "max_ink_pixels": 0}]},
-    "colors": {"semantics": [{"id": "cutoff", "color": "#183153", "min_pixels": 450}, {"id": "oxygen", "color": "#A32035", "min_pixels": 500}, {"id": "neighbors", "color": "#2F6B4F", "min_pixels": 350}]}
+    "whitespace": {
+      "background_threshold": 245,
+      "min_ink_fraction": 0.02,
+      "min_panel_bbox_fill": 0.3,
+      "grid_rows": 12,
+      "grid_columns": 20
+    },
+    "boundaries": {
+      "bands": [
+        {
+          "id": "a_b_gap",
+          "rect": [
+            0.31,
+            0.055,
+            0.325,
+            0.955
+          ],
+          "max_ink_pixels": 0
+        },
+        {
+          "id": "b_right_gap",
+          "rect": [
+            0.715,
+            0.045,
+            0.745,
+            0.955
+          ],
+          "max_ink_pixels": 0
+        },
+        {
+          "id": "c_d_gap",
+          "rect": [
+            0.745,
+            0.405,
+            0.965,
+            0.445
+          ],
+          "max_ink_pixels": 0
+        }
+      ]
+    },
+    "colors": {
+      "semantics": [
+        {
+          "id": "cutoff",
+          "color": "#183153",
+          "min_pixels": 450
+        },
+        {
+          "id": "oxygen",
+          "color": "#A32035",
+          "min_pixels": 500
+        },
+        {
+          "id": "neighbors",
+          "color": "#2F6B4F",
+          "min_pixels": 350
+        }
+      ]
+    }
   },
-  "integrity": {"required_content": ["equilibrated_dp_trajectory", "mattervis_periodic_box", "stable_central_atom", "exact_cutoff_selection", "real_deepmd_forces"], "evidence": {"equilibrated_dp_trajectory": "bohrium/equilibration.json", "mattervis_periodic_box": "source/mattervis/provenance.json", "stable_central_atom": "../../data/water_box_64.json", "exact_cutoff_selection": "../../data/water_box_64.json", "real_deepmd_forces": "../../data/dpmd_eval.json"}, "scientific_changes": []},
-  "consistency": {"constraints": ["fixed_camera", "stable_source_ids", "minimum_image_neighbors", "fixed_cutoff"], "evidence": {}},
-  "quantitative": {"transformations": ["outside-context opacity change", "visual arrow amplification"], "units": {"distance": "angstrom", "energy": "eV", "force": "eV/angstrom", "time": "fs"}},
-  "deviations": {"records": []},
-  "review": {"render_sha256": "REPLACE_AFTER_RENDER", "problems": {"scientific_expression": "pending", "geometry": "pending", "annotations": "pending", "readability": "pending", "submission_quality": "pending"}, "action": "pending", "stop_condition": "fixed"}
+  "integrity": {
+    "required_content": [
+      "equilibrated_dp_trajectory",
+      "mattervis_periodic_box",
+      "stable_central_atom",
+      "exact_cutoff_selection",
+      "real_deepmd_forces"
+    ],
+    "evidence": {
+      "equilibrated_dp_trajectory": "bohrium/equilibration.json",
+      "mattervis_periodic_box": "source/mattervis/provenance.json",
+      "stable_central_atom": "../../data/water_box_64.json",
+      "exact_cutoff_selection": "../../data/water_box_64.json",
+      "real_deepmd_forces": "../../data/dpmd_eval.json"
+    },
+    "scientific_changes": []
+  },
+  "consistency": {
+    "constraints": [
+      "fixed_camera",
+      "stable_source_ids",
+      "minimum_image_neighbors",
+      "fixed_cutoff"
+    ],
+    "evidence": {}
+  },
+  "quantitative": {
+    "transformations": [
+      "outside-context opacity change",
+      "visual arrow amplification"
+    ],
+    "units": {
+      "distance": "angstrom",
+      "energy": "eV",
+      "force": "eV/angstrom",
+      "time": "fs"
+    }
+  },
+  "deviations": {
+    "records": []
+  },
+  "review": {
+    "render_sha256": "b482df530f0effba297a5d90afe0382069d04b0387ccbfe2d06a9dcfb133d4cd",
+    "problems": {
+      "scientific_expression": "The earlier wide panel mixed local-environment selection with learned-model evaluation and weakened the cutoff-to-force sequence.",
+      "geometry": "The earlier slots did not match the shared A/B/C/D proportions requested for all four stories.",
+      "annotations": "Water-box action, neighbour summary, and model stages competed for the same hierarchy.",
+      "readability": "The page header reduced useful area and the previous video typography did not obey the common 16 pt ceiling.",
+      "submission_quality": "The previous QA manifest still described a two-panel figure and omitted exact C/D source panels."
+    },
+    "action": "Adopted the header-free A/B/C/D layout, kept Simulation step fixed at B lower-left, isolated local-environment and learned-model content in C/D, enforced 10--16 pt typography, and regenerated canonical outputs and audits.",
+    "stop_condition": "fixed"
+  }
 }

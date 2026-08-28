@@ -243,6 +243,8 @@ def draw_case_panel(
 def render_static(data: dict[str, np.ndarray], scenes: dict[str, list[Path] | Path]) -> None:
     render_source_panel(QA_DIR / "source" / "integrator.png", lambda ax, reg: draw_left(ax, reg, video=False, active=None), width_px=1000, height_px=1500)
     render_source_panel(QA_DIR / "source" / "case.png", lambda ax, reg: draw_case_panel(ax, reg, data, scenes, stage=0, video=False), width_px=1800, height_px=1500)
+    render_source_panel(QA_DIR / "source" / "known_state.png", lambda ax, reg: draw_state_panel(ax, reg, video=False, updated=False, active=None), width_px=1000, height_px=700)
+    render_source_panel(QA_DIR / "source" / "updated_state.png", lambda ax, reg: draw_state_panel(ax, reg, video=False, updated=True, active=0), width_px=1000, height_px=1100)
     fig = new_static_figure()
     registry = LayoutRegistry(min_font_pt=10, edge_pad_px=18)
     draw_left(axes_from_top_slot(fig, STORY_STATIC_A), registry, video=False, active=None)

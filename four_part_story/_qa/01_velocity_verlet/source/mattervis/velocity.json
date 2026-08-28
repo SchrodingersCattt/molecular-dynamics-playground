@@ -4,7 +4,7 @@
   "format": "png",
   "width": 1500,
   "height": 1120,
-  "plan_sha256": "d733b467697e4cb1d500041e37ede08c27f73bf2ec82ad9b9f8d527780f085fe",
+  "plan_sha256": "944fce19c97cf9c42c4eec26c79550d0b6d2b27a8a6eae0236ecab4c1d2a1cfe",
   "output_sha256": "3eebdf76d74ff830673f3fc87a337770683182bf0259891b1149b864feaefea5",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\velocity.png",
   "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
@@ -33,10 +33,17 @@
       5.461991853300001
     ]
   },
-  "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"velocity-0\",\"origin\":[0.001658977408744434,-0.00034339546160482124,0.11944318292998851],\"vector\":[0.0265918963590086,-0.005979033200799753,0.009260065669138538]},{\"color\":\"#2F6B4F\",\"id\":\"velocity-1\",\"origin\":[0.0003932246225237532,0.7290507558795828,-0.4309964767738716],\"vector\":[0.00619826381627554,0.2677148365150206,0.1719675807877613]},{\"color\":\"#2F6B4F\",\"id\":\"velocity-2\",\"origin\":[-0.02672521187794607,-0.7236002386688684,-0.4619918533030624],\"vector\":[-0.42827602830667455,-0.17281310656177098,-0.31894723819531595]}]",
+  "render_settings": {
+    "width": 1500,
+    "height": 1120,
+    "atom_scale": 1.1,
+    "bond_radius": 0.13,
+    "show_cell": false
+  },
+  "vector_signature": "[{\"color\":\"#2F6B4F\",\"id\":\"velocity-0\",\"opacity\":1.0,\"origin\":[0.001658977408744434,-0.00034339546160482124,0.11944318292998851],\"style\":{},\"vector\":[0.0265918963590086,-0.005979033200799753,0.009260065669138538]},{\"color\":\"#2F6B4F\",\"id\":\"velocity-1\",\"opacity\":1.0,\"origin\":[0.0003932246225237532,0.7290507558795828,-0.4309964767738716],\"style\":{},\"vector\":[0.00619826381627554,0.2677148365150206,0.1719675807877613]},{\"color\":\"#2F6B4F\",\"id\":\"velocity-2\",\"opacity\":1.0,\"origin\":[-0.02672521187794607,-0.7236002386688684,-0.4619918533030624],\"style\":{},\"vector\":[-0.42827602830667455,-0.17281310656177098,-0.31894723819531595]}]",
   "vector_count": 3,
   "vector_renderer": "MatterVis native world-space vector_overlays",
-  "pipeline_version": 2,
+  "pipeline_version": 3,
   "warnings": [],
   "metadata": {
     "transparent_compositor": "per-pixel-fragment-list",

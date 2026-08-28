@@ -445,13 +445,19 @@ def render_static(data) -> None:
     render_source_panel(QA_DIR / "source" / "md_loop.png", _draw_md_source, width_px=900, height_px=1400)
     render_source_panel(
         QA_DIR / "source" / "water_environment.png",
-        lambda ax, reg: _draw_environment_source(ax, reg, data),
+        lambda ax, reg: draw_environment_panel(ax, reg, data, video=False, mode="neighbors", headline="Select local neighbors"),
         width_px=1650,
         height_px=1600,
     )
     render_source_panel(
+        QA_DIR / "source" / "local_environment.png",
+        lambda ax, reg: draw_local_summary(ax, reg, data, video=False, active=True),
+        width_px=1000,
+        height_px=700,
+    )
+    render_source_panel(
         QA_DIR / "source" / "learned_model.png",
-        lambda ax, reg: _draw_pipeline_source(ax, reg, data),
+        lambda ax, reg: draw_dp_pipeline(ax, reg, data, video=False, active_stage=2, active_weight=1.0),
         width_px=900,
         height_px=1450,
     )
