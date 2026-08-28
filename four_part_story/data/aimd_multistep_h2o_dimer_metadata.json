@@ -1,0 +1,40 @@
+{
+  "method": "RHF",
+  "basis": "STO-3G",
+  "charge": 0,
+  "spin": 0,
+  "dt_fs": 0.5,
+  "ionic_updates": 6,
+  "geometries": 7,
+  "scf_counts": [
+    12,
+    11,
+    11,
+    11,
+    11,
+    11,
+    11
+  ],
+  "all_scf_converged": true,
+  "initial_temperature_K": 177.08753102453875,
+  "density_plane_shape": [
+    280,
+    420
+  ],
+  "density_plane_bounds_angstrom": [
+    -2.801937244075045,
+    3.5157011361298403,
+    -2.0040582738443162,
+    2.0870791205632413
+  ],
+  "force_units": "Eh/Bohr",
+  "velocity_units": "Angstrom/fs",
+  "position_units": "Angstrom",
+  "force_to_acceleration_A_fs2_per_amu": 0.4961472429,
+  "initial_guess": "superposition of atomic densities for each ionic geometry",
+  "velocity_verlet": {
+    "velocity_half": "v_(n+1/2) = v_n + 0.5*a_n*dt",
+    "position": "r_(n+1) = r_n + v_(n+1/2)*dt",
+    "velocity_full": "v_(n+1) = v_(n+1/2) + 0.5*a_(n+1)*dt"
+  }
+}

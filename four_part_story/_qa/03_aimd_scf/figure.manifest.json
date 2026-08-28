@@ -91,16 +91,20 @@
   },
   "integrity": {
     "required_content": [
-      "nineteen_real_density_iterates",
-      "mattervis_cube",
+      "seven_real_ionic_geometries",
+      "all_real_scf_density_iterates",
+      "mattervis_structures_and_vectors",
       "residual_driven_blur",
-      "finite_difference_forces"
+      "analytic_rhf_gradients",
+      "velocity_verlet_chain"
     ],
     "evidence": {
-      "nineteen_real_density_iterates": "../../data/aimd_h2o_dimer.json",
-      "mattervis_cube": "source/mattervis/provenance.json",
-      "residual_driven_blur": "../../data/aimd_h2o_dimer.json",
-      "finite_difference_forces": "../../data/aimd_h2o_dimer.json"
+      "seven_real_ionic_geometries": "../../data/aimd_multistep_h2o_dimer.extxyz",
+      "all_real_scf_density_iterates": "../../data/aimd_multistep_h2o_dimer.npz",
+      "mattervis_structures_and_vectors": "source/mattervis/provenance.json",
+      "residual_driven_blur": "../../data/aimd_multistep_h2o_dimer_metadata.json",
+      "analytic_rhf_gradients": "../../data/aimd_multistep_h2o_dimer.npz",
+      "velocity_verlet_chain": "../../data/aimd_multistep_h2o_dimer_metadata.json"
     },
     "scientific_changes": [
       {
@@ -113,20 +117,24 @@
     "constraints": [
       "fixed_camera",
       "fixed_grid",
-      "fixed_nuclear_geometry",
-      "one_density_object"
+      "one_density_object_per_ionic_step",
+      "fixed_world_space_vector_scales",
+      "explicit_ionic_step_boundaries"
     ],
     "evidence": {}
   },
   "quantitative": {
     "transformations": [
       "residual-mapped Gaussian blur for display only",
-      "visual arrow amplification"
+      "fixed visual arrow amplification"
     ],
     "units": {
       "density": "electron/bohr^3",
       "energy": "hartree",
-      "force": "eV/angstrom"
+      "force": "hartree/bohr",
+      "velocity": "angstrom/fs",
+      "position": "angstrom",
+      "time_step": "fs"
     }
   },
   "deviations": {
