@@ -4,33 +4,33 @@
   "format": "png",
   "width": 1500,
   "height": 950,
-  "plan_sha256": "413ece4cbb863eb721f03cff544c77bd91c4b9e224552da3c24b51b0bdabfa50",
-  "output_sha256": "cac6d5adb5138c11af05a5528d6f1d4cc1627038dcd6cc3923135ffd71bfe514",
+  "plan_sha256": "add14838feeee8faedadfaeee2b785ba7bbd549c0b18505e6b188185a855879b",
+  "output_sha256": "59df11aca3ff54736a25c8ae4d8be2cc8a85d51bdb3c8c46ebaf25a1bff945b6",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\motion_08.png",
   "source_sha256": "130c31b9152ac09b801111eccfc5609f39c7132af720d80cb2c92cc15a0640e5",
   "frame": 8,
   "view": "cluster",
   "camera": {
     "target": [
-      0.2912445301300754,
-      0.076809218059831,
-      0.2974098227430353
+      -0.015000000000000013,
+      0.039999999999999994,
+      0.05
     ],
-    "ortho_scale": 1.95,
+    "ortho_scale": 1.5,
     "direction": [
-      0.55,
-      -0.35,
-      1.4
+      -0.07829715236771949,
+      -0.23539164097839152,
+      0.9687416225643483
     ],
     "up": [
-      0.0,
-      1.0,
-      0.0
+      -0.11791748751435274,
+      0.9670901339584589,
+      0.22545983885941293
     ],
     "scene_offset": [
-      6.5103558909,
-      5.7055217426,
-      5.1000816356
+      6.5144237272000005,
+      5.708608794,
+      5.1
     ]
   },
   "render_settings": {
@@ -40,7 +40,7 @@
     "bond_radius": 0.105,
     "show_cell": false
   },
-  "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{},\"vector\":[-0.009683250839126295,-0.009007645918302429,-0.0036736006227737063]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{},\"vector\":[-0.03644787740800253,0.28769049259698826,0.027540909134246686]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{},\"vector\":[0.1830526337431001,-0.08935743711541738,0.0037586758365583737]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{},\"vector\":[-0.008280501818797463,-0.002543205571782648,-0.001815777769663518]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{},\"vector\":[0.01223095434565146,-0.15391158625140092,0.008699139566990054]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{},\"vector\":[0.1262953277927563,0.13891730943958888,0.04715489911224196]}]",
+  "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{\"head_length_ratio\":0.26,\"head_radius_ratio\":2.0,\"shaft_radius\":0.05,\"sides\":16},\"vector\":[-0.016945688968471016,-0.01576338035702925,-0.006428801089853987]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{\"head_length_ratio\":0.26,\"head_radius_ratio\":2.0,\"shaft_radius\":0.05,\"sides\":16},\"vector\":[-0.06378378546400444,0.5034583620447295,0.048196590984931696]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{\"head_length_ratio\":0.26,\"head_radius_ratio\":2.0,\"shaft_radius\":0.05,\"sides\":16},\"vector\":[0.32034210905042515,-0.1563755149519804,0.006577682713977154]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{\"head_length_ratio\":0.26,\"head_radius_ratio\":2.0,\"shaft_radius\":0.05,\"sides\":16},\"vector\":[-0.014490878182895559,-0.0044506097506196345,-0.0031776110969111565]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{\"head_length_ratio\":0.26,\"head_radius_ratio\":2.0,\"shaft_radius\":0.05,\"sides\":16},\"vector\":[0.021404170104890055,-0.2693452759399516,0.015223494242232594]},{\"color\":\"#4E9BB5\",\"id\":\"vv-nuclear-displacement-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{\"head_length_ratio\":0.26,\"head_radius_ratio\":2.0,\"shaft_radius\":0.05,\"sides\":16},\"vector\":[0.22101682363732353,0.24310529151928054,0.08252107344642343]}]",
   "vector_count": 6,
   "vector_renderer": "MatterVis native world-space vector_overlays",
   "pipeline_version": 2,
@@ -51,25 +51,25 @@
     "actual_backend": "cpu",
     "camera": {
       "position": [
-        15.348916009774001,
-        0.3431301314591524,
-        27.15429477514575
+        4.620292070374733,
+        0.09920941051860321,
+        28.399798941544358
       ],
       "target": [
-        6.801600421030075,
-        5.782330960659832,
-        5.397491458343035
+        6.499423727200001,
+        5.748608794,
+        5.1499999999999995
       ],
       "up": [
-        0.0,
-        1.0,
-        0.0
+        -0.11791748751435274,
+        0.9670901339584589,
+        0.22545983885941293
       ],
       "projection": "orthographic",
       "fov_y_deg": 45.0,
       "near": 0.01,
       "far": 10000.0,
-      "ortho_scale": 1.95
+      "ortho_scale": 1.5
     },
     "source": {
       "path": null,

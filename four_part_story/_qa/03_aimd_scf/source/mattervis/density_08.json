@@ -4,8 +4,8 @@
   "format": "png",
   "width": 1500,
   "height": 950,
-  "plan_sha256": "68888e2d2b227ebf4e38450fd7c74b6238667ba40f42f1159776fca842730932",
-  "output_sha256": "ae198d888ae3da988e10259e981654e38102691f5ddc3c10faf477ff32a7e4b6",
+  "plan_sha256": "e65c0ecac336527a1e68fce3b18f8893fab198c3337495ff9ce3ddd43b006e28",
+  "output_sha256": "0cade8d217186c34adea6240e59af7fda03f8c064611f66b177ede8493c42929",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\density_08.png",
   "source_sha256": "3ee2cd24ed2418d8895a741fb5e45dd62231d4ef06cfec7c9d2a40ba6f47464c",
   "camera": {
@@ -14,7 +14,7 @@
       0.07486069758950598,
       0.29648353847969666
     ],
-    "ortho_scale": 1.95,
+    "ortho_scale": 1.5,
     "direction": [
       0.55,
       -0.35,
@@ -36,8 +36,9 @@
     "height": 950,
     "atom_scale": 0.9,
     "bond_radius": 0.105,
-    "isovalue": 0.08,
-    "opacity": 0.2
+    "isovalue": 0.22,
+    "opacity": 0.55,
+    "positive_color": "#9BB2C4"
   },
   "vector_signature": "[]",
   "vector_count": 0,
@@ -70,7 +71,7 @@
       "fov_y_deg": 45.0,
       "near": 0.01,
       "far": 10000.0,
-      "ortho_scale": 1.95
+      "ortho_scale": 1.5
     },
     "source": {
       "path": null,

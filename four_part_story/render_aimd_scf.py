@@ -50,8 +50,8 @@ CUBE_DIR = QA_DIR / "source" / "cubes"
 DATA_PATH = ROOT / "data" / "aimd_h2o_dimer.npz"
 MOTION_SOURCE = ROOT / "data" / "aimd_h2o_dimer_motion_display.extxyz"
 
-STATIC_SCENE_RECT = (0.00, 0.13, 0.65, 0.92)
-VIDEO_SCENE_RECT = (0.00, 0.10, 0.78, 0.92)
+STATIC_SCENE_RECT = (0.02, 0.13, 0.64, 0.92)
+VIDEO_SCENE_RECT = (0.025, 0.10, 0.765, 0.92)
 AIMD_VIDEO_LEFT = (0.045, 0.21, 0.275, 0.90)
 AIMD_VIDEO_RIGHT = (0.30, 0.17, 0.965, 0.91)
 CAMERA_SCALE = 1.50
@@ -350,15 +350,15 @@ def draw_scf_loop(
     labels = ["build Fock", "solve\norbitals", "update\ndensity", "check\nconvergence"]
     symbols = [r"$F$", r"$C$", r"$\rho$", r"$?$" ]
     if video:
-        positions = [(0.865, 0.76), (0.935, 0.61), (0.865, 0.46), (0.795, 0.61)]
+        positions = [(0.855, 0.76), (0.925, 0.61), (0.855, 0.46), (0.785, 0.61)]
         arrows = [
-            ((0.887, 0.72), (0.916, 0.65)),
-            ((0.916, 0.57), (0.887, 0.50)),
-            ((0.843, 0.50), (0.814, 0.57)),
-            ((0.814, 0.65), (0.843, 0.72)),
+            ((0.877, 0.72), (0.906, 0.65)),
+            ((0.906, 0.57), (0.877, 0.50)),
+            ((0.833, 0.50), (0.804, 0.57)),
+            ((0.804, 0.65), (0.833, 0.72)),
         ]
         radius_x = 0.025
-        centre_x = 0.865
+        centre_x = 0.855
     else:
         positions = [(0.790, 0.78), (0.880, 0.60), (0.790, 0.42), (0.700, 0.60)]
         arrows = [
@@ -440,11 +440,11 @@ def draw_scf_loop(
     )
     if video:
         if active_stage is not None:
-            active_label = labels[active_stage].replace("\n", " ")
+            active_label = labels[active_stage]
         elif converged:
-            active_label = "force from converged density"
+            active_label = "force from\nconverged density"
         else:
-            active_label = "initial density guess"
+            active_label = "initial density\nguess"
         registry.text(
             ax,
             centre_x,

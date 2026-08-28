@@ -4,8 +4,8 @@
   "format": "png",
   "width": 1500,
   "height": 950,
-  "plan_sha256": "ea6fd4141c307cf360d5fb4847ca3c1b9e66d23f2294687dd774f45bb547e9e6",
-  "output_sha256": "2b29519c7010aa9f0a0535fe9850ebbc552a9cd23d332ece8f8151a98022b0cb",
+  "plan_sha256": "ffae787ea51fde5d84076c5f2ebc33eeb65f8fe65b68028575c1ebae5d0cfb39",
+  "output_sha256": "6667564ea752ec7a8a708c83dd60fcbd474cc14a5a30d962799882431e452f97",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis\\density_force.png",
   "source_sha256": "689e896a135f3da66ab8bd839d3f29299f7e665597cc3aa2c270d4becc61502b",
   "camera": {
@@ -14,7 +14,7 @@
       0.07486069758950598,
       0.29648353847969666
     ],
-    "ortho_scale": 1.95,
+    "ortho_scale": 1.5,
     "direction": [
       0.55,
       -0.35,
@@ -36,10 +36,11 @@
     "height": 950,
     "atom_scale": 0.9,
     "bond_radius": 0.105,
-    "isovalue": 0.08,
-    "opacity": 0.2
+    "isovalue": 0.22,
+    "opacity": 0.55,
+    "positive_color": "#9BB2C4"
   },
-  "vector_signature": "[{\"color\":\"#A99C50\",\"id\":\"rhf-nuclear-force-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{\"head_length\":0.2,\"head_radius\":0.17,\"shaft_radius\":0.085,\"sides\":18},\"vector\":[-0.513810177419466,-0.47796140204422266,-0.1949276559199336]},{\"color\":\"#A99C50\",\"id\":\"rhf-nuclear-force-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{\"head_length\":0.2,\"head_radius\":0.17,\"shaft_radius\":0.085,\"sides\":18},\"vector\":[-0.12184885586915457,0.9617777456549459,0.09207198076416646]},{\"color\":\"#A99C50\",\"id\":\"rhf-nuclear-force-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{\"head_length\":0.2,\"head_radius\":0.17,\"shaft_radius\":0.085,\"sides\":18},\"vector\":[0.6119630434373358,-0.29873074237027947,0.012565624745190743]},{\"color\":\"#A99C50\",\"id\":\"rhf-nuclear-force-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{\"head_length\":0.2,\"head_radius\":0.17,\"shaft_radius\":0.085,\"sides\":18},\"vector\":[-0.43937786796220407,-0.13494692306966208,-0.09634833523214963]},{\"color\":\"#A99C50\",\"id\":\"rhf-nuclear-force-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{\"head_length\":0.2,\"head_radius\":0.17,\"shaft_radius\":0.085,\"sides\":18},\"vector\":[0.04088928901188294,-0.5145416420222667,0.02908208320112217]},{\"color\":\"#A99C50\",\"id\":\"rhf-nuclear-force-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{\"head_length\":0.2,\"head_radius\":0.17,\"shaft_radius\":0.085,\"sides\":18},\"vector\":[0.42221776102079345,0.4644142929409304,0.1576434874693292]}]",
+  "vector_signature": "[{\"color\":\"#A99C50\",\"id\":\"rhf-nuclear-force-0\",\"opacity\":1.0,\"origin\":[-1.45,-0.1,-0.1],\"style\":{\"head_length\":0.16,\"head_radius\":0.12,\"shaft_radius\":0.055,\"sides\":18},\"vector\":[-0.4335273371976744,-0.40327993297481285,-0.16447020968244397]},{\"color\":\"#A99C50\",\"id\":\"rhf-nuclear-force-1\",\"opacity\":1.0,\"origin\":[-0.5567641119173535,-0.44736951203214026,0.14812108002295732],\"style\":{\"head_length\":0.16,\"head_radius\":0.12,\"shaft_radius\":0.055,\"sides\":18},\"vector\":[-0.10280997213959918,0.8114999728963606,0.07768573376976545]},{\"color\":\"#A99C50\",\"id\":\"rhf-nuclear-force-2\",\"opacity\":1.0,\"origin\":[-1.5144237272440966,0.7289137180860257,0.43744918953960554],\"style\":{\"head_length\":0.16,\"head_radius\":0.12,\"shaft_radius\":0.055,\"sides\":18},\"vector\":[0.516343817900252,-0.2520540638749233,0.01060224587875469]},{\"color\":\"#A99C50\",\"id\":\"rhf-nuclear-force-3\",\"opacity\":1.0,\"origin\":[1.42,0.18,0.2],\"style\":{\"head_length\":0.16,\"head_radius\":0.12,\"shaft_radius\":0.055,\"sides\":18},\"vector\":[-0.3707250760931097,-0.11386146634002738,-0.08129390785212624]},{\"color\":\"#A99C50\",\"id\":\"rhf-nuclear-force-4\",\"opacity\":1.0,\"origin\":[2.033846462042891,0.7962287734521438,0.6728156298252965],\"style\":{\"head_length\":0.16,\"head_radius\":0.12,\"shaft_radius\":0.055,\"sides\":18},\"vector\":[0.034500337603776236,-0.4341445104562876,0.02453800770094683]},{\"color\":\"#A99C50\",\"id\":\"rhf-nuclear-force-5\",\"opacity\":1.0,\"origin\":[1.7966263398365616,-0.7086087939689933,0.4205153314903206],\"style\":{\"head_length\":0.16,\"head_radius\":0.12,\"shaft_radius\":0.055,\"sides\":18},\"vector\":[0.3562462358612945,0.39184955966891005,0.13301169255224654]}]",
   "vector_count": 6,
   "vector_renderer": "MatterVis native world-space vector_overlays",
   "isosurface_renderer": "MatterVis native Cube isosurface mesh",
@@ -70,7 +71,7 @@
       "fov_y_deg": 45.0,
       "near": 0.01,
       "far": 10000.0,
-      "ortho_scale": 1.95
+      "ortho_scale": 1.5
     },
     "source": {
       "path": null,
