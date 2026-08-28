@@ -1,0 +1,98 @@
+{
+  "schema": "mattervis.render-result/v1",
+  "backend": "cpu",
+  "format": "png",
+  "width": 1500,
+  "height": 950,
+  "plan_sha256": "d5f523a0944828fa67b57aeb93b4fa970570846d71720bc753343cf722ecff15",
+  "output_sha256": "420d9dc6ba09e63849bf23cd51d090cc902c10c878e871e64490d38f7080f4b9",
+  "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_velocity.png",
+  "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
+  "frame": 2,
+  "view": "cluster",
+  "camera": {
+    "target": [
+      -0.015000000000000013,
+      0.039999999999999994,
+      0.05
+    ],
+    "ortho_scale": 1.72,
+    "direction": [
+      -0.5381573536165152,
+      -0.6201447889834582,
+      0.5707951501590842
+    ],
+    "up": [
+      -0.11791748769155824,
+      0.9670901334257105,
+      0.2254598410519105
+    ],
+    "scene_offset": [
+      6.51442373,
+      5.7086087899999995,
+      5.1
+    ]
+  },
+  "render_settings": {
+    "width": 1500,
+    "height": 950,
+    "atom_scale": 0.9,
+    "bond_radius": 0.102,
+    "show_cell": false
+  },
+  "vector_signature": "[{\"color\":\"#2F8562\",\"id\":\"half-step-velocity-ion-02-0\",\"opacity\":1.0,\"origin\":[-1.451517578925234,-0.09568067035939473,-0.09913794948423273],\"style\":{\"head_length_ratio\":0.28,\"head_radius_ratio\":2.4,\"shaft_radius\":0.065,\"sides\":18},\"vector\":[-0.046740647651537945,0.13647175395249841,0.02876620284806441]},{\"color\":\"#2F8562\",\"id\":\"half-step-velocity-ion-02-1\",\"opacity\":1.0,\"origin\":[-0.5453637281229958,-0.4616504378203942,0.144182956181887],\"style\":{\"head_length_ratio\":0.28,\"head_radius_ratio\":2.4,\"shaft_radius\":0.065,\"sides\":18},\"vector\":[0.1745107141204372,-0.22902282869998133,-0.14934419467542612]},{\"color\":\"#2F8562\",\"id\":\"half-step-velocity-ion-02-2\",\"opacity\":1.0,\"origin\":[-1.5226545178378956,0.7318445249851767,0.4418538764896066],\"style\":{\"head_length_ratio\":0.28,\"head_radius_ratio\":2.4,\"shaft_radius\":0.065,\"sides\":18},\"vector\":[-0.1502670351225308,0.036807346816417084,0.15964803046943826]},{\"color\":\"#2F8562\",\"id\":\"half-step-velocity-ion-02-3\",\"opacity\":1.0,\"origin\":[1.4218773582616555,0.17559789559949074,0.19792588372962705],\"style\":{\"head_length_ratio\":0.28,\"head_radius_ratio\":2.4,\"shaft_radius\":0.065,\"sides\":18},\"vector\":[0.05645835708673868,-0.14391003660650395,-0.0736672081427774]},{\"color\":\"#2F8562\",\"id\":\"half-step-velocity-ion-02-4\",\"opacity\":1.0,\"origin\":[2.029012851747354,0.7963181738013315,0.6681880973131284],\"style\":{\"head_length_ratio\":0.28,\"head_radius_ratio\":2.4,\"shaft_radius\":0.065,\"sides\":18},\"vector\":[-0.15126164423181027,-0.04191130807803868,-0.14475369374328473]},{\"color\":\"#2F8562\",\"id\":\"half-step-velocity-ion-02-5\",\"opacity\":1.0,\"origin\":[1.7925799280196788,-0.6960342680060916,0.4439142365311883],\"style\":{\"head_length_ratio\":0.28,\"head_radius_ratio\":2.4,\"shaft_radius\":0.065,\"sides\":18},\"vector\":[-0.027221750295578398,0.3521873893479122,0.8471196830584822]}]",
+  "vector_count": 6,
+  "vector_renderer": "MatterVis native world-space vector_overlays",
+  "pipeline_version": 2,
+  "warnings": [],
+  "metadata": {
+    "transparent_compositor": "per-pixel-fragment-list",
+    "scale": 1,
+    "actual_backend": "cpu",
+    "camera": {
+      "position": [
+        -6.416352756796364,
+        -9.134866145602995,
+        18.84908360381802
+      ],
+      "target": [
+        6.49942373,
+        5.74860879,
+        5.1499999999999995
+      ],
+      "up": [
+        -0.11791748769155824,
+        0.9670901334257105,
+        0.2254598410519105
+      ],
+      "projection": "orthographic",
+      "fov_y_deg": 45.0,
+      "near": 0.01,
+      "far": 10000.0,
+      "ortho_scale": 1.72
+    },
+    "source": {
+      "path": null,
+      "input_format": null,
+      "frame": null
+    },
+    "requirements": {
+      "schema": "mattervis.requirements/v1",
+      "requested": [
+        "png"
+      ],
+      "capabilities": [
+        "core"
+      ],
+      "extras": [],
+      "available": true,
+      "missing_capabilities": [],
+      "install": "python -m pip install \"matter-vis\"",
+      "notes": [
+        "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+      ]
+    },
+    "install": "python -m pip install \"matter-vis\"",
+    "fallback": null
+  }
+}

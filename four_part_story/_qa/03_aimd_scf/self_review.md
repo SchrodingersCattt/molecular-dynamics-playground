@@ -1,46 +1,36 @@
 # Five-Problem Self-Review
 
-After every substantive render, assume the figure is still wrong. List exactly
-five concrete problems before deciding whether to rerender. Automated QA passing
-is not enough.
-
 ## Render
 
-- Figure: Ab initio MD: one force requires an SCF loop
-- Script: `four_part_story/render_aimd_scf.py`
-- Output file inspected: `four_part_story/figures/03_aimd_scf.png`
-- Inspection size / zoom: full A4 landscape render plus 100% crop inspection of the dimer, density, arrows, and SCF labels
-- Programmatic QA result: pending final strict check after the fixes below
+- Figure: AIMD: electrons converge before nuclei move
+- Script: four_part_story/render_aimd_scf.py
+- Static inspected: four_part_story/figures/03_aimd_scf.png at full A4 landscape size
+- Motion inspected: four_part_story/videos/03_aimd_scf.mp4 plus all contact sheets at 1920 × 1080
+- Programmatic result: 360 / 360 video frames passed; final strict manifest check pending
 
 ## Pass 1
 
-1. Scientific expression problem: The old concept exposed only six density samples and did not demonstrate the full 19-step RHF convergence history.
-2. Geometric or data-coordinate correctness problem: The old dimer camera compressed both water geometries, while the CPU vector path dropped the requested arrow geometry and left detached-looking caps around the atoms.
-3. Label, leader, legend, or panel-letter placement problem: The former five-node SCF ring and numeric detail competed with the density and did not read as one compact loop.
-4. Readability or print-scale problem: Dark red force arrows visually merged with the oxygen atoms and were too short at A4 scale.
-5. Submission-quality or filename/output-discipline problem: Provisional test renders and stale projected-density panels were mixed with the canonical source assets.
+1. Scientific expression problem: The previous animation showed one electronic solve and did not establish that SCF is repeated at every ionic geometry.
+2. Geometric or data-coordinate correctness problem: The molecular-plane camera made several real three-dimensional vectors project as circular caps instead of readable arrows.
+3. Label, leader, legend, or panel-letter placement problem: The transition from SCF convergence to force, velocity half-kick and position drift was not explicit at phase boundaries.
+4. Readability or print-scale problem: Fixed-size arrowheads consumed short physical vectors, while the old volumetric density made the molecular scene visually dirty.
+5. Submission-quality or filename/output-discipline problem: The canonical video and QA report still described one ionic update rather than an auditable multi-step trajectory.
 
-Action taken: Recomputed all 19 real RHF density iterates on one grid; retained raw and residual-blurred display Cubes separately; switched molecule, density, bonds, and vectors to MatterVis; chose an asymmetric oblique camera; moved the SCF ring outside the molecule; simplified it to four nodes; raised the fixed isovalue to 0.080; and used atom-centred olive force arrows with explicit 3D shaft and head geometry.
+Action taken: Generated seven RHF/STO-3G geometries with every real SCF density frame, analytic gradients and six verified 0.5 fs Velocity Verlet updates. Replaced the density volume with a residual-driven sparse-to-fine 2D contour projection. Selected one fixed oblique camera from projected-vector readability, changed MatterVis vectors to proportional arrowheads, and separated SCF, pause, force, velocity and position phases.
 
 ## Pass 2
 
-Repeat after fixes and a fresh render.
+1. Scientific expression problem: Fixed; the first ten seconds show two complete SCF cycles and the last five seconds show four additional ionic updates.
+2. Geometric or data-coordinate correctness problem: Fixed; density, atoms, two-colour bonds and atom-centred vectors share one camera and world coordinate system, with fixed vector scales preserving relative lengths.
+3. Label, leader, legend, or panel-letter placement problem: Fixed; each ionic step and phase has one direct heading, the molecule remains outside both loops, and the 18 px panel safety bands pass.
+4. Readability or print-scale problem: Fixed; coarse, intermediate and converged density states are visibly distinct, and olive, emerald and lake-blue arrows remain legible at 1920 × 1080.
+5. Submission-quality or filename/output-discipline problem: Fixed; the canonical 15 s H.264 video contains 360 audited frames, and all source renders and contact sheets are kept under _qa.
 
-1. Scientific expression problem: Fixed; the frame uses the converged member of a traceable 19-Cube sequence, and the metadata discloses residual-driven blur as display encoding only.
-2. Geometric or data-coordinate correctness problem: Fixed; both H-O-H shapes are visible in a non-[111] view, every arrow origin equals its nuclear coordinate, and every displayed vector remains parallel to its calculated RHF force.
-3. Label, leader, legend, or panel-letter placement problem: Fixed; the four-node SCF loop sits clear of the density and structure, with no molecule inside either loop.
-4. Readability or print-scale problem: Fixed; olive force arrows are distinct from oxygen red, their centre lines pass through the nuclei, and complete shafts and arrowheads remain visible at A4 scale.
-5. Submission-quality or filename/output-discipline problem: Fixed for the canonical static outputs and source panels; provisional test files are excluded and will be removed before the video commit.
-
-Action taken: No new blocking issue is visible in the fresh static render. Proceed to strict manifest QA, then generate and inspect every 1920x1080 video frame before publication.
+Action taken: No new blocking issue was found in the final-size static render, the phase-boundary keyframes, the eight contact sheets or the decoded MP4. Proceed to the strict manifest gate and publish only if it passes.
 
 ## Stop Conditions
 
-Stop only when one of these is true:
-
-- The five listed problems are all fixed and no new blocking issue is visible.
-- The remaining choice is a genuine scientific or manuscript-style decision for
-  the user.
-- The source data are ambiguous and choosing a representation would assert a fact
-  not present in the data.
+- All five listed problems are fixed and no new blocking issue is visible.
+- Any remaining choice is a genuine scientific or manuscript-style decision for the user.
+- The source data are ambiguous and choosing a representation would assert an unsupported fact.
 - The user explicitly accepts the current figure.

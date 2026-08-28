@@ -80,11 +80,6 @@
           "id": "oxygen_shaded",
           "color": "#97495D",
           "min_pixels": 300
-        },
-        {
-          "id": "nuclear_force",
-          "color": "#A99C50",
-          "min_pixels": 200
         }
       ]
     }
@@ -101,7 +96,7 @@
     "evidence": {
       "seven_real_ionic_geometries": "../../data/aimd_multistep_h2o_dimer.extxyz",
       "all_real_scf_density_iterates": "../../data/aimd_multistep_h2o_dimer.npz",
-      "mattervis_structures_and_vectors": "source/mattervis/provenance.json",
+      "mattervis_structures_and_vectors": "source/mattervis_multistep/provenance.json",
       "residual_driven_blur": "../../data/aimd_multistep_h2o_dimer_metadata.json",
       "analytic_rhf_gradients": "../../data/aimd_multistep_h2o_dimer.npz",
       "velocity_verlet_chain": "../../data/aimd_multistep_h2o_dimer_metadata.json"
@@ -141,15 +136,15 @@
     "records": []
   },
   "review": {
-    "render_sha256": "f9d680a19ed521414fe71fa6b753478c4d33788b8ca5c603e125e428432ee531",
+    "render_sha256": "e9401de631c8afd7bc25e76bc69cf8701c919b7ed3ab8f0ccba343938e5d96bd",
     "problems": {
-      "scientific_expression": "The previous concept sampled only a few SCF states and did not make it visually evident that every surface came from a real RHF density iterate.",
-      "geometry": "The previous near-axial water-dimer view compressed the H-O-H geometry, while the CPU vector path discarded explicit head geometry and made the arrows read as detached caps.",
-      "annotations": "The earlier SCF labels crowded the density object and the relationship between the four electronic steps and the outer MD loop was ambiguous.",
-      "readability": "Dark red force arrows were too close to the oxygen color and too short to read reliably at A4 scale.",
-      "submission_quality": "The prior assets mixed provisional projections with stale source panels and lacked a traceable all-iteration Cube provenance set."
+      "scientific_expression": "The previous animation showed one electronic solve and did not establish that SCF is repeated at every ionic geometry.",
+      "geometry": "The molecular-plane camera made several three-dimensional velocity and displacement vectors project as circular caps rather than readable arrows.",
+      "annotations": "The relationship between SCF convergence, its pause, the force, the velocity half-kick and the position drift was not explicit at phase boundaries.",
+      "readability": "Fixed-size arrowheads consumed short physical vectors, and the original volumetric density occupied too much of the molecular scene.",
+      "submission_quality": "The old canonical video and frame report described one ionic update rather than an auditable multi-step trajectory."
     },
-    "action": "Recomputed and retained all 19 RHF/STO-3G density matrices on one fixed grid; rendered every Cube, molecule, bond, and vector through MatterVis; changed to an asymmetric dimer camera; fixed the density isovalue at 0.080; placed every olive force-arrow origin exactly at its nucleus with one shared scale and explicit 3D head geometry; simplified the SCF loop to four nodes outside the structure; and regenerated independent A4 source panels with provenance sidecars.",
+    "action": "Generated seven RHF/STO-3G ionic geometries with every real SCF density frame, analytic nuclear gradients and six verified 0.5 fs Velocity Verlet updates. The first ten seconds now show two complete SCF cycles; the last five show four rapid ionic steps. Density is a residual-driven sparse-to-fine 2D contour projection, while every atom, two-colour bond and proportional-head vector is rendered by MatterVis under one fixed oblique camera. Phase labels, pauses and atom-centred olive, emerald and lake-blue vectors were checked at final size and across all 360 frames.",
     "stop_condition": "fixed"
   }
 }

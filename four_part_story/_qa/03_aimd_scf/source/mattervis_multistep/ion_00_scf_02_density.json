@@ -1,0 +1,35 @@
+{
+  "pipeline_version": 4,
+  "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+  "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_structure.png",
+  "ion_index": 0,
+  "scf_index": 2,
+  "residual": 0.058211941982142516,
+  "visual_progress": 0.2218367061190717,
+  "blur_sigma_pixels": 3.9201996909979204,
+  "levels": [
+    0.003,
+    0.015,
+    0.18,
+    0.9
+  ],
+  "camera": {
+    "target": [
+      -0.015000000000000013,
+      0.039999999999999994,
+      0.05
+    ],
+    "direction": [
+      -0.5381573536165152,
+      -0.6201447889834582,
+      0.5707951501590842
+    ],
+    "up": [
+      -0.11791748769155824,
+      0.9670901334257105,
+      0.2254598410519105
+    ],
+    "ortho_scale": 1.72
+  },
+  "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_scf_02_density.png"
+}

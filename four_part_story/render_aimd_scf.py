@@ -666,7 +666,7 @@ def draw_case(
     registry.text(
         ax,
         0.48 if video else 0.50,
-        0.985,
+        0.970,
         heading,
         ha="center",
         va="top",
@@ -677,7 +677,7 @@ def draw_case(
     registry.text(
         ax,
         0.48 if video else 0.50,
-        0.920 if video else 0.075,
+        0.900 if video else 0.075,
         state_label,
         ha="center",
         va="top" if video else "bottom",
