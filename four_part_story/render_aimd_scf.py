@@ -39,6 +39,7 @@ from mattervis_story import (
     draw_vv_loop,
     make_vector_group,
     place_render,
+    place_render_blend,
     project_world,
     render_structure,
     write_provenance_index,
@@ -405,15 +406,13 @@ def draw_scf_loop(
     registry: LayoutRegistry,
     *,
     video: bool,
-    active_stage: int | None,
-    active_weight: float,
+    stage_weights: tuple[float, float, float, float],
     iteration: int,
     iteration_count: int,
     converged: bool,
 ) -> None:
     """Draw the electronic loop beside, never around, the molecule."""
     aspect = _axes_aspect(ax)
-    labels = ["build Fock", "solve orbitals", "update density", "check convergence"]
     symbols = [r"$F$", r"$C$", r"$\rho$", r"$?$"]
     if video:
         positions = [
@@ -446,6 +445,7 @@ def draw_scf_loop(
         radius_x = 0.030
         centre_x = 0.815
     for index, (start, end) in enumerate(arrows):
+        arrow_weight = max(stage_weights[index], stage_weights[(index + 1) % 4])
         registry.arrow(
             ax,
             start,
@@ -453,12 +453,12 @@ def draw_scf_loop(
             arrowstyle="-|>",
             mutation_scale=21 if video else 15,
             lw=3.4 if video else 2.2,
-            color=INK if active_stage == index else LINE_GRAY,
+            color=mix_hex(LINE_GRAY, INK, arrow_weight),
             zorder=3,
         )
     radius_y = radius_x * aspect
     for index, ((x, y), symbol) in enumerate(zip(positions, symbols)):
-        weight = active_weight if active_stage == index else 0.0
+        weight = stage_weights[index]
         fill = mix_hex(WHITE, INK, weight)
         ax.add_patch(
             Ellipse(
@@ -466,7 +466,7 @@ def draw_scf_loop(
                 2.0 * radius_x,
                 2.0 * radius_y,
                 fc=fill,
-                ec=INK if weight > 0.1 else LINE_GRAY,
+                ec=mix_hex(LINE_GRAY, INK, weight),
                 lw=3.0 if video else 1.9,
                 zorder=4,
             )
@@ -497,10 +497,10 @@ def draw_scf_loop(
     if video:
         if converged:
             active_label = "density converged"
-        elif active_stage is None:
+        elif max(stage_weights) <= 0.0:
             active_label = "initial density guess"
         else:
-            active_label = labels[active_stage]
+            active_label = "electronic iteration"
         registry.text(
             ax,
             centre_x,
@@ -573,8 +573,7 @@ def draw_case(
     ion_index: int,
     iteration_index: int,
     density_blend: float,
-    active_scf_stage: int | None,
-    active_scf_weight: float,
+    scf_stage_weights: tuple[float, float, float, float],
     phase_progress: float,
     scf_progress: float,
     rapid: bool,
@@ -598,21 +597,14 @@ def draw_case(
             current = min(iteration_index, len(density_paths) - 1)
             following = min(current + 1, len(density_paths) - 1)
             blend = density_blend
-        place_render(
+        place_render_blend(
             ax,
             density_paths[current],
+            density_paths[following],
             scene_rect,
-            alpha=1.0 - blend,
+            blend=blend,
             zorder=4,
         )
-        if following != current and blend > 0.001:
-            place_render(
-                ax,
-                density_paths[following],
-                scene_rect,
-                alpha=blend,
-                zorder=5,
-            )
         qualifier = "fast " if rapid else ""
         heading = (
             f"{qualifier}ionic step {ion_index + 1} · electronic SCF"
@@ -690,8 +682,7 @@ def draw_case(
             ax,
             registry,
             video=video,
-            active_stage=active_scf_stage,
-            active_weight=active_scf_weight,
+            stage_weights=scf_stage_weights,
             iteration=iteration_index + 1,
             iteration_count=len(density_paths),
             converged=mode == "pause",
@@ -720,8 +711,7 @@ def render_static(
             ion_index=0,
             iteration_index=first_count - 1,
             density_blend=0.0,
-            active_scf_stage=None,
-            active_scf_weight=0.0,
+            scf_stage_weights=(0.0, 0.0, 0.0, 0.0),
             phase_progress=1.0,
             scf_progress=1.0,
             rapid=False,
@@ -750,8 +740,7 @@ def render_static(
         ion_index=0,
         iteration_index=first_count - 1,
         density_blend=0.0,
-        active_scf_stage=None,
-        active_scf_weight=0.0,
+        scf_stage_weights=(0.0, 0.0, 0.0, 0.0),
         phase_progress=1.0,
         scf_progress=1.0,
         rapid=False,
@@ -776,18 +765,21 @@ def _scf_state(
     )
     iteration = int(iteration_float)
     within = iteration_float - iteration
-    loop_count = 2.0 if rapid else 4.0
+    loop_count = 1.0 if rapid else 2.0
     stage_float = progress * loop_count * 4.0
-    active_stage = min(int(stage_float) % 4, 3)
+    active_stage = int(stage_float) % 4
+    following_stage = (active_stage + 1) % 4
     stage_within = stage_float - int(stage_float)
-    active_weight = 0.62 + 0.38 * np.sin(np.pi * stage_within)
+    stage_blend = smoothstep(stage_within)
+    stage_weights = [0.0, 0.0, 0.0, 0.0]
+    stage_weights[active_stage] = 1.0 - stage_blend
+    stage_weights[following_stage] = stage_blend
     return {
         "mode": "scf",
         "ion": ion_index,
         "iteration": iteration,
         "blend": smoothstep(within),
-        "active_stage": active_stage,
-        "active_weight": float(active_weight),
+        "stage_weights": tuple(float(weight) for weight in stage_weights),
         "progress": progress,
         "scf_progress": progress,
         "rapid": rapid,
@@ -807,8 +799,7 @@ def _phase_state(
         "ion": ion_index,
         "iteration": iteration_count - 1,
         "blend": 0.0,
-        "active_stage": None,
-        "active_weight": 0.0,
+        "stage_weights": (0.0, 0.0, 0.0, 0.0),
         "progress": float(np.clip(progress, 0.0, 1.0)),
         "scf_progress": 1.0,
         "rapid": rapid,
@@ -945,8 +936,7 @@ def draw_video_frame(
         ion_index=state["ion"],
         iteration_index=state["iteration"],
         density_blend=state["blend"],
-        active_scf_stage=state["active_stage"],
-        active_scf_weight=state["active_weight"],
+        scf_stage_weights=state["stage_weights"],
         phase_progress=state["progress"],
         scf_progress=state["scf_progress"],
         rapid=state["rapid"],

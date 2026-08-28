@@ -482,6 +482,61 @@ def place_render(
     return (x0, y0, x1, y1)
 
 
+def place_render_blend(
+    ax: plt.Axes,
+    first_path: Path,
+    second_path: Path,
+    rect: tuple[float, float, float, float],
+    *,
+    blend: float,
+    zorder: float = 4.0,
+) -> tuple[float, float, float, float]:
+    """Place one exact pixel blend without fading the shared scene to white."""
+    weight = float(np.clip(blend, 0.0, 1.0))
+    if first_path == second_path or weight <= 1.0e-6:
+        return place_render(ax, first_path, rect, zorder=zorder)
+    if weight >= 1.0 - 1.0e-6:
+        return place_render(ax, second_path, rect, zorder=zorder)
+
+    first = _composition_rgba(first_path)
+    second = _composition_rgba(second_path)
+    if first.shape != second.shape:
+        raise ValueError(
+            "Transition renders must have identical pixel dimensions: "
+            f"{first.shape} != {second.shape}"
+        )
+    image = np.rint(
+        (1.0 - weight) * first.astype(np.float32)
+        + weight * second.astype(np.float32)
+    ).astype(np.uint8)
+
+    image_aspect = image.shape[1] / image.shape[0]
+    figure_width, figure_height = ax.figure.canvas.get_width_height()
+    position = ax.get_position()
+    axes_aspect = (position.width * figure_width) / (position.height * figure_height)
+    x0, y0, x1, y1 = rect
+    width = x1 - x0
+    height = y1 - y0
+    required_normalized_ratio = image_aspect / axes_aspect
+    if width / height > required_normalized_ratio:
+        fitted_width = height * required_normalized_ratio
+        centre = 0.5 * (x0 + x1)
+        x0, x1 = centre - 0.5 * fitted_width, centre + 0.5 * fitted_width
+    else:
+        fitted_height = width / required_normalized_ratio
+        centre = 0.5 * (y0 + y1)
+        y0, y1 = centre - 0.5 * fitted_height, centre + 0.5 * fitted_height
+    ax.imshow(
+        image,
+        extent=(x0, x1, y0, y1),
+        origin="upper",
+        interpolation="lanczos",
+        zorder=zorder,
+        aspect="auto",
+    )
+    return (x0, y0, x1, y1)
+
+
 def camera_basis(camera: SceneCamera) -> tuple[np.ndarray, np.ndarray]:
     direction = np.asarray(camera.direction, dtype=float)
     direction /= np.linalg.norm(direction)
