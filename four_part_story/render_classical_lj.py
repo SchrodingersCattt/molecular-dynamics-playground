@@ -4,13 +4,16 @@ import argparse
 from pathlib import Path
 
 import numpy as np
+from matplotlib.patches import Ellipse, Rectangle
 
 from common import (
     CRIMSON,
     DARK_GRAY,
     GREEN,
     INK,
+    LINE_GRAY,
     NAVY,
+    WHITE,
     LayoutRegistry,
     axes_from_top_slot,
     new_static_figure,
@@ -20,12 +23,15 @@ from common import (
     smoothstep,
 )
 from mattervis_story import (
-    STATIC_LEFT,
-    STATIC_RIGHT,
-    VIDEO_LEFT,
-    VIDEO_RIGHT,
+    STORY_STATIC_A,
+    STORY_STATIC_B,
+    STORY_STATIC_C,
+    STORY_STATIC_D,
+    STORY_VIDEO_A,
+    STORY_VIDEO_B,
+    STORY_VIDEO_C,
+    STORY_VIDEO_D,
     SceneCamera,
-    add_story_title,
     camera_for_source,
     draw_vv_loop,
     draw_world_segment,
@@ -181,7 +187,7 @@ def draw_formula(
                 EQUATIONS[active_stage],
                 ha="center",
                 va="center",
-                fontsize=18,
+                fontsize=14,
                 color=INK,
             )
         return
@@ -214,8 +220,39 @@ def draw_left(
     video: bool,
     active_stage: int | None,
 ) -> None:
-    draw_vv_loop(ax, registry, video=video, active_stage=active_stage)
-    draw_formula(ax, registry, video=video, active_stage=active_stage)
+    centre_text = EQUATIONS[active_stage] if active_stage is not None else "\n".join(EQUATIONS)
+    draw_vv_loop(
+        ax,
+        registry,
+        video=video,
+        active_stage=active_stage,
+        centre_text=centre_text,
+        centre_y=0.52,
+        radius_x=0.40,
+    )
+
+
+def draw_relation_panel(ax, registry: LayoutRegistry, *, video: bool) -> None:
+    ax.add_patch(Rectangle((0.04, 0.04), 0.92, 0.92, fill=False, ec=LINE_GRAY, lw=2.0 if video else 1.1))
+    registry.text(ax, 0.50, 0.82, "TIP3P O–O term", ha="center", va="center", fontsize=14 if video else 10, color=INK)
+    registry.text(ax, 0.50, 0.54, r"$r_{\mathrm{OO}}\;\rightarrow\;U_{\mathrm{LJ}}(r_{\mathrm{OO}})$", ha="center", va="center", fontsize=14 if video else 10, color=NAVY)
+    registry.text(ax, 0.50, 0.34, r"$\mathbf{F}=-\partial U/\partial r\;\rightarrow\;\mathbf{a}$", ha="center", va="center", fontsize=12 if video else 10, color=CRIMSON)
+    registry.text(ax, 0.50, 0.10, "LJ term shown · electrostatics omitted", ha="center", va="center", fontsize=10, color=DARK_GRAY)
+
+
+def draw_lj_loop(ax, registry: LayoutRegistry, *, video: bool, active_stage: int | None) -> None:
+    figure_width, figure_height = ax.figure.canvas.get_width_height()
+    position = ax.get_position()
+    aspect = (position.width * figure_width) / (position.height * figure_height)
+    nodes = ((0.50, 0.78, r"$r_{\mathrm{OO}}$"), (0.76, 0.37, r"$U_{\mathrm{LJ}}$"), (0.24, 0.37, r"$\mathbf{F}$"))
+    paths = (((0.56, 0.70), (0.70, 0.47)), ((0.65, 0.34), (0.35, 0.34)), ((0.29, 0.47), (0.44, 0.70)))
+    for index, (start, end) in enumerate(paths):
+        registry.arrow(ax, start, end, arrowstyle="-|>", mutation_scale=18 if video else 12, lw=2.6 if video else 1.6, color=INK if active_stage == index else LINE_GRAY)
+    for index, (x, y, symbol) in enumerate(nodes):
+        active = active_stage == index
+        ax.add_patch(Ellipse((x, y), 0.18, 0.18 * aspect, fc=INK if active else WHITE, ec=INK if active else LINE_GRAY, lw=2.2 if video else 1.3))
+        registry.text(ax, x, y, symbol, ha="center", va="center", fontsize=14 if video else 10, color=WHITE if active else INK, weight="bold" if active else "normal")
+    registry.text(ax, 0.50, 0.54, "LJ evaluation", ha="center", va="center", fontsize=14 if video else 10, color=INK)
 
 
 def draw_oo_distance(
@@ -247,7 +284,7 @@ def draw_oo_distance(
         r"$r_{\mathrm{OO}}$",
         ha="center",
         va="bottom",
-        fontsize=19 if video else 10,
+        fontsize=14 if video else 10,
         color=NAVY,
         weight="bold",
         zorder=14,
@@ -300,55 +337,22 @@ def draw_stage(
         place_render(ax, velocity_path, rect, zorder=5)
 
 
-def draw_static_case(
+def draw_case_panel(
     ax,
     registry: LayoutRegistry,
     data: dict[str, np.ndarray],
     scenes: dict[str, list[Path] | Path],
     camera: SceneCamera,
+    *,
+    stage: int,
+    video: bool,
+    progress: float = 1.0,
 ) -> None:
-    labels = (
-        ("O···O geometry", NAVY),
-        ("TIP3P O–O LJ → force", CRIMSON),
-        ("one Velocity Verlet step", GREEN),
-    )
-    rows = (
-        (0.035, 0.685, 0.965, 0.965),
-        (0.035, 0.365, 0.965, 0.645),
-        (0.035, 0.045, 0.965, 0.325),
-    )
-    for stage, (label, color) in enumerate(labels):
-        registry.text(
-            ax,
-            0.055,
-            rows[stage][3] - 0.012,
-            label,
-            ha="left",
-            va="top",
-            fontsize=12,
-            color=color,
-            weight="bold",
-        )
-        draw_stage(
-            ax,
-            registry,
-            data,
-            scenes,
-            camera,
-            stage=stage,
-            rect=rows[stage],
-            video=False,
-        )
-    registry.text(
-        ax,
-        0.50,
-        0.025,
-        "Highlighted term only; TIP3P water also contains electrostatics.",
-        ha="center",
-        va="bottom",
-        fontsize=10,
-        color=DARK_GRAY,
-    )
+    ax.add_patch(Rectangle((0.04, 0.04), 0.92, 0.92, fill=False, ec=LINE_GRAY, lw=2.0 if video else 1.1, zorder=20))
+    headings = ("Measure O···O geometry", "Evaluate LJ force", "Update velocity")
+    registry.text(ax, 0.50, 0.925, headings[stage], ha="center", va="center", fontsize=16 if video else 11, color=INK, zorder=21)
+    registry.text(ax, 0.075, 0.070, "Simulation step 01", ha="left", va="bottom", fontsize=12 if video else 10, color=INK, zorder=21)
+    draw_stage(ax, registry, data, scenes, camera, stage=stage, rect=SCENE_RECT, video=video, progress=progress)
 
 
 def render_static(
@@ -366,34 +370,31 @@ def render_static(
     )
     render_source_panel(
         QA_DIR / "source" / "case.png",
-        lambda ax, registry: draw_static_case(
-            ax, registry, data, scenes, camera
+        lambda ax, registry: draw_case_panel(
+            ax, registry, data, scenes, camera, stage=1, video=False
         ),
         width_px=1800,
         height_px=1500,
     )
     fig = new_static_figure()
     registry = LayoutRegistry(min_font_pt=10, edge_pad_px=18)
-    add_story_title(
-        fig,
-        registry,
-        "Classical MD: Lennard–Jones",
-        "On a real water dimer, O···O geometry becomes energy, force, and motion",
-        video=False,
-    )
     draw_left(
-        axes_from_top_slot(fig, STATIC_LEFT),
+        axes_from_top_slot(fig, STORY_STATIC_A),
         registry,
         video=False,
         active_stage=None,
     )
-    draw_static_case(
-        axes_from_top_slot(fig, STATIC_RIGHT),
+    draw_case_panel(
+        axes_from_top_slot(fig, STORY_STATIC_B),
         registry,
         data,
         scenes,
         camera,
+        stage=1,
+        video=False,
     )
+    draw_relation_panel(axes_from_top_slot(fig, STORY_STATIC_C), registry, video=False)
+    draw_lj_loop(axes_from_top_slot(fig, STORY_STATIC_D), registry, video=False, active_stage=1)
     errors = registry.validate(fig)
     if errors:
         raise RuntimeError("Static layout failed:\n" + "\n".join(errors))
@@ -412,15 +413,10 @@ def draw_video_frame(
     del frame_index
     stage = min(int(time_seconds // 3.0), 2)
     progress = (time_seconds - 3.0 * stage) / 3.0
-    add_story_title(
-        fig,
-        registry,
-        "Classical MD: Lennard–Jones",
-        "The TIP3P O–O LJ term supplies a force inside the same Velocity Verlet loop",
-        video=True,
-    )
-    left = axes_from_top_slot(fig, VIDEO_LEFT)
-    right = axes_from_top_slot(fig, VIDEO_RIGHT)
+    left = axes_from_top_slot(fig, STORY_VIDEO_A)
+    middle = axes_from_top_slot(fig, STORY_VIDEO_B)
+    upper_right = axes_from_top_slot(fig, STORY_VIDEO_C)
+    lower_right = axes_from_top_slot(fig, STORY_VIDEO_D)
     draw_left(left, registry, video=True, active_stage=stage)
     headings = (
         "O···O geometry",
@@ -428,38 +424,9 @@ def draw_video_frame(
         "velocity update",
     )
     colors = (NAVY, CRIMSON, GREEN)
-    registry.text(
-        right,
-        0.50,
-        0.965,
-        headings[stage],
-        ha="center",
-        va="top",
-        fontsize=27,
-        color=colors[stage],
-        weight="bold",
-    )
-    draw_stage(
-        right,
-        registry,
-        data,
-        scenes,
-        camera,
-        stage=stage,
-        rect=SCENE_RECT,
-        video=True,
-        progress=progress,
-    )
-    registry.text(
-        right,
-        0.50,
-        0.075,
-        "Highlighted LJ term only · TIP3P also contains electrostatics",
-        ha="center",
-        va="bottom",
-        fontsize=18,
-        color=DARK_GRAY,
-    )
+    draw_case_panel(middle, registry, data, scenes, camera, stage=stage, video=True, progress=progress)
+    draw_relation_panel(upper_right, registry, video=True)
+    draw_lj_loop(lower_right, registry, video=True, active_stage=stage)
     return [{"id": headings[stage], "color": colors[stage], "min_pixels": 150}]
 
 
@@ -470,8 +437,10 @@ def render_animation(
 ) -> None:
     audit = {
         "panels": [
-            {"id": "integrator", "rect": list(VIDEO_LEFT), "min_clearance_px": 18},
-            {"id": "mattervis_dimer", "rect": list(VIDEO_RIGHT), "min_clearance_px": 18},
+            {"id": "integrator", "rect": list(STORY_VIDEO_A), "min_clearance_px": 12},
+            {"id": "mattervis_dimer", "rect": list(STORY_VIDEO_B), "min_clearance_px": 12},
+            {"id": "lj_relation", "rect": list(STORY_VIDEO_C), "min_clearance_px": 12},
+            {"id": "lj_loop", "rect": list(STORY_VIDEO_D), "min_clearance_px": 12},
         ],
         "whitespace": {
             "background_threshold": 245,
@@ -481,11 +450,9 @@ def render_animation(
             "grid_columns": 20,
         },
         "bands": [
-            {
-                "id": "column_gap",
-                "rect": [0.365, 0.19, 0.385, 0.90],
-                "max_ink_pixels": 0,
-            }
+            {"id": "gap_a_b", "rect": [0.310, 0.055, 0.325, 0.955], "max_ink_pixels": 0},
+            {"id": "gap_b_right", "rect": [0.715, 0.045, 0.745, 0.955], "max_ink_pixels": 0},
+            {"id": "gap_c_d", "rect": [0.745, 0.405, 0.965, 0.445], "max_ink_pixels": 0},
         ],
     }
     render_video(

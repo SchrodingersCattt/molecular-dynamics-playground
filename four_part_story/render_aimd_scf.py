@@ -32,7 +32,14 @@ from common import (
 )
 from mattervis_story import (
     SceneCamera,
-    add_story_title,
+    STORY_STATIC_A,
+    STORY_STATIC_B,
+    STORY_STATIC_C,
+    STORY_STATIC_D,
+    STORY_VIDEO_A,
+    STORY_VIDEO_B,
+    STORY_VIDEO_C,
+    STORY_VIDEO_D,
     camera_for_source,
     draw_vv_loop,
     make_vector_group,
@@ -54,15 +61,15 @@ MOTION_SOURCE = ROOT / "data" / "aimd_multistep_h2o_dimer.extxyz"
 STATIC_SCENE_RECT = (0.04, 0.10, 0.96, 0.87)
 VIDEO_SCENE_RECT = (0.04, 0.10, 0.96, 0.87)
 
-STATIC_A = (0.035, 0.20, 0.310, 0.91)
-STATIC_B = (0.325, 0.18, 0.715, 0.91)
-STATIC_C = (0.745, 0.18, 0.965, 0.49)
-STATIC_D = (0.755, 0.52, 0.955, 0.91)
+STATIC_A = STORY_STATIC_A
+STATIC_B = STORY_STATIC_B
+STATIC_C = STORY_STATIC_C
+STATIC_D = STORY_STATIC_D
 
-VIDEO_A = (0.035, 0.20, 0.310, 0.91)
-VIDEO_B = (0.325, 0.18, 0.715, 0.91)
-VIDEO_C = (0.745, 0.18, 0.965, 0.49)
-VIDEO_D = (0.755, 0.52, 0.955, 0.91)
+VIDEO_A = STORY_VIDEO_A
+VIDEO_B = STORY_VIDEO_B
+VIDEO_C = STORY_VIDEO_C
+VIDEO_D = STORY_VIDEO_D
 
 CAMERA_SCALE = 1.72
 POSITION_LAKE = "#4E9BB5"
@@ -418,6 +425,7 @@ def draw_scf_loop(
     converged: bool,
 ) -> None:
     """Draw the electronic loop in its own lower-right panel."""
+    del iteration, iteration_count, converged
     aspect = _axes_aspect(ax)
     symbols = [r"$F$", r"$C$", r"$\rho$", r"$?$"]
     positions = [
@@ -468,7 +476,7 @@ def draw_scf_loop(
             symbol,
             ha="center",
             va="center",
-            fontsize=20 if video else 10,
+            fontsize=14 if video else 10,
             color=WHITE if weight > 0.48 else DARK_GRAY,
             weight="bold",
             zorder=5,
@@ -480,21 +488,9 @@ def draw_scf_loop(
         "SCF",
         ha="center",
         va="center",
-        fontsize=20 if video else 14,
+        fontsize=16 if video else 14,
         color=INK,
         weight="bold",
-    )
-    status = "converged" if converged else f"SCF {iteration:02d} / {iteration_count:02d}"
-    registry.text(
-        ax,
-        centre_x,
-        0.10,
-        status,
-        ha="center",
-        va="center",
-        fontsize=18 if video else 10,
-        color=GREEN if converged else DARK_GRAY,
-        weight="bold" if converged else "normal",
     )
 
 
@@ -576,23 +572,17 @@ def draw_case(
             blend=blend,
             zorder=4,
         )
-        if mode == "pause":
-            stage_text = f"Iteration {iteration_index + 1:02d} · SCF converged"
-        else:
-            actions = (
-                "build Fock matrix",
-                "solve orbitals",
-                "update density",
-                "check convergence",
-            )
-            action = actions[int(np.argmax(scf_stage_weights))]
-            stage_text = f"Iteration {iteration_index + 1:02d} · {action}"
+        stage_text = (
+            "Nuclei ready for force evaluation"
+            if mode == "pause"
+            else "Hold nuclei fixed"
+        )
     elif mode == "force":
         place_render(ax, force_paths[ion_index], scene_rect, zorder=5)
-        stage_text = f"Ionic step {ion_index + 1:02d} · evaluate nuclear forces"
+        stage_text = "Evaluate nuclear forces"
     elif mode == "velocity":
         place_render(ax, velocity_paths[ion_index], scene_rect, zorder=5)
-        stage_text = f"Ionic step {ion_index + 1:02d} · update velocity"
+        stage_text = "Update velocity"
     elif mode == "move":
         fade = smoothstep(np.clip(phase_progress / 0.35, 0.0, 1.0))
         old_fade = 1.0 - smoothstep(
@@ -612,10 +602,7 @@ def draw_case(
             alpha=0.44 * old_fade,
             zorder=6,
         )
-        stage_text = (
-            f"Ionic step {ion_index + 1:02d} → {ion_index + 2:02d} · "
-            "update position"
-        )
+        stage_text = "Update position"
     else:
         raise ValueError(f"Unknown AIMD mode: {mode}")
 
@@ -626,7 +613,19 @@ def draw_case(
         stage_text,
         ha="center",
         va="center",
-        fontsize=22 if video else 11,
+        fontsize=16 if video else 11,
+        color=INK,
+        weight="normal",
+        zorder=21,
+    )
+    registry.text(
+        ax,
+        0.075,
+        0.070,
+        f"Simulation step {ion_index + 1:02d}",
+        ha="left",
+        va="bottom",
+        fontsize=12 if video else 10,
         color=INK,
         weight="normal",
         zorder=21,
@@ -643,6 +642,7 @@ def draw_energy_curve(
     ion_index: int,
     iteration_index: int,
     density_blend: float,
+    scf_stage_weights: tuple[float, float, float, float],
 ) -> None:
     """Draw the real SCF energy convergence for the current ionic step."""
     ax.add_patch(
@@ -656,20 +656,35 @@ def draw_energy_curve(
             zorder=2,
         )
     )
+    count = int(data["scf_counts"][ion_index])
+    if mode == "scf":
+        actions = (
+            "build Fock matrix",
+            "solve orbitals",
+            "update density",
+            "check convergence",
+        )
+        action = actions[int(np.argmax(scf_stage_weights))]
+        electronic_status = (
+            f"Iteration {iteration_index + 1:02d} / {count:02d} · {action}"
+        )
+    elif mode == "pause":
+        electronic_status = f"Iteration {count:02d} / {count:02d} · converged"
+    else:
+        electronic_status = f"SCF converged · {count:02d} iterations"
     registry.text(
         ax,
         0.50,
         0.90,
-        f"Ionic step {ion_index + 1:02d} · SCF energy",
+        electronic_status,
         ha="center",
         va="center",
-        fontsize=18 if video else 10,
+        fontsize=14 if video else 10,
         color=INK,
         weight="normal",
         zorder=4,
     )
 
-    count = int(data["scf_counts"][ion_index])
     energies = np.asarray(data["scf_energies_eh"][ion_index, :count], dtype=float)
     error = np.abs(energies - energies[-1])
     display_error = np.maximum(error, 1.0e-10)
@@ -724,7 +739,7 @@ def draw_energy_curve(
     plot_ax.set_ylim(5.0e-11, 2.0)
     plot_ax.set_xticks(sorted(set((1, 4, 8, count))))
     plot_ax.set_yticks((1.0, 1.0e-3, 1.0e-6, 1.0e-9))
-    font_size = 18 if video else 10
+    font_size = 10
     plot_ax.tick_params(axis="both", labelsize=font_size, colors=DARK_GRAY, width=1.0)
     plot_ax.set_xlabel("SCF iteration", fontsize=font_size, color=INK, labelpad=3)
     plot_ax.set_ylabel(r"$|E^k-E^*|$ / Eh", fontsize=font_size, color=INK, labelpad=3)
@@ -773,6 +788,7 @@ def render_static(
             ion_index=0,
             iteration_index=first_count - 1,
             density_blend=0.0,
+            scf_stage_weights=(0.0, 0.0, 0.0, 0.0),
         ),
         width_px=1100,
         height_px=800,
@@ -793,13 +809,6 @@ def render_static(
     )
     fig = new_static_figure()
     registry = LayoutRegistry(min_font_pt=10, edge_pad_px=18)
-    add_story_title(
-        fig,
-        registry,
-        "Ab initio MD: every ionic step contains an electronic solve",
-        "Real RHF/STO-3G water-dimer density converges before the nuclei advance",
-        video=False,
-    )
     panel_a = axes_from_top_slot(fig, STATIC_A)
     panel_b = axes_from_top_slot(fig, STATIC_B)
     panel_c = axes_from_top_slot(fig, STATIC_C)
@@ -826,6 +835,7 @@ def render_static(
         ion_index=0,
         iteration_index=first_count - 1,
         density_blend=0.0,
+        scf_stage_weights=(0.0, 0.0, 0.0, 0.0),
     )
     draw_scf_loop(
         panel_d,
@@ -998,16 +1008,6 @@ def draw_video_frame(
 ) -> list[dict]:
     del frame_index
     state = video_state(time_seconds, data["scf_counts"])
-    add_story_title(
-        fig,
-        registry,
-        "AIMD: electrons converge before nuclei move",
-        (
-            "real RHF/STO-3G H₂O dimer · two complete SCF cycles, "
-            "then four rapid ionic steps"
-        ),
-        video=True,
-    )
     panel_a = axes_from_top_slot(fig, VIDEO_A)
     panel_b = axes_from_top_slot(fig, VIDEO_B)
     panel_c = axes_from_top_slot(fig, VIDEO_C)
@@ -1041,6 +1041,7 @@ def draw_video_frame(
         ion_index=state["ion"],
         iteration_index=state["iteration"],
         density_blend=state["blend"],
+        scf_stage_weights=state["stage_weights"],
     )
     count = int(data["scf_counts"][state["ion"]])
     draw_scf_loop(
@@ -1116,7 +1117,7 @@ def render_representative_frames(
     records: list[dict] = []
     for index, time_seconds in enumerate(KEYFRAME_TIMES):
         fig = new_video_figure()
-        registry = LayoutRegistry(min_font_pt=18, edge_pad_px=12)
+        registry = LayoutRegistry(min_font_pt=10, max_font_pt=16, edge_pad_px=12)
         semantics = draw_video_frame(
             fig,
             time_seconds,
@@ -1195,17 +1196,17 @@ def render_animation(
         "bands": [
             {
                 "id": "gap_a_b",
-                "rect": [0.310, 0.20, 0.325, 0.91],
+                "rect": [0.310, 0.055, 0.325, 0.955],
                 "max_ink_pixels": 0,
             },
             {
                 "id": "gap_b_right",
-                "rect": [0.715, 0.18, 0.745, 0.91],
+                "rect": [0.715, 0.045, 0.745, 0.955],
                 "max_ink_pixels": 0,
             },
             {
                 "id": "gap_c_d",
-                "rect": [0.745, 0.49, 0.965, 0.52],
+                "rect": [0.745, 0.405, 0.965, 0.445],
                 "max_ink_pixels": 0,
             }
         ],

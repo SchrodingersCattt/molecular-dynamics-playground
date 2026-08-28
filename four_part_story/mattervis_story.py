@@ -47,6 +47,15 @@ STATIC_RIGHT = (0.40, 0.185, 0.965, 0.89)
 VIDEO_LEFT = (0.045, 0.19, 0.355, 0.90)
 VIDEO_RIGHT = (0.40, 0.19, 0.965, 0.90)
 
+STORY_STATIC_A = (0.035, 0.055, 0.310, 0.955)
+STORY_STATIC_B = (0.325, 0.045, 0.715, 0.955)
+STORY_STATIC_C = (0.745, 0.045, 0.965, 0.405)
+STORY_STATIC_D = (0.755, 0.445, 0.955, 0.955)
+STORY_VIDEO_A = STORY_STATIC_A
+STORY_VIDEO_B = STORY_STATIC_B
+STORY_VIDEO_C = STORY_STATIC_C
+STORY_VIDEO_D = STORY_STATIC_D
+
 
 @dataclass(frozen=True)
 class SceneCamera:
@@ -679,10 +688,10 @@ def draw_vv_loop(
     centre_x = 0.50
     radius_y = radius_x * axes_aspect
     arc_ranges = ((-30, 90), (210, 330), (90, 210))
-    ax.add_patch(Arc((centre_x, centre_y), 2 * radius_x, 2 * radius_y, theta1=0, theta2=360, color=LINE_GRAY, lw=4.0 if video else 2.4, zorder=1))
+    ax.add_patch(Arc((centre_x, centre_y), 2 * radius_x, 2 * radius_y, theta1=0, theta2=360, color=LINE_GRAY, lw=3.0 if video else 2.0, zorder=1))
     if active_stage is not None:
         theta1, theta2 = arc_ranges[active_stage]
-        ax.add_patch(Arc((centre_x, centre_y), 2 * radius_x, 2 * radius_y, theta1=theta1, theta2=theta2, color=INK, lw=5.0 if video else 3.0, zorder=2))
+        ax.add_patch(Arc((centre_x, centre_y), 2 * radius_x, 2 * radius_y, theta1=theta1, theta2=theta2, color=INK, lw=4.0 if video else 2.6, zorder=2))
     tangent_angles = ((38, 24), (-82, -98), (-202, -218))
     for index, (start_angle, end_angle) in enumerate(tangent_angles):
         def point(angle: float) -> tuple[float, float]:
@@ -693,8 +702,8 @@ def draw_vv_loop(
             point(start_angle),
             point(end_angle),
             arrowstyle="-|>",
-            mutation_scale=25 if video else 16,
-            lw=4.5 if video else 2.6,
+            mutation_scale=20 if video else 14,
+            lw=3.2 if video else 2.2,
             color=INK if active_stage == index else LINE_GRAY,
             zorder=3,
         )
@@ -714,7 +723,7 @@ def draw_vv_loop(
                 height=2.0 * node_half_height,
                 fc=INK if active else WHITE,
                 ec=INK if active else LINE_GRAY,
-                lw=4.0 if video else 2.3,
+                lw=2.8 if video else 2.0,
                 zorder=4,
             )
         )
@@ -730,7 +739,7 @@ def draw_vv_loop(
             symbol,
             ha="center",
             va="center",
-            fontsize=25 if video else 14,
+            fontsize=16 if video else 14,
             color=WHITE if active else DARK_GRAY,
             weight="bold",
             zorder=5,
@@ -742,7 +751,7 @@ def draw_vv_loop(
             label,
             ha="center",
             va="top",
-            fontsize=18 if video else 10,
+            fontsize=12 if video else 10,
             color=INK if active else DARK_GRAY,
             zorder=5,
         )
@@ -753,7 +762,7 @@ def draw_vv_loop(
         centre_text or "Velocity\nVerlet",
         ha="center",
         va="center",
-        fontsize=(18 if video else 10) if centre_text else (25 if video else 15),
+        fontsize=(14 if video else 10) if centre_text else (16 if video else 15),
         color=INK,
         weight="normal" if centre_text else "bold",
         linespacing=1.15 if centre_text else 1.0,
@@ -766,7 +775,7 @@ def draw_vv_loop(
             equation,
             ha="center",
             va="center",
-            fontsize=19 if video else 10,
+            fontsize=12 if video else 10,
             color=INK,
         )
 
@@ -785,7 +794,7 @@ def add_story_title(
         title,
         ha="left",
         va="top",
-        fontsize=36 if video else 23,
+        fontsize=16,
         color=INK,
         weight="bold",
     )
@@ -795,7 +804,7 @@ def add_story_title(
         subtitle,
         ha="left",
         va="top",
-        fontsize=20 if video else 11,
+        fontsize=12 if video else 11,
         color=DARK_GRAY,
     )
     registry.texts.extend((title_artist, subtitle_artist))

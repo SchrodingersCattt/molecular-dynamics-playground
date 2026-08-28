@@ -20,8 +20,6 @@ from common import (
     NAVY,
     WHITE,
     LayoutRegistry,
-    add_footer,
-    add_page_title,
     axes_from_top_slot,
     map_projected_to_rect,
     mix_hex,
@@ -32,6 +30,17 @@ from common import (
     save_static,
     smoothstep,
 )
+from mattervis_story import (
+    STORY_STATIC_A,
+    STORY_STATIC_B,
+    STORY_STATIC_C,
+    STORY_STATIC_D,
+    STORY_VIDEO_A,
+    STORY_VIDEO_B,
+    STORY_VIDEO_C,
+    STORY_VIDEO_D,
+    draw_vv_loop,
+)
 
 
 ROOT = Path(__file__).resolve().parent
@@ -40,13 +49,6 @@ RESULT_PATH = ROOT / "data" / "dpmd_water_box_results.npz"
 META_PATH = ROOT / "data" / "dpmd_eval.json"
 QA_DIR = ROOT / "_qa" / "04_dpmd"
 STEM = "04_deep_potential_md"
-
-STATIC_LEFT = (0.035, 0.245, 0.255, 0.835)
-STATIC_MIDDLE = (0.285, 0.185, 0.715, 0.895)
-STATIC_RIGHT = (0.750, 0.215, 0.970, 0.855)
-VIDEO_LEFT = (0.030, 0.205, 0.270, 0.875)
-VIDEO_MIDDLE = (0.305, 0.185, 0.720, 0.895)
-VIDEO_RIGHT = (0.755, 0.205, 0.970, 0.875)
 
 FORCE_DISPLAY_SCALE = 1.8
 VIDEO_DURATION_SECONDS = 16.0
@@ -330,8 +332,8 @@ def draw_dp_pipeline(
             (0.50, stages[index][0] - 0.073),
             (0.50, stages[index + 1][0] + 0.073),
             arrowstyle="-|>",
-            mutation_scale=27 if video else 18,
-            lw=4.0 if video else 2.35,
+            mutation_scale=19 if video else 14,
+            lw=2.8 if video else 2.0,
             color=INK if active_stage == index + 1 and active_weight > 0.45 else LINE_GRAY,
             zorder=2,
         )
@@ -342,8 +344,8 @@ def draw_dp_pipeline(
         text_colour = WHITE if weight > 0.48 else GREEN if index == 3 else INK
         width = 0.84 if index in {0, 2, 4} else 0.70
         _rounded_node(ax, 0.50, y, width, 0.105, fill, edge, lw=2.7 if video else 1.7)
-        registry.text(ax, 0.50, y + 0.028, label, ha="center", va="center", fontsize=18 if video else 10, color=text_colour, weight="bold", zorder=5)
-        registry.text(ax, 0.50, y - 0.033, symbol, ha="center", va="center", fontsize=18 if video else 10, color=WHITE if weight > 0.48 else INK, zorder=5)
+        registry.text(ax, 0.50, y + 0.028, label, ha="center", va="center", fontsize=10, color=text_colour, weight="bold", zorder=5)
+        registry.text(ax, 0.50, y - 0.033, symbol, ha="center", va="center", fontsize=10, color=WHITE if weight > 0.48 else INK, zorder=5)
     energy = float(data["result_total_energy_ev"])
     max_force = float(data["metadata"]["max_force_ev_per_angstrom"])
     registry.text(
@@ -353,45 +355,22 @@ def draw_dp_pipeline(
         f"DeepMD E = {energy:.3f} eV\nmax |F| = {max_force:.3f} eV Å⁻¹",
         ha="center",
         va="bottom",
-        fontsize=18 if video else 10,
+        fontsize=10,
         color=GREEN,
         weight="bold",
     )
 
 
 def draw_md_loop(ax: plt.Axes, registry: LayoutRegistry, *, video: bool) -> None:
-    ax.set_aspect("equal", adjustable="box")
-    radius = 0.125 if video else 0.105
-    nodes = [
-        (0.50, 0.79, r"$\mathbf{r}$", "position", DARK_GRAY),
-        (0.78, 0.31, r"$\mathbf{a}$", "acceleration", CRIMSON),
-        (0.22, 0.31, r"$\mathbf{v}$", "velocity", DARK_GRAY),
-    ]
-    paths = [
-        ((0.57, 0.72), (0.72, 0.42), -0.10),
-        ((0.66, 0.27), (0.34, 0.27), -0.10),
-        ((0.27, 0.42), (0.43, 0.72), -0.10),
-    ]
-    for start, end, curve in paths:
-        registry.arrow(
-            ax,
-            start,
-            end,
-            connectionstyle=f"arc3,rad={curve}",
-            arrowstyle="-|>",
-            mutation_scale=27 if video else 18,
-            lw=4.0 if video else 2.4,
-            color=LINE_GRAY,
-            zorder=2,
-        )
-    for index, (x, y, symbol, label, label_colour) in enumerate(nodes):
-        active = index == 1
-        ax.add_patch(Circle((x, y), radius, fc=INK if active else LIGHT_GRAY, ec=LINE_GRAY, lw=2.8 if video else 1.8, zorder=4))
-        registry.text(ax, x, y, symbol, ha="center", va="center", fontsize=25 if video else 15, color=WHITE if active else DARK_GRAY, weight="bold", zorder=5)
-        label_y = y + radius + (0.060 if index == 0 else -2.0 * radius - 0.055)
-        registry.text(ax, x, label_y, label, ha="center", va="center", fontsize=18 if video else 10, color=label_colour, weight="bold" if active else "normal")
-    registry.text(ax, 0.50, 0.55, "one MD step", ha="center", va="center", fontsize=19 if video else 11, color=DARK_GRAY)
-    registry.text(ax, 0.50, 0.47, r"$\Delta t$", ha="center", va="center", fontsize=24 if video else 14, color=INK, weight="bold")
+    draw_vv_loop(
+        ax,
+        registry,
+        video=video,
+        active_stage=1,
+        centre_text=r"$\mathbf{a}_{n+1}=\mathbf{F}_{\mathrm{DP}}/m$",
+        centre_y=0.52,
+        radius_x=0.40,
+    )
 
 
 def _draw_md_source(ax: plt.Axes, registry: LayoutRegistry) -> None:
@@ -422,6 +401,46 @@ def _draw_pipeline_source(ax: plt.Axes, registry: LayoutRegistry, data) -> None:
     draw_dp_pipeline(ax, registry, data, video=False, active_stage=None, active_weight=0.0)
 
 
+def draw_environment_panel(
+    ax: plt.Axes,
+    registry: LayoutRegistry,
+    data,
+    *,
+    video: bool,
+    mode: str,
+    headline: str,
+    sphere_reveal: float = 1.0,
+    outside_fade: float = 1.0,
+    neighbor_weight: float = 1.0,
+    force_weight: float = 1.0,
+) -> None:
+    ax.add_patch(FancyBboxPatch((0.04, 0.04), 0.92, 0.92, boxstyle="square,pad=0", fill=False, ec=LINE_GRAY, lw=2.0 if video else 1.1, zorder=20))
+    registry.text(ax, 0.50, 0.925, headline, ha="center", va="center", fontsize=16 if video else 11, color=INK, zorder=21)
+    registry.text(ax, 0.075, 0.070, "Simulation step 01", ha="left", va="bottom", fontsize=12 if video else 10, color=INK, zorder=21)
+    draw_water_scene(
+        ax,
+        registry,
+        data,
+        rect=(0.015, 0.115, 0.985, 0.885),
+        video=video,
+        mode=mode,
+        sphere_reveal=sphere_reveal,
+        outside_fade=outside_fade,
+        neighbor_weight=neighbor_weight,
+        force_weight=force_weight,
+    )
+
+
+def draw_local_summary(ax: plt.Axes, registry: LayoutRegistry, data, *, video: bool, active: bool) -> None:
+    ax.add_patch(FancyBboxPatch((0.04, 0.04), 0.92, 0.92, boxstyle="square,pad=0", fill=False, ec=LINE_GRAY, lw=2.0 if video else 1.1))
+    registry.text(ax, 0.50, 0.82, "local environment", ha="center", va="center", fontsize=14 if video else 10, color=INK)
+    ring_color = NAVY if active else LINE_GRAY
+    ax.add_patch(Circle((0.50, 0.46), 0.23, fc="#18315309", ec=ring_color, lw=2.4 if video else 1.4))
+    ax.add_patch(Circle((0.50, 0.46), 0.045, fc=INK, ec=WHITE, lw=1.0))
+    registry.text(ax, 0.50, 0.46, "i", ha="center", va="center", fontsize=10, color=WHITE, weight="bold")
+    registry.text(ax, 0.50, 0.15, f"$r_c={float(data['cutoff']):.1f}$ Å · {int(np.count_nonzero(data['neighbor_mask']))} neighbors", ha="center", va="center", fontsize=12 if video else 10, color=NAVY)
+
+
 def render_static(data) -> None:
     render_source_panel(QA_DIR / "source" / "md_loop.png", _draw_md_source, width_px=900, height_px=1400)
     render_source_panel(
@@ -438,26 +457,14 @@ def render_static(data) -> None:
     )
     fig = new_static_figure()
     registry = LayoutRegistry(min_font_pt=10, edge_pad_px=18)
-    add_page_title(
-        fig,
-        "04",
-        "Deep Potential molecular dynamics",
-        "replace the electronic solve with a local, differentiable energy model",
-        video=False,
-        registry=registry,
-    )
-    left = axes_from_top_slot(fig, STATIC_LEFT)
-    middle = axes_from_top_slot(fig, STATIC_MIDDLE)
-    right = axes_from_top_slot(fig, STATIC_RIGHT)
+    left = axes_from_top_slot(fig, STORY_STATIC_A)
+    middle = axes_from_top_slot(fig, STORY_STATIC_B)
+    upper_right = axes_from_top_slot(fig, STORY_STATIC_C)
+    lower_right = axes_from_top_slot(fig, STORY_STATIC_D)
     _draw_md_source(left, registry)
-    _draw_environment_source(middle, registry, data)
-    _draw_pipeline_source(right, registry, data)
-    add_footer(
-        fig,
-        "prepared 64-water box (not equilibrated) · DeepMD-kit 3.1.3 inference · fixed asymmetric orthographic camera",
-        video=False,
-        registry=registry,
-    )
+    draw_environment_panel(middle, registry, data, video=False, mode="neighbors", headline="Select local neighbors")
+    draw_local_summary(upper_right, registry, data, video=False, active=True)
+    draw_dp_pipeline(lower_right, registry, data, video=False, active_stage=2, active_weight=1.0)
     errors = registry.validate(fig)
     if errors:
         raise RuntimeError("Static layout failed:\n" + "\n".join(errors))
@@ -476,56 +483,31 @@ def _video_stage(time_seconds: float) -> tuple[int, float]:
 def _draw_video_frame(fig, time_seconds, frame_index, registry, data):
     stage, local = _video_stage(time_seconds)
     fade = smoothstep(min(local / 0.24, 1.0))
-    add_page_title(
-        fig,
-        "04",
-        "Deep Potential MD: from neighbors to forces",
-        "one real 64-water box · one fixed 3D camera · one exact 6 Å cutoff",
-        video=True,
-        registry=registry,
-    )
-    left = axes_from_top_slot(fig, VIDEO_LEFT)
-    middle = axes_from_top_slot(fig, VIDEO_MIDDLE)
-    right = axes_from_top_slot(fig, VIDEO_RIGHT)
+    left = axes_from_top_slot(fig, STORY_VIDEO_A)
+    middle = axes_from_top_slot(fig, STORY_VIDEO_B)
+    upper_right = axes_from_top_slot(fig, STORY_VIDEO_C)
+    lower_right = axes_from_top_slot(fig, STORY_VIDEO_D)
     draw_md_loop(left, registry, video=True)
 
     if stage == 0:
         mode = "bonds"
-        headline = "1 · chemical-bond view"
-        detail = "64 H₂O · 192 atoms · periodic cube"
-        colour = DARK_GRAY
+        headline = "Show the periodic water box"
     elif stage == 1:
         mode = "cutoff"
-        headline = "2 · draw the true cutoff sphere"
-        detail = "central atom fixed at source ID 126 · rcut = 6.0 Å"
-        colour = NAVY
+        headline = "Draw the 6 Å cutoff sphere"
     elif stage == 2:
         mode = "neighbors"
-        headline = "3 · switch to the neighbor view"
-        detail = "83 exact minimum-image neighbors · outside atoms fade"
-        colour = NAVY
+        headline = "Select minimum-image neighbors"
     else:
         mode = "forces"
-        headline = "4 · learned energy returns real forces"
-        detail = "12 local force vectors shown · one fixed display scale"
-        colour = GREEN
-    registry.text(middle, 0.50, 0.965, headline, ha="center", va="top", fontsize=25, color=colour, weight="bold")
+        headline = "Evaluate energy and forces"
     scene_weights = {
         0: {"sphere_reveal": 1.0, "outside_fade": 0.0, "neighbor_weight": 0.0, "force_weight": 0.0},
         1: {"sphere_reveal": fade, "outside_fade": fade, "neighbor_weight": 0.0, "force_weight": 0.0},
         2: {"sphere_reveal": 1.0, "outside_fade": 1.0, "neighbor_weight": fade, "force_weight": 0.0},
         3: {"sphere_reveal": 1.0, "outside_fade": 1.0, "neighbor_weight": 1.0, "force_weight": fade},
     }[stage]
-    draw_water_scene(
-        middle,
-        registry,
-        data,
-        rect=(0.015, 0.115, 0.985, 0.905),
-        video=True,
-        mode=mode,
-        **scene_weights,
-    )
-    registry.text(middle, 0.50, 0.035, detail, ha="center", va="bottom", fontsize=18, color=DARK_GRAY)
+    draw_environment_panel(middle, registry, data, video=True, mode=mode, headline=headline, **scene_weights)
 
     if stage == 0:
         active = 0
@@ -540,13 +522,8 @@ def _draw_video_frame(fig, time_seconds, frame_index, registry, data):
         active = min(4, 1 + int(min(local, 0.999) * 4.0))
         within = (local * 4.0) % 1.0
         active_weight = smoothstep(min(within / 0.22, 1.0))
-    draw_dp_pipeline(right, registry, data, video=True, active_stage=active, active_weight=active_weight)
-    add_footer(
-        fig,
-        "model: H2O-Phase-Diagram-model_compressed.pb · inference executed in a Bohrium sandbox · no 111 view",
-        video=True,
-        registry=registry,
-    )
+    draw_local_summary(upper_right, registry, data, video=True, active=stage >= 1)
+    draw_dp_pipeline(lower_right, registry, data, video=True, active_stage=active, active_weight=active_weight)
     return [
         {"id": "hydrogen_cutoff", "color": NAVY, "min_pixels": 500},
         {"id": "oxygen", "color": CRIMSON, "min_pixels": 350},
@@ -557,9 +534,10 @@ def _draw_video_frame(fig, time_seconds, frame_index, registry, data):
 def render_animation(data) -> None:
     audit_config = {
         "panels": [
-            {"id": "md_loop", "rect": list(VIDEO_LEFT), "min_clearance_px": 16},
-            {"id": "water_environment", "rect": list(VIDEO_MIDDLE), "min_clearance_px": 16},
-            {"id": "learned_model", "rect": list(VIDEO_RIGHT), "min_clearance_px": 16},
+            {"id": "md_loop", "rect": list(STORY_VIDEO_A), "min_clearance_px": 12},
+            {"id": "water_environment", "rect": list(STORY_VIDEO_B), "min_clearance_px": 12},
+            {"id": "local_environment", "rect": list(STORY_VIDEO_C), "min_clearance_px": 12},
+            {"id": "learned_model", "rect": list(STORY_VIDEO_D), "min_clearance_px": 12},
         ],
         "whitespace": {
             "background_threshold": 245,
@@ -569,8 +547,9 @@ def render_animation(data) -> None:
             "grid_columns": 24,
         },
         "bands": [
-            {"id": "left_gap", "rect": [0.278, 0.19, 0.295, 0.895], "max_ink_pixels": 0},
-            {"id": "right_gap", "rect": [0.728, 0.19, 0.745, 0.895], "max_ink_pixels": 0},
+            {"id": "gap_a_b", "rect": [0.310, 0.055, 0.325, 0.955], "max_ink_pixels": 0},
+            {"id": "gap_b_right", "rect": [0.715, 0.045, 0.745, 0.955], "max_ink_pixels": 0},
+            {"id": "gap_c_d", "rect": [0.745, 0.405, 0.965, 0.445], "max_ink_pixels": 0},
         ],
     }
     output = render_video(

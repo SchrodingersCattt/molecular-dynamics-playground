@@ -40,6 +40,8 @@ VIDEO_DPI = 100
 VIDEO_WIDTH_PX = 1920
 VIDEO_HEIGHT_PX = 1080
 FPS = 24
+FONT_MIN_PT = 10.0
+FONT_MAX_PT = 16.0
 
 CAMERA_DIRECTION = np.array([1.55, -1.0, 0.62], dtype=float)
 CAMERA_UP = np.array([0.0, 0.0, 1.0], dtype=float)
@@ -114,9 +116,9 @@ def add_page_title(
     video: bool,
     registry: "LayoutRegistry | None" = None,
 ) -> None:
-    number_size = 19 if video else 11
-    title_size = 38 if video else 25
-    subtitle_size = 21 if video else 12
+    number_size = 12 if video else 11
+    title_size = 16
+    subtitle_size = 12
     artists = [
         fig.text(0.048, 0.942, number, ha="left", va="top", fontsize=number_size, color=DARK_GRAY, weight="bold"),
         fig.text(0.048, 0.902, title, ha="left", va="top", fontsize=title_size, color=INK, weight="bold"),
@@ -139,7 +141,7 @@ def add_footer(
         text,
         ha="center",
         va="bottom",
-        fontsize=18 if video else 10,
+        fontsize=12 if video else 10,
         color=DARK_GRAY,
     )
     if registry is not None:
@@ -149,6 +151,7 @@ def add_footer(
 @dataclass
 class LayoutRegistry:
     min_font_pt: float
+    max_font_pt: float = FONT_MAX_PT
     edge_pad_px: float = 12.0
     texts: list = field(default_factory=list)
     arrows: list = field(default_factory=list)
@@ -157,6 +160,8 @@ class LayoutRegistry:
         fontsize = float(kwargs.get("fontsize", self.min_font_pt))
         if fontsize < self.min_font_pt:
             raise ValueError(f"Font {fontsize:g} pt is below the contract minimum {self.min_font_pt:g} pt")
+        if fontsize > self.max_font_pt:
+            raise ValueError(f"Font {fontsize:g} pt is above the contract maximum {self.max_font_pt:g} pt")
         artist = ax.text(x, y, value, **kwargs)
         self.texts.append(artist)
         return artist
@@ -176,6 +181,8 @@ class LayoutRegistry:
         for index, artist in enumerate(self.texts):
             if float(artist.get_fontsize()) < self.min_font_pt:
                 errors.append(f"text[{index}] font below minimum")
+            if float(artist.get_fontsize()) > self.max_font_pt:
+                errors.append(f"text[{index}] font above maximum")
             bbox = artist.get_window_extent(renderer=renderer)
             boxes.append((index, bbox))
             if bbox.x0 < self.edge_pad_px or bbox.y0 < self.edge_pad_px:
@@ -238,11 +245,11 @@ def draw_three_step_loop(
         fill = mix_hex(LIGHT_GRAY, INK, weight)
         text_color = WHITE if weight > 0.48 else DARK_GRAY
         ax.add_patch(Circle((x, y), node_radius, fc=fill, ec=LINE_GRAY, lw=2.6 if video else 1.8, zorder=5))
-        registry.text(ax, x, y + 0.018, label, ha="center", va="center", fontsize=18 if video else 11, color=text_color, weight="bold", zorder=6)
-        registry.text(ax, x, y - 0.040, symbol, ha="center", va="center", fontsize=19 if video else 10, color=text_color, zorder=6)
+        registry.text(ax, x, y + 0.018, label, ha="center", va="center", fontsize=14 if video else 11, color=text_color, weight="bold", zorder=6)
+        registry.text(ax, x, y - 0.040, symbol, ha="center", va="center", fontsize=14 if video else 10, color=text_color, zorder=6)
 
-    registry.text(ax, 0.50, 0.60, centre_lines[0], ha="center", va="center", fontsize=19 if video else 11, color=DARK_GRAY)
-    registry.text(ax, 0.50, 0.53, centre_lines[1], ha="center", va="center", fontsize=23 if video else 14, color=INK, weight="bold")
+    registry.text(ax, 0.50, 0.60, centre_lines[0], ha="center", va="center", fontsize=14 if video else 11, color=DARK_GRAY)
+    registry.text(ax, 0.50, 0.53, centre_lines[1], ha="center", va="center", fontsize=16 if video else 14, color=INK, weight="bold")
 
 
 def camera_basis(direction=CAMERA_DIRECTION, up=CAMERA_UP) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
@@ -428,7 +435,7 @@ def render_video(
         for frame_index in range(frames):
             fig.clear()
             time_seconds = frame_index / FPS
-            registry = LayoutRegistry(min_font_pt=18, edge_pad_px=12)
+            registry = LayoutRegistry(min_font_pt=FONT_MIN_PT, max_font_pt=FONT_MAX_PT, edge_pad_px=12)
             semantics = draw_frame(fig, time_seconds, frame_index, registry)
             layout_errors = registry.validate(fig)
             rgba = np.asarray(fig.canvas.buffer_rgba())
@@ -483,7 +490,8 @@ def render_video(
             "frame_count_audited": len(frame_records),
             "fps": FPS,
             "dimensions": [VIDEO_WIDTH_PX, VIDEO_HEIGHT_PX],
-            "minimum_font_pt": 18,
+            "minimum_font_pt": FONT_MIN_PT,
+            "maximum_font_pt": FONT_MAX_PT,
             "passed": len(frame_records) == frames and not failures and return_code == 0,
             "ffmpeg_return_code": return_code,
             "failures": failures,
