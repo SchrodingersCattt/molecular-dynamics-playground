@@ -293,6 +293,7 @@ def render_density_cube(
     camera: SceneCamera,
     isovalue: float,
     opacity: float = 0.38,
+    positive_color: str = NAVY,
     width: int = 1500,
     height: int = 1120,
     atom_scale: float = 0.90,
@@ -311,6 +312,7 @@ def render_density_cube(
         "bond_radius": float(bond_radius),
         "isovalue": float(isovalue),
         "opacity": float(opacity),
+        "positive_color": positive_color,
     }
     resolved_vectors = resolve_vector_overlays(vector_overlays or [])
     vector_signature = json.dumps(
@@ -347,7 +349,7 @@ def render_density_cube(
         bundle.cube_data,
         isovalue=isovalue,
         stride=1,
-        positive_color=NAVY,
+        positive_color=positive_color,
         negative_color=GREEN,
         opacity=opacity,
     )

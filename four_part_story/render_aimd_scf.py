@@ -29,8 +29,6 @@ from common import (
 from mattervis_story import (
     STATIC_LEFT,
     STATIC_RIGHT,
-    VIDEO_LEFT,
-    VIDEO_RIGHT,
     SceneCamera,
     add_story_title,
     camera_for_source,
@@ -51,14 +49,18 @@ CUBE_DIR = QA_DIR / "source" / "cubes"
 DATA_PATH = ROOT / "data" / "aimd_h2o_dimer.npz"
 MOTION_SOURCE = ROOT / "data" / "aimd_h2o_dimer_motion_display.extxyz"
 
-SCENE_RECT = (0.00, 0.13, 0.65, 0.92)
-CAMERA_SCALE = 1.95
-DENSITY_ISOVALUE = 0.080
-DENSITY_OPACITY = 0.20
+STATIC_SCENE_RECT = (0.00, 0.13, 0.65, 0.92)
+VIDEO_SCENE_RECT = (0.00, 0.10, 0.78, 0.92)
+AIMD_VIDEO_LEFT = (0.045, 0.21, 0.275, 0.90)
+AIMD_VIDEO_RIGHT = (0.30, 0.17, 0.965, 0.91)
+CAMERA_SCALE = 1.85
+DENSITY_ISOVALUE = 0.220
+DENSITY_OPACITY = 0.55
+DENSITY_PALE_NAVY = "#9BB2C4"
 POSITION_LAKE = "#4E9BB5"
 FORCE_OLIVE = "#A99C50"
 VELOCITY_EMERALD = "#2F8562"
-FORCE_DISPLAY_SCALE = 1.60
+FORCE_DISPLAY_SCALE = 1.35
 DISPLACEMENT_ARROW_SCALE = 400.0
 AIMD_CAMERA_DIRECTION = (0.55, -0.35, 1.40)
 AIMD_CAMERA_UP = (0.0, 1.0, 0.0)
@@ -107,36 +109,39 @@ def prepare_mattervis(
                 camera=camera,
                 isovalue=DENSITY_ISOVALUE,
                 opacity=DENSITY_OPACITY,
+                positive_color=DENSITY_PALE_NAVY,
                 width=1500,
                 height=950,
             )
         )
         density_paths.append(output)
 
-    force_path = MATTERVIS_DIR / "density_force.png"
+    force_vectors = make_vector_group(
+        "rhf-nuclear-force",
+        data["positions"],
+        data["forces"],
+        scale=FORCE_DISPLAY_SCALE,
+        color=FORCE_OLIVE,
+        tail_offset=0.0,
+        style={
+            "shaft_radius": 0.055,
+            "head_length": 0.16,
+            "head_radius": 0.12,
+            "sides": 18,
+        },
+    )
+    density_force_path = MATTERVIS_DIR / "density_force.png"
     records.append(
         render_density_cube(
             cube_paths[-1],
-            force_path,
+            density_force_path,
             camera=camera,
             isovalue=DENSITY_ISOVALUE,
             opacity=DENSITY_OPACITY,
+            positive_color=DENSITY_PALE_NAVY,
             width=1500,
             height=950,
-            vector_overlays=make_vector_group(
-                "rhf-nuclear-force",
-                data["positions"],
-                data["forces"],
-                scale=FORCE_DISPLAY_SCALE,
-                color=FORCE_OLIVE,
-                tail_offset=0.0,
-                style={
-                    "shaft_radius": 0.085,
-                    "head_length": 0.20,
-                    "head_radius": 0.17,
-                    "sides": 18,
-                },
-            ),
+            vector_overlays=force_vectors,
         )
     )
 
@@ -164,6 +169,20 @@ def prepare_mattervis(
             bond_radius=0.105,
         )
     )
+    force_path = MATTERVIS_DIR / "force_clean.png"
+    records.append(
+        render_structure(
+            MOTION_SOURCE,
+            force_path,
+            camera=ghost_camera,
+            frame=0,
+            width=1500,
+            height=950,
+            atom_scale=0.82,
+            bond_radius=0.090,
+            vector_overlays=force_vectors,
+        )
+    )
     movement_paths: list[Path] = []
     displacement_vectors = make_vector_group(
         "vv-nuclear-displacement",
@@ -172,6 +191,12 @@ def prepare_mattervis(
         scale=DISPLACEMENT_ARROW_SCALE,
         color=POSITION_LAKE,
         tail_offset=0.0,
+        style={
+            "shaft_radius": 0.050,
+            "head_radius_ratio": 2.0,
+            "head_length_ratio": 0.26,
+            "sides": 16,
+        },
     )
     for frame in range(len(data["display_motion_positions"])):
         frame_camera = camera_for_source(
@@ -202,6 +227,7 @@ def prepare_mattervis(
     return {
         "density": density_paths,
         "force": force_path,
+        "density_force": density_force_path,
         "ghost": ghost_path,
         "movement": movement_paths,
     }, camera
@@ -225,32 +251,39 @@ def draw_scf_loop(
 ) -> None:
     """Draw the small paper-space SCF loop; no molecular structure enters it."""
     aspect = _axes_aspect(ax)
-    positions = [
-        (0.790, 0.78),
-        (0.880, 0.60),
-        (0.790, 0.42),
-        (0.700, 0.60),
-    ]
     labels = ["build Fock", "solve\norbitals", "update\ndensity", "check\nconvergence"]
     symbols = [r"$F$", r"$C$", r"$\rho$", r"$?$" ]
-    arrows = [
-        ((0.820, 0.74), (0.855, 0.65)),
-        ((0.855, 0.55), (0.820, 0.46)),
-        ((0.760, 0.46), (0.725, 0.55)),
-        ((0.725, 0.65), (0.760, 0.74)),
-    ]
+    if video:
+        positions = [(0.865, 0.76), (0.935, 0.61), (0.865, 0.46), (0.795, 0.61)]
+        arrows = [
+            ((0.887, 0.72), (0.916, 0.65)),
+            ((0.916, 0.57), (0.887, 0.50)),
+            ((0.843, 0.50), (0.814, 0.57)),
+            ((0.814, 0.65), (0.843, 0.72)),
+        ]
+        radius_x = 0.025
+        centre_x = 0.865
+    else:
+        positions = [(0.790, 0.78), (0.880, 0.60), (0.790, 0.42), (0.700, 0.60)]
+        arrows = [
+            ((0.820, 0.74), (0.855, 0.65)),
+            ((0.855, 0.55), (0.820, 0.46)),
+            ((0.760, 0.46), (0.725, 0.55)),
+            ((0.725, 0.65), (0.760, 0.74)),
+        ]
+        radius_x = 0.031
+        centre_x = 0.790
     for index, (start, end) in enumerate(arrows):
         registry.arrow(
             ax,
             start,
             end,
             arrowstyle="-|>",
-            mutation_scale=24 if video else 15,
-            lw=4.0 if video else 2.2,
+            mutation_scale=20 if video else 15,
+            lw=3.2 if video else 2.2,
             color=INK if active_stage == index else LINE_GRAY,
             zorder=3,
         )
-    radius_x = 0.036 if video else 0.031
     radius_y = radius_x * aspect
     label_positions = [
         (0.790, 0.895, "center"),
@@ -286,33 +319,51 @@ def draw_scf_loop(
             weight="bold",
             zorder=5,
         )
-        registry.text(
-            ax,
-            label_position[0],
-            label_position[1],
-            label,
-            ha=label_position[2],
-            va="center",
-            fontsize=18 if video else 10,
-            color=DARK_GRAY,
-            linespacing=0.95,
-        )
+        if not video:
+            registry.text(
+                ax,
+                label_position[0],
+                label_position[1],
+                label,
+                ha=label_position[2],
+                va="center",
+                fontsize=10,
+                color=DARK_GRAY,
+                linespacing=0.95,
+            )
     registry.text(
         ax,
-        0.790,
-        0.60,
+        centre_x,
+        0.61 if video else 0.60,
         "SCF",
         ha="center",
         va="center",
-        fontsize=24 if video else 14,
+        fontsize=20 if video else 14,
         color=INK,
         weight="bold",
     )
+    if video:
+        active_label = (
+            labels[active_stage].replace("\n", " ")
+            if active_stage is not None
+            else "self-consistent force"
+        )
+        registry.text(
+            ax,
+            centre_x,
+            0.345,
+            active_label,
+            ha="center",
+            va="center",
+            fontsize=18,
+            color=INK,
+            weight="bold",
+        )
     status = "converged" if converged else f"iteration {iteration:02d} / 19"
     registry.text(
         ax,
-        0.790,
-        0.205,
+        centre_x,
+        0.285 if video else 0.205,
         status,
         ha="center",
         va="center",
@@ -329,7 +380,14 @@ def draw_left(
     video: bool,
     stage: int,
 ) -> None:
-    equation = POSITION_EQUATION if stage == 0 else ACCELERATION_EQUATION
+    if stage == 0 and video:
+        equation = (
+            r"$\mathbf{r}_{n+1}=\mathbf{r}_n+\mathbf{v}_n\Delta t$"
+            "\n"
+            r"$+\frac{1}{2}\mathbf{a}_n\Delta t^2$"
+        )
+    else:
+        equation = POSITION_EQUATION if stage == 0 else ACCELERATION_EQUATION
     draw_vv_loop(
         ax,
         registry,
@@ -356,8 +414,11 @@ def draw_case(
     movement_paths = assets["movement"]
     assert isinstance(density_paths, list) and isinstance(movement_paths, list)
     force_path = assets["force"]
+    density_force_path = assets["density_force"]
     ghost_path = assets["ghost"]
-    assert isinstance(force_path, Path) and isinstance(ghost_path, Path)
+    assert isinstance(force_path, Path) and isinstance(density_force_path, Path)
+    assert isinstance(ghost_path, Path)
+    scene_rect = VIDEO_SCENE_RECT if video else STATIC_SCENE_RECT
 
     if mode in {"intro", "scf"}:
         current = min(iteration_index, len(density_paths) - 1)
@@ -365,7 +426,7 @@ def draw_case(
         place_render(
             ax,
             density_paths[current],
-            SCENE_RECT,
+            scene_rect,
             alpha=1.0 - density_blend,
             zorder=4,
         )
@@ -373,7 +434,7 @@ def draw_case(
             place_render(
                 ax,
                 density_paths[following],
-                SCENE_RECT,
+                scene_rect,
                 alpha=density_blend,
                 zorder=5,
             )
@@ -382,20 +443,24 @@ def draw_case(
         note = "coarse initial density becomes a stable, sharp isosurface"
         converged = False
     elif mode == "force":
-        place_render(ax, density_paths[-1], SCENE_RECT, zorder=4)
-        # The force step is a deliberate visual cut: the pale MatterVis arrows
-        # must be fully legible for every frame assigned to this stage.
-        place_render(ax, force_path, SCENE_RECT, zorder=5)
+        # Video cuts cleanly from the converged density to atom-centred forces.
+        # The A4 static keeps both layers to preserve the force-source relation.
+        place_render(
+            ax,
+            force_path if video else density_force_path,
+            scene_rect,
+            zorder=5,
+        )
         heading = r"converged $\rho(\mathbf{r})$ $\rightarrow$ nuclear forces"
         heading_color = INK
         note = "the SCF loop stops before forces return to the MD integrator"
         converged = True
     else:
         fade = smoothstep(min(phase_progress / 0.22, 1.0))
-        place_render(ax, force_path, SCENE_RECT, alpha=1.0 - fade, zorder=3)
-        place_render(ax, ghost_path, SCENE_RECT, alpha=0.18 * fade, zorder=4)
+        place_render(ax, force_path, scene_rect, alpha=1.0 - fade, zorder=3)
+        place_render(ax, ghost_path, scene_rect, alpha=0.18 * fade, zorder=4)
         frame = int(round(smoothstep(phase_progress) * (len(movement_paths) - 1)))
-        place_render(ax, movement_paths[frame], SCENE_RECT, alpha=fade, zorder=5)
+        place_render(ax, movement_paths[frame], scene_rect, alpha=fade, zorder=5)
         heading = "forces return to Velocity Verlet"
         heading_color = POSITION_LAKE
         note = "faint old nuclei mark the one-step displacement"
@@ -403,7 +468,7 @@ def draw_case(
 
     registry.text(
         ax,
-        0.34,
+        0.39 if video else 0.34,
         0.975,
         heading,
         ha="center",
@@ -412,16 +477,17 @@ def draw_case(
         color=heading_color,
         weight="bold",
     )
-    registry.text(
-        ax,
-        0.40 if video else 0.34,
-        0.065,
-        note,
-        ha="center",
-        va="bottom",
-        fontsize=18 if video else 10,
-        color=DARK_GRAY,
-    )
+    if not video:
+        registry.text(
+            ax,
+            0.34,
+            0.065,
+            note,
+            ha="center",
+            va="bottom",
+            fontsize=10,
+            color=DARK_GRAY,
+        )
     draw_scf_loop(
         ax,
         registry,
@@ -549,12 +615,12 @@ def draw_video_frame(
     add_story_title(
         fig,
         registry,
-        "Ab initio MD: one force requires an SCF loop",
-        "Watch one real electronic density become self-consistent before the nuclei move",
+        "AIMD: SCF supplies each nuclear force",
+        "real RHF/STO-3G density · H₂O dimer",
         video=True,
     )
-    left = axes_from_top_slot(fig, VIDEO_LEFT)
-    right = axes_from_top_slot(fig, VIDEO_RIGHT)
+    left = axes_from_top_slot(fig, AIMD_VIDEO_LEFT)
+    right = axes_from_top_slot(fig, AIMD_VIDEO_RIGHT)
     left_stage = 0 if state["mode"] == "move" else 1
     draw_left(left, registry, video=True, stage=left_stage)
     draw_case(
@@ -570,7 +636,7 @@ def draw_video_frame(
         phase_progress=state["progress"],
     )
     semantics = [
-        {"id": "density", "color": NAVY, "min_pixels": 350},
+        {"id": "density", "color": DENSITY_PALE_NAVY, "min_pixels": 350},
     ]
     if state["mode"] == "move" and state["progress"] >= 0.18:
         semantics.append({"id": "displacement", "color": POSITION_LAKE, "min_pixels": 180})
@@ -585,8 +651,8 @@ def render_animation(
 ) -> None:
     audit_config = {
         "panels": [
-            {"id": "integrator", "rect": list(VIDEO_LEFT), "min_clearance_px": 18},
-            {"id": "aimd_case", "rect": list(VIDEO_RIGHT), "min_clearance_px": 18},
+            {"id": "integrator", "rect": list(AIMD_VIDEO_LEFT), "min_clearance_px": 18},
+            {"id": "aimd_case", "rect": list(AIMD_VIDEO_RIGHT), "min_clearance_px": 18},
         ],
         "whitespace": {
             "background_threshold": 245,
@@ -598,7 +664,7 @@ def render_animation(
         "bands": [
             {
                 "id": "column_gap",
-                "rect": [0.365, 0.19, 0.385, 0.90],
+                "rect": [0.275, 0.19, 0.300, 0.90],
                 "max_ink_pixels": 0,
             }
         ],
