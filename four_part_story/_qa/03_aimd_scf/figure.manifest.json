@@ -23,9 +23,9 @@
       "source": "source/integrator.png",
       "slot": [
         0.035,
-        0.2,
+        0.055,
         0.31,
-        0.91
+        0.955
       ],
       "source_min_clearance_px": 12,
       "min_clearance_px": 18,
@@ -37,9 +37,9 @@
       "source": "source/case.png",
       "slot": [
         0.325,
-        0.18,
+        0.045,
         0.715,
-        0.91
+        0.955
       ],
       "source_min_clearance_px": 12,
       "min_clearance_px": 18,
@@ -51,9 +51,9 @@
       "source": "source/energy.png",
       "slot": [
         0.745,
-        0.18,
+        0.045,
         0.965,
-        0.49
+        0.405
       ],
       "source_min_clearance_px": 12,
       "min_clearance_px": 12,
@@ -65,9 +65,9 @@
       "source": "source/scf_loop.png",
       "slot": [
         0.755,
-        0.52,
+        0.445,
         0.955,
-        0.91
+        0.955
       ],
       "source_min_clearance_px": 12,
       "min_clearance_px": 12,
@@ -89,9 +89,9 @@
           "id": "gap_a_b",
           "rect": [
             0.31,
-            0.2,
+            0.055,
             0.325,
-            0.91
+            0.955
           ],
           "max_ink_pixels": 0
         },
@@ -99,9 +99,9 @@
           "id": "gap_b_right",
           "rect": [
             0.715,
-            0.18,
+            0.045,
             0.745,
-            0.91
+            0.955
           ],
           "max_ink_pixels": 0
         },
@@ -109,9 +109,9 @@
           "id": "gap_c_d",
           "rect": [
             0.745,
-            0.49,
+            0.405,
             0.965,
-            0.52
+            0.445
           ],
           "max_ink_pixels": 0
         }
@@ -187,15 +187,15 @@
     "records": []
   },
   "review": {
-    "render_sha256": "1a40daa10917b26661e3c2f1ff39dffed08b0c2c72d50720980be6c72cf97936",
+    "render_sha256": "e70bbfe1d0e8abd24b19622e158c7d66767d9998bf668902b5d352309fe096c5",
     "problems": {
-      "scientific_expression": "The earlier layout did not connect each ionic step to a quantitative SCF convergence trace, and discrete contour-count changes made the real density sequence look like unexplained flashing rather than convergence.",
-      "geometry": "The requested A/B/C/D hierarchy was not explicit enough, and the position update needed a true previous-geometry ghost without moving the molecule into either loop.",
-      "annotations": "The dimer panel carried too much explanatory copy; its only heading needed to state the current iteration and action, while formulas belonged inside the Verlet circle.",
-      "readability": "The acceleration caption fell inside the strict right-edge safety band, and contour bands appearing discretely between cached SCF states interrupted visual continuity.",
-      "submission_quality": "The final 15-second output needed renewed frame-by-frame QA, updated contact sheets, a current render hash, and proof that the anti-flicker change survived video encoding."
+      "scientific_expression": "Electronic-iteration text was mixed into the molecular panel, so the relationship between a simulation step and its nested SCF solve was not cleanly separated.",
+      "geometry": "Removing the page header required the A/B/C/D panels to move upward while retaining the reference proportions and fixed MatterVis camera.",
+      "annotations": "The middle panel needed one stable physical-action line and a fixed lower-left Simulation step label; all iteration/action detail had to move to C.",
+      "readability": "The previous 18-36 pt hierarchy was inconsistent with the requested compact visual language, and shared loop arrows were heavier than necessary.",
+      "submission_quality": "The new layout needed a hard 10-16 pt validator, renewed 360-frame audit, updated contact sheets and a review hash tied to the header-free render."
     },
-    "action": "Rebuilt the composition as A: a large formula-bearing Velocity Verlet loop, B: a fixed-camera MatterVis water dimer, C: the real RHF energy error versus SCF iteration for the current ionic step, and D: a separate SCF loop. The dimer panel now uses one black iteration/action line, thinner atom-centred MatterVis arrows, and a short true-geometry ghost during position drift. The first two ionic steps retain complete SCF cycles with doubled convergence pauses; later SCF and ionic phases are compressed so the total remains 15 seconds. All density planes use one fixed eight-level contour set while the real density and residual-driven blur cross-fade continuously, removing contour-pop flicker without inventing electronic structure. The decoded MP4 was audited at 1920 x 1080: 360 of 360 frames passed, and adjacent SCF-panel frames had a maximum mean absolute luminance change of 2.35 on a 255-level scale.",
+    "action": "Removed the page title and expanded the four requested panels upward using the same A/B/C/D proportions. Panel B now displays only a stable physical action at the top and Simulation step NN at the lower left; it contains no SCF iteration or electronic-step status text. Panel C exclusively carries the real SCF energy trace plus Iteration NN / total and the active electronic action. Panel D retains only the schematic SCF loop without a duplicate iteration counter. The fixed-camera MatterVis dimer, continuous eight-level real-density transition, force/velocity arrows and true-geometry position ghost remain unchanged scientifically. Shared typography is now programmatically restricted to 10-16 pt and shared loop arrows are thinner. The decoded 1920 x 1080 MP4 passed all 360 frames with zero failures.",
     "stop_condition": "fixed"
   }
 }
