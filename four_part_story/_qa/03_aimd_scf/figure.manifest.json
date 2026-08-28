@@ -187,15 +187,15 @@
     "records": []
   },
   "review": {
-    "render_sha256": "e9401de631c8afd7bc25e76bc69cf8701c919b7ed3ab8f0ccba343938e5d96bd",
+    "render_sha256": "1a40daa10917b26661e3c2f1ff39dffed08b0c2c72d50720980be6c72cf97936",
     "problems": {
-      "scientific_expression": "The previous animation showed one electronic solve and did not establish that SCF is repeated at every ionic geometry.",
-      "geometry": "The molecular-plane camera made several three-dimensional velocity and displacement vectors project as circular caps rather than readable arrows.",
-      "annotations": "The relationship between SCF convergence, its pause, the force, the velocity half-kick and the position drift was not explicit at phase boundaries.",
-      "readability": "Fixed-size arrowheads consumed short physical vectors, and the original volumetric density occupied too much of the molecular scene.",
-      "submission_quality": "The old canonical video and frame report described one ionic update rather than an auditable multi-step trajectory."
+      "scientific_expression": "The earlier layout did not connect each ionic step to a quantitative SCF convergence trace, and discrete contour-count changes made the real density sequence look like unexplained flashing rather than convergence.",
+      "geometry": "The requested A/B/C/D hierarchy was not explicit enough, and the position update needed a true previous-geometry ghost without moving the molecule into either loop.",
+      "annotations": "The dimer panel carried too much explanatory copy; its only heading needed to state the current iteration and action, while formulas belonged inside the Verlet circle.",
+      "readability": "The acceleration caption fell inside the strict right-edge safety band, and contour bands appearing discretely between cached SCF states interrupted visual continuity.",
+      "submission_quality": "The final 15-second output needed renewed frame-by-frame QA, updated contact sheets, a current render hash, and proof that the anti-flicker change survived video encoding."
     },
-    "action": "Generated seven RHF/STO-3G ionic geometries with every real SCF density frame, analytic nuclear gradients and six verified 0.5 fs Velocity Verlet updates. The first ten seconds now show two complete SCF cycles; the last five show four rapid ionic steps. Density is a residual-driven sparse-to-fine 2D contour projection, while every atom, two-colour bond and proportional-head vector is rendered by MatterVis under one fixed oblique camera. Phase labels, pauses and atom-centred olive, emerald and lake-blue vectors were checked at final size and across all 360 frames.",
+    "action": "Rebuilt the composition as A: a large formula-bearing Velocity Verlet loop, B: a fixed-camera MatterVis water dimer, C: the real RHF energy error versus SCF iteration for the current ionic step, and D: a separate SCF loop. The dimer panel now uses one black iteration/action line, thinner atom-centred MatterVis arrows, and a short true-geometry ghost during position drift. The first two ionic steps retain complete SCF cycles with doubled convergence pauses; later SCF and ionic phases are compressed so the total remains 15 seconds. All density planes use one fixed eight-level contour set while the real density and residual-driven blur cross-fade continuously, removing contour-pop flicker without inventing electronic structure. The decoded MP4 was audited at 1920 x 1080: 360 of 360 frames passed, and adjacent SCF-panel frames had a maximum mean absolute luminance change of 2.35 on a 255-level scale.",
     "stop_condition": "fixed"
   }
 }

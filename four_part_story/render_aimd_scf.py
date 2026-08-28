@@ -139,10 +139,10 @@ def render_density_plane_array_scene(
 ) -> dict:
     """Render one real SCF density plane beneath an aligned MatterVis structure."""
     progress = scf_visual_progress(residuals, scf_index)
-    contour_count = int(np.clip(round(3.0 + 5.0 * progress), 3, 8))
-    level_indices = np.unique(
-        np.rint(np.linspace(0, len(DENSITY_LEVELS) - 1, contour_count)).astype(int)
-    )
+    # Keep the contour topology stable between cached SCF states. The real
+    # density and residual-driven blur still evolve continuously, while a
+    # fixed level set prevents contour bands from popping into existence.
+    level_indices = np.arange(len(DENSITY_LEVELS), dtype=int)
     levels = DENSITY_LEVELS[level_indices]
     colors = [DENSITY_COLORS[index] for index in level_indices]
     blur_sigma = 5.5 * (1.0 - progress) ** 1.35
@@ -173,7 +173,7 @@ def render_density_plane_array_scene(
     grid_y = height - projected[:, :, 1]
 
     signature = {
-        "pipeline_version": 4,
+        "pipeline_version": 5,
         "density_source": str(DATA_PATH),
         "structure_source": str(structure_image),
         "ion_index": int(ion_index),

@@ -1,5 +1,5 @@
 {
-  "pipeline_version": 4,
+  "pipeline_version": 5,
   "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
   "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_structure.png",
   "ion_index": 1,
@@ -9,9 +9,12 @@
   "blur_sigma_pixels": 3.2419322975443947,
   "levels": [
     0.003,
+    0.007,
     0.015,
+    0.035,
     0.08,
     0.18,
+    0.4,
     0.9
   ],
   "camera": {

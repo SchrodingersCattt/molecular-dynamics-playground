@@ -718,6 +718,11 @@ def draw_vv_loop(
                 zorder=4,
             )
         )
+        label_x = x
+        if index == 1:
+            label_x -= 0.018
+        elif index == 2:
+            label_x += 0.018
         registry.text(
             ax,
             x,
@@ -732,7 +737,7 @@ def draw_vv_loop(
         )
         registry.text(
             ax,
-            x,
+            label_x,
             y - node_half_height - (0.035 if video else 0.025),
             label,
             ha="center",
