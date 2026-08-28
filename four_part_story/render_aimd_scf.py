@@ -1,8 +1,9 @@
-"""Render the two-column AIMD/RHF density story."""
+"""Render the multi-step AIMD/RHF density story."""
 
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -15,14 +16,15 @@ from common import (
     DARK_GRAY,
     GREEN,
     INK,
-    LIGHT_GRAY,
     LINE_GRAY,
     NAVY,
     WHITE,
     LayoutRegistry,
     axes_from_top_slot,
+    json_dump,
     mix_hex,
     new_static_figure,
+    new_video_figure,
     render_source_panel,
     render_video,
     save_static,
@@ -37,6 +39,7 @@ from mattervis_story import (
     draw_vv_loop,
     make_vector_group,
     place_render,
+    project_world,
     render_structure,
     write_provenance_index,
 )
@@ -44,157 +47,184 @@ from mattervis_story import (
 
 ROOT = Path(__file__).resolve().parent
 STEM = "03_aimd_scf"
-QA_DIR = ROOT / "_qa" / "03_aimd_scf"
-MATTERVIS_DIR = QA_DIR / "source" / "mattervis"
-CUBE_DIR = QA_DIR / "source" / "cubes"
-DATA_PATH = ROOT / "data" / "aimd_h2o_dimer.npz"
-MOTION_SOURCE = ROOT / "data" / "aimd_h2o_dimer_motion_display.extxyz"
+QA_DIR = ROOT / "_qa" / STEM
+MATTERVIS_DIR = QA_DIR / "source" / "mattervis_multistep"
+DATA_PATH = ROOT / "data" / "aimd_multistep_h2o_dimer.npz"
+MOTION_SOURCE = ROOT / "data" / "aimd_multistep_h2o_dimer.extxyz"
 
-STATIC_SCENE_RECT = (0.02, 0.13, 0.64, 0.92)
-VIDEO_SCENE_RECT = (0.025, 0.10, 0.765, 0.92)
+STATIC_SCENE_RECT = (0.02, 0.12, 0.75, 0.88)
+VIDEO_SCENE_RECT = (0.01, 0.08, 0.755, 0.87)
 AIMD_VIDEO_LEFT = (0.045, 0.21, 0.275, 0.90)
 AIMD_VIDEO_RIGHT = (0.30, 0.17, 0.965, 0.91)
-CAMERA_SCALE = 1.50
+
+CAMERA_SCALE = 1.72
 POSITION_LAKE = "#4E9BB5"
 FORCE_OLIVE = "#A99C50"
 VELOCITY_EMERALD = "#2F8562"
-FORCE_DISPLAY_SCALE = 1.35
-DISPLACEMENT_ARROW_SCALE = 700.0
-BOHR_TO_ANGSTROM = 0.529177210903
-DENSITY_LEVELS = np.asarray([0.003, 0.007, 0.015, 0.035, 0.080, 0.180, 0.400, 0.900])
+FORCE_DISPLAY_SCALE = 42.0
+VELOCITY_DISPLAY_SCALE = 34.0
+DISPLACEMENT_ARROW_SCALE = 75.0
+
+DENSITY_LEVELS = np.asarray(
+    [0.003, 0.007, 0.015, 0.035, 0.080, 0.180, 0.400, 0.900]
+)
 DENSITY_COLORS = (
-    "#DDE5EA", "#CEDAE1", "#BCCDD7", "#A8BDCA",
-    "#91AABB", "#7894A8", "#607E94", "#49687F",
+    "#DDE5EA",
+    "#CEDAE1",
+    "#BCCDD7",
+    "#A8BDCA",
+    "#91AABB",
+    "#7894A8",
+    "#607E94",
+    "#49687F",
 )
 
-INTRO_END = 1.0
-SCF_END = 11.45
-FORCE_END = 13.0
 VIDEO_DURATION = 15.0
+DETAILED_BLOCK_SECONDS = 5.0
+RAPID_BLOCK_SECONDS = 1.25
 
 POSITION_EQUATION = (
-    r"$\mathbf{r}_{n+1}=\mathbf{r}_n+\mathbf{v}_n\Delta t+"
-    r"\frac{1}{2}\mathbf{a}_n\Delta t^2$"
+    r"$\mathbf{r}_{n+1}=\mathbf{r}_n$"
+    "\n"
+    r"$+\mathbf{v}_{n+1/2}\Delta t$"
 )
-ACCELERATION_EQUATION = r"$\mathbf{a}_{n}=\mathbf{F}_{\mathrm{RHF}}/m$"
+ACCELERATION_EQUATION = (
+    r"$\mathbf{a}_{n}=\mathbf{F}_{n}/m$"
+    "\n"
+    r"$\mathbf{F}_{n}=-\nabla_R E(\mathbf{r}_n)$"
+)
+VELOCITY_EQUATION = (
+    r"$\mathbf{v}_{n+1/2}=\mathbf{v}_{n}$"
+    "\n"
+    r"$+\frac{1}{2}\mathbf{a}_{n}\Delta t$"
+)
 
 
-def molecular_plane(
-    positions: np.ndarray,
-) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
-    """Return the fixed molecular-plane camera basis for the water dimer."""
-    xyz = np.asarray(positions, dtype=float)
-    centre = 0.5 * (xyz[0] + xyz[3])
-    horizontal = xyz[3] - xyz[0]
-    horizontal /= np.linalg.norm(horizontal)
-    _, _, right_vectors = np.linalg.svd(xyz - xyz.mean(axis=0), full_matrices=False)
-    normal = right_vectors[-1]
-    if normal[2] < 0.0:
-        normal = -normal
-    vertical = np.cross(normal, horizontal)
-    vertical /= np.linalg.norm(vertical)
-    normal = np.cross(horizontal, vertical)
-    normal /= np.linalg.norm(normal)
-    return centre, horizontal, vertical, normal
+def scf_visual_progress(residuals: np.ndarray, iteration: int) -> float:
+    """Map the real residual decrease to a bounded display-resolution progress."""
+    finite = np.asarray(residuals, dtype=float)
+    finite = finite[np.isfinite(finite) & (finite > 0.0)]
+    if finite.size <= 1:
+        return 1.0
+    index = min(max(int(iteration), 0), finite.size - 1)
+    start = float(np.log10(finite[0]))
+    finish = float(np.log10(finite[-1]))
+    current = float(np.log10(finite[index]))
+    if abs(start - finish) < 1.0e-12:
+        return index / max(finite.size - 1, 1)
+    return float(np.clip((start - current) / (start - finish), 0.0, 1.0))
 
 
-def parse_cube(path: Path) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    lines = path.read_text(encoding="utf-8").splitlines()
-    atom_count, *origin = lines[2].split()
-    atom_count = abs(int(atom_count))
-    shape: list[int] = []
-    axes: list[list[float]] = []
-    for line in lines[3:6]:
-        count, *axis = line.split()
-        shape.append(abs(int(count)))
-        axes.append([float(value) for value in axis[:3]])
-    values = np.fromstring(" ".join(lines[6 + atom_count :]), sep=" ")
-    if values.size != int(np.prod(shape)):
-        raise ValueError(f"Unexpected cube data size in {path}")
-    return values.reshape(tuple(shape)), np.asarray(origin[:3], float), np.asarray(axes, float)
-
-
-def oxygen_pixel_centres(path: Path) -> tuple[np.ndarray, tuple[int, int]]:
-    rgb = np.asarray(Image.open(path).convert("RGB"), dtype=np.uint8)
-    red = (
-        (rgb[:, :, 0] > 105)
-        & (rgb[:, :, 0].astype(float) > 1.12 * rgb[:, :, 1])
-        & (rgb[:, :, 0].astype(float) > 1.05 * rgb[:, :, 2])
-    )
-    labels, count = ndimage.label(red)
-    centres: list[tuple[int, np.ndarray]] = []
-    for label in range(1, count + 1):
-        component = labels == label
-        area = int(component.sum())
-        if area < 250:
-            continue
-        distance = ndimage.distance_transform_edt(component)
-        row, column = np.unravel_index(int(np.argmax(distance)), distance.shape)
-        centres.append((area, np.asarray([float(column), float(row)])))
-    if len(centres) < 2:
-        raise RuntimeError("Could not locate both MatterVis oxygen centres")
-    result = np.asarray([item[1] for item in sorted(centres, reverse=True)[:2]])
-    return result[np.argsort(result[:, 0])], (rgb.shape[1], rgb.shape[0])
-
-
-def render_density_plane_scene(
-    cube_path: Path,
+def render_density_plane_array_scene(
+    density: np.ndarray,
     structure_image: Path,
     output: Path,
     *,
-    positions: np.ndarray,
+    plane_centre: np.ndarray,
+    plane_u: np.ndarray,
+    plane_v: np.ndarray,
+    u_axis: np.ndarray,
+    v_axis: np.ndarray,
+    residuals: np.ndarray,
+    camera: SceneCamera,
+    ion_index: int,
+    scf_index: int,
 ) -> dict:
-    """Render a real cube slice beneath an aligned MatterVis structure."""
-    oxygen_pixels, (width, height) = oxygen_pixel_centres(structure_image)
-    centre, horizontal, vertical, _ = molecular_plane(positions)
-    oxygen_distance = float(np.linalg.norm(positions[3] - positions[0]))
-    pixel_scale = float((oxygen_pixels[1, 0] - oxygen_pixels[0, 0]) / oxygen_distance)
-    pixel_origin = oxygen_pixels.mean(axis=0)
-    density, cube_origin, cube_axes = parse_cube(cube_path)
-    sample_width = 600
-    sample_height = int(round(sample_width * height / width))
-    pixel_x = np.linspace(0.0, width - 1.0, sample_width)
-    pixel_y = np.linspace(0.0, height - 1.0, sample_height)
-    grid_x, grid_y = np.meshgrid(pixel_x, pixel_y)
-    plane_x = (grid_x - pixel_origin[0]) / pixel_scale
-    plane_y = -(grid_y - pixel_origin[1]) / pixel_scale
-    points = (
-        centre + plane_x[:, :, None] * horizontal + plane_y[:, :, None] * vertical
-    ) / BOHR_TO_ANGSTROM
-    indices = (points - cube_origin) @ np.linalg.inv(cube_axes)
-    sampled = ndimage.map_coordinates(
-        density,
-        [indices[:, :, 0], indices[:, :, 1], indices[:, :, 2]],
-        order=1,
-        mode="constant",
-        cval=0.0,
+    """Render one real SCF density plane beneath an aligned MatterVis structure."""
+    progress = scf_visual_progress(residuals, scf_index)
+    contour_count = int(np.clip(round(3.0 + 5.0 * progress), 3, 8))
+    level_indices = np.unique(
+        np.rint(np.linspace(0, len(DENSITY_LEVELS) - 1, contour_count)).astype(int)
     )
-    figure = plt.figure(figsize=(width / 100.0, height / 100.0), dpi=100, facecolor="white")
+    levels = DENSITY_LEVELS[level_indices]
+    colors = [DENSITY_COLORS[index] for index in level_indices]
+    blur_sigma = 5.5 * (1.0 - progress) ** 1.35
+    displayed_density = ndimage.gaussian_filter(
+        np.asarray(density, dtype=float),
+        sigma=blur_sigma,
+        mode="nearest",
+    )
+
+    with Image.open(structure_image) as structure_source:
+        width, height = structure_source.size
+    plane_x, plane_y = np.meshgrid(
+        np.asarray(u_axis, dtype=float),
+        np.asarray(v_axis, dtype=float),
+    )
+    points = (
+        plane_centre
+        + plane_x[:, :, None] * plane_u
+        + plane_y[:, :, None] * plane_v
+    )
+    projected = project_world(
+        points.reshape(-1, 3),
+        camera=camera,
+        rect=(0.0, 0.0, float(width), float(height)),
+        image_aspect=width / height,
+    ).reshape(points.shape[:2] + (2,))
+    grid_x = projected[:, :, 0]
+    grid_y = height - projected[:, :, 1]
+
+    signature = {
+        "pipeline_version": 4,
+        "density_source": str(DATA_PATH),
+        "structure_source": str(structure_image),
+        "ion_index": int(ion_index),
+        "scf_index": int(scf_index),
+        "residual": float(np.asarray(residuals)[scf_index]),
+        "visual_progress": progress,
+        "blur_sigma_pixels": blur_sigma,
+        "levels": levels.tolist(),
+        "camera": {
+            "target": list(camera.target),
+            "direction": list(camera.direction),
+            "up": list(camera.up),
+            "ortho_scale": camera.ortho_scale,
+        },
+    }
+    sidecar = output.with_suffix(".json")
+    if output.exists() and sidecar.exists():
+        previous = json.loads(sidecar.read_text(encoding="utf-8"))
+        if previous == {**signature, "output": str(output)}:
+            with Image.open(output) as cached:
+                if cached.size == (width, height):
+                    return previous
+
+    figure = plt.figure(
+        figsize=(width / 100.0, height / 100.0),
+        dpi=100,
+        facecolor=WHITE,
+    )
     axes = figure.add_axes([0.0, 0.0, 1.0, 1.0])
     axes.set_xlim(0.0, width - 1.0)
     axes.set_ylim(height - 1.0, 0.0)
     axes.contour(
-        grid_x, grid_y, sampled, levels=DENSITY_LEVELS, colors=DENSITY_COLORS,
-        linewidths=np.linspace(1.1, 2.2, len(DENSITY_LEVELS)), antialiased=True,
+        grid_x,
+        grid_y,
+        displayed_density,
+        levels=levels,
+        colors=colors,
+        linewidths=np.linspace(
+            3.0 - 0.9 * progress,
+            1.8 - 0.5 * progress,
+            len(levels),
+        ),
+        antialiased=True,
     )
     axes.axis("off")
     figure.canvas.draw()
-    base = Image.fromarray(np.asarray(figure.canvas.buffer_rgba()).copy(), mode="RGBA")
+    base = Image.fromarray(
+        np.asarray(figure.canvas.buffer_rgba()).copy(),
+        mode="RGBA",
+    )
     plt.close(figure)
-    structure = np.asarray(Image.open(structure_image).convert("RGBA"), dtype=np.uint8).copy()
-    structure[:, :, 3] = np.where(
-        np.max(255 - structure[:, :, :3], axis=2) > 3, 255, 0
-    ).astype(np.uint8)
-    base.alpha_composite(Image.fromarray(structure, mode="RGBA"))
+    structure = Image.open(structure_image).convert("RGBA")
+    base.alpha_composite(structure)
     output.parent.mkdir(parents=True, exist_ok=True)
     base.convert("RGB").save(output)
-    return {
-        "source": str(cube_path),
-        "structure_source": str(structure_image),
-        "output": str(output),
-        "levels": DENSITY_LEVELS.tolist(),
-        "pixels_per_angstrom": pixel_scale,
-    }
+    payload = {**signature, "output": str(output)}
+    json_dump(sidecar, payload)
+    return payload
 
 
 def load_data() -> dict[str, np.ndarray]:
@@ -204,127 +234,162 @@ def load_data() -> dict[str, np.ndarray]:
 
 def prepare_mattervis(
     data: dict[str, np.ndarray],
-) -> tuple[dict[str, list[Path] | Path], SceneCamera]:
-    """Render planar density, force, and movement with one fixed camera."""
-    cube_paths = [
-        CUBE_DIR / f"rho_{iteration:02d}_display.cube"
-        for iteration in range(1, len(data["density_iterations"]) + 1)
-    ]
-    target, _horizontal, vertical, normal = molecular_plane(data["positions"])
+) -> tuple[dict[str, object], SceneCamera]:
+    """Render all structures and atom-centred vectors with one fixed camera."""
+    positions = np.asarray(data["positions"], dtype=float)
+    plane_centre = np.asarray(data["plane_centre_angstrom"], dtype=float)
+    plane_v = np.asarray(data["plane_v"], dtype=float)
+    plane_normal = np.asarray(data["plane_normal"], dtype=float)
+    scf_counts = np.asarray(data["scf_counts"], dtype=int)
+    residuals = np.asarray(data["scf_residuals"], dtype=float)
+    density_planes = np.asarray(data["density_planes"], dtype=float)
+
+    view_direction = plane_normal - 0.72 * data["plane_u"] - 0.55 * plane_v
+    view_direction /= np.linalg.norm(view_direction)
     camera = camera_for_source(
         MOTION_SOURCE,
-        target=target,
+        target=plane_centre,
         ortho_scale=CAMERA_SCALE,
         frame=0,
-        direction=tuple(normal),
-        up=tuple(vertical),
+        direction=tuple(view_direction),
+        up=tuple(plane_v),
     )
     records: list[dict] = []
-    density_structure_path = MATTERVIS_DIR / "density_structure_plane.png"
-    records.append(
-        render_structure(
-            MOTION_SOURCE,
-            density_structure_path,
-            camera=camera,
-            frame=0,
-            width=1500,
-            height=950,
-            atom_scale=0.82,
-            bond_radius=0.090,
-        )
-    )
-    density_paths: list[Path] = []
-    for iteration, cube_path in enumerate(cube_paths, start=1):
-        output = MATTERVIS_DIR / f"density_plane_{iteration:02d}.png"
-        records.append(
-            render_density_plane_scene(
-                cube_path,
-                density_structure_path,
-                output,
-                positions=data["positions"],
-            )
-        )
-        density_paths.append(output)
-
-    force_vectors = make_vector_group(
-        "rhf-nuclear-force",
-        data["positions"],
-        data["forces"],
-        scale=FORCE_DISPLAY_SCALE,
-        color=FORCE_OLIVE,
-        tail_offset=0.0,
-        style={
-            "shaft_radius": 0.055,
-            "head_length": 0.16,
-            "head_radius": 0.12,
-            "sides": 18,
-        },
-    )
-    ghost_path = MATTERVIS_DIR / "motion_ghost.png"
-    records.append(
-        render_structure(
-            MOTION_SOURCE,
-            ghost_path,
-            camera=camera,
-            frame=0,
-            width=1500,
-            height=950,
-            atom_scale=0.90,
-            bond_radius=0.105,
-        )
-    )
-    force_path = MATTERVIS_DIR / "force_clean.png"
-    records.append(
-        render_structure(
-            MOTION_SOURCE,
-            force_path,
-            camera=camera,
-            frame=0,
-            width=1500,
-            height=950,
-            atom_scale=0.82,
-            bond_radius=0.090,
-            vector_overlays=force_vectors,
-        )
-    )
-    movement_paths: list[Path] = []
-    displacement_vectors = make_vector_group(
-        "vv-nuclear-displacement",
-        data["positions"],
-        data["vv_displacement"],
-        scale=DISPLACEMENT_ARROW_SCALE,
-        color=POSITION_LAKE,
-        tail_offset=0.0,
-        style={
-            "shaft_radius": 0.050,
-            "head_radius_ratio": 2.0,
-            "head_length_ratio": 0.26,
-            "sides": 16,
-        },
-    )
-    for frame in range(len(data["display_motion_positions"])):
-        output = MATTERVIS_DIR / f"motion_{frame:02d}.png"
+    structure_paths: list[Path] = []
+    for ion_index in range(len(positions)):
+        path = MATTERVIS_DIR / f"ion_{ion_index:02d}_structure.png"
         records.append(
             render_structure(
                 MOTION_SOURCE,
-                output,
+                path,
                 camera=camera,
-                frame=frame,
+                frame=ion_index,
                 width=1500,
                 height=950,
                 atom_scale=0.90,
-                bond_radius=0.105,
+                bond_radius=0.102,
+            )
+        )
+        structure_paths.append(path)
+
+    density_paths: list[list[Path]] = []
+    for ion_index, count in enumerate(scf_counts):
+        ion_paths: list[Path] = []
+        for scf_index in range(int(count)):
+            output = MATTERVIS_DIR / (
+                f"ion_{ion_index:02d}_scf_{scf_index:02d}_density.png"
+            )
+            records.append(
+                render_density_plane_array_scene(
+                    density_planes[ion_index, scf_index],
+                    structure_paths[ion_index],
+                    output,
+                    plane_centre=plane_centre,
+                    plane_u=data["plane_u"],
+                    plane_v=plane_v,
+                    u_axis=data["plane_u_axis_angstrom"],
+                    v_axis=data["plane_v_axis_angstrom"],
+                    residuals=residuals[ion_index, : int(count)],
+                    camera=camera,
+                    ion_index=ion_index,
+                    scf_index=scf_index,
+                )
+            )
+            ion_paths.append(output)
+        density_paths.append(ion_paths)
+
+    arrow_style = {
+        "shaft_radius": 0.065,
+        "head_length_ratio": 0.28,
+        "head_radius_ratio": 2.4,
+        "sides": 18,
+    }
+    force_paths: list[Path] = []
+    velocity_paths: list[Path] = []
+    movement_paths: list[Path] = []
+    update_count = len(positions) - 1
+    for ion_index in range(update_count):
+        force_vectors = make_vector_group(
+            f"rhf-force-ion-{ion_index:02d}",
+            positions[ion_index],
+            data["forces_eh_per_bohr"][ion_index],
+            scale=FORCE_DISPLAY_SCALE,
+            color=FORCE_OLIVE,
+            tail_offset=0.0,
+            style=arrow_style,
+        )
+        force_path = MATTERVIS_DIR / f"ion_{ion_index:02d}_force.png"
+        records.append(
+            render_structure(
+                MOTION_SOURCE,
+                force_path,
+                camera=camera,
+                frame=ion_index,
+                width=1500,
+                height=950,
+                atom_scale=0.90,
+                bond_radius=0.102,
+                vector_overlays=force_vectors,
+            )
+        )
+        force_paths.append(force_path)
+
+        velocity_vectors = make_vector_group(
+            f"half-step-velocity-ion-{ion_index:02d}",
+            positions[ion_index],
+            data["half_velocities"][ion_index],
+            scale=VELOCITY_DISPLAY_SCALE,
+            color=VELOCITY_EMERALD,
+            tail_offset=0.0,
+            style=arrow_style,
+        )
+        velocity_path = MATTERVIS_DIR / f"ion_{ion_index:02d}_velocity.png"
+        records.append(
+            render_structure(
+                MOTION_SOURCE,
+                velocity_path,
+                camera=camera,
+                frame=ion_index,
+                width=1500,
+                height=950,
+                atom_scale=0.90,
+                bond_radius=0.102,
+                vector_overlays=velocity_vectors,
+            )
+        )
+        velocity_paths.append(velocity_path)
+
+        displacement_vectors = make_vector_group(
+            f"position-drift-ion-{ion_index:02d}",
+            positions[ion_index],
+            positions[ion_index + 1] - positions[ion_index],
+            scale=DISPLACEMENT_ARROW_SCALE,
+            color=POSITION_LAKE,
+            tail_offset=0.0,
+            style=arrow_style,
+        )
+        movement_path = MATTERVIS_DIR / f"ion_{ion_index:02d}_move.png"
+        records.append(
+            render_structure(
+                MOTION_SOURCE,
+                movement_path,
+                camera=camera,
+                frame=ion_index + 1,
+                width=1500,
+                height=950,
+                atom_scale=0.90,
+                bond_radius=0.102,
                 vector_overlays=displacement_vectors,
             )
         )
-        movement_paths.append(output)
+        movement_paths.append(movement_path)
 
     write_provenance_index(MATTERVIS_DIR, records)
     return {
         "density": density_paths,
-        "force": force_path,
-        "density_force": force_path,
-        "ghost": ghost_path,
+        "structure": structure_paths,
+        "force": force_paths,
+        "velocity": velocity_paths,
         "movement": movement_paths,
     }, camera
 
@@ -343,53 +408,56 @@ def draw_scf_loop(
     active_stage: int | None,
     active_weight: float,
     iteration: int,
+    iteration_count: int,
     converged: bool,
 ) -> None:
-    """Draw the small paper-space SCF loop; no molecular structure enters it."""
+    """Draw the electronic loop beside, never around, the molecule."""
     aspect = _axes_aspect(ax)
-    labels = ["build Fock", "solve\norbitals", "update\ndensity", "check\nconvergence"]
-    symbols = [r"$F$", r"$C$", r"$\rho$", r"$?$" ]
+    labels = ["build Fock", "solve orbitals", "update density", "check convergence"]
+    symbols = [r"$F$", r"$C$", r"$\rho$", r"$?$"]
     if video:
-        positions = [(0.855, 0.76), (0.925, 0.61), (0.855, 0.46), (0.785, 0.61)]
-        arrows = [
-            ((0.877, 0.72), (0.906, 0.65)),
-            ((0.906, 0.57), (0.877, 0.50)),
-            ((0.833, 0.50), (0.804, 0.57)),
-            ((0.804, 0.65), (0.833, 0.72)),
+        positions = [
+            (0.855, 0.755),
+            (0.925, 0.615),
+            (0.855, 0.475),
+            (0.785, 0.615),
         ]
-        radius_x = 0.025
+        arrows = [
+            ((0.878, 0.715), (0.905, 0.655)),
+            ((0.905, 0.575), (0.878, 0.515)),
+            ((0.832, 0.515), (0.805, 0.575)),
+            ((0.805, 0.655), (0.832, 0.715)),
+        ]
+        radius_x = 0.024
         centre_x = 0.855
     else:
-        positions = [(0.790, 0.78), (0.880, 0.60), (0.790, 0.42), (0.700, 0.60)]
-        arrows = [
-            ((0.820, 0.74), (0.855, 0.65)),
-            ((0.855, 0.55), (0.820, 0.46)),
-            ((0.760, 0.46), (0.725, 0.55)),
-            ((0.725, 0.65), (0.760, 0.74)),
+        positions = [
+            (0.815, 0.76),
+            (0.905, 0.59),
+            (0.815, 0.42),
+            (0.725, 0.59),
         ]
-        radius_x = 0.031
-        centre_x = 0.790
+        arrows = [
+            ((0.845, 0.72), (0.875, 0.63)),
+            ((0.875, 0.55), (0.845, 0.46)),
+            ((0.785, 0.46), (0.755, 0.55)),
+            ((0.755, 0.63), (0.785, 0.72)),
+        ]
+        radius_x = 0.030
+        centre_x = 0.815
     for index, (start, end) in enumerate(arrows):
         registry.arrow(
             ax,
             start,
             end,
             arrowstyle="-|>",
-            mutation_scale=20 if video else 15,
-            lw=3.2 if video else 2.2,
+            mutation_scale=21 if video else 15,
+            lw=3.4 if video else 2.2,
             color=INK if active_stage == index else LINE_GRAY,
             zorder=3,
         )
     radius_y = radius_x * aspect
-    label_positions = [
-        (0.790, 0.895, "center"),
-        (0.925, 0.710, "center"),
-        (0.790, 0.285, "center"),
-        (0.665, 0.750, "center"),
-    ]
-    for index, ((x, y), symbol, label, label_position) in enumerate(
-        zip(positions, symbols, labels, label_positions)
-    ):
+    for index, ((x, y), symbol) in enumerate(zip(positions, symbols)):
         weight = active_weight if active_stage == index else 0.0
         fill = mix_hex(WHITE, INK, weight)
         ax.add_patch(
@@ -399,7 +467,7 @@ def draw_scf_loop(
                 2.0 * radius_y,
                 fc=fill,
                 ec=INK if weight > 0.1 else LINE_GRAY,
-                lw=3.2 if video else 1.9,
+                lw=3.0 if video else 1.9,
                 zorder=4,
             )
         )
@@ -415,22 +483,10 @@ def draw_scf_loop(
             weight="bold",
             zorder=5,
         )
-        if not video:
-            registry.text(
-                ax,
-                label_position[0],
-                label_position[1],
-                label,
-                ha=label_position[2],
-                va="center",
-                fontsize=10,
-                color=DARK_GRAY,
-                linespacing=0.95,
-            )
     registry.text(
         ax,
         centre_x,
-        0.61 if video else 0.60,
+        0.615 if video else 0.59,
         "SCF",
         ha="center",
         va="center",
@@ -439,12 +495,12 @@ def draw_scf_loop(
         weight="bold",
     )
     if video:
-        if active_stage is not None:
-            active_label = labels[active_stage]
-        elif converged:
-            active_label = "force from\nconverged density"
+        if converged:
+            active_label = "density converged"
+        elif active_stage is None:
+            active_label = "initial density guess"
         else:
-            active_label = "initial density\nguess"
+            active_label = labels[active_stage]
         registry.text(
             ax,
             centre_x,
@@ -453,14 +509,14 @@ def draw_scf_loop(
             ha="center",
             va="center",
             fontsize=18,
-            color=INK,
+            color=GREEN if converged else INK,
             weight="bold",
         )
-    status = "converged" if converged else f"iteration {iteration:02d} / 19"
+    status = "converged" if converged else f"SCF {iteration:02d} / {iteration_count:02d}"
     registry.text(
         ax,
         centre_x,
-        0.285 if video else 0.205,
+        0.285 if video else 0.25,
         status,
         ha="center",
         va="center",
@@ -477,14 +533,8 @@ def draw_left(
     video: bool,
     stage: int,
 ) -> None:
-    if stage == 0 and video:
-        equation = (
-            r"$\mathbf{r}_{n+1}=\mathbf{r}_n+\mathbf{v}_n\Delta t$"
-            "\n"
-            r"$+\frac{1}{2}\mathbf{a}_n\Delta t^2$"
-        )
-    else:
-        equation = POSITION_EQUATION if stage == 0 else ACCELERATION_EQUATION
+    equations = [POSITION_EQUATION, ACCELERATION_EQUATION, VELOCITY_EQUATION]
+    equation = equations[stage]
     draw_vv_loop(
         ax,
         registry,
@@ -496,88 +546,127 @@ def draw_left(
         registry.text(
             ax,
             0.50,
-            0.22,
+            0.20,
             equation,
             ha="center",
             va="center",
             fontsize=18,
             color=INK,
+            linespacing=1.25,
         )
+
+
+def _nested_paths(assets: dict[str, object], key: str) -> list:
+    paths = assets[key]
+    if not isinstance(paths, list):
+        raise TypeError(f"Expected a list for asset group {key}")
+    return paths
 
 
 def draw_case(
     ax: plt.Axes,
     registry: LayoutRegistry,
-    assets: dict[str, list[Path] | Path],
+    assets: dict[str, object],
     *,
     video: bool,
     mode: str,
+    ion_index: int,
     iteration_index: int,
     density_blend: float,
     active_scf_stage: int | None,
     active_scf_weight: float,
     phase_progress: float,
+    scf_progress: float,
+    rapid: bool,
 ) -> None:
-    density_paths = assets["density"]
-    movement_paths = assets["movement"]
-    assert isinstance(density_paths, list) and isinstance(movement_paths, list)
-    force_path = assets["force"]
-    density_force_path = assets["density_force"]
-    ghost_path = assets["ghost"]
-    assert isinstance(force_path, Path) and isinstance(density_force_path, Path)
-    assert isinstance(ghost_path, Path)
+    all_density_paths = _nested_paths(assets, "density")
+    structure_paths = _nested_paths(assets, "structure")
+    force_paths = _nested_paths(assets, "force")
+    velocity_paths = _nested_paths(assets, "velocity")
+    movement_paths = _nested_paths(assets, "movement")
+    density_paths = all_density_paths[ion_index]
+    if not isinstance(density_paths, list):
+        raise TypeError("Density assets must be nested by ionic step")
     scene_rect = VIDEO_SCENE_RECT if video else STATIC_SCENE_RECT
 
-    if mode in {"intro", "scf"}:
-        current = min(iteration_index, len(density_paths) - 1)
-        following = min(current + 1, len(density_paths) - 1)
+    if mode in {"scf", "pause"}:
+        if mode == "pause":
+            current = len(density_paths) - 1
+            following = current
+            blend = 0.0
+        else:
+            current = min(iteration_index, len(density_paths) - 1)
+            following = min(current + 1, len(density_paths) - 1)
+            blend = density_blend
         place_render(
             ax,
             density_paths[current],
             scene_rect,
-            alpha=1.0 - density_blend,
+            alpha=1.0 - blend,
             zorder=4,
         )
-        if following != current and density_blend > 0.001:
+        if following != current and blend > 0.001:
             place_render(
                 ax,
                 density_paths[following],
                 scene_rect,
-                alpha=density_blend,
+                alpha=blend,
                 zorder=5,
             )
-        heading = r"real $\rho^k(\mathbf{r})$ on one fixed molecular-plane slice"
-        heading_color = NAVY
-        note = "round initial contours resolve into the converged bonding density"
-        converged = False
+        qualifier = "fast " if rapid else ""
+        heading = (
+            f"{qualifier}ionic step {ion_index + 1} · electronic SCF"
+        )
+        if mode == "pause":
+            state_label = "self-consistent density"
+            heading_color = GREEN
+        elif scf_progress < 0.22:
+            state_label = "coarse density guess"
+            heading_color = DENSITY_COLORS[-1]
+        elif scf_progress < 0.78:
+            state_label = "density resolves as the residual falls"
+            heading_color = DENSITY_COLORS[-1]
+        else:
+            state_label = "fine contours approach self-consistency"
+            heading_color = NAVY
     elif mode == "force":
-        # Video cuts cleanly from the converged density to atom-centred forces.
-        # The A4 static keeps both layers to preserve the force-source relation.
+        place_render(ax, force_paths[ion_index], scene_rect, zorder=5)
+        heading = f"ionic step {ion_index + 1} · energy gradient → force"
+        state_label = r"$-\nabla_R E(\mathbf{R}_n)=\mathbf{F}_n$"
+        heading_color = FORCE_OLIVE
+    elif mode == "velocity":
+        place_render(ax, velocity_paths[ion_index], scene_rect, zorder=5)
+        heading = f"ionic step {ion_index + 1} · velocity half-kick"
+        state_label = "emerald vectors are anchored at the nuclei"
+        heading_color = VELOCITY_EMERALD
+    elif mode == "move":
+        fade = smoothstep(phase_progress)
         place_render(
             ax,
-            force_path if video else density_force_path,
+            structure_paths[ion_index],
             scene_rect,
+            alpha=0.20,
+            zorder=3,
+        )
+        place_render(
+            ax,
+            movement_paths[ion_index],
+            scene_rect,
+            alpha=0.35 + 0.65 * fade,
             zorder=5,
         )
-        heading = r"converged $\rho(\mathbf{r})$ $\rightarrow$ nuclear forces"
-        heading_color = INK
-        note = "the SCF loop stops before forces return to the MD integrator"
-        converged = True
-    else:
-        fade = smoothstep(min(phase_progress / 0.22, 1.0))
-        place_render(ax, force_path, scene_rect, alpha=1.0 - fade, zorder=3)
-        place_render(ax, ghost_path, scene_rect, alpha=0.18 * fade, zorder=4)
-        frame = int(round(smoothstep(phase_progress) * (len(movement_paths) - 1)))
-        place_render(ax, movement_paths[frame], scene_rect, alpha=fade, zorder=5)
-        heading = "forces return to Velocity Verlet"
+        heading = (
+            f"ionic step {ion_index + 1} → {ion_index + 2} · position drift"
+        )
+        state_label = "lake-blue arrows start at the previous nuclei"
         heading_color = POSITION_LAKE
-        note = "faint old nuclei mark the one-step displacement"
-        converged = True
+    else:
+        raise ValueError(f"Unknown AIMD mode: {mode}")
 
     registry.text(
         ax,
-        0.39 if video else 0.34,
-        0.975,
+        0.48 if video else 0.50,
+        0.985,
         heading,
         ha="center",
         va="top",
@@ -585,32 +674,35 @@ def draw_case(
         color=heading_color,
         weight="bold",
     )
-    if not video:
-        registry.text(
-            ax,
-            0.34,
-            0.065,
-            note,
-            ha="center",
-            va="bottom",
-            fontsize=10,
-            color=DARK_GRAY,
-        )
-    draw_scf_loop(
+    registry.text(
         ax,
-        registry,
-        video=video,
-        active_stage=active_scf_stage,
-        active_weight=active_scf_weight,
-        iteration=iteration_index + 1,
-        converged=converged,
+        0.48 if video else 0.50,
+        0.920 if video else 0.075,
+        state_label,
+        ha="center",
+        va="top" if video else "bottom",
+        fontsize=18 if video else 10,
+        color=DARK_GRAY,
+        weight="bold" if video else "normal",
     )
+    if mode in {"scf", "pause"}:
+        draw_scf_loop(
+            ax,
+            registry,
+            video=video,
+            active_stage=active_scf_stage,
+            active_weight=active_scf_weight,
+            iteration=iteration_index + 1,
+            iteration_count=len(density_paths),
+            converged=mode == "pause",
+        )
 
 
 def render_static(
     data: dict[str, np.ndarray],
-    assets: dict[str, list[Path] | Path],
+    assets: dict[str, object],
 ) -> None:
+    first_count = int(data["scf_counts"][0])
     render_source_panel(
         QA_DIR / "source" / "integrator.png",
         lambda ax, registry: draw_left(ax, registry, video=False, stage=1),
@@ -624,12 +716,15 @@ def render_static(
             registry,
             assets,
             video=False,
-            mode="force",
-            iteration_index=len(data["density_iterations"]) - 1,
+            mode="pause",
+            ion_index=0,
+            iteration_index=first_count - 1,
             density_blend=0.0,
             active_scf_stage=None,
             active_scf_weight=0.0,
             phase_progress=1.0,
+            scf_progress=1.0,
+            rapid=False,
         ),
         width_px=1800,
         height_px=1400,
@@ -639,8 +734,8 @@ def render_static(
     add_story_title(
         fig,
         registry,
-        "Ab initio MD: one force requires an SCF loop",
-        "A real RHF water-dimer density is rebuilt until self-consistent, then nuclei move",
+        "Ab initio MD: every ionic step contains an electronic solve",
+        "Real RHF/STO-3G water-dimer density converges before the nuclei advance",
         video=False,
     )
     left = axes_from_top_slot(fig, STATIC_LEFT)
@@ -651,12 +746,15 @@ def render_static(
         registry,
         assets,
         video=False,
-        mode="force",
-        iteration_index=len(data["density_iterations"]) - 1,
+        mode="pause",
+        ion_index=0,
+        iteration_index=first_count - 1,
         density_blend=0.0,
         active_scf_stage=None,
         active_scf_weight=0.0,
         phase_progress=1.0,
+        scf_progress=1.0,
+        rapid=False,
     )
     errors = registry.validate(fig)
     if errors:
@@ -664,50 +762,148 @@ def render_static(
     save_static(fig, STEM)
 
 
-def video_state(time_seconds: float, iteration_count: int) -> dict:
-    if time_seconds < INTRO_END:
-        return {
-            "mode": "intro",
-            "iteration": 0,
-            "blend": 0.0,
-            "active_stage": None,
-            "active_weight": 0.0,
-            "progress": time_seconds / INTRO_END,
-        }
-    if time_seconds < SCF_END:
-        local = (time_seconds - INTRO_END) / (SCF_END - INTRO_END)
-        iteration_float = min(local * iteration_count, iteration_count - 1.0e-6)
-        iteration = int(iteration_float)
-        within = iteration_float - iteration
-        stage_float = within * 4.0
-        active_stage = min(int(stage_float), 3)
-        stage_within = stage_float - active_stage
-        weight = smoothstep(min(stage_within / 0.24, 1.0))
-        return {
-            "mode": "scf",
-            "iteration": iteration,
-            "blend": smoothstep(within),
-            "active_stage": active_stage,
-            "active_weight": weight,
-            "progress": local,
-        }
-    if time_seconds < FORCE_END:
-        return {
-            "mode": "force",
-            "iteration": iteration_count - 1,
-            "blend": 0.0,
-            "active_stage": None,
-            "active_weight": 0.0,
-            "progress": (time_seconds - SCF_END) / (FORCE_END - SCF_END),
-        }
+def _scf_state(
+    *,
+    ion_index: int,
+    progress: float,
+    iteration_count: int,
+    rapid: bool,
+) -> dict:
+    progress = float(np.clip(progress, 0.0, 1.0))
+    iteration_float = min(
+        progress * (iteration_count - 1),
+        iteration_count - 1.0e-6,
+    )
+    iteration = int(iteration_float)
+    within = iteration_float - iteration
+    loop_count = 2.0 if rapid else 4.0
+    stage_float = progress * loop_count * 4.0
+    active_stage = min(int(stage_float) % 4, 3)
+    stage_within = stage_float - int(stage_float)
+    active_weight = 0.62 + 0.38 * np.sin(np.pi * stage_within)
     return {
-        "mode": "move",
+        "mode": "scf",
+        "ion": ion_index,
+        "iteration": iteration,
+        "blend": smoothstep(within),
+        "active_stage": active_stage,
+        "active_weight": float(active_weight),
+        "progress": progress,
+        "scf_progress": progress,
+        "rapid": rapid,
+    }
+
+
+def _phase_state(
+    mode: str,
+    *,
+    ion_index: int,
+    progress: float,
+    iteration_count: int,
+    rapid: bool,
+) -> dict:
+    return {
+        "mode": mode,
+        "ion": ion_index,
         "iteration": iteration_count - 1,
         "blend": 0.0,
         "active_stage": None,
         "active_weight": 0.0,
-        "progress": min((time_seconds - FORCE_END) / (VIDEO_DURATION - FORCE_END), 1.0),
+        "progress": float(np.clip(progress, 0.0, 1.0)),
+        "scf_progress": 1.0,
+        "rapid": rapid,
     }
+
+
+def video_state(time_seconds: float, scf_counts: np.ndarray) -> dict:
+    """Map 15 s to two detailed and four rapid, real ionic updates."""
+    bounded = float(np.clip(time_seconds, 0.0, VIDEO_DURATION - 1.0e-9))
+    if bounded < 2.0 * DETAILED_BLOCK_SECONDS:
+        ion_index = int(bounded // DETAILED_BLOCK_SECONDS)
+        local = bounded - ion_index * DETAILED_BLOCK_SECONDS
+        count = int(scf_counts[ion_index])
+        if local < 3.15:
+            return _scf_state(
+                ion_index=ion_index,
+                progress=local / 3.15,
+                iteration_count=count,
+                rapid=False,
+            )
+        if local < 3.48:
+            return _phase_state(
+                "pause",
+                ion_index=ion_index,
+                progress=(local - 3.15) / 0.33,
+                iteration_count=count,
+                rapid=False,
+            )
+        if local < 3.98:
+            return _phase_state(
+                "force",
+                ion_index=ion_index,
+                progress=(local - 3.48) / 0.50,
+                iteration_count=count,
+                rapid=False,
+            )
+        if local < 4.46:
+            return _phase_state(
+                "velocity",
+                ion_index=ion_index,
+                progress=(local - 3.98) / 0.48,
+                iteration_count=count,
+                rapid=False,
+            )
+        return _phase_state(
+            "move",
+            ion_index=ion_index,
+            progress=(local - 4.46) / 0.54,
+            iteration_count=count,
+            rapid=False,
+        )
+
+    rapid_time = bounded - 2.0 * DETAILED_BLOCK_SECONDS
+    rapid_index = min(int(rapid_time // RAPID_BLOCK_SECONDS), 3)
+    ion_index = 2 + rapid_index
+    local = rapid_time - rapid_index * RAPID_BLOCK_SECONDS
+    count = int(scf_counts[ion_index])
+    if local < 0.58:
+        return _scf_state(
+            ion_index=ion_index,
+            progress=local / 0.58,
+            iteration_count=count,
+            rapid=True,
+        )
+    if local < 0.68:
+        return _phase_state(
+            "pause",
+            ion_index=ion_index,
+            progress=(local - 0.58) / 0.10,
+            iteration_count=count,
+            rapid=True,
+        )
+    if local < 0.88:
+        return _phase_state(
+            "force",
+            ion_index=ion_index,
+            progress=(local - 0.68) / 0.20,
+            iteration_count=count,
+            rapid=True,
+        )
+    if local < 1.05:
+        return _phase_state(
+            "velocity",
+            ion_index=ion_index,
+            progress=(local - 0.88) / 0.17,
+            iteration_count=count,
+            rapid=True,
+        )
+    return _phase_state(
+        "move",
+        ion_index=ion_index,
+        progress=(local - 1.05) / 0.20,
+        iteration_count=count,
+        rapid=True,
+    )
 
 
 def draw_video_frame(
@@ -716,56 +912,172 @@ def draw_video_frame(
     frame_index: int,
     registry: LayoutRegistry,
     data: dict[str, np.ndarray],
-    assets: dict[str, list[Path] | Path],
+    assets: dict[str, object],
 ) -> list[dict]:
     del frame_index
-    state = video_state(time_seconds, len(data["density_iterations"]))
+    state = video_state(time_seconds, data["scf_counts"])
     add_story_title(
         fig,
         registry,
-        "AIMD: SCF supplies each nuclear force",
-        "real RHF/STO-3G density · H₂O dimer",
+        "AIMD: electrons converge before nuclei move",
+        (
+            "real RHF/STO-3G H₂O dimer · two complete SCF cycles, "
+            "then four rapid ionic steps"
+        ),
         video=True,
     )
     left = axes_from_top_slot(fig, AIMD_VIDEO_LEFT)
     right = axes_from_top_slot(fig, AIMD_VIDEO_RIGHT)
-    left_stage = 0 if state["mode"] == "move" else 1
-    draw_left(left, registry, video=True, stage=left_stage)
+    stage_for_mode = {
+        "scf": 1,
+        "pause": 1,
+        "force": 1,
+        "velocity": 2,
+        "move": 0,
+    }
+    draw_left(left, registry, video=True, stage=stage_for_mode[state["mode"]])
     draw_case(
         right,
         registry,
         assets,
         video=True,
         mode=state["mode"],
+        ion_index=state["ion"],
         iteration_index=state["iteration"],
         density_blend=state["blend"],
         active_scf_stage=state["active_stage"],
         active_scf_weight=state["active_weight"],
         phase_progress=state["progress"],
+        scf_progress=state["scf_progress"],
+        rapid=state["rapid"],
     )
-    semantics = [
-        {"id": "density_contours", "color": DENSITY_COLORS[-1], "min_pixels": 80},
-    ]
-    if state["mode"] == "move" and state["progress"] >= 0.18:
-        semantics.append({"id": "displacement", "color": POSITION_LAKE, "min_pixels": 180})
+    if state["mode"] in {"scf", "pause"}:
+        return [
+            {
+                "id": "density_contours",
+                "color": DENSITY_COLORS[-1],
+                "min_pixels": 35,
+            }
+        ]
     if state["mode"] == "force":
-        semantics.append({"id": "nuclear_force", "color": FORCE_OLIVE, "min_pixels": 260})
-    return semantics
+        return [
+            {
+                "id": "nuclear_force",
+                "color": FORCE_OLIVE,
+                "min_pixels": 120,
+            }
+        ]
+    if state["mode"] == "velocity":
+        return [
+            {
+                "id": "half_step_velocity",
+                "color": VELOCITY_EMERALD,
+                "min_pixels": 120,
+            }
+        ]
+    return [
+        {
+            "id": "nuclear_displacement",
+            "color": POSITION_LAKE,
+            "min_pixels": 120,
+        }
+    ]
+
+
+KEYFRAME_TIMES = [
+    0.10,
+    1.60,
+    3.20,
+    3.65,
+    4.18,
+    4.75,
+    5.10,
+    6.65,
+    8.20,
+    8.70,
+    9.20,
+    9.72,
+    10.12,
+    11.18,
+    12.42,
+    14.82,
+]
+
+
+def render_representative_frames(
+    data: dict[str, np.ndarray],
+    assets: dict[str, object],
+) -> Path:
+    """Render phase-boundary keyframes before the expensive full animation."""
+    output_dir = QA_DIR / "_qa" / "multistep_keyframes"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    images: list[Image.Image] = []
+    records: list[dict] = []
+    for index, time_seconds in enumerate(KEYFRAME_TIMES):
+        fig = new_video_figure()
+        registry = LayoutRegistry(min_font_pt=18, edge_pad_px=12)
+        semantics = draw_video_frame(
+            fig,
+            time_seconds,
+            int(round(time_seconds * 24)),
+            registry,
+            data,
+            assets,
+        )
+        errors = registry.validate(fig)
+        if errors:
+            plt.close(fig)
+            raise RuntimeError(
+                f"Keyframe {time_seconds:.2f} s failed layout:\n"
+                + "\n".join(errors)
+            )
+        path = output_dir / f"frame_{index:02d}_{time_seconds:05.2f}s.png"
+        fig.savefig(path, dpi=100, facecolor=WHITE)
+        plt.close(fig)
+        images.append(Image.open(path).convert("RGB").resize((480, 270)))
+        state = video_state(time_seconds, data["scf_counts"])
+        records.append(
+            {
+                "time_seconds": time_seconds,
+                "path": str(path),
+                "state": state,
+                "semantics": semantics,
+                "layout_passed": True,
+            }
+        )
+
+    columns = 4
+    rows = int(np.ceil(len(images) / columns))
+    contact = Image.new("RGB", (columns * 480, rows * 270), WHITE)
+    for index, item in enumerate(images):
+        contact.paste(item, ((index % columns) * 480, (index // columns) * 270))
+    contact_path = output_dir / "_contact.png"
+    contact.save(contact_path)
+    json_dump(output_dir / "keyframes.json", {"frames": records})
+    return contact_path
 
 
 def render_animation(
     data: dict[str, np.ndarray],
-    assets: dict[str, list[Path] | Path],
+    assets: dict[str, object],
 ) -> None:
     audit_config = {
         "panels": [
-            {"id": "integrator", "rect": list(AIMD_VIDEO_LEFT), "min_clearance_px": 18},
-            {"id": "aimd_case", "rect": list(AIMD_VIDEO_RIGHT), "min_clearance_px": 18},
+            {
+                "id": "integrator",
+                "rect": list(AIMD_VIDEO_LEFT),
+                "min_clearance_px": 18,
+            },
+            {
+                "id": "aimd_case",
+                "rect": list(AIMD_VIDEO_RIGHT),
+                "min_clearance_px": 18,
+            },
         ],
         "whitespace": {
             "background_threshold": 245,
             "min_ink_fraction": 0.020,
-            "min_panel_bbox_fill": 0.24,
+            "min_panel_bbox_fill": 0.22,
             "grid_rows": 12,
             "grid_columns": 20,
         },
@@ -781,21 +1093,33 @@ def render_animation(
         stem=STEM,
         duration_seconds=VIDEO_DURATION,
         draw_frame=lambda fig, time, index, registry: draw_video_frame(
-            fig, time, index, registry, data, assets
+            fig,
+            time,
+            index,
+            registry,
+            data,
+            assets,
         ),
         audit_config=audit_config,
         qa_directory=QA_DIR / "_qa",
-        representative_times=[0.5, 2.5, 6.5, 10.8, 12.2, 14.2],
+        representative_times=KEYFRAME_TIMES,
     )
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
+    parser.add_argument("--assets-only", action="store_true")
+    parser.add_argument("--preview-only", action="store_true")
     parser.add_argument("--static-only", action="store_true")
     args = parser.parse_args()
     data = load_data()
     assets, _camera = prepare_mattervis(data)
+    if args.assets_only:
+        return
     render_static(data, assets)
+    if args.preview_only:
+        render_representative_frames(data, assets)
+        return
     if not args.static_only:
         render_animation(data, assets)
 
