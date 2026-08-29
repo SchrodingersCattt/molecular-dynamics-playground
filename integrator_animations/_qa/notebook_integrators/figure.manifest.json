@@ -1,0 +1,179 @@
+{
+  "version": 1,
+  "figure": {
+    "canonical_stem": "integrator_comparison"
+  },
+  "outputs": [
+    {
+      "path": "../../figures/integrator_comparison.png"
+    },
+    {
+      "path": "../../figures/integrator_comparison.pdf"
+    }
+  ],
+  "target": {
+    "width_mm": 297,
+    "qa_dpi": 300,
+    "min_dpi": 200,
+    "max_dpi": 600
+  },
+  "panels": [
+    {
+      "id": "comparison_grid",
+      "source": "../../figures/integrator_comparison.png",
+      "slot": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "source_min_clearance_px": 12,
+      "min_clearance_px": 12,
+      "source_allow_touch_edges": [],
+      "allow_touch_edges": []
+    }
+  ],
+  "checks": {
+    "whitespace": {
+      "background_threshold": 245,
+      "min_ink_fraction": 0.02,
+      "min_panel_bbox_fill": 0.15,
+      "grid_rows": 12,
+      "grid_columns": 20
+    },
+    "boundaries": {
+      "bands": [
+        {
+          "id": "title_legend_gap",
+          "rect": [
+            0,
+            0.089,
+            1,
+            0.096
+          ],
+          "max_ink_pixels": 0
+        },
+        {
+          "id": "row_gap_1",
+          "rect": [
+            0,
+            0.365,
+            1,
+            0.371
+          ],
+          "max_ink_pixels": 0
+        },
+        {
+          "id": "row_gap_2",
+          "rect": [
+            0,
+            0.658,
+            1,
+            0.664
+          ],
+          "max_ink_pixels": 0
+        }
+      ]
+    },
+    "colors": {
+      "semantics": [
+        {
+          "id": "analytical",
+          "color": "#8E8E8E",
+          "min_pixels": 100
+        },
+        {
+          "id": "explicit_euler",
+          "color": "#A99C50",
+          "min_pixels": 100
+        },
+        {
+          "id": "symplectic_euler",
+          "color": "#2F8562",
+          "min_pixels": 100
+        },
+        {
+          "id": "velocity_verlet",
+          "color": "#4E9BB5",
+          "min_pixels": 100
+        },
+        {
+          "id": "rk4",
+          "color": "#183153",
+          "min_pixels": 100
+        }
+      ]
+    }
+  },
+  "integrity": {
+    "required_content": [
+      "Analytical",
+      "Explicit Euler",
+      "Symplectic Euler",
+      "Velocity Verlet",
+      "Classical RK4",
+      "three time steps",
+      "three diagnostics"
+    ],
+    "evidence": {
+      "Analytical": "comparison figure legend and reference curve",
+      "Explicit Euler": "comparison figure legend and diagnostic traces",
+      "Symplectic Euler": "comparison figure legend and diagnostic traces",
+      "Velocity Verlet": "comparison figure legend, diagnostic traces, and observed-order assertion",
+      "Classical RK4": "comparison figure legend and corrected fixed-step implementation",
+      "three time steps": "figure rows at Δt = 0.05, 0.10, and 0.50",
+      "three diagnostics": "position, phase-space geometry, and relative energy-error columns"
+    },
+    "scientific_changes": [
+      {
+        "description": "Correct RK45 label and implementation to fixed-step classical RK4",
+        "approved": true
+      },
+      {
+        "description": "Correct the time grid to exact step spacing",
+        "approved": true
+      },
+      {
+        "description": "Use bounded shadow-energy language for symplectic integrators",
+        "approved": true
+      }
+    ]
+  },
+  "consistency": {
+    "constraints": [
+      "same method palette in all panels",
+      "same axes per diagnostic column",
+      "equal phase-space aspect"
+    ],
+    "evidence": {
+      "renderer": "notebook plotting cell"
+    }
+  },
+  "quantitative": {
+    "transformations": [
+      "absolute relative energy error shown on logarithmic scale",
+      "phase traces stop at declared shared viewport boundary"
+    ],
+    "units": {
+      "time": "reduced units",
+      "position": "reduced units",
+      "momentum": "reduced units",
+      "energy_error": "dimensionless"
+    }
+  },
+  "deviations": {
+    "records": []
+  },
+  "review": {
+    "render_sha256": "317c7aed12ec6d03e850965cdb78ad9b5c2ca92a35b91c19561b4b142d99cf05",
+    "problems": {
+      "scientific_expression": "The source notebook misidentified fixed-step RK4 as RK45 and described numerical energy behavior too strongly.",
+      "geometry": "Divergent Explicit Euler traces could leave and re-enter the shared viewport, producing misleading crossings.",
+      "annotations": "A dense method list competed with the data and weakened the hierarchy.",
+      "readability": "Too many equally prominent traces obscured phase-space and long-time comparisons.",
+      "submission_quality": "Notebook copies and PNG/PDF outputs lacked a single reproducible synchronization path."
+    },
+    "action": "Corrected the science and implementation, stopped divergent traces at first exit with markers, reduced visible methods, standardized A4 typography and palette, and regenerated byte-identical notebooks plus canonical PNG/PDF outputs.",
+    "stop_condition": "fixed"
+  }
+}
