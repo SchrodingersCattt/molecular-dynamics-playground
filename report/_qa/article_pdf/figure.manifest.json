@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "figure": {
+    "canonical_stem": "article_pages"
+  },
+  "outputs": [
+    {
+      "path": "article_pages.png"
+    }
+  ],
+  "target": {
+    "width_mm": 250,
+    "qa_dpi": 127,
+    "min_dpi": 100,
+    "max_dpi": 300
+  },
+  "panels": [
+    {
+      "id": "pages",
+      "source": "article_pages.png",
+      "slot": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "source_min_clearance_px": 8,
+      "min_clearance_px": 8,
+      "source_allow_touch_edges": [],
+      "allow_touch_edges": []
+    }
+  ],
+  "checks": {
+    "whitespace": {
+      "background_threshold": 245,
+      "min_ink_fraction": 0.02,
+      "min_panel_bbox_fill": 0.15,
+      "grid_rows": 12,
+      "grid_columns": 20
+    },
+    "boundaries": {
+      "bands": []
+    },
+    "colors": {
+      "semantics": []
+    },
+    "text_containment": {
+      "applicable": false,
+      "reason": "The QA image is a PDF page contact sheet; text containment is verified by the TeX no-overfull log and PDF text extraction, not renderer-owned label boxes."
+    }
+  },
+  "integrity": {
+    "required_content": [],
+    "evidence": {},
+    "scientific_changes": []
+  },
+  "consistency": {
+    "constraints": [],
+    "evidence": {}
+  },
+  "quantitative": {
+    "transformations": [],
+    "units": {}
+  },
+  "deviations": {
+    "records": []
+  },
+  "review": {
+    "render_sha256": "200985a40a1853671de0a3d1fb27528a199c26e98abecd9b213a8aa507ad0bf6",
+    "problems": {
+      "scientific_expression": "Method status distinguishes papers, preprints, and the DPA3 software release; practical guidance preserves the four separate error sources.",
+      "geometry": "All fifteen A4 pages use isotropic scaling; Poppler rerender and four-edge clipping checks pass.",
+      "annotations": "Equations, captions, citations, and page numbers are present; PDF text extraction contains no unresolved-reference markers.",
+      "readability": "Body text is 11 pt; table widths and English line breaks are corrected and the final TeX log has no overfull boxes.",
+      "submission_quality": "The canonical PDF contains 8251 CJK characters, all 29 cited sources resolve through Biber, and QA artifacts are isolated under _qa."
+    },
+    "action": "fixed: expanded the reproducible-workflow section, rebuilt citations, rerendered fifteen pages, refreshed the contact sheet, and repeated strict QA",
+    "stop_condition": "fixed"
+  }
+}
