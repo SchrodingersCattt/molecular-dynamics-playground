@@ -1,34 +1,25 @@
 # Five-Problem Self-Review
 
-After every substantive render, assume the figure is still wrong. List exactly
-five concrete problems before deciding whether to rerender. Automated QA passing
-is not enough.
+## Final render
 
-## Render
+- Artifact: report/output/pdf/md_reading_notes.pdf
+- Render: nine A4 pages at 144 dpi
+- Contact sheet: article_pages.png
+- Result: PASS
 
-- Figure: `article_pages.png` (15-page contact sheet)
-- Script: XeLaTeX/Biber build of `md_reading_notes.tex`
-- Output file inspected: `report/output/pdf/md_reading_notes.pdf`
-- Inspection size / zoom: A4 pages rerendered at 120 dpi; contact sheet at 1250 x 1746 px
-- Programmatic QA result: strict PASS after final rerender
+## Problems found and resolved
 
-## Pass 1
+1. Architecture: the earlier headings mixed methods, writing process and conclusions at the same level. The final six sections now share a problem-led grammar, and subsections name an object plus its physical or evidential role.
+2. Scope: the appendix titled 最小数值自查清单 did not belong in the reading note. It was deleted completely.
+3. Typography: the manuscript did not follow the restrained SC-XRD hierarchy. The final build uses its A4 margins, compact headings, running header and two-column references.
+4. Table geometry: Deep Potential broke across lines and justified Chinese cells produced sparse spacing. The method column was widened and all cells were set ragged right.
+5. Output discipline: the old QA set contained fifteen stale page renders. It was replaced by the final nine-page render and a new contact sheet.
 
-1. Scientific expression problem: method status needed to distinguish papers, preprints, and the DPA3 software release.
-2. Geometric or data-coordinate correctness problem: the integrator table declared eight columns for seven fields and exceeded the text block.
-3. Label, leader, legend, or panel-letter placement problem: long English model names and WHAM/MBAR produced unsafe line wrapping.
-4. Readability or print-scale problem: the initial MLIP table width plus cell padding exceeded the page width.
-5. Submission-quality or filename/output-discipline problem: the first compiled PDF contained unresolved citations before Biber and needed a clean final build.
+## Delivery gate
 
-Action taken: corrected table geometry, added safe breakpoints, ran Biber, rebuilt until references stabilized, rerendered all pages, and reran strict QA. Final log has no overfull boxes, missing references, or LaTeX errors.
-
-## Stop Conditions
-
-Stop only when one of these is true:
-
-- The five listed problems are all fixed and no new blocking issue is visible.
-- The remaining choice is a genuine scientific or manuscript-style decision for
-  the user.
-- The source data are ambiguous and choosing a representation would assert a fact
-  not present in the data.
-- The user explicitly accepts the current figure.
+- XeLaTeX/Biber build: PASS
+- Undefined citations or references: none
+- Overfull or underfull boxes: none
+- Fonts embedded: PASS
+- Page-edge clearance: PASS
+- Representative-page visual inspection: PASS

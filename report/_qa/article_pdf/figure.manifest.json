@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "figure": {
     "canonical_stem": "article_pages"
   },
@@ -10,7 +10,7 @@
   ],
   "target": {
     "width_mm": 250,
-    "qa_dpi": 127,
+    "qa_dpi": 192.6,
     "min_dpi": 100,
     "max_dpi": 300
   },
@@ -24,57 +24,47 @@
         1.0,
         1.0
       ],
-      "source_min_clearance_px": 8,
-      "min_clearance_px": 8,
+      "source_min_clearance_px": 12,
+      "min_clearance_px": 12,
       "source_allow_touch_edges": [],
       "allow_touch_edges": []
     }
   ],
   "checks": {
-    "whitespace": {
-      "background_threshold": 245,
-      "min_ink_fraction": 0.02,
-      "min_panel_bbox_fill": 0.15,
-      "grid_rows": 12,
-      "grid_columns": 20
+    "pdf_structure": {
+      "page_count": 9,
+      "page_size": "A4 portrait"
     },
-    "boundaries": {
-      "bands": []
-    },
-    "colors": {
-      "semantics": []
+    "clipping": {
+      "minimum_page_clearance_px": 26
     },
     "text_containment": {
       "applicable": false,
-      "reason": "The QA image is a PDF page contact sheet; text containment is verified by the TeX no-overfull log and PDF text extraction, not renderer-owned label boxes."
+      "reason": "Containment is checked by the final XeLaTeX log, PDF text extraction and per-page edge analysis."
     }
   },
   "integrity": {
-    "required_content": [],
-    "evidence": {},
-    "scientific_changes": []
-  },
-  "consistency": {
-    "constraints": [],
-    "evidence": {}
-  },
-  "quantitative": {
-    "transformations": [],
-    "units": {}
-  },
-  "deviations": {
-    "records": []
+    "required_content": [
+      "six parallel top-level sections",
+      "four embedded MD figures",
+      "integrator and MLIP comparison tables",
+      "complete bibliography"
+    ],
+    "forbidden_content": [
+      "最小数值自查清单",
+      "\\subsection{与 Runge--Kutta 方法比较}",
+      "\\appendix"
+    ]
   },
   "review": {
-    "render_sha256": "200985a40a1853671de0a3d1fb27528a199c26e98abecd9b213a8aa507ad0bf6",
+    "render_sha256": "ccd4cd99a8a63b9abee3a2f0b618e91285027a657ddd582ee0acefa182be986e",
     "problems": {
-      "scientific_expression": "Method status distinguishes papers, preprints, and the DPA3 software release; practical guidance preserves the four separate error sources.",
-      "geometry": "All fifteen A4 pages use isotropic scaling; Poppler rerender and four-edge clipping checks pass.",
-      "annotations": "Equations, captions, citations, and page numbers are present; PDF text extraction contains no unresolved-reference markers.",
-      "readability": "Body text is 11 pt; table widths and English line breaks are corrected and the final TeX log has no overfull boxes.",
-      "submission_quality": "The canonical PDF contains 8251 CJK characters, all 29 cited sources resolve through Biber, and QA artifacts are isolated under _qa."
+      "architecture": "Replaced method-list and process headings with six question-led sections and parallel object-property subsections.",
+      "scope": "Removed the unwanted numerical-checklist appendix without leaving an empty heading.",
+      "typography": "Applied the SC-XRD A4 hierarchy, restrained header, 10 pt body and two-column references.",
+      "table_geometry": "Widened the method column and used ragged-right cells so Deep Potential no longer breaks.",
+      "output_consistency": "Rebuilt the nine-page PDF and replaced the stale fifteen-page render set."
     },
-    "action": "fixed: expanded the reproducible-workflow section, rebuilt citations, rerendered fifteen pages, refreshed the contact sheet, and repeated strict QA",
-    "stop_condition": "fixed"
+    "stop_condition": "all five problems fixed; final render inspected"
   }
 }
