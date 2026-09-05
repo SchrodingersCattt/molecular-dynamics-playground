@@ -12,6 +12,7 @@
 - `visualize-data --strict` 已用于静态图；DP 视频保留 384/384 帧逐帧 QA 报告，尺寸为 1920×1080、24 fps。
 - MatterVis 已增加原生 overlay metadata 传递、CPU 球面方向光/高光、零透明度原子/键隐藏和对应测试；测试文件为 `MatterVis/tests/test_native_overlay_metadata.py`。
 - 中文读书笔记已有 LaTeX 源、参考文献、PDF 和渲染页；历史、Euler/Verlet、SCF、Deep Potential、采样章节已加入具体数字例子。
+- well-tempered metadynamics Demo 已新增为第五套独立静态图和 16 秒视频；一维双阱、Langevin 初期驻留、well-tempered Gaussian hills 和自由能恢复均有素材，静态 strict QA 与 384 帧视频 QA 已通过。
 
 ## 当前推送内容
 
@@ -24,7 +25,7 @@
 - 对四套视频做最终统一逐帧复核，尤其是 AIMD 的 SCF 闪烁、离子步停顿和 DP 的球内/球外淡化；当前 DP 最终版本已通过 384/384 帧检查，其余版本的最后一次导出仍需再做同一轮汇总审阅。
 - MatterVis 到 `main` 的新 PR 已创建；已有 PR #117 的冲突不在本轮历史中改写，后续由 PR #133 继续审阅。
 - 在可用的 MiKTeX/XeLaTeX 环境重新编译读书笔记，重新生成 PDF、逐页回渲和最终排版 QA；现有源稿和上一版 PDF 已保存，但修订后编译曾受本机 MiKTeX 权限错误影响。
-- 完成 well-tempered metadynamics Demo、采样静态图和文章中的最终配图，并把其逐帧 QA 纳入统一交付目录。
+- 将 metadynamics 图和视频纳入文章最终排版，并补充 umbrella sampling 的文字示意与采样误差说明。
 - 在 Bohrium Notebook 上用修订稿运行全部单元并保存输出；这一步依赖公开 Notebook 的替换和计算节点运行。
 
 ## 可复核证据位置
