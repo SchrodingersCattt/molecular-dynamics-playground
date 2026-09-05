@@ -4,10 +4,10 @@
   "format": "png",
   "width": 1500,
   "height": 950,
-  "plan_sha256": "342ec99641348e243d1ae128371aadad8696ce3b5f5ca810e372a680955d5e78",
+  "plan_sha256": "4ad87c08797b907bd7eb9105491b63d649fa8eb7a60c413993d8cb848f4c3123",
   "output_sha256": "5c1b80c4734d25649793348b75bebe9312c265695060f41d6b77947633a1d41b",
-  "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_structure.png",
-  "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
+  "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_structure.png",
+  "source_sha256": "66b54386d29a47128e5fda1789675d47e56e6cb27723716dbd5eda01c7882ef0",
   "frame": 6,
   "view": "cluster",
   "camera": {

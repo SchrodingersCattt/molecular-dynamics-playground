@@ -1,0 +1,228 @@
+{
+  "version": 1,
+  "figure": {
+    "canonical_stem": "04_deep_potential_md"
+  },
+  "outputs": [
+    {
+      "path": "../../figures/04_deep_potential_md.png"
+    },
+    {
+      "path": "../../figures/04_deep_potential_md.svg"
+    }
+  ],
+  "target": {
+    "width_mm": 297,
+    "qa_dpi": 300,
+    "min_dpi": 200,
+    "max_dpi": 600
+  },
+  "panels": [
+    {
+      "id": "integrator",
+      "source": "mattervis_v3/box_initial.png",
+      "slot": [
+        0.03,
+        0.105,
+        0.27,
+        0.905
+      ],
+      "source_min_clearance_px": 0,
+      "min_clearance_px": 0,
+      "source_allow_touch_edges": [
+        "left",
+        "right",
+        "top",
+        "bottom"
+      ],
+      "allow_touch_edges": [
+        "left",
+        "right",
+        "top",
+        "bottom"
+      ]
+    },
+    {
+      "id": "water_box",
+      "source": "mattervis_v3/focus_cutoff.png",
+      "slot": [
+        0.29,
+        0.075,
+        0.755,
+        0.905
+      ],
+      "source_min_clearance_px": 0,
+      "min_clearance_px": 0,
+      "source_allow_touch_edges": [
+        "left",
+        "right",
+        "top",
+        "bottom"
+      ],
+      "allow_touch_edges": [
+        "left",
+        "right",
+        "top",
+        "bottom"
+      ]
+    },
+    {
+      "id": "centre_and_cutoff",
+      "source": "mattervis_v3/focus_inside.png",
+      "slot": [
+        0.775,
+        0.105,
+        0.97,
+        0.405
+      ],
+      "source_min_clearance_px": 0,
+      "min_clearance_px": 0,
+      "source_allow_touch_edges": [
+        "left",
+        "right",
+        "top",
+        "bottom"
+      ],
+      "allow_touch_edges": [
+        "left",
+        "right",
+        "top",
+        "bottom"
+      ]
+    },
+    {
+      "id": "dp_force",
+      "source": "mattervis_v3/focus_force.png",
+      "slot": [
+        0.775,
+        0.405,
+        0.97,
+        0.905
+      ],
+      "source_min_clearance_px": 0,
+      "min_clearance_px": 0,
+      "source_allow_touch_edges": [
+        "left",
+        "right",
+        "top",
+        "bottom"
+      ],
+      "allow_touch_edges": [
+        "left",
+        "right",
+        "top",
+        "bottom"
+      ]
+    }
+  ],
+  "checks": {
+    "whitespace": {
+      "background_threshold": 245,
+      "min_ink_fraction": 0.02,
+      "min_panel_bbox_fill": 0.3,
+      "grid_rows": 12,
+      "grid_columns": 20
+    },
+    "boundaries": {
+      "bands": [
+        {
+          "id": "rail_main_gap",
+          "rect": [
+            0.27,
+            0.075,
+            0.29,
+            0.905
+          ],
+          "max_ink_pixels": 0
+        },
+        {
+          "id": "main_info_gap",
+          "rect": [
+            0.755,
+            0.075,
+            0.775,
+            0.905
+          ],
+          "max_ink_pixels": 0
+        }
+      ]
+    },
+    "colors": {
+      "semantics": [
+        {
+          "id": "cutoff",
+          "color": "#183153",
+          "min_pixels": 350
+        },
+        {
+          "id": "oxygen",
+          "color": "#A32035",
+          "min_pixels": 180
+        },
+        {
+          "id": "force",
+          "color": "#A89B52",
+          "min_pixels": 150
+        },
+        {
+          "id": "neighbours",
+          "color": "#2E89A7",
+          "min_pixels": 150
+        }
+      ]
+    }
+  },
+  "integrity": {
+    "required_content": [
+      "equilibrated_dp_trajectory",
+      "mattervis_periodic_box",
+      "stable_central_atom",
+      "exact_cutoff_selection",
+      "real_deepmd_forces"
+    ],
+    "evidence": {
+      "equilibrated_dp_trajectory": "../../data/dpmd_eval.json",
+      "mattervis_periodic_box": "mattervis_v3/box_initial.json",
+      "stable_central_atom": "../../data/water_box_64.json",
+      "exact_cutoff_selection": "../../data/water_box_64.json",
+      "real_deepmd_forces": "../../data/dpmd_eval.json"
+    },
+    "scientific_changes": []
+  },
+  "consistency": {
+    "constraints": [
+      "fixed_camera",
+      "stable_source_ids",
+      "minimum_image_neighbors",
+      "fixed_cutoff"
+    ],
+    "evidence": {}
+  },
+  "quantitative": {
+    "transformations": [
+      "outside-context opacity change",
+      "visual arrow amplification"
+    ],
+    "units": {
+      "distance": "angstrom",
+      "energy": "eV",
+      "force": "eV/angstrom",
+      "time": "fs"
+    }
+  },
+  "deviations": {
+    "records": []
+  },
+  "review": {
+    "render_sha256": "fc8b6391689abf4442eebc97b936f0e7a27c8f0b503dcc3ce2e9339c1514a3a5",
+    "problems": {
+      "scientific_expression": "The force, neighbour, and cutoff stages use one saved periodic snapshot.",
+      "geometry": "The cutoff is a true world-space sphere with fixed oblique camera, radial front/back shading, and restrained MatterVis rings.",
+      "annotations": "Labels are short and remain outside the native structure scene.",
+      "readability": "The central scene is dominant; a sparse local MatterVis view and a small full-box locator separate centre, neighbours, and force.",
+      "submission_quality": "Static and video assets are accompanied by native MatterVis sidecars and full-frame QA."
+    },
+    "action": "Native MatterVis sphere with directional shading, depth-aware local foreground, full-box locator, fixed camera, and frame-level QA.",
+    "stop_condition": "fixed"
+  }
+}

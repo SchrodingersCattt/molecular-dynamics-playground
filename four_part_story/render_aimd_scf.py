@@ -54,7 +54,7 @@ from mattervis_story import (
 ROOT = Path(__file__).resolve().parent
 STEM = "03_aimd_scf"
 QA_DIR = ROOT / "_qa" / STEM
-MATTERVIS_DIR = QA_DIR / "source" / "mattervis_multistep"
+MATTERVIS_DIR = QA_DIR / "source" / "mattervis_multistep_v3"
 DATA_PATH = ROOT / "data" / "aimd_multistep_h2o_dimer.npz"
 MOTION_SOURCE = ROOT / "data" / "aimd_multistep_h2o_dimer.extxyz"
 
@@ -71,7 +71,8 @@ VIDEO_B = STORY_VIDEO_B
 VIDEO_C = STORY_VIDEO_C
 VIDEO_D = STORY_VIDEO_D
 
-CAMERA_SCALE = 1.72
+# A tighter fixed view keeps the dimer and its density slice legible inside B.
+CAMERA_SCALE = 1.46
 POSITION_LAKE = "#4E9BB5"
 FORCE_OLIVE = "#A99C50"
 VELOCITY_EMERALD = "#2F8562"
@@ -313,9 +314,9 @@ def prepare_mattervis(
         density_paths.append(ion_paths)
 
     arrow_style = {
-        "shaft_radius": 0.052,
-        "head_length_ratio": 0.28,
-        "head_radius_ratio": 2.25,
+        "shaft_radius": 0.020,
+        "head_length": 0.070,
+        "head_radius": 0.046,
         "sides": 18,
     }
     force_paths: list[Path] = []
@@ -427,7 +428,11 @@ def draw_scf_loop(
     """Draw the electronic loop in its own lower-right panel."""
     del iteration, iteration_count, converged
     aspect = _axes_aspect(ax)
-    symbols = [r"$F$", r"$C$", r"$\rho$", r"$?$"]
+    # Keep the electronic loop self-explanatory without putting a second
+    # molecule or a paragraph into the panel.  The four short labels are the
+    # actual RHF operations; the symbols are only a visual anchor.
+    symbols = [r"$F$", r"$C$", r"$\rho$", r"$\Delta$"]
+    labels = ("build Fock", "solve orbitals", "update density", "test")
     positions = [
         (0.50, 0.78),
         (0.78, 0.55),
@@ -450,7 +455,7 @@ def draw_scf_loop(
             end,
             arrowstyle="-|>",
             mutation_scale=19 if video else 13,
-            lw=2.6 if video else 1.6,
+            lw=3.4 if video else 2.1,
             color=mix_hex(LINE_GRAY, INK, arrow_weight),
             zorder=3,
         )
@@ -481,6 +486,17 @@ def draw_scf_loop(
             weight="bold",
             zorder=5,
         )
+        registry.text(
+            ax,
+            x,
+            y - radius_y - (0.035 if video else 0.028),
+            labels[index],
+            ha="center",
+            va="top",
+            fontsize=10,
+            color=INK if weight < 0.48 else INK,
+            zorder=5,
+        )
     registry.text(
         ax,
         centre_x,
@@ -488,7 +504,7 @@ def draw_scf_loop(
         "SCF",
         ha="center",
         va="center",
-        fontsize=16 if video else 14,
+        fontsize=14 if video else 12,
         color=INK,
         weight="bold",
     )
@@ -685,9 +701,11 @@ def draw_energy_curve(
         zorder=4,
     )
 
-    energies = np.asarray(data["scf_energies_eh"][ion_index, :count], dtype=float)
-    error = np.abs(energies - energies[-1])
-    display_error = np.maximum(error, 1.0e-10)
+    # The plotted quantity is the real RHF density residual saved by the
+    # calculation.  It is monotone enough for a readable log axis, but we do
+    # not impose monotonicity or invent an energy curve.
+    residual = np.asarray(data["scf_residuals"][ion_index, :count], dtype=float)
+    display_error = np.maximum(residual, 1.0e-12)
     iterations = np.arange(1, count + 1, dtype=float)
 
     if mode == "scf":
@@ -742,7 +760,7 @@ def draw_energy_curve(
     font_size = 10
     plot_ax.tick_params(axis="both", labelsize=font_size, colors=DARK_GRAY, width=1.0)
     plot_ax.set_xlabel("SCF iteration", fontsize=font_size, color=INK, labelpad=3)
-    plot_ax.set_ylabel(r"$|E^k-E^*|$ / Eh", fontsize=font_size, color=INK, labelpad=3)
+    plot_ax.set_ylabel(r"density residual", fontsize=font_size, color=INK, labelpad=3)
     plot_ax.grid(axis="y", color="#E6E8EA", lw=0.8, zorder=0)
     for spine in plot_ax.spines.values():
         spine.set_color(LINE_GRAY)

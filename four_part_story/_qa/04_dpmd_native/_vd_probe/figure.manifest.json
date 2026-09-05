@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "figure": {"canonical_stem": "figure"},
+  "outputs": [{"path": "figure.png"}],
+  "target": {"width_mm": 180, "qa_dpi": 300, "min_dpi": 200, "max_dpi": 600},
+  "panels": [
+    {
+      "id": "a",
+      "source": "_panel_a.png",
+      "slot": [0.03, 0.20, 0.48, 0.82],
+      "source_min_clearance_px": 8,
+      "min_clearance_px": 8,
+      "source_allow_touch_edges": [],
+      "allow_touch_edges": []
+    }
+  ],
+  "checks": {
+    "whitespace": {
+      "background_threshold": 245,
+      "min_ink_fraction": 0.02,
+      "min_panel_bbox_fill": 0.15,
+      "grid_rows": 12,
+      "grid_columns": 20
+    },
+    "boundaries": {"bands": []},
+    "colors": {"semantics": []}
+  },
+  "integrity": {"required_content": [], "evidence": {}, "scientific_changes": []},
+  "consistency": {"constraints": [], "evidence": {}},
+  "quantitative": {"transformations": [], "units": {}},
+  "deviations": {"records": []},
+  "review": {
+    "render_sha256": "REPLACE_AFTER_RENDER",
+    "problems": {
+      "scientific_expression": "",
+      "geometry": "",
+      "annotations": "",
+      "readability": "",
+      "submission_quality": ""
+    },
+    "action": "",
+    "stop_condition": "fixed"
+  }
+}

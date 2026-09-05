@@ -2,21 +2,21 @@
   "schema": "mattervis.render-result/v1",
   "backend": "cpu",
   "format": "png",
-  "width": 1500,
-  "height": 1120,
-  "plan_sha256": "9fede5a58317c3e4196e3090a304e592f724e1a3ab8f912dd00e8c8870a6490b",
-  "output_sha256": "149278624010c76829662d6a74749c004f8e32f54a6d49be5680d1b309b72342",
-  "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\motion_03.png",
+  "width": 1700,
+  "height": 1180,
+  "plan_sha256": "a341240450c50a74f4bace62a0e1f4b810d6d24c217f5b80efa06e36159f8656",
+  "output_sha256": "e8abcbd94b35f39fb2479339e2388838bc1342313acb1e2a30dadcd1034bfb32",
+  "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\motion_03.png",
   "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
   "frame": 3,
   "view": "cluster",
   "camera": {
     "target": [
-      -0.0041121683077796475,
-      0.0008511869581849426,
-      -0.2567498485568142
+      -0.004112168307779647,
+      0.0008511869581849455,
+      -0.25661889515106057
     ],
-    "ortho_scale": 1.55,
+    "ortho_scale": 1.42,
     "direction": [
       0.7965073352737195,
       -0.5138757001765932,
@@ -28,16 +28,16 @@
       1.0
     ],
     "scene_offset": [
-      5.0033406515,
-      5.7148306083,
-      5.4452102759
+      5.0,
+      5.7137861877,
+      5.4429769721
     ]
   },
   "render_settings": {
-    "width": 1500,
-    "height": 1120,
-    "atom_scale": 1.1,
-    "bond_radius": 0.13,
+    "width": 1700,
+    "height": 1180,
+    "atom_scale": 1.12,
+    "bond_radius": 0.14,
     "show_cell": false
   },
   "vector_signature": "[]",
@@ -51,14 +51,14 @@
     "actual_backend": "cpu",
     "camera": {
       "position": [
-        24.11540452976149,
-        -6.617335008980053,
-        12.834930845970893
+        24.112063878261488,
+        -6.618379429580052,
+        12.832828495576647
       ],
       "target": [
-        4.999228483192221,
-        5.715681795258185,
-        5.188460427343186
+        4.995887831692221,
+        5.714637374658185,
+        5.18635807694894
       ],
       "up": [
         0.0,
@@ -69,7 +69,7 @@
       "fov_y_deg": 45.0,
       "near": 0.01,
       "far": 10000.0,
-      "ortho_scale": 1.55
+      "ortho_scale": 1.42
     },
     "source": {
       "path": null,

@@ -1,0 +1,98 @@
+{
+  "schema": "mattervis.render-result/v1",
+  "backend": "cpu",
+  "format": "png",
+  "width": 1700,
+  "height": 1180,
+  "plan_sha256": "6700555ce08937f13463fb529e085452e17a60657a6e4fdd7e362cf311968184",
+  "output_sha256": "6927293359eb72fdcd52fdcfdfa4ba1bc5103e29913793f9344746d15459234a",
+  "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis_v2\\position_08.png",
+  "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
+  "frame": 8,
+  "view": "cluster",
+  "camera": {
+    "target": [
+      -0.004112168307779647,
+      0.0008511869581849455,
+      -0.25661889515106057
+    ],
+    "ortho_scale": 1.42,
+    "direction": [
+      0.7965073352737195,
+      -0.5138757001765932,
+      0.3186029341094878
+    ],
+    "up": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "scene_offset": [
+      5.0,
+      5.7137861877,
+      5.4429769721
+    ]
+  },
+  "render_settings": {
+    "width": 1700,
+    "height": 1180,
+    "atom_scale": 1.12,
+    "bond_radius": 0.14,
+    "show_cell": false
+  },
+  "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"vv-position-0\",\"opacity\":1.0,\"origin\":[0.0,0.0,0.119],\"style\":{\"head_length_ratio\":0.22,\"head_radius_ratio\":1.65,\"shaft_radius\":0.036,\"sides\":18},\"vector\":[0.039815457809866416,-0.00824149107851571,0.01063639031972441]},{\"color\":\"#4E9BB5\",\"id\":\"vv-position-1\",\"opacity\":1.0,\"origin\":[0.0,0.7137861877137688,-0.44297697209696985],\"style\":{\"head_length_ratio\":0.22,\"head_radius_ratio\":1.65,\"shaft_radius\":0.036,\"sides\":18},\"vector\":[0.009437390940570077,0.3663496359795362,0.287531887754358]},{\"color\":\"#4E9BB5\",\"id\":\"vv-position-2\",\"opacity\":1.0,\"origin\":[0.0,-0.7137861877137688,-0.44297697209696985],\"style\":{\"head_length_ratio\":0.22,\"head_radius_ratio\":1.65,\"shaft_radius\":0.036,\"sides\":18},\"vector\":[-0.6414050850707056,-0.23553722292238977,-0.4563571489462217]}]",
+  "vector_count": 3,
+  "vector_renderer": "MatterVis native world-space vector_overlays",
+  "pipeline_version": 3,
+  "warnings": [],
+  "metadata": {
+    "transparent_compositor": "per-pixel-fragment-list",
+    "scale": 1,
+    "actual_backend": "cpu",
+    "camera": {
+      "position": [
+        24.112063878261488,
+        -6.618379429580052,
+        12.832828495576647
+      ],
+      "target": [
+        4.995887831692221,
+        5.714637374658185,
+        5.18635807694894
+      ],
+      "up": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "projection": "orthographic",
+      "fov_y_deg": 45.0,
+      "near": 0.01,
+      "far": 10000.0,
+      "ortho_scale": 1.42
+    },
+    "source": {
+      "path": null,
+      "input_format": null,
+      "frame": null
+    },
+    "requirements": {
+      "schema": "mattervis.requirements/v1",
+      "requested": [
+        "png"
+      ],
+      "capabilities": [
+        "core"
+      ],
+      "extras": [],
+      "available": true,
+      "missing_capabilities": [],
+      "install": "python -m pip install \"matter-vis\"",
+      "notes": [
+        "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+      ]
+    },
+    "install": "python -m pip install \"matter-vis\"",
+    "fallback": null
+  }
+}

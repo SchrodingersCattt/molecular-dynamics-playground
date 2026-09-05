@@ -1,0 +1,98 @@
+{
+  "schema": "mattervis.render-result/v1",
+  "backend": "cpu",
+  "format": "png",
+  "width": 1700,
+  "height": 1180,
+  "plan_sha256": "b379be436b23f1e748a7925aae4afa4ee79c57f180dd48391067b8ee6b5a1d18",
+  "output_sha256": "d0db571edc293ab2935d8af0aeed981d47974f19f92443f52b7f82fce6309094",
+  "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\motion_03.png",
+  "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
+  "frame": 3,
+  "view": "cluster",
+  "camera": {
+    "target": [
+      0.3148617016843059,
+      0.15441954864030816,
+      1.3877787807814457e-19
+    ],
+    "ortho_scale": 1.5,
+    "direction": [
+      0.12,
+      -0.82,
+      0.56
+    ],
+    "up": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "scene_offset": [
+      6.6896136638999995,
+      5.7566899221,
+      5.0
+    ]
+  },
+  "render_settings": {
+    "width": 1700,
+    "height": 1180,
+    "atom_scale": 1.06,
+    "bond_radius": 0.135,
+    "show_cell": false
+  },
+  "vector_signature": "[]",
+  "vector_count": 0,
+  "vector_renderer": "MatterVis native world-space vector_overlays",
+  "pipeline_version": 3,
+  "warnings": [],
+  "metadata": {
+    "transparent_compositor": "per-pixel-fragment-list",
+    "scale": 1,
+    "actual_backend": "cpu",
+    "camera": {
+      "position": [
+        9.883899538326727,
+        -13.764955709666232,
+        18.437312806131295
+      ],
+      "target": [
+        7.004475365584305,
+        5.911109470740308,
+        5.0
+      ],
+      "up": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "projection": "orthographic",
+      "fov_y_deg": 45.0,
+      "near": 0.01,
+      "far": 10000.0,
+      "ortho_scale": 1.5
+    },
+    "source": {
+      "path": null,
+      "input_format": null,
+      "frame": null
+    },
+    "requirements": {
+      "schema": "mattervis.requirements/v1",
+      "requested": [
+        "png"
+      ],
+      "capabilities": [
+        "core"
+      ],
+      "extras": [],
+      "available": true,
+      "missing_capabilities": [],
+      "install": "python -m pip install \"matter-vis\"",
+      "notes": [
+        "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+      ]
+    },
+    "install": "python -m pip install \"matter-vis\"",
+    "fallback": null
+  }
+}
