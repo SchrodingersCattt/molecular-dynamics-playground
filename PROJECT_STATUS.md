@@ -15,13 +15,14 @@
 
 ## 当前推送内容
 
-- `molecular-dynamics-playground`：本轮视觉、QA、README 和状态记录追加提交到 `redesign/three-slide-md`。
-- `MatterVis`：原生球面和透明度渲染支持追加提交到 `fix/cpu-vector-style-parity`；该分支保留已有历史，不 amend、不 rebase、不 force-push。
+- `molecular-dynamics-playground`：`redesign/three-slide-md` 已推送至 `e5b0a95`，PR 为 [#1](https://github.com/SchrodingersCattt/molecular-dynamics-playground/pull/1)。
+- `molecular-dynamics-playground` 视觉分支也保留在 `visual/final-20260905`，提交为 `a263495`，包含完整 MatterVis 素材、视频和 QA 文件。
+- `MatterVis`：`fix/cpu-vector-style-parity` 已推送至 merge 提交 `199f69b`，包含功能提交 `32e5380`，PR 为 [#133](https://github.com/SchrodingersCattt/MatterVis/pull/133)。所有提交均为追加式，没有 amend、rebase、squash 或 force-push。
 
 ## 仍需完成的工作
 
-- 重新导出并逐帧复核四套视频的最终版本，尤其是 AIMD 的 SCF 闪烁、离子步停顿和 DP 的球内/球外淡化；当前完整严格报告已确认为 DP 版本，其他版本仍需以最后一次导出为准。
-- 将 MatterVis 分支通过 `gh` 创建/更新到 `main` 的 PR，并处理已有 PR #117 的冲突状态；当前工作分支只完成追加提交和远端推送。
+- 对四套视频做最终统一逐帧复核，尤其是 AIMD 的 SCF 闪烁、离子步停顿和 DP 的球内/球外淡化；当前 DP 最终版本已通过 384/384 帧检查，其余版本的最后一次导出仍需再做同一轮汇总审阅。
+- MatterVis 到 `main` 的新 PR 已创建；已有 PR #117 的冲突不在本轮历史中改写，后续由 PR #133 继续审阅。
 - 在可用的 MiKTeX/XeLaTeX 环境重新编译读书笔记，重新生成 PDF、逐页回渲和最终排版 QA；现有源稿和上一版 PDF 已保存，但修订后编译曾受本机 MiKTeX 权限错误影响。
 - 完成 well-tempered metadynamics Demo、采样静态图和文章中的最终配图，并把其逐帧 QA 纳入统一交付目录。
 - 在 Bohrium Notebook 上用修订稿运行全部单元并保存输出；这一步依赖公开 Notebook 的替换和计算节点运行。
