@@ -17,7 +17,7 @@
 
 ## 当前推送内容
 
-- `molecular-dynamics-playground`：`redesign/three-slide-md` 已推送至 `15fbc6f`，PR 为 [#1](https://github.com/SchrodingersCattt/molecular-dynamics-playground/pull/1)。
+- `molecular-dynamics-playground`：全部交付已直接推送到 `main`，当前远端提交为 `3d0b50f`。此前 PR [#1](https://github.com/SchrodingersCattt/molecular-dynamics-playground/pull/1) 已被 GitHub 标记为 MERGED；后续按要求直接推 `main`。
 - `molecular-dynamics-playground` 视觉分支也保留在 `visual/final-20260905`，最新提交为 `3b197f5`，包含完整 MatterVis 素材、第五套 metadynamics Demo 和 QA 文件。
 - `MatterVis`：`fix/cpu-vector-style-parity` 已推送至 merge 提交 `199f69b`，包含功能提交 `32e5380`，PR 为 [#133](https://github.com/SchrodingersCattt/MatterVis/pull/133)。所有提交均为追加式，没有 amend、rebase、squash 或 force-push。
 
