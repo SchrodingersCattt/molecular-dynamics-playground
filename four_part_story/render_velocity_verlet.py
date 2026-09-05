@@ -1,308 +1,214 @@
+"""Responsive Velocity--Verlet story rendered with MatterVis."""
+
 from __future__ import annotations
 
 import argparse
 from pathlib import Path
 
 import numpy as np
-from matplotlib.patches import Ellipse, Rectangle
+from matplotlib.patches import FancyBboxPatch
 
-from common import (
-    CRIMSON,
-    DARK_GRAY,
-    GREEN,
-    INK,
-    LINE_GRAY,
-    NAVY,
-    WHITE,
-    LayoutRegistry,
-    axes_from_top_slot,
-    new_static_figure,
-    render_source_panel,
-    render_video,
-    save_static,
-    smoothstep,
+from common import DARK_GRAY, INK, LINE_GRAY, NAVY, LayoutRegistry, new_static_figure, render_video, save_static, smoothstep
+from mattervis_story import camera_for_source, make_vector_group, render_structure, write_provenance_index
+from responsive_story import (
+    EMERALD,
+    LAKE_BLUE,
+    PALE_OLIVE,
+    draw_horizontal_key,
+    panel_box,
+    place_main,
+    simple_audit,
+    stage_rail,
+    stage_title,
+    story_axes,
+    timeline_stage,
 )
-from mattervis_story import (
-    STORY_STATIC_A,
-    STORY_STATIC_B,
-    STORY_STATIC_C,
-    STORY_STATIC_D,
-    STORY_VIDEO_A,
-    STORY_VIDEO_B,
-    STORY_VIDEO_C,
-    STORY_VIDEO_D,
-    camera_for_source,
-    draw_vv_loop,
-    make_vector_group,
-    place_render,
-    render_structure,
-    write_provenance_index,
-)
-
 
 ROOT = Path(__file__).resolve().parent
 STEM = "01_velocity_verlet"
-QA_DIR = ROOT / "_qa" / "01_velocity_verlet"
-MATTERVIS_DIR = QA_DIR / "source" / "mattervis"
-SCENE_RECT = (0.04, 0.09, 0.96, 0.91)
-EQUATIONS = (
-    r"$\mathbf{r}_{n+1}=\mathbf{r}_n+\mathbf{v}_n\Delta t+\frac{1}{2}\mathbf{a}_n\Delta t^2$",
-    r"$\mathbf{a}_{n+1}=\mathbf{F}(\mathbf{r}_{n+1})/m$",
-    r"$\mathbf{v}_{n+1}=\mathbf{v}_n+\frac{1}{2}(\mathbf{a}_n+\mathbf{a}_{n+1})\Delta t$",
-)
+QA_DIR = ROOT / "_qa" / STEM
+MATTERVIS_DIR = QA_DIR / "source" / "mattervis_v3"
+SOURCE = ROOT / "data" / "vv_h2o_motion.extxyz"
+
+ARROW_STYLE = {
+    # World-space dimensions keep the head outside the atom sphere without
+    # making a vector look like a second atom.
+    "shaft_radius": 0.020,
+    "head_length": 0.070,
+    "head_radius": 0.046,
+    "sides": 18,
+}
 
 
 def load_data() -> dict[str, np.ndarray]:
-    source = np.load(ROOT / "data" / "vv_h2o_step.npz", allow_pickle=True)
-    return {key: source[key] for key in source.files}
+    with np.load(ROOT / "data" / "vv_h2o_step.npz", allow_pickle=True) as source:
+        return {key: source[key] for key in source.files}
 
 
-def prepare_mattervis(data: dict[str, np.ndarray]) -> dict[str, list[Path] | Path]:
-    source = ROOT / "data" / "vv_h2o_motion.extxyz"
-    target = np.mean(data["positions"], axis=(0, 1))
-    plain_paths: list[Path] = []
-    position_paths: list[Path] = []
+def prepare_mattervis(data: dict[str, np.ndarray]) -> dict[str, object]:
+    """Create fixed-camera MatterVis renders for trajectory and three vectors."""
+    MATTERVIS_DIR.mkdir(parents=True, exist_ok=True)
+    frame_count = len(data["motion_positions"])
+    cached_plain = [MATTERVIS_DIR / f"motion_{frame:02d}.png" for frame in range(frame_count)]
+    cached_position = [MATTERVIS_DIR / f"position_{frame:02d}.png" for frame in range(frame_count)]
+    cached_accel = MATTERVIS_DIR / "acceleration.png"
+    cached_velocity = MATTERVIS_DIR / "velocity.png"
+    if all(path.exists() for path in (cached_plain[0], cached_plain[-1], cached_position[0], cached_position[-1], cached_accel, cached_velocity)):
+        return {"plain": cached_plain, "position": cached_position, "acceleration": cached_accel, "velocity": cached_velocity, "overview": cached_velocity}
+    target = np.mean(data["motion_positions"], axis=(0, 1))
+    # Tight orthographic framing suppresses empty paper-space while retaining
+    # the same camera for every trajectory frame.
+    camera = camera_for_source(SOURCE, target=target, ortho_scale=1.16, frame=0)
+    displacement = data["positions"][1] - data["positions"][0]
+    position_vectors = make_vector_group(
+        "vv-position", data["motion_positions"][0], displacement,
+        scale=float(data["display_displacement_scale"]), color=LAKE_BLUE,
+        style=ARROW_STYLE,
+    )
+    acceleration_vectors = make_vector_group(
+        "vv-acceleration", data["positions"][1], data["accelerations"][1],
+        scale=float(data["display_acceleration_scale"]), color=PALE_OLIVE,
+        style=ARROW_STYLE,
+    )
+    velocity_vectors = make_vector_group(
+        "vv-velocity", data["positions"][1], data["velocities"][1],
+        scale=float(data["display_velocity_scale"]), color=EMERALD,
+        style=ARROW_STYLE,
+    )
+    plain: list[Path] = []
+    position: list[Path] = []
     records: list[dict] = []
-    displacement_overlays = make_vector_group(
-        "displacement",
-        data["positions"][0],
-        data["positions"][1] - data["positions"][0],
-        scale=float(data["display_displacement_scale"]),
-        color=NAVY,
-    )
-    for frame in range(len(data["motion_positions"])):
-        camera = camera_for_source(source, target=target, ortho_scale=1.55, frame=frame)
+    for frame in range(frame_count):
         plain_path = MATTERVIS_DIR / f"motion_{frame:02d}.png"
-        position_path = MATTERVIS_DIR / f"position_{frame:02d}.png"
-        records.append(render_structure(source, plain_path, camera=camera, frame=frame))
-        records.append(
-            render_structure(
-                source,
-                position_path,
-                camera=camera,
-                frame=frame,
-                vector_overlays=displacement_overlays,
-            )
-        )
-        plain_paths.append(plain_path)
-        position_paths.append(position_path)
-    final_frame = len(data["motion_positions"]) - 1
-    final_camera = camera_for_source(
-        source,
-        target=target,
-        ortho_scale=1.55,
-        frame=final_frame,
-    )
+        pos_path = MATTERVIS_DIR / f"position_{frame:02d}.png"
+        records.append(render_structure(
+            SOURCE, plain_path, camera=camera, frame=frame, view="cluster",
+            width=1700, height=1180, atom_scale=1.12, bond_radius=0.14,
+        ))
+        records.append(render_structure(
+            SOURCE, pos_path, camera=camera, frame=frame, view="cluster",
+            width=1700, height=1180, atom_scale=1.12, bond_radius=0.14,
+            vector_overlays=position_vectors,
+        ))
+        plain.append(plain_path)
+        position.append(pos_path)
+    final = len(plain) - 1
     acceleration_path = MATTERVIS_DIR / "acceleration.png"
     velocity_path = MATTERVIS_DIR / "velocity.png"
-    records.append(
-        render_structure(
-            source,
-            acceleration_path,
-            camera=final_camera,
-            frame=final_frame,
-            vector_overlays=make_vector_group(
-                "acceleration",
-                data["positions"][1],
-                data["accelerations"][1],
-                scale=float(data["display_acceleration_scale"]),
-                color=CRIMSON,
-            ),
-        )
-    )
-    records.append(
-        render_structure(
-            source,
-            velocity_path,
-            camera=final_camera,
-            frame=final_frame,
-            vector_overlays=make_vector_group(
-                "velocity",
-                data["positions"][1],
-                data["velocities"][1],
-                scale=float(data["display_velocity_scale"]),
-                color=GREEN,
-            ),
-        )
-    )
+    for path, vectors in (
+        (acceleration_path, acceleration_vectors),
+        (velocity_path, velocity_vectors),
+    ):
+        records.append(render_structure(
+            SOURCE, path, camera=camera, frame=final, view="cluster",
+            width=1700, height=1180, atom_scale=1.12, bond_radius=0.14,
+            vector_overlays=vectors,
+        ))
     write_provenance_index(MATTERVIS_DIR, records)
     return {
-        "plain": plain_paths,
-        "position": position_paths,
+        "plain": plain,
+        "position": position,
         "acceleration": acceleration_path,
         "velocity": velocity_path,
+        "overview": velocity_path,
     }
 
 
-def draw_left(
-    ax,
-    registry: LayoutRegistry,
-    *,
-    video: bool,
-    active: int | None,
-) -> None:
-    centre_text = EQUATIONS[active] if active is not None else "\n".join(EQUATIONS)
-    draw_vv_loop(
-        ax,
-        registry,
-        video=video,
-        active_stage=active,
-        centre_text=centre_text,
-        centre_y=0.52,
-        radius_x=0.40,
+def draw_info(ax, registry: LayoutRegistry, *, video: bool, active: int | None, returning: bool = False) -> None:
+    panel_box(ax, registry, "STATE", video=video)
+    cards = [
+        (0.72, "known", r"$\mathbf{r}_n,\;\mathbf{v}_n,\;\mathbf{a}_n$", LAKE_BLUE),
+        (0.49, "new", r"$\mathbf{r}_{n+1},\;\mathbf{v}_{n+1},\;\mathbf{a}_{n+1}$", EMERALD),
+    ]
+    for index, (y, label, value, colour) in enumerate(cards):
+        selected = active == index
+        ax.add_patch(FancyBboxPatch(
+            (0.08, y - 0.095), 0.84, 0.19,
+            boxstyle="round,pad=0.012,rounding_size=0.025",
+            facecolor="#EAF2EE" if selected else "#F7F8F6",
+            edgecolor=colour if selected else LINE_GRAY,
+            linewidth=2.3 if video else 1.5,
+            zorder=2,
+        ))
+        registry.text(ax, 0.18, y + 0.035, label, ha="left", va="center",
+                      fontsize=12 if video else 11, color=colour, weight="bold", zorder=3)
+        registry.text(ax, 0.18, y - 0.035, value, ha="left", va="center",
+                      fontsize=11 if video else 10, color=INK, zorder=3)
+    registry.text(ax, 0.50, 0.24, r"$\Delta t=0.5\;\mathrm{fs}$", ha="center", va="center",
+                  fontsize=12 if video else 11, color=NAVY, weight="bold")
+    registry.text(ax, 0.50, 0.15, "one real H₂O step", ha="center", va="center",
+                  fontsize=11 if video else 10, color=DARK_GRAY)
+    if returning:
+        registry.text(ax, 0.50, 0.075, r"$n\;\rightarrow\;n+1$", ha="center", va="center",
+                      fontsize=12 if video else 11, color=NAVY, weight="bold")
+
+
+def draw_composition(fig, t: float, registry: LayoutRegistry, data: dict[str, np.ndarray], scenes: dict[str, object], *, video: bool) -> list[dict]:
+    del data
+    stage, progress, returning = timeline_stage(t, 9.0, n_stages=3, return_seconds=1.5)
+    rail, main, info = story_axes(fig)
+    active = None if returning else stage
+    stage_rail(
+        rail, registry, active=active, video=video,
+        equation=None,
+        return_phase=returning,
     )
-
-
-def draw_state_panel(
-    ax,
-    registry: LayoutRegistry,
-    *,
-    video: bool,
-    updated: bool,
-    active: int | None,
-) -> None:
-    ax.add_patch(Rectangle((0.04, 0.04), 0.92, 0.92, fill=False, ec=LINE_GRAY, lw=2.0 if video else 1.1))
-    registry.text(
-        ax,
-        0.50,
-        0.84,
-        "updated state" if updated else "known state",
-        ha="center",
-        va="center",
-        fontsize=14 if video else 10,
-        color=INK,
-    )
-    figure_width, figure_height = ax.figure.canvas.get_width_height()
-    position = ax.get_position()
-    aspect = (position.width * figure_width) / (position.height * figure_height)
-    symbols = (r"$\mathbf{r}$", r"$\mathbf{a}$", r"$\mathbf{v}$")
-    xs = (0.22, 0.50, 0.78)
-    suffix = r"_{n+1}" if updated else r"_n"
-    for index, (x, symbol) in enumerate(zip(xs, symbols)):
-        is_active = bool(updated and active == index)
-        ax.add_patch(Ellipse((x, 0.45), 0.20, 0.20 * aspect, fc=INK if is_active else WHITE, ec=INK if is_active else LINE_GRAY, lw=2.2 if video else 1.3))
-        registry.text(
-            ax,
-            x,
-            0.45,
-            f"${symbol[1:-1]}{suffix}$",
-            ha="center",
-            va="center",
-            fontsize=14 if video else 10,
-            color=WHITE if is_active else INK,
-            weight="bold" if is_active else "normal",
-        )
-
-
-def draw_stage(
-    ax,
-    registry: LayoutRegistry,
-    data: dict[str, np.ndarray],
-    scenes: dict[str, list[Path] | Path],
-    *,
-    stage: int,
-    rect: tuple[float, float, float, float],
-    video: bool,
-    progress: float = 1.0,
-) -> None:
-    del registry, data, video
-    plain_paths = scenes["plain"]
-    position_paths = scenes["position"]
-    assert isinstance(plain_paths, list) and isinstance(position_paths, list)
-    if stage == 0:
-        place_render(ax, plain_paths[0], rect, alpha=0.16, zorder=3)
-        index = int(round(smoothstep(progress) * (len(position_paths) - 1)))
-        place_render(ax, position_paths[index], rect, alpha=1.0, zorder=5)
+    main_titles = ("update position", "evaluate acceleration", "update velocity")
+    panel_box(main, registry, "next step" if returning else f"VELOCITY–VERLET · H₂O · {main_titles[stage]}", video=video)
+    if returning:
+        registry.text(main, 0.035, 0.035, "pause · then repeat", ha="left", va="bottom",
+                      fontsize=11 if video else 10, color=DARK_GRAY)
+        place_main(main, scenes["plain"][-1], alpha=0.18)
+        place_main(main, scenes["acceleration"], alpha=0.92)
+        place_main(main, scenes["velocity"])
+    elif stage == 0:
+        registry.text(main, 0.035, 0.035, "old → new geometry", ha="left", va="bottom",
+                      fontsize=11 if video else 10, color=DARK_GRAY)
+        place_main(main, scenes["plain"][0], alpha=0.20)
+        index = int(round(smoothstep(progress) * (len(scenes["position"]) - 1)))
+        place_main(main, scenes["position"][index])
     elif stage == 1:
-        acceleration_path = scenes["acceleration"]
-        assert isinstance(acceleration_path, Path)
-        place_render(ax, acceleration_path, rect, zorder=5)
+        registry.text(main, 0.035, 0.035, "force / mass", ha="left", va="bottom",
+                      fontsize=11 if video else 10, color=DARK_GRAY)
+        place_main(main, scenes["plain"][0], alpha=0.16)
+        place_main(main, scenes["acceleration"])
     else:
-        velocity_path = scenes["velocity"]
-        assert isinstance(velocity_path, Path)
-        place_render(ax, velocity_path, rect, zorder=5)
+        registry.text(main, 0.035, 0.035, "new acceleration closes loop", ha="left", va="bottom",
+                      fontsize=11 if video else 10, color=DARK_GRAY)
+        place_main(main, scenes["plain"][0], alpha=0.16)
+        place_main(main, scenes["velocity"])
+    draw_info(info, registry, video=video, active=None if returning else (1 if stage == 2 else 0), returning=returning)
+    draw_horizontal_key(
+        main, registry,
+        (("$\\Delta r$", LAKE_BLUE), ("$F/m$", PALE_OLIVE), ("$v$", EMERALD)),
+        video=video, y=0.075,
+    )
+    return [
+        {"id": "position", "color": LAKE_BLUE, "min_pixels": 120},
+        {"id": "acceleration", "color": PALE_OLIVE, "min_pixels": 120},
+        {"id": "velocity", "color": EMERALD, "min_pixels": 120},
+    ]
 
 
-def draw_case_panel(
-    ax,
-    registry: LayoutRegistry,
-    data: dict[str, np.ndarray],
-    scenes: dict[str, list[Path] | Path],
-    *,
-    stage: int,
-    video: bool,
-    progress: float = 1.0,
-) -> None:
-    ax.add_patch(Rectangle((0.04, 0.04), 0.92, 0.92, fill=False, ec=LINE_GRAY, lw=2.0 if video else 1.1, zorder=20))
-    headings = ("Update position", "Evaluate acceleration", "Update velocity")
-    registry.text(ax, 0.50, 0.925, headings[stage], ha="center", va="center", fontsize=16 if video else 11, color=INK, zorder=21)
-    registry.text(ax, 0.075, 0.070, "Simulation step 01", ha="left", va="bottom", fontsize=12 if video else 10, color=INK, zorder=21)
-    draw_stage(ax, registry, data, scenes, stage=stage, rect=SCENE_RECT, video=video, progress=progress)
-
-
-def render_static(data: dict[str, np.ndarray], scenes: dict[str, list[Path] | Path]) -> None:
-    render_source_panel(QA_DIR / "source" / "integrator.png", lambda ax, reg: draw_left(ax, reg, video=False, active=None), width_px=1000, height_px=1500)
-    render_source_panel(QA_DIR / "source" / "case.png", lambda ax, reg: draw_case_panel(ax, reg, data, scenes, stage=0, video=False), width_px=1800, height_px=1500)
-    render_source_panel(QA_DIR / "source" / "known_state.png", lambda ax, reg: draw_state_panel(ax, reg, video=False, updated=False, active=None), width_px=1000, height_px=700)
-    render_source_panel(QA_DIR / "source" / "updated_state.png", lambda ax, reg: draw_state_panel(ax, reg, video=False, updated=True, active=0), width_px=1000, height_px=1100)
+def render_static(data: dict[str, np.ndarray], scenes: dict[str, object]) -> None:
+    del data
     fig = new_static_figure()
-    registry = LayoutRegistry(min_font_pt=10, edge_pad_px=18)
-    draw_left(axes_from_top_slot(fig, STORY_STATIC_A), registry, video=False, active=None)
-    draw_case_panel(axes_from_top_slot(fig, STORY_STATIC_B), registry, data, scenes, stage=0, video=False)
-    draw_state_panel(axes_from_top_slot(fig, STORY_STATIC_C), registry, video=False, updated=False, active=None)
-    draw_state_panel(axes_from_top_slot(fig, STORY_STATIC_D), registry, video=False, updated=True, active=0)
+    registry = LayoutRegistry(min_font_pt=10.0, max_font_pt=16.0, edge_pad_px=18)
+    draw_composition(fig, 0.0, registry, {}, scenes, video=False)
     errors = registry.validate(fig)
     if errors:
-        raise RuntimeError("Static layout failed:\n" + "\n".join(errors))
+        raise RuntimeError("static responsive layout failed:\n" + "\n".join(errors))
     save_static(fig, STEM)
 
 
-def draw_video_frame(
-    fig,
-    time_seconds: float,
-    frame_index: int,
-    registry: LayoutRegistry,
-    data: dict[str, np.ndarray],
-    scenes: dict[str, list[Path] | Path],
-) -> list[dict]:
-    del frame_index
-    stage = min(int(time_seconds // 3.0), 2)
-    progress = (time_seconds - 3.0 * stage) / 3.0
-    left = axes_from_top_slot(fig, STORY_VIDEO_A)
-    middle = axes_from_top_slot(fig, STORY_VIDEO_B)
-    upper_right = axes_from_top_slot(fig, STORY_VIDEO_C)
-    lower_right = axes_from_top_slot(fig, STORY_VIDEO_D)
-    draw_left(left, registry, video=True, active=stage)
-    headings = ("position update", "force → acceleration", "velocity update")
-    colors = (NAVY, CRIMSON, GREEN)
-    draw_case_panel(middle, registry, data, scenes, stage=stage, video=True, progress=progress)
-    draw_state_panel(upper_right, registry, video=True, updated=False, active=None)
-    draw_state_panel(lower_right, registry, video=True, updated=True, active=stage)
-    return [{"id": headings[stage], "color": colors[stage], "min_pixels": 160}]
-
-
-def render_animation(data: dict[str, np.ndarray], scenes: dict[str, list[Path] | Path]) -> None:
-    audit = {
-        "panels": [
-            {"id": "integrator", "rect": list(STORY_VIDEO_A), "min_clearance_px": 12},
-            {"id": "mattervis_h2o", "rect": list(STORY_VIDEO_B), "min_clearance_px": 12},
-            {"id": "known_state", "rect": list(STORY_VIDEO_C), "min_clearance_px": 12},
-            {"id": "updated_state", "rect": list(STORY_VIDEO_D), "min_clearance_px": 12},
-        ],
-        "whitespace": {"background_threshold": 245, "min_ink_fraction": 0.018, "min_panel_bbox_fill": 0.20, "grid_rows": 12, "grid_columns": 20},
-        "bands": [
-            {"id": "gap_a_b", "rect": [0.310, 0.055, 0.325, 0.955], "max_ink_pixels": 0},
-            {"id": "gap_b_right", "rect": [0.715, 0.045, 0.745, 0.955], "max_ink_pixels": 0},
-            {"id": "gap_c_d", "rect": [0.745, 0.405, 0.965, 0.445], "max_ink_pixels": 0},
-        ],
-    }
+def render_animation(data: dict[str, np.ndarray], scenes: dict[str, object]) -> None:
     render_video(
         stem=STEM,
         duration_seconds=9.0,
-        draw_frame=lambda fig, t, i, reg: draw_video_frame(fig, t, i, reg, data, scenes),
-        audit_config=audit,
+        draw_frame=lambda fig, t, i, reg: draw_composition(fig, t, reg, data, scenes, video=True),
+        audit_config=simple_audit(("rail", "structure", "state")),
         qa_directory=QA_DIR / "_qa",
-        representative_times=[1.5, 4.5, 7.5],
+        representative_times=[0.2, 2.8, 5.4, 8.4],
     )
 
 

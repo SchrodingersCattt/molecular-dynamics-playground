@@ -1,0 +1,39 @@
+{
+  "pipeline_version": 5,
+  "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+  "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep_v3\\ion_00_structure.png",
+  "ion_index": 0,
+  "scf_index": 10,
+  "residual": 2.1477485637774477e-08,
+  "visual_progress": 0.9589726596127377,
+  "blur_sigma_pixels": 0.07379241635341663,
+  "levels": [
+    0.003,
+    0.007,
+    0.015,
+    0.035,
+    0.08,
+    0.18,
+    0.4,
+    0.9
+  ],
+  "camera": {
+    "target": [
+      -0.015000000000000013,
+      0.039999999999999994,
+      0.05
+    ],
+    "direction": [
+      -0.5381573536165152,
+      -0.6201447889834582,
+      0.5707951501590842
+    ],
+    "up": [
+      -0.11791748769155824,
+      0.9670901334257105,
+      0.2254598410519105
+    ],
+    "ortho_scale": 1.72
+  },
+  "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep_v3\\ion_00_scf_10_density.png"
+}

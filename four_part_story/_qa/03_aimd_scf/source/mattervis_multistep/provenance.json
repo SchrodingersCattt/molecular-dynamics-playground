@@ -17,10 +17,10 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "fa25fc4ccec1d37713d12a6d97e9cfa1a7434efb95019d4ad295b32624e136bc",
+      "plan_sha256": "78174114ad0502e390ef294f72ed8224e8e8ecea9324f9c7ad70f14fc27575b7",
       "output_sha256": "b12e92ee5a6bad85421067d5442623f6c4d7e9cc744b0eca5cbfc467ffff2ae9",
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_structure.png",
-      "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_structure.png",
+      "source_sha256": "66b54386d29a47128e5fda1789675d47e56e6cb27723716dbd5eda01c7882ef0",
       "frame": 0,
       "view": "cluster",
       "camera": {
@@ -115,10 +115,10 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "63e72eb8a2e968983d1618d739f451e68391c906f8ae0abb000e95c4ffd43f5a",
+      "plan_sha256": "c5612cc9ac26a8528919929890ca6aaa183d7b50f4c23895ac1c35c01e7178d9",
       "output_sha256": "54089699d205cf465e64cab086bea58d92e1a0b2d315fc0821dd42b6bd339f2d",
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_structure.png",
-      "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_structure.png",
+      "source_sha256": "66b54386d29a47128e5fda1789675d47e56e6cb27723716dbd5eda01c7882ef0",
       "frame": 1,
       "view": "cluster",
       "camera": {
@@ -213,10 +213,10 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "4e38d134ecaa827c3d685f18d3c0d4d4901d24cc64c7787c31f5de7308e25c74",
+      "plan_sha256": "0d0a19dfb2356dd080580e07d74f4e6405cc4fcb437b55c8cd09a06595c599cf",
       "output_sha256": "130e23c74f2f3f016d8b28aa3cbae34d17acae47d2a84fd31e02f31fe58d82f2",
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_structure.png",
-      "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_structure.png",
+      "source_sha256": "66b54386d29a47128e5fda1789675d47e56e6cb27723716dbd5eda01c7882ef0",
       "frame": 2,
       "view": "cluster",
       "camera": {
@@ -311,10 +311,10 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "36282e082b9097a1ac9529a8fc3ee1d0e71f1e724dd43143523421a9984cd23e",
+      "plan_sha256": "3e8561af3c5e45a70e2a0e4ca76c76ab4ff68362e402e145a99bcefbcd21f5b6",
       "output_sha256": "0106384128dc38b2c540450f991a74b5a74925461c08db11f489da562076c2c4",
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_structure.png",
-      "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_structure.png",
+      "source_sha256": "66b54386d29a47128e5fda1789675d47e56e6cb27723716dbd5eda01c7882ef0",
       "frame": 3,
       "view": "cluster",
       "camera": {
@@ -409,10 +409,10 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "7e346d75bb6ac4704e0b76e5721178f038930d992e0ca332d8d0940d9e101987",
+      "plan_sha256": "383abd5c245d9a0f15634187349cc7d7b86426a8b9c50d9e3d9abf57dd73b26b",
       "output_sha256": "6828345265ab1b95770201e0a782d25a2a8cc3b9446504b4bcf6c305ceb90b3e",
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_structure.png",
-      "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_structure.png",
+      "source_sha256": "66b54386d29a47128e5fda1789675d47e56e6cb27723716dbd5eda01c7882ef0",
       "frame": 4,
       "view": "cluster",
       "camera": {
@@ -507,10 +507,10 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "89876b1bc49f6d0b316a03ad80e1e90f265b1e144416956924a3e15af1c90263",
+      "plan_sha256": "f305c9386e6aca6d14f7fd04defeb1d286ab1ba54d7fbb66f8a35c4f132d5fa7",
       "output_sha256": "ae4da0f6e4e7a2f0dac060ec0fcd1c5d893dc1e36f45ff075047941c24294697",
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_structure.png",
-      "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_structure.png",
+      "source_sha256": "66b54386d29a47128e5fda1789675d47e56e6cb27723716dbd5eda01c7882ef0",
       "frame": 5,
       "view": "cluster",
       "camera": {
@@ -605,10 +605,10 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "342ec99641348e243d1ae128371aadad8696ce3b5f5ca810e372a680955d5e78",
+      "plan_sha256": "4ad87c08797b907bd7eb9105491b63d649fa8eb7a60c413993d8cb848f4c3123",
       "output_sha256": "5c1b80c4734d25649793348b75bebe9312c265695060f41d6b77947633a1d41b",
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_structure.png",
-      "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_structure.png",
+      "source_sha256": "66b54386d29a47128e5fda1789675d47e56e6cb27723716dbd5eda01c7882ef0",
       "frame": 6,
       "view": "cluster",
       "camera": {
@@ -699,8 +699,8 @@
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_structure.png",
       "ion_index": 0,
       "scf_index": 0,
       "residual": 5.0233567052287995,
@@ -734,12 +734,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_scf_00_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_scf_00_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_structure.png",
       "ion_index": 0,
       "scf_index": 1,
       "residual": 0.45366852368293675,
@@ -773,12 +773,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_scf_01_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_scf_01_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_structure.png",
       "ion_index": 0,
       "scf_index": 2,
       "residual": 0.058211941982142516,
@@ -812,12 +812,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_scf_02_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_scf_02_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_structure.png",
       "ion_index": 0,
       "scf_index": 3,
       "residual": 0.011506325452719868,
@@ -851,12 +851,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_scf_03_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_scf_03_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_structure.png",
       "ion_index": 0,
       "scf_index": 4,
       "residual": 0.00033340946948692406,
@@ -890,12 +890,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_scf_04_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_scf_04_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_structure.png",
       "ion_index": 0,
       "scf_index": 5,
       "residual": 8.95420293534513e-05,
@@ -929,12 +929,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_scf_05_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_scf_05_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_structure.png",
       "ion_index": 0,
       "scf_index": 6,
       "residual": 1.8415788273418527e-05,
@@ -968,12 +968,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_scf_06_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_scf_06_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_structure.png",
       "ion_index": 0,
       "scf_index": 7,
       "residual": 4.788446265111686e-06,
@@ -1007,12 +1007,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_scf_07_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_scf_07_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_structure.png",
       "ion_index": 0,
       "scf_index": 8,
       "residual": 7.166564227749271e-07,
@@ -1046,12 +1046,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_scf_08_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_scf_08_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_structure.png",
       "ion_index": 0,
       "scf_index": 9,
       "residual": 1.0187076450312152e-07,
@@ -1085,12 +1085,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_scf_09_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_scf_09_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_structure.png",
       "ion_index": 0,
       "scf_index": 10,
       "residual": 2.1477485637774477e-08,
@@ -1124,12 +1124,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_scf_10_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_scf_10_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_structure.png",
       "ion_index": 0,
       "scf_index": 11,
       "residual": 9.417495778188402e-09,
@@ -1163,12 +1163,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_scf_11_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_scf_11_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_structure.png",
       "ion_index": 1,
       "scf_index": 0,
       "residual": 5.011827483966503,
@@ -1202,12 +1202,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_scf_00_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_scf_00_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_structure.png",
       "ion_index": 1,
       "scf_index": 1,
       "residual": 0.45389337555291137,
@@ -1241,12 +1241,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_scf_01_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_scf_01_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_structure.png",
       "ion_index": 1,
       "scf_index": 2,
       "residual": 0.058293514797675076,
@@ -1280,12 +1280,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_scf_02_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_scf_02_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_structure.png",
       "ion_index": 1,
       "scf_index": 3,
       "residual": 0.011540634412848248,
@@ -1319,12 +1319,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_scf_03_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_scf_03_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_structure.png",
       "ion_index": 1,
       "scf_index": 4,
       "residual": 0.00030654273916493535,
@@ -1358,12 +1358,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_scf_04_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_scf_04_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_structure.png",
       "ion_index": 1,
       "scf_index": 5,
       "residual": 7.89280945618293e-05,
@@ -1397,12 +1397,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_scf_05_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_scf_05_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_structure.png",
       "ion_index": 1,
       "scf_index": 6,
       "residual": 1.734534791045848e-05,
@@ -1436,12 +1436,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_scf_06_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_scf_06_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_structure.png",
       "ion_index": 1,
       "scf_index": 7,
       "residual": 4.7264281559108034e-06,
@@ -1475,12 +1475,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_scf_07_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_scf_07_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_structure.png",
       "ion_index": 1,
       "scf_index": 8,
       "residual": 7.062959337692668e-07,
@@ -1514,12 +1514,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_scf_08_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_scf_08_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_structure.png",
       "ion_index": 1,
       "scf_index": 9,
       "residual": 8.718388537847852e-08,
@@ -1553,12 +1553,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_scf_09_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_scf_09_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_structure.png",
       "ion_index": 1,
       "scf_index": 10,
       "residual": 3.6170865546133545e-08,
@@ -1592,12 +1592,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_scf_10_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_scf_10_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_structure.png",
       "ion_index": 2,
       "scf_index": 0,
       "residual": 5.009383415265078,
@@ -1631,12 +1631,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_scf_00_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_scf_00_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_structure.png",
       "ion_index": 2,
       "scf_index": 1,
       "residual": 0.45410498308974007,
@@ -1670,12 +1670,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_scf_01_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_scf_01_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_structure.png",
       "ion_index": 2,
       "scf_index": 2,
       "residual": 0.05837548883124799,
@@ -1709,12 +1709,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_scf_02_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_scf_02_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_structure.png",
       "ion_index": 2,
       "scf_index": 3,
       "residual": 0.011567400893717453,
@@ -1748,12 +1748,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_scf_03_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_scf_03_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_structure.png",
       "ion_index": 2,
       "scf_index": 4,
       "residual": 0.00029290500926219565,
@@ -1787,12 +1787,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_scf_04_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_scf_04_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_structure.png",
       "ion_index": 2,
       "scf_index": 5,
       "residual": 6.768630383228635e-05,
@@ -1826,12 +1826,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_scf_05_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_scf_05_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_structure.png",
       "ion_index": 2,
       "scf_index": 6,
       "residual": 1.617841484544962e-05,
@@ -1865,12 +1865,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_scf_06_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_scf_06_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_structure.png",
       "ion_index": 2,
       "scf_index": 7,
       "residual": 4.601207813145248e-06,
@@ -1904,12 +1904,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_scf_07_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_scf_07_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_structure.png",
       "ion_index": 2,
       "scf_index": 8,
       "residual": 6.984903217604165e-07,
@@ -1943,12 +1943,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_scf_08_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_scf_08_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_structure.png",
       "ion_index": 2,
       "scf_index": 9,
       "residual": 7.827911505441315e-08,
@@ -1982,12 +1982,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_scf_09_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_scf_09_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_structure.png",
       "ion_index": 2,
       "scf_index": 10,
       "residual": 3.156302791156488e-08,
@@ -2021,12 +2021,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_scf_10_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_scf_10_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_structure.png",
       "ion_index": 3,
       "scf_index": 0,
       "residual": 5.0146401998738375,
@@ -2060,12 +2060,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_scf_00_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_scf_00_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_structure.png",
       "ion_index": 3,
       "scf_index": 1,
       "residual": 0.45427269686491945,
@@ -2099,12 +2099,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_scf_01_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_scf_01_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_structure.png",
       "ion_index": 3,
       "scf_index": 2,
       "residual": 0.058423765796537214,
@@ -2138,12 +2138,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_scf_02_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_scf_02_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_structure.png",
       "ion_index": 3,
       "scf_index": 3,
       "residual": 0.01158007722896542,
@@ -2177,12 +2177,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_scf_03_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_scf_03_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_structure.png",
       "ion_index": 3,
       "scf_index": 4,
       "residual": 0.00028860877322292214,
@@ -2216,12 +2216,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_scf_04_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_scf_04_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_structure.png",
       "ion_index": 3,
       "scf_index": 5,
       "residual": 6.185004391123615e-05,
@@ -2255,12 +2255,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_scf_05_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_scf_05_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_structure.png",
       "ion_index": 3,
       "scf_index": 6,
       "residual": 1.5169792691797691e-05,
@@ -2294,12 +2294,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_scf_06_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_scf_06_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_structure.png",
       "ion_index": 3,
       "scf_index": 7,
       "residual": 4.436808006739843e-06,
@@ -2333,12 +2333,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_scf_07_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_scf_07_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_structure.png",
       "ion_index": 3,
       "scf_index": 8,
       "residual": 6.884823683243767e-07,
@@ -2372,12 +2372,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_scf_08_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_scf_08_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_structure.png",
       "ion_index": 3,
       "scf_index": 9,
       "residual": 7.264313632274045e-08,
@@ -2411,12 +2411,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_scf_09_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_scf_09_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_structure.png",
       "ion_index": 3,
       "scf_index": 10,
       "residual": 2.8743009201157392e-08,
@@ -2450,12 +2450,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_scf_10_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_scf_10_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_structure.png",
       "ion_index": 4,
       "scf_index": 0,
       "residual": 5.0253457023101475,
@@ -2489,12 +2489,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_scf_00_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_scf_00_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_structure.png",
       "ion_index": 4,
       "scf_index": 1,
       "residual": 0.4543870053510677,
@@ -2528,12 +2528,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_scf_01_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_scf_01_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_structure.png",
       "ion_index": 4,
       "scf_index": 2,
       "residual": 0.05842257547907014,
@@ -2567,12 +2567,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_scf_02_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_scf_02_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_structure.png",
       "ion_index": 4,
       "scf_index": 3,
       "residual": 0.011575073882047463,
@@ -2606,12 +2606,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_scf_03_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_scf_03_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_structure.png",
       "ion_index": 4,
       "scf_index": 4,
       "residual": 0.0002889855435520815,
@@ -2645,12 +2645,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_scf_04_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_scf_04_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_structure.png",
       "ion_index": 4,
       "scf_index": 5,
       "residual": 6.354201161651055e-05,
@@ -2684,12 +2684,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_scf_05_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_scf_05_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_structure.png",
       "ion_index": 4,
       "scf_index": 6,
       "residual": 1.530123587489402e-05,
@@ -2723,12 +2723,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_scf_06_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_scf_06_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_structure.png",
       "ion_index": 4,
       "scf_index": 7,
       "residual": 4.470358298010542e-06,
@@ -2762,12 +2762,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_scf_07_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_scf_07_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_structure.png",
       "ion_index": 4,
       "scf_index": 8,
       "residual": 6.831534733376673e-07,
@@ -2801,12 +2801,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_scf_08_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_scf_08_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_structure.png",
       "ion_index": 4,
       "scf_index": 9,
       "residual": 7.04222438201032e-08,
@@ -2840,12 +2840,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_scf_09_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_scf_09_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_structure.png",
       "ion_index": 4,
       "scf_index": 10,
       "residual": 2.762294680984834e-08,
@@ -2879,12 +2879,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_scf_10_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_scf_10_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_structure.png",
       "ion_index": 5,
       "scf_index": 0,
       "residual": 5.039542081352665,
@@ -2918,12 +2918,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_scf_00_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_scf_00_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_structure.png",
       "ion_index": 5,
       "scf_index": 1,
       "residual": 0.45446359493375577,
@@ -2957,12 +2957,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_scf_01_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_scf_01_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_structure.png",
       "ion_index": 5,
       "scf_index": 2,
       "residual": 0.058390242143585354,
@@ -2996,12 +2996,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_scf_02_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_scf_02_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_structure.png",
       "ion_index": 5,
       "scf_index": 3,
       "residual": 0.011553113660470125,
@@ -3035,12 +3035,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_scf_03_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_scf_03_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_structure.png",
       "ion_index": 5,
       "scf_index": 4,
       "residual": 0.00029604373485916095,
@@ -3074,12 +3074,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_scf_04_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_scf_04_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_structure.png",
       "ion_index": 5,
       "scf_index": 5,
       "residual": 7.353727272328037e-05,
@@ -3113,12 +3113,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_scf_05_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_scf_05_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_structure.png",
       "ion_index": 5,
       "scf_index": 6,
       "residual": 1.6369049684541084e-05,
@@ -3152,12 +3152,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_scf_06_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_scf_06_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_structure.png",
       "ion_index": 5,
       "scf_index": 7,
       "residual": 4.5917248003506765e-06,
@@ -3191,12 +3191,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_scf_07_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_scf_07_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_structure.png",
       "ion_index": 5,
       "scf_index": 8,
       "residual": 6.816466806930913e-07,
@@ -3230,12 +3230,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_scf_08_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_scf_08_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_structure.png",
       "ion_index": 5,
       "scf_index": 9,
       "residual": 7.449416575984441e-08,
@@ -3269,12 +3269,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_scf_09_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_scf_09_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_structure.png",
       "ion_index": 5,
       "scf_index": 10,
       "residual": 2.9566320041827887e-08,
@@ -3308,12 +3308,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_scf_10_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_scf_10_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_structure.png",
       "ion_index": 6,
       "scf_index": 0,
       "residual": 5.056093646003721,
@@ -3347,12 +3347,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_scf_00_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_scf_00_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_structure.png",
       "ion_index": 6,
       "scf_index": 1,
       "residual": 0.4545405364371444,
@@ -3386,12 +3386,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_scf_01_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_scf_01_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_structure.png",
       "ion_index": 6,
       "scf_index": 2,
       "residual": 0.05837786770400871,
@@ -3425,12 +3425,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_scf_02_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_scf_02_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_structure.png",
       "ion_index": 6,
       "scf_index": 3,
       "residual": 0.011519203885731343,
@@ -3464,12 +3464,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_scf_03_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_scf_03_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_structure.png",
       "ion_index": 6,
       "scf_index": 4,
       "residual": 0.0003184355622460848,
@@ -3503,12 +3503,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_scf_04_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_scf_04_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_structure.png",
       "ion_index": 6,
       "scf_index": 5,
       "residual": 8.724246616655942e-05,
@@ -3542,12 +3542,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_scf_05_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_scf_05_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_structure.png",
       "ion_index": 6,
       "scf_index": 6,
       "residual": 1.7595862826952288e-05,
@@ -3581,12 +3581,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_scf_06_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_scf_06_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_structure.png",
       "ion_index": 6,
       "scf_index": 7,
       "residual": 4.655704280201322e-06,
@@ -3620,12 +3620,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_scf_07_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_scf_07_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_structure.png",
       "ion_index": 6,
       "scf_index": 8,
       "residual": 6.836151890675868e-07,
@@ -3659,12 +3659,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_scf_08_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_scf_08_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_structure.png",
       "ion_index": 6,
       "scf_index": 9,
       "residual": 8.744638189938944e-08,
@@ -3698,12 +3698,12 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_scf_09_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_scf_09_density.png"
     },
     {
       "pipeline_version": 5,
-      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
-      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_structure.png",
+      "density_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\aimd_multistep_h2o_dimer.npz",
+      "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_structure.png",
       "ion_index": 6,
       "scf_index": 10,
       "residual": 3.599665284596305e-08,
@@ -3737,7 +3737,7 @@
         ],
         "ortho_scale": 1.72
       },
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_scf_10_density.png"
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_06_scf_10_density.png"
     },
     {
       "schema": "mattervis.render-result/v1",
@@ -3745,10 +3745,10 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "15a91cae776c03e78f4228bae0203faac6365c2f5cad63e542f09e2fae915fec",
-      "output_sha256": "4fbd3066c8501a5fd902ca19ea37de58d07b889df3f7fc79ff5c68832cc1f917",
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_force.png",
-      "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
+      "plan_sha256": "7a5b31cc2a675348a89a0e5a916dd75b1c413f98f7b1701cf1846561c3f74cb3",
+      "output_sha256": "da1d996bdb2e4215831b3da61f2946da045eb606c008648058809ca81eac249e",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_force.png",
+      "source_sha256": "66b54386d29a47128e5fda1789675d47e56e6cb27723716dbd5eda01c7882ef0",
       "frame": 0,
       "view": "cluster",
       "camera": {
@@ -3843,10 +3843,10 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "f689cc7db205e69ea7c71188b4315cc71e6d7f791f9068b5f1f383c3a5a56c6e",
-      "output_sha256": "4a2ce07667187b3e4dc57b5d80583526bd816c90f0e7b2beb53b1cc22bb88210",
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_velocity.png",
-      "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
+      "plan_sha256": "b122d7828d35f3d449383cb6dc5d592c5c8b112e33e2ab8e8e4ff4853d8c304c",
+      "output_sha256": "7f3f719593e5fdad5230a047f72a0f6e2db7a3b606d667c022ae937503abeb1a",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_velocity.png",
+      "source_sha256": "66b54386d29a47128e5fda1789675d47e56e6cb27723716dbd5eda01c7882ef0",
       "frame": 0,
       "view": "cluster",
       "camera": {
@@ -3941,10 +3941,10 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "c713f6ed35ff58a510c133493123ab3904149e33acd4241d8c6f3fdde2641b41",
-      "output_sha256": "928fec1df00a15be48f6ed33545f0926d8c896030278405ae7b7a5bb7aba4a1b",
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_move.png",
-      "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
+      "plan_sha256": "2d62d8fa867b3d6282afd7a23f8b314f10c60e3ebdb48f843a40b6a0b1c6ef5c",
+      "output_sha256": "7d9c4ce846ce6979fac7f03d8fc7fe3fae7dd4334ab36ef047da6e79fa0b15e6",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_00_move.png",
+      "source_sha256": "66b54386d29a47128e5fda1789675d47e56e6cb27723716dbd5eda01c7882ef0",
       "frame": 1,
       "view": "cluster",
       "camera": {
@@ -4039,10 +4039,10 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "f31d9796d3e3fddf98707e3ce59242cce6e3bce9dbf5f2ca8ee2c3c67aaeb027",
-      "output_sha256": "a1076cb7903f8921ec0e1304b0d8960b4781eb616bac39b1bcf829c34f65bae9",
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_force.png",
-      "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
+      "plan_sha256": "64104eae730c27faf13971b2c688483ae4857d855277d775de7bcb453a348e88",
+      "output_sha256": "fa75c32ae4d5ba8733bd1d0e3b2605544e527f920d23bf1f3c40faa3c68ee090",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_force.png",
+      "source_sha256": "66b54386d29a47128e5fda1789675d47e56e6cb27723716dbd5eda01c7882ef0",
       "frame": 1,
       "view": "cluster",
       "camera": {
@@ -4137,10 +4137,10 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "c7b441545d7e29fe1bb2710eea03bce83994750e232d034380406bc0e80372a4",
-      "output_sha256": "f07503e0d5a714a2be0a4ef2cafc753fed4d38dc53e87ca3c217d00d7c52d7e4",
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_velocity.png",
-      "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
+      "plan_sha256": "213052260fad131dae2331aeb173e8f9f5b808611c0d79b8a10952d2449d566d",
+      "output_sha256": "64f0a4a76f02bc5d18f4a9e2d496c8456708adcbb6275e2bf29081de32b30585",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_velocity.png",
+      "source_sha256": "66b54386d29a47128e5fda1789675d47e56e6cb27723716dbd5eda01c7882ef0",
       "frame": 1,
       "view": "cluster",
       "camera": {
@@ -4235,10 +4235,10 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "e83cc8dbd823ee7aecb85e4f6dd19b32cf70f557425c1a78ca8e4605c93b9a7a",
-      "output_sha256": "27dd6a25d0abac4cc85ef426b255982f7c002eea8cb498df25c825c5c1c75228",
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_move.png",
-      "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
+      "plan_sha256": "f11b7b0c727daad79c8ae61a057e3606462638600c1599eb5ab9de011e8e6e17",
+      "output_sha256": "7ff6c341f5dad452bc9820c66487599631064b07deb8ceae9365bcd733ea35b0",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_01_move.png",
+      "source_sha256": "66b54386d29a47128e5fda1789675d47e56e6cb27723716dbd5eda01c7882ef0",
       "frame": 2,
       "view": "cluster",
       "camera": {
@@ -4333,10 +4333,10 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "4f937219f0fe3f161f606d2f7e71981b34a1ec84cffd5adfb8526d90ba6d472a",
-      "output_sha256": "9d45db9c2c40eb4224e01348c8411f8ed85ecba03132fb9e258e1ff61d25f5be",
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_force.png",
-      "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
+      "plan_sha256": "cbc91dfcf3b19cc1ab5cab21d442f49a194485dd87db13d9e11e930d2a42add5",
+      "output_sha256": "4dfff0b3a09197f65ef5e6f1d4b6dd7a1e95656b17acd20a382b1a936900de12",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_force.png",
+      "source_sha256": "66b54386d29a47128e5fda1789675d47e56e6cb27723716dbd5eda01c7882ef0",
       "frame": 2,
       "view": "cluster",
       "camera": {
@@ -4431,10 +4431,10 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "2a21a655eb316647a7e51fa78642a239416aa012df8bc9b45962f15be2f345f5",
-      "output_sha256": "0e8bb2d56f130e65a00c9901b86c66caac149d00d345424e985994a58d89b359",
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_velocity.png",
-      "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
+      "plan_sha256": "d5f523a0944828fa67b57aeb93b4fa970570846d71720bc753343cf722ecff15",
+      "output_sha256": "420d9dc6ba09e63849bf23cd51d090cc902c10c878e871e64490d38f7080f4b9",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_velocity.png",
+      "source_sha256": "66b54386d29a47128e5fda1789675d47e56e6cb27723716dbd5eda01c7882ef0",
       "frame": 2,
       "view": "cluster",
       "camera": {
@@ -4529,10 +4529,10 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "656848bd7934360ab4e210a5c4ab16a03128847b09463fcea041909056bc8cfc",
-      "output_sha256": "e4d7858b2d59da58eecf2258395dea6c49424e79b87496dab3d0edb0f5a57f40",
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_move.png",
-      "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
+      "plan_sha256": "7c5e65d99bbed024a921a9598377615517ac707b9a245c69c4a2535d736e49f3",
+      "output_sha256": "b42d2fa8718cf4102a45130170b36bd28d80da48acb40a49a4fad609ab0444d7",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_02_move.png",
+      "source_sha256": "66b54386d29a47128e5fda1789675d47e56e6cb27723716dbd5eda01c7882ef0",
       "frame": 3,
       "view": "cluster",
       "camera": {
@@ -4627,10 +4627,10 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "c6aca2b4da0f5bace0eb9a3e3c179f580552299c0b05cedf7ce64e192353cb6a",
-      "output_sha256": "9f7c6bb243139e6bf920fb7071bb4846300bd5f88c11ae4d0c7a2077cfd0c1e1",
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_force.png",
-      "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
+      "plan_sha256": "c9f7e84595f79bd20080125039b161e961d14eb8bd538230aba286a1f88400aa",
+      "output_sha256": "5437818bff77f9972a95e20bf9286bb405211106bd4d39f4a8836a752104e107",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_force.png",
+      "source_sha256": "66b54386d29a47128e5fda1789675d47e56e6cb27723716dbd5eda01c7882ef0",
       "frame": 3,
       "view": "cluster",
       "camera": {
@@ -4725,10 +4725,10 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "8113d9a380ac070398ebe000668070d4dff15fc09c59c64dbb39dd38cd6a1784",
-      "output_sha256": "c41682ff65fd7da0aaa47be8f3edceddf40c230962a7cfb33340dda3e8c3fe42",
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_velocity.png",
-      "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
+      "plan_sha256": "6b2d36bfd7408c9a9ebe4809dbda1e976e403941efb426859b8555f30d6e712a",
+      "output_sha256": "ad46d07e5ec23387ef6646dc6d112f463e4c64975620e80adc0246decaa7a3c1",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_velocity.png",
+      "source_sha256": "66b54386d29a47128e5fda1789675d47e56e6cb27723716dbd5eda01c7882ef0",
       "frame": 3,
       "view": "cluster",
       "camera": {
@@ -4823,10 +4823,10 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "1c7742bcdf4e64e46e8ee66928203183b2b42a0ee6b0e7ab585d724ba0de9b1a",
-      "output_sha256": "4f34199d14630c94a2b67603d38f0190776f88390ee2534da34f0e4076516786",
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_move.png",
-      "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
+      "plan_sha256": "be66d151a430f9e16215e3e6b7854031114be204bd9f9bac797be362c49cc772",
+      "output_sha256": "4b153dca2f6a99dc33f26474488fe048692c90e9bd8092164f35ad94c20391a8",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_03_move.png",
+      "source_sha256": "66b54386d29a47128e5fda1789675d47e56e6cb27723716dbd5eda01c7882ef0",
       "frame": 4,
       "view": "cluster",
       "camera": {
@@ -4921,10 +4921,10 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "7d3045561d2f3e57afe5878cfed9c3e5f4a0bfd4cba3f181e6163028e37f201d",
-      "output_sha256": "ac22ac27c834d43fae26519ba1d1f0b239e3aa1fe144459a651495bf1e7f2ba5",
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_force.png",
-      "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
+      "plan_sha256": "27425b4153bbec5de89a1b7b988cc6ed2124fa73fd6aeb759e677294d31e70eb",
+      "output_sha256": "0380d7a8521fafd3e9069279876607dedd147c2a49bee5fb900d8d17e1491d91",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_force.png",
+      "source_sha256": "66b54386d29a47128e5fda1789675d47e56e6cb27723716dbd5eda01c7882ef0",
       "frame": 4,
       "view": "cluster",
       "camera": {
@@ -5019,10 +5019,10 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "3a62b172d9f86842118a01052e4e38eedfc9c508c1d53bb73ec7eb891a9da60d",
-      "output_sha256": "f6bbf016eae0fc9538b1ea6288bfafbf3b9be0ac58ad1f1bf2eb447cf2d11384",
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_velocity.png",
-      "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
+      "plan_sha256": "97d5f503736d94600f383fdc8403c9432729e53bcdd9b3b8443b8b09c04df4e1",
+      "output_sha256": "186a629d2e7e0efa316070b7cf8a995e3aca6b21f0fa93bc899406c1c7e2204c",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_velocity.png",
+      "source_sha256": "66b54386d29a47128e5fda1789675d47e56e6cb27723716dbd5eda01c7882ef0",
       "frame": 4,
       "view": "cluster",
       "camera": {
@@ -5117,10 +5117,10 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "015a24bae0fa1602ffbfab326d028a44d977ab13bb301340a111c146e24db7d1",
-      "output_sha256": "2dc901376ee69804e0e9309ee0f01460ff8a45cdd2730c5a4f3760c3b69e8613",
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_move.png",
-      "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
+      "plan_sha256": "333590f71a26048538fe026b60ef4afe3e9f58087e3cf24a43487a3ad809dbaf",
+      "output_sha256": "97e530b3ea27bcc014a920d06a9b877fec11719af6cced378a926b2576af256a",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_04_move.png",
+      "source_sha256": "66b54386d29a47128e5fda1789675d47e56e6cb27723716dbd5eda01c7882ef0",
       "frame": 5,
       "view": "cluster",
       "camera": {
@@ -5215,10 +5215,10 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "18791d07553620fd771b957dcc374f757002b71166a262908a59e617abf4dadc",
-      "output_sha256": "fa294a35b49367fc02151c38db6e9e665c56b297caef44ef9449e290c508fc43",
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_force.png",
-      "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
+      "plan_sha256": "9de68d10b72fd257a50986c6644f8aa542259f1e0d047003c2f12f69ceff4775",
+      "output_sha256": "f77f2e273b89985e5e9fad2395a9e735053e1882fff67961ccc5de5a79dd97af",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_force.png",
+      "source_sha256": "66b54386d29a47128e5fda1789675d47e56e6cb27723716dbd5eda01c7882ef0",
       "frame": 5,
       "view": "cluster",
       "camera": {
@@ -5313,10 +5313,10 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "966f8a603e66c1cadb7dabb7e6a94a7f1349d157bdc77e433aeb559f69da135a",
-      "output_sha256": "04edd6b3026cb778c99de4db4cb1f4673246dd124ae3a76f12390e7647425615",
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_velocity.png",
-      "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
+      "plan_sha256": "582f5045ed74f810e7e16c4747ae082986eda4d42375d69152c9760e525419d2",
+      "output_sha256": "803583a5d5f2a83783b98951827a89dd2d8ee762df4e5dc71263f93717ad8ae3",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_velocity.png",
+      "source_sha256": "66b54386d29a47128e5fda1789675d47e56e6cb27723716dbd5eda01c7882ef0",
       "frame": 5,
       "view": "cluster",
       "camera": {
@@ -5411,10 +5411,10 @@
       "format": "png",
       "width": 1500,
       "height": 950,
-      "plan_sha256": "73d1e29f961f5f5abdb0f5edc0a28f36fdb885be6c81769e9ec28a0b668180a8",
-      "output_sha256": "a3010328ce5a2da5995e3ed0d95983fc638a65518b23ba6ef670d70aca742ad3",
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_move.png",
-      "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
+      "plan_sha256": "6c6abeaddacdb1e7588f27bf01a53fa844a314f80295690fa503df3f8bc364ef",
+      "output_sha256": "22df0a6a8942b682a470601ec9d021f7c6d44e69e1513043e9a445ab1015759e",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep\\ion_05_move.png",
+      "source_sha256": "66b54386d29a47128e5fda1789675d47e56e6cb27723716dbd5eda01c7882ef0",
       "frame": 6,
       "view": "cluster",
       "camera": {

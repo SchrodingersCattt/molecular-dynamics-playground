@@ -2,11 +2,11 @@
   "schema": "mattervis.render-result/v1",
   "backend": "cpu",
   "format": "png",
-  "width": 1800,
-  "height": 700,
-  "plan_sha256": "ba14841bfee57f75e55c4a3639b5d5e6317977094d7d8601d45a5003d94cbdd6",
-  "output_sha256": "e25fa8bea2bc218c364d6e4e7a823d4bc95a2868986428f65c95d73bb5a2fcb3",
-  "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis\\motion_17.png",
+  "width": 1700,
+  "height": 1180,
+  "plan_sha256": "d7e5ddc8891ce5dfb23b08d94118401fee0c16880ccce07c2093527e1094edb5",
+  "output_sha256": "d67a739952a8de270fe69afc4abf2181cbbf78aebbbba85e4346f3e62658be3b",
+  "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis\\motion_17.png",
   "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
   "frame": 17,
   "view": "cluster",
@@ -28,16 +28,16 @@
       1.0
     ],
     "scene_offset": [
-      6.6897240571,
-      5.749970082,
-      5.0201595201
+      6.6896136638999995,
+      5.7566899221,
+      5.0
     ]
   },
   "render_settings": {
-    "width": 1800,
-    "height": 700,
-    "atom_scale": 1.1,
-    "bond_radius": 0.13,
+    "width": 1700,
+    "height": 1180,
+    "atom_scale": 1.06,
+    "bond_radius": 0.135,
     "show_cell": false
   },
   "vector_signature": "[]",
@@ -51,14 +51,14 @@
     "actual_backend": "cpu",
     "camera": {
       "position": [
-        26.120761805353574,
-        -6.4286271735979295,
-        12.666629938727707
+        26.120651412153574,
+        -6.42190733349793,
+        12.646470418627707
       ],
       "target": [
-        7.004585758784306,
-        5.904389630640308,
-        5.0201595201
+        7.004475365584305,
+        5.911109470740308,
+        5.0
       ],
       "up": [
         0.0,

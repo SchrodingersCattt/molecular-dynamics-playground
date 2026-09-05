@@ -159,6 +159,156 @@ def make_vector_group(
     ]
 
 
+def make_sphere_mesh(
+    center: Iterable[float],
+    radius: float,
+    *,
+    color: str = "#8FAFBE",
+    opacity: float = 0.16,
+    lat_steps: int = 24,
+    lon_steps: int = 48,
+    mesh_id: str = "cutoff-sphere",
+) -> dict:
+    """Create a shaded, world-space sphere mesh for a MatterVis scene.
+
+    This is deliberately a geometric overlay, not a paper-space ellipse.  The
+    mesh is passed to MatterVis together with the atoms, bonds, cell, and
+    vectors, so its silhouette, depth ordering, and lighting use the same
+    camera.  ``center`` and ``radius`` stay in the source Cartesian units.
+    """
+    center_array = np.asarray(center, dtype=float)
+    if center_array.shape != (3,) or not np.all(np.isfinite(center_array)):
+        raise ValueError("sphere center must be a finite 3-vector")
+    radius = float(radius)
+    if not np.isfinite(radius) or radius <= 0.0:
+        raise ValueError("sphere radius must be positive")
+    lat_steps = max(8, int(lat_steps))
+    lon_steps = max(16, int(lon_steps))
+    vertices = []
+    normals = []
+    for lat in range(lat_steps + 1):
+        theta = np.pi * lat / lat_steps
+        sin_theta, cos_theta = np.sin(theta), np.cos(theta)
+        for lon in range(lon_steps):
+            phi = 2.0 * np.pi * lon / lon_steps
+            normal = np.array(
+                [sin_theta * np.cos(phi), sin_theta * np.sin(phi), cos_theta],
+                dtype=float,
+            )
+            normals.append(normal)
+            vertices.append(center_array + radius * normal)
+    triangles = []
+    for lat in range(lat_steps):
+        for lon in range(lon_steps):
+            nxt = (lon + 1) % lon_steps
+            a = lat * lon_steps + lon
+            b = lat * lon_steps + nxt
+            c = (lat + 1) * lon_steps + lon
+            d = (lat + 1) * lon_steps + nxt
+            # Outward winding for the usual latitude/longitude parameterisation.
+            triangles.extend(((a, c, b), (b, c, d)))
+    return {
+        "id": mesh_id,
+        "name": mesh_id,
+        "vertices": np.asarray(vertices, dtype=float),
+        "triangles": np.asarray(triangles, dtype=np.int64),
+        "normals": np.asarray(normals, dtype=float),
+        "color": color,
+        "opacity": float(np.clip(opacity, 0.0, 1.0)),
+        "phase": "cutoff",
+        # MatterVis' CPU renderer has an analytic sphere path that uses the
+        # exact world-space centre/radius to produce a radial light gradient.
+        # Keep this metadata on the public mesh record so a cutoff sphere is
+        # visibly three-dimensional instead of a uniformly shaded disk.
+        "metadata": {
+            "_raster_shape": "sphere",
+            "_raster_center": tuple(float(value) for value in center_array),
+            "_raster_radius": radius,
+            # A one-sided directional light makes the near/far hemispheres
+            # legible in the DP neighbourhood view.  These are renderer
+            # metadata, not a paper-space gradient or a second geometry.
+            "_raster_light": (-0.35, 0.45, 1.0),
+            "_raster_ambient": 0.34,
+            "_raster_diffuse": 0.66,
+            "_raster_specular": 0.18,
+            "_raster_shininess": 38.0,
+            "_raster_alpha_front_factor": 1.20,
+            "_raster_alpha_back_factor": 0.55,
+            "_raster_two_sided": False,
+        },
+    }
+
+
+def make_torus_mesh(
+    center: Iterable[float],
+    major_radius: float,
+    tube_radius: float,
+    *,
+    normal: Iterable[float] = (0.0, 0.0, 1.0),
+    color: str = "#183153",
+    opacity: float = 0.35,
+    major_steps: int = 96,
+    tube_steps: int = 8,
+    mesh_id: str = "selection-ring",
+) -> dict:
+    """Return a thin, shaded world-space torus for a selection/depth cue.
+
+    The torus is an annotation mesh rendered by MatterVis, not a paper-space
+    ellipse.  Its plane is defined by ``normal`` and therefore follows the
+    same fixed camera and depth buffer as the atomistic scene.
+    """
+    center_array = np.asarray(center, dtype=float)
+    normal_array = np.asarray(normal, dtype=float)
+    if center_array.shape != (3,) or normal_array.shape != (3,):
+        raise ValueError("torus center and normal must be 3-vectors")
+    norm = float(np.linalg.norm(normal_array))
+    if norm <= 1.0e-12:
+        raise ValueError("torus normal must be non-zero")
+    normal_array /= norm
+    major_radius = float(major_radius)
+    tube_radius = float(tube_radius)
+    if major_radius <= tube_radius or tube_radius <= 0.0:
+        raise ValueError("torus radii must satisfy major_radius > tube_radius > 0")
+    reference = np.array([0.0, 0.0, 1.0])
+    if abs(float(reference @ normal_array)) > 0.92:
+        reference = np.array([0.0, 1.0, 0.0])
+    basis_u = np.cross(normal_array, reference)
+    basis_u /= np.linalg.norm(basis_u)
+    basis_v = np.cross(normal_array, basis_u)
+    vertices = []
+    normals = []
+    for i in range(max(24, int(major_steps))):
+        u = 2.0 * np.pi * i / max(24, int(major_steps))
+        radial = np.cos(u) * basis_u + np.sin(u) * basis_v
+        for j in range(max(6, int(tube_steps))):
+            v = 2.0 * np.pi * j / max(6, int(tube_steps))
+            local_normal = np.cos(v) * radial + np.sin(v) * normal_array
+            normals.append(local_normal)
+            vertices.append(center_array + major_radius * radial + tube_radius * local_normal)
+    n_major = max(24, int(major_steps))
+    n_tube = max(6, int(tube_steps))
+    triangles = []
+    for i in range(n_major):
+        ni = (i + 1) % n_major
+        for j in range(n_tube):
+            nj = (j + 1) % n_tube
+            a = i * n_tube + j
+            b = ni * n_tube + j
+            c = i * n_tube + nj
+            d = ni * n_tube + nj
+            triangles.extend(((a, b, c), (c, b, d)))
+    return {
+        "id": mesh_id,
+        "name": mesh_id,
+        "vertices": np.asarray(vertices, dtype=float),
+        "triangles": np.asarray(triangles, dtype=np.int64),
+        "normals": np.asarray(normals, dtype=float),
+        "color": color,
+        "opacity": float(np.clip(opacity, 0.0, 1.0)),
+        "phase": "annotation",
+    }
+
+
 def render_structure(
     source: Path,
     output: Path,
@@ -172,6 +322,12 @@ def render_structure(
     bond_radius: float = 0.13,
     show_cell: bool = False,
     vector_overlays: list[dict] | None = None,
+    mesh_overlays: list[dict] | None = None,
+    atom_opacity_scales: dict[int, float] | None = None,
+    atom_color_overrides: dict[int, str] | None = None,
+    include_boundary_replicas: bool = True,
+    cell_color: str = "#333333",
+    cell_width_px: float = 2.0,
 ) -> dict:
     """Render a complete structure/vector scene through public MatterVis APIs."""
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -182,8 +338,14 @@ def render_structure(
         "atom_scale": float(atom_scale),
         "bond_radius": float(bond_radius),
         "show_cell": bool(show_cell),
+        "include_boundary_replicas": bool(include_boundary_replicas),
+        "cell_color": str(cell_color),
+        "cell_width_px": float(cell_width_px),
     }
     resolved_vectors = resolve_vector_overlays(vector_overlays or [])
+    mesh_overlays = list(mesh_overlays or [])
+    atom_opacity_scales = dict(atom_opacity_scales or {})
+    atom_color_overrides = dict(atom_color_overrides or {})
     vector_signature = json.dumps(
         [
             {
@@ -199,17 +361,47 @@ def render_structure(
         sort_keys=True,
         separators=(",", ":"),
     )
+    mesh_signature = json.dumps(
+        [
+            {
+                "id": str(mesh.get("id") or mesh.get("name") or index),
+                "vertices": np.asarray(mesh.get("vertices", mesh.get("verts", [])), dtype=float).round(8).tolist(),
+                "triangles": np.asarray(mesh.get("triangles", mesh.get("faces", [])), dtype=np.int64).tolist(),
+                "normals": np.asarray(mesh.get("normals", []), dtype=float).round(8).tolist(),
+                "color": mesh.get("color"),
+                "opacity": mesh.get("opacity"),
+                "metadata": mesh.get("metadata", {}),
+            }
+            for index, mesh in enumerate(mesh_overlays)
+        ],
+        sort_keys=True,
+        separators=(",", ":"),
+    )
     sidecar = output.with_suffix(".json")
+    # JSON sidecars deserialize tuples as lists.  Compare the canonical JSON
+    # representation rather than a tuple/list mix, otherwise every invocation
+    # needlessly rerenders the (expensive) periodic scene.
+    camera_signature = json.loads(json.dumps(asdict(camera), sort_keys=True))
+    atom_signature = json.dumps(
+        {
+            "opacity": {str(int(k)): float(v) for k, v in sorted(atom_opacity_scales.items())},
+            "color": {str(int(k)): str(v) for k, v in sorted(atom_color_overrides.items())},
+        },
+        sort_keys=True,
+        separators=(",", ":"),
+    )
     if output.exists() and sidecar.exists():
         previous = json.loads(sidecar.read_text(encoding="utf-8"))
         if (
             previous.get("source_sha256") == source_hash
             and previous.get("frame") == frame
             and previous.get("view") == view
-            and previous.get("camera") == asdict(camera)
+            and previous.get("camera") == camera_signature
             and previous.get("render_settings") == render_settings
             and previous.get("vector_signature") == vector_signature
-            and previous.get("pipeline_version") == 3
+            and previous.get("mesh_signature") == mesh_signature
+            and previous.get("atom_signature") == atom_signature
+            and previous.get("pipeline_version") == 7
             and int(np.count_nonzero(_rgba(output)[:, :, 3])) > 0
         ):
             return previous
@@ -243,13 +435,54 @@ def render_structure(
         loaded.frames[0].bundle,
         display_mode=view,
         show_hydrogen=True,
+        include_boundary_replicas=include_boundary_replicas,
     )
+    # MatterVis keeps atom and bond records as ordinary scene dictionaries.
+    # Apply the optional, source-index keyed fade/highlight before planning so
+    # bonds and atoms stay depth-consistent with the native mesh overlay.
+    if atom_opacity_scales or atom_color_overrides:
+        draw_atoms = scene.get("draw_atoms", [])
+        for atom in draw_atoms:
+            source_index = int(atom.get("_source_index", -1))
+            if source_index in atom_opacity_scales:
+                atom["_render_opacity_scale"] = float(
+                    np.clip(atom_opacity_scales[source_index], 0.0, 1.0)
+                )
+            if source_index in atom_color_overrides:
+                atom["_render_color"] = str(atom_color_overrides[source_index])
+        if atom_opacity_scales:
+            for bond in scene.get("bonds", []):
+                endpoints = [int(bond.get("i", -1)), int(bond.get("j", -1))]
+                scales = [
+                    float(atom.get("_render_opacity_scale", 1.0))
+                    for atom in (draw_atoms[e] for e in endpoints if 0 <= e < len(draw_atoms))
+                ]
+                if scales:
+                    bond["_render_opacity_scale"] = min(scales)
+    offset = np.asarray(camera.scene_offset, dtype=float)
+    native_meshes = []
+    for mesh in mesh_overlays:
+        record = dict(mesh)
+        vertices = record.get("vertices", record.get("verts"))
+        triangles = record.get("triangles", record.get("faces"))
+        if vertices is None or triangles is None:
+            continue
+        record["vertices"] = (np.asarray(vertices, dtype=float) + offset).tolist()
+        record["triangles"] = np.asarray(triangles, dtype=np.int64).tolist()
+        if record.get("normals") is not None:
+            record["normals"] = np.asarray(record["normals"], dtype=float).tolist()
+        native_meshes.append(record)
+    if native_meshes:
+        scene["isosurfaces"] = native_meshes
     scene["vector_overlays"] = native_vectors
     result = render(
         scene,
         output=output,
         backend="cpu",
-        view=ViewSpec(display=view),
+        view=ViewSpec(
+            display=view,
+            include_boundary_replicas=include_boundary_replicas,
+        ),
         camera=camera.mattervis(),
         render_spec=RenderSpec(
             representation="ball_stick",
@@ -263,6 +496,8 @@ def render_structure(
             bond_radius=bond_radius,
             show_hydrogen=True,
             show_cell=show_cell,
+            cell_color=cell_color,
+            cell_width_px=float(cell_width_px),
             show_labels=False,
             sphere_detail=(18, 28),
             cylinder_sides=18,
@@ -285,7 +520,10 @@ def render_structure(
         "vector_signature": vector_signature,
         "vector_count": len(resolved_vectors),
         "vector_renderer": "MatterVis native world-space vector_overlays",
-        "pipeline_version": 3,
+        "mesh_signature": mesh_signature,
+        "atom_signature": atom_signature,
+        "mesh_renderer": "MatterVis native world-space mesh overlay",
+        "pipeline_version": 7,
         "warnings": list(result.warnings),
         "metadata": dict(result.metadata),
     }

@@ -2,21 +2,21 @@
   "schema": "mattervis.render-result/v1",
   "backend": "cpu",
   "format": "png",
-  "width": 1500,
-  "height": 1120,
-  "plan_sha256": "7e0f349c1eb741408c5acfdea0ac4fc973df4f90bbc522db2edce83fdfe27e06",
-  "output_sha256": "0dee5ee5a90edfedffa8661523a9b5768edb379f349971269de2fac5430b638e",
-  "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\motion_00.png",
+  "width": 1700,
+  "height": 1180,
+  "plan_sha256": "221ec927978a75561ac835cdf730441b8755f7b15328bc498ea27de61d3ceb03",
+  "output_sha256": "d90bdcb3237dabd54ed27fa4da4955e5c4cfef3a18bf5a6222f878bc602b0216",
+  "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\01_velocity_verlet\\source\\mattervis\\motion_00.png",
   "source_sha256": "dad5396a1c6d5bab79d4e281337d2943e44e13d38ddb350bc8fdf39c57fed7f6",
   "frame": 0,
   "view": "cluster",
   "camera": {
     "target": [
-      -0.0041121683077796475,
-      0.0008511869581849426,
-      -0.2567498485568142
+      -0.004112168307779647,
+      0.0008511869581849455,
+      -0.25661889515106057
     ],
-    "ortho_scale": 1.55,
+    "ortho_scale": 1.42,
     "direction": [
       0.7965073352737195,
       -0.5138757001765932,
@@ -34,10 +34,10 @@
     ]
   },
   "render_settings": {
-    "width": 1500,
-    "height": 1120,
-    "atom_scale": 1.1,
-    "bond_radius": 0.13,
+    "width": 1700,
+    "height": 1180,
+    "atom_scale": 1.12,
+    "bond_radius": 0.14,
     "show_cell": false
   },
   "vector_signature": "[]",
@@ -53,12 +53,12 @@
       "position": [
         24.112063878261488,
         -6.618379429580052,
-        12.832697542170894
+        12.832828495576647
       ],
       "target": [
         4.995887831692221,
         5.714637374658185,
-        5.186227123543186
+        5.18635807694894
       ],
       "up": [
         0.0,
@@ -69,7 +69,7 @@
       "fov_y_deg": 45.0,
       "near": 0.01,
       "far": 10000.0,
-      "ortho_scale": 1.55
+      "ortho_scale": 1.42
     },
     "source": {
       "path": null,

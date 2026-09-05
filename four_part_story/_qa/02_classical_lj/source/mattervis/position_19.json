@@ -2,11 +2,11 @@
   "schema": "mattervis.render-result/v1",
   "backend": "cpu",
   "format": "png",
-  "width": 1800,
-  "height": 700,
-  "plan_sha256": "9f594c5fb8f876b795937580cf33be3d19ef2fa819a514b06cd67cdb78b77fa3",
-  "output_sha256": "04d838a57fc0e5bdc320238e06fac49a7b2878bbed7faedcc2f3f54169cccdcb",
-  "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis\\position_19.png",
+  "width": 1700,
+  "height": 1180,
+  "plan_sha256": "f07959c62cc3cd1e3e33b05d081c80b98843ac8543ac6dd408b187a3090b8acc",
+  "output_sha256": "8092dce7034ebdbccd7648322219f4a9c1982286385ab46e0a64e408835156f1",
+  "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis\\position_19.png",
   "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
   "frame": 19,
   "view": "cluster",
@@ -28,19 +28,19 @@
       1.0
     ],
     "scene_offset": [
-      6.6897515598999995,
-      5.7491795126,
-      5.0225312283
+      6.6896136638999995,
+      5.7566899221,
+      5.0
     ]
   },
   "render_settings": {
-    "width": 1800,
-    "height": 700,
-    "atom_scale": 1.1,
-    "bond_radius": 0.13,
+    "width": 1700,
+    "height": 1180,
+    "atom_scale": 1.06,
+    "bond_radius": 0.135,
     "show_cell": false
   },
-  "vector_signature": "[{\"color\":\"#183153\",\"id\":\"oxygen-displacement-0\",\"opacity\":1.0,\"origin\":[-1.45,0.0,0.0],\"style\":{},\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#183153\",\"id\":\"oxygen-displacement-1\",\"opacity\":1.0,\"origin\":[1.45,0.0,0.0],\"style\":{},\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
+  "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"lj-position-0\",\"opacity\":1.0,\"origin\":[-1.45,0.0,0.0],\"style\":{\"head_length_ratio\":0.3,\"head_radius_ratio\":2.35,\"shaft_radius\":0.06,\"sides\":18},\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#4E9BB5\",\"id\":\"lj-position-1\",\"opacity\":1.0,\"origin\":[1.45,0.0,0.0],\"style\":{\"head_length_ratio\":0.3,\"head_radius_ratio\":2.35,\"shaft_radius\":0.06,\"sides\":18},\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
   "vector_count": 2,
   "vector_renderer": "MatterVis native world-space vector_overlays",
   "pipeline_version": 3,
@@ -51,14 +51,14 @@
     "actual_backend": "cpu",
     "camera": {
       "position": [
-        26.120789308153576,
-        -6.42941774299793,
-        12.669001646927708
+        26.120651412153574,
+        -6.42190733349793,
+        12.646470418627707
       ],
       "target": [
-        7.004613261584305,
-        5.903599061240308,
-        5.0225312283
+        7.004475365584305,
+        5.911109470740308,
+        5.0
       ],
       "up": [
         0.0,

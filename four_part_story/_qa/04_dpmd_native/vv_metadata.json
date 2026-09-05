@@ -1,0 +1,10 @@
+{
+  "seed": 260829,
+  "dt_fs": 0.5,
+  "force_units": "eV/Angstrom",
+  "velocity_units": "Angstrom/fs",
+  "acceleration_conversion": 0.00964853399,
+  "force_model": "H2O-Phase-Diagram-model_compressed.pb",
+  "approximation": "frozen force for one reproducible VV step; no second DP call",
+  "central_index": 126
+}
