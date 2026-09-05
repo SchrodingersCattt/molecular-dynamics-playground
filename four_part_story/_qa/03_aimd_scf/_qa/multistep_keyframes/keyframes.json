@@ -1,0 +1,436 @@
+{
+  "frames": [
+    {
+      "time_seconds": 0.1,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\_qa\\multistep_keyframes\\frame_00_00.10s.png",
+      "state": {
+        "mode": "scf",
+        "ion": 0,
+        "iteration": 0,
+        "blend": 0.31881640133978734,
+        "stage_weights": [
+          0.8159463468177482,
+          0.18405365318225173,
+          0.0,
+          0.0
+        ],
+        "progress": 0.03424657534246576,
+        "scf_progress": 0.03424657534246576,
+        "rapid": false
+      },
+      "semantics": [
+        {
+          "id": "density_contours",
+          "color": "#49687F",
+          "min_pixels": 35
+        }
+      ],
+      "layout_passed": true
+    },
+    {
+      "time_seconds": 1.45,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\_qa\\multistep_keyframes\\frame_01_01.45s.png",
+      "state": {
+        "mode": "scf",
+        "ion": 0,
+        "iteration": 5,
+        "blend": 0.44360007081952746,
+        "stage_weights": [
+          0.9977892996964143,
+          0.0,
+          0.0,
+          0.002210700303585722
+        ],
+        "progress": 0.4965753424657534,
+        "scf_progress": 0.4965753424657534,
+        "rapid": false
+      },
+      "semantics": [
+        {
+          "id": "density_contours",
+          "color": "#49687F",
+          "min_pixels": 35
+        }
+      ],
+      "layout_passed": true
+    },
+    {
+      "time_seconds": 3.12,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\_qa\\multistep_keyframes\\frame_02_03.12s.png",
+      "state": {
+        "mode": "pause",
+        "ion": 0,
+        "iteration": 11,
+        "blend": 0.0,
+        "stage_weights": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "progress": 0.30303030303030326,
+        "scf_progress": 1.0,
+        "rapid": false
+      },
+      "semantics": [
+        {
+          "id": "density_contours",
+          "color": "#49687F",
+          "min_pixels": 35
+        }
+      ],
+      "layout_passed": true
+    },
+    {
+      "time_seconds": 3.8,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\_qa\\multistep_keyframes\\frame_03_03.80s.png",
+      "state": {
+        "mode": "force",
+        "ion": 0,
+        "iteration": 11,
+        "blend": 0.0,
+        "stage_weights": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "progress": 0.47826086956521685,
+        "scf_progress": 1.0,
+        "rapid": false
+      },
+      "semantics": [
+        {
+          "id": "nuclear_force",
+          "color": "#A99C50",
+          "min_pixels": 120
+        }
+      ],
+      "layout_passed": true
+    },
+    {
+      "time_seconds": 4.25,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\_qa\\multistep_keyframes\\frame_04_04.25s.png",
+      "state": {
+        "mode": "velocity",
+        "ion": 0,
+        "iteration": 11,
+        "blend": 0.0,
+        "stage_weights": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "progress": 0.4772727272727272,
+        "scf_progress": 1.0,
+        "rapid": false
+      },
+      "semantics": [
+        {
+          "id": "half_step_velocity",
+          "color": "#2F8562",
+          "min_pixels": 120
+        }
+      ],
+      "layout_passed": true
+    },
+    {
+      "time_seconds": 4.75,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\_qa\\multistep_keyframes\\frame_05_04.75s.png",
+      "state": {
+        "mode": "move",
+        "ion": 0,
+        "iteration": 11,
+        "blend": 0.0,
+        "stage_weights": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "progress": 0.5192307692307684,
+        "scf_progress": 1.0,
+        "rapid": false
+      },
+      "semantics": [
+        {
+          "id": "nuclear_displacement",
+          "color": "#4E9BB5",
+          "min_pixels": 120
+        }
+      ],
+      "layout_passed": true
+    },
+    {
+      "time_seconds": 5.1,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\_qa\\multistep_keyframes\\frame_06_05.10s.png",
+      "state": {
+        "mode": "scf",
+        "ion": 1,
+        "iteration": 0,
+        "blend": 0.271517697170045,
+        "stage_weights": [
+          0.8159463468177495,
+          0.18405365318225053,
+          0.0,
+          0.0
+        ],
+        "progress": 0.034246575342465634,
+        "scf_progress": 0.034246575342465634,
+        "rapid": false
+      },
+      "semantics": [
+        {
+          "id": "density_contours",
+          "color": "#49687F",
+          "min_pixels": 35
+        }
+      ],
+      "layout_passed": true
+    },
+    {
+      "time_seconds": 6.45,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\_qa\\multistep_keyframes\\frame_07_06.45s.png",
+      "state": {
+        "mode": "scf",
+        "ion": 1,
+        "iteration": 4,
+        "blend": 0.9965618469115748,
+        "stage_weights": [
+          0.9977892996964145,
+          0.0,
+          0.0,
+          0.0022107003035855
+        ],
+        "progress": 0.4965753424657535,
+        "scf_progress": 0.4965753424657535,
+        "rapid": false
+      },
+      "semantics": [
+        {
+          "id": "density_contours",
+          "color": "#49687F",
+          "min_pixels": 35
+        }
+      ],
+      "layout_passed": true
+    },
+    {
+      "time_seconds": 8.12,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\_qa\\multistep_keyframes\\frame_08_08.12s.png",
+      "state": {
+        "mode": "pause",
+        "ion": 1,
+        "iteration": 10,
+        "blend": 0.0,
+        "stage_weights": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "progress": 0.30303030303030193,
+        "scf_progress": 1.0,
+        "rapid": false
+      },
+      "semantics": [
+        {
+          "id": "density_contours",
+          "color": "#49687F",
+          "min_pixels": 35
+        }
+      ],
+      "layout_passed": true
+    },
+    {
+      "time_seconds": 8.8,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\_qa\\multistep_keyframes\\frame_09_08.80s.png",
+      "state": {
+        "mode": "force",
+        "ion": 1,
+        "iteration": 10,
+        "blend": 0.0,
+        "stage_weights": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "progress": 0.47826086956521874,
+        "scf_progress": 1.0,
+        "rapid": false
+      },
+      "semantics": [
+        {
+          "id": "nuclear_force",
+          "color": "#A99C50",
+          "min_pixels": 120
+        }
+      ],
+      "layout_passed": true
+    },
+    {
+      "time_seconds": 9.25,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\_qa\\multistep_keyframes\\frame_10_09.25s.png",
+      "state": {
+        "mode": "velocity",
+        "ion": 1,
+        "iteration": 10,
+        "blend": 0.0,
+        "stage_weights": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "progress": 0.4772727272727272,
+        "scf_progress": 1.0,
+        "rapid": false
+      },
+      "semantics": [
+        {
+          "id": "half_step_velocity",
+          "color": "#2F8562",
+          "min_pixels": 120
+        }
+      ],
+      "layout_passed": true
+    },
+    {
+      "time_seconds": 9.75,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\_qa\\multistep_keyframes\\frame_11_09.75s.png",
+      "state": {
+        "mode": "move",
+        "ion": 1,
+        "iteration": 10,
+        "blend": 0.0,
+        "stage_weights": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "progress": 0.5192307692307684,
+        "scf_progress": 1.0,
+        "rapid": false
+      },
+      "semantics": [
+        {
+          "id": "nuclear_displacement",
+          "color": "#4E9BB5",
+          "min_pixels": 120
+        }
+      ],
+      "layout_passed": true
+    },
+    {
+      "time_seconds": 10.12,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\_qa\\multistep_keyframes\\frame_12_10.12s.png",
+      "state": {
+        "mode": "scf",
+        "ion": 2,
+        "iteration": 2,
+        "blend": 0.3519999999999775,
+        "stage_weights": [
+          0.004672000000001453,
+          0.9953279999999985,
+          0.0,
+          0.0
+        ],
+        "progress": 0.23999999999999844,
+        "scf_progress": 0.23999999999999844,
+        "rapid": true
+      },
+      "semantics": [
+        {
+          "id": "density_contours",
+          "color": "#49687F",
+          "min_pixels": 35
+        }
+      ],
+      "layout_passed": true
+    },
+    {
+      "time_seconds": 11.18,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\_qa\\multistep_keyframes\\frame_13_11.18s.png",
+      "state": {
+        "mode": "move",
+        "ion": 2,
+        "iteration": 10,
+        "blend": 0.0,
+        "stage_weights": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "progress": 0.6666666666666652,
+        "scf_progress": 1.0,
+        "rapid": true
+      },
+      "semantics": [
+        {
+          "id": "nuclear_displacement",
+          "color": "#4E9BB5",
+          "min_pixels": 120
+        }
+      ],
+      "layout_passed": true
+    },
+    {
+      "time_seconds": 12.42,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\_qa\\multistep_keyframes\\frame_14_12.42s.png",
+      "state": {
+        "mode": "move",
+        "ion": 3,
+        "iteration": 10,
+        "blend": 0.0,
+        "stage_weights": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "progress": 0.6190476190476185,
+        "scf_progress": 1.0,
+        "rapid": true
+      },
+      "semantics": [
+        {
+          "id": "nuclear_displacement",
+          "color": "#4E9BB5",
+          "min_pixels": 120
+        }
+      ],
+      "layout_passed": true
+    },
+    {
+      "time_seconds": 14.82,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\four_part_story\\_qa\\03_aimd_scf\\_qa\\multistep_keyframes\\frame_15_14.82s.png",
+      "state": {
+        "mode": "move",
+        "ion": 5,
+        "iteration": 10,
+        "blend": 0.0,
+        "stage_weights": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "progress": 0.14285714285714404,
+        "scf_progress": 1.0,
+        "rapid": true
+      },
+      "semantics": [
+        {
+          "id": "nuclear_displacement",
+          "color": "#4E9BB5",
+          "min_pixels": 120
+        }
+      ],
+      "layout_passed": true
+    }
+  ]
+}
