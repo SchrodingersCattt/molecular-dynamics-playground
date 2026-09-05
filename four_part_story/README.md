@@ -10,6 +10,7 @@ This directory contains four independent figures and four independent 16:9 video
 | 02 Classical potential | `figures/02_classical_lj.png` / `.svg` | `videos/02_classical_lj.mp4` | TIP3P water dimer, O···O Lennard–Jones subterm (σ = 3.15061 Å, ε = 0.00659568 eV) |
 | 03 Ab initio MD | `figures/03_aimd_scf.png` / `.svg` | `videos/03_aimd_scf.mp4` | H₂O dimer, RHF/STO-3G SCF density on a fixed molecular-plane grid, seven ionic geometries |
 | 04 Deep Potential MD | `figures/04_deep_potential_md.png` / `.svg` | `videos/04_deep_potential_md.mp4` | 64-water periodic box, center atom O126, 83 atomic minimum-image neighbors inside 6.0 Å |
+| 05 Well-tempered metadynamics | `figures/05_well_tempered_metadynamics.png` / `.svg` | `videos/05_well_tempered_metadynamics.mp4` | one-dimensional double well, Langevin residence, tempered Gaussian hills, recovered free energy |
 
 ## Scientific evidence
 
@@ -28,6 +29,7 @@ python four_part_story/render_velocity_verlet.py
 python four_part_story/render_classical_lj.py
 python four_part_story/render_aimd_scf.py
 python four_part_story/render_dpmd_native.py
+python four_part_story/render_metadynamics.py
 ```
 
 Use `--static-only` to regenerate only the A4 PNG and SVG for a part. `render_aimd_scf.py --preview-only` writes phase-boundary keyframes before the full movie.
@@ -45,3 +47,4 @@ Publication gates require:
 - zero frame-level clipping, text overlap, boundary, whitespace, or semantic-colour errors;
 - exact neighbor selection and real energy/force provenance where numerical values are shown;
 - native MatterVis provenance for atoms, bonds, periodic cells, density overlays, and world-space vectors.
+- the metadynamics demo has a strict static manifest and a complete 384-frame report under `_qa/05_metadynamics/`.
