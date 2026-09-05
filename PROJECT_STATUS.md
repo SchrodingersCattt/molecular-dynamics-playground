@@ -5,6 +5,7 @@
 ## 已完成并留存
 
 - Integrator Notebook 已修正为 Explicit Euler、Symplectic Euler、Leapfrog/Verlet、Velocity Verlet、RK2 和固定步长 Classical RK4；时间网格、能量误差和二阶收敛结果已保存。
+- 两份 Integrator Notebook 已于 2026-09-05 重新执行，本地脚本无异常，比较图 PNG/PDF 已同步更新。
 - 四套视觉交付物已有独立 A4 静态图和 16:9 视频入口：Velocity Verlet、TIP3P/Lennard–Jones、水二聚体 RHF–SCF、64 水 Deep Potential MD。
 - AIMD 已保存多个离子步、每个离子步的 SCF 密度/残差、固定分子平面网格和位置/速度/力阶段素材；RHF 画面把等值线随真实密度收敛呈现为由粗到清晰。
 - DPMD 已保存 64 水周期盒、O126 中心原子、83 个 6 Å 内最小镜像邻居、同一快照的 DP 能量/力和可复现的冻结力 Velocity–Verlet 步。
