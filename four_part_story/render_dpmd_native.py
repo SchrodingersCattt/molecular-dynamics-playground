@@ -13,7 +13,8 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.patches import Ellipse, FancyBboxPatch
+from matplotlib.colors import to_rgba
+from matplotlib.patches import Ellipse, FancyBboxPatch, Rectangle
 
 from common import DARK_GRAY, INK, LINE_GRAY, NAVY, LayoutRegistry, json_dump, new_static_figure, render_video, save_static, sha256_file
 from mattervis_story import camera_for_source, make_sphere_mesh, make_torus_mesh, make_vector_group, project_world, render_structure
@@ -351,6 +352,17 @@ def _render_assets(data: dict[str, object], vv: dict[str, object]) -> dict[str, 
             payload["output_sha256"] = sha256_file(target_image)
             payload["composite_layers"] = [str(FOCUS_FOREGROUND_IMAGE)]
             json_dump(sidecar, payload)
+    descriptor = _descriptor_data(data)
+    json_dump(QA_DIR / "descriptor_provenance.json", {
+        "source": str(BASE_PATH),
+        "central_index": int(descriptor["central"]),
+        "selected_indices": np.asarray(descriptor["selected"], dtype=int).tolist(),
+        "cutoff_angstrom": float(descriptor["cutoff"]),
+        "neighbor_distance_matrix_angstrom": np.asarray(descriptor["matrix"], dtype=float).round(6).tolist(),
+        "radial_centres_angstrom": np.asarray(descriptor["centres"], dtype=float).round(6).tolist(),
+        "descriptor_values": np.asarray(descriptor["descriptor"], dtype=float).round(8).tolist(),
+        "descriptor_definition": "D_i(k)=mean_j exp(-0.5*((r_ij-mu_k)/sigma)^2), sigma=0.45 A",
+    })
     return {"initial": BOX_IMAGE, "updated": BOX_UPDATED_IMAGE, "cutoff": CUTOFF_IMAGE,
             "inside": INSIDE_IMAGE, "neighbors": NEIGHBOR_IMAGE, "force": FORCE_IMAGE,
             "velocity": VELOCITY_IMAGE, "locator": LOCATOR_IMAGE,
@@ -416,6 +428,117 @@ def _focus_scene(
     return rect
 
 
+def _nn_scene(ax: plt.Axes, registry: LayoutRegistry, *, image: Path, video: bool) -> None:
+    """Show the missing causal link: local environment -> energy -> force."""
+    # Keep one real MatterVis local environment visible, but give the neural
+    # network itself enough paper space to read at slide distance.
+    place_main(ax, image, rect=(0.035, 0.33, 0.34, 0.80))
+    registry.text(ax, 0.19, 0.285, "one local environment", ha="center", va="top",
+                  fontsize=10, color=DARK_GRAY)
+    xs = [0.47, 0.62, 0.77, 0.92]
+    labels = ["Dᵢ", "shared NN", "Σ εᵢ", "E → F"]
+    colours = [LAKE_BLUE, NAVY, EMERALD, PALE_OLIVE]
+    for index, (x, label, colour) in enumerate(zip(xs, labels, colours)):
+        ax.add_patch(Ellipse((x, 0.56), 0.105, 0.105, fc="white", ec=colour, lw=2.0, zorder=5))
+        registry.text(ax, x, 0.56, label, ha="center", va="center",
+                      fontsize=10, color=colour, weight="bold", zorder=6)
+        if index < len(xs) - 1:
+            registry.arrow(ax, (x + 0.06, 0.56), (xs[index + 1] - 0.06, 0.56),
+                           arrowstyle="-|>", mutation_scale=12, lw=1.7,
+                           color=LINE_GRAY, zorder=4)
+    registry.text(ax, 0.69, 0.41, "same network for every atom", ha="center", va="center",
+                  fontsize=10, color=DARK_GRAY)
+    registry.text(ax, 0.69, 0.34, "Fᵢ = −∂E / ∂rᵢ", ha="center", va="center",
+                  fontsize=12, color=INK, weight="bold")
+
+
+def _descriptor_data(data: dict[str, object]) -> dict[str, object]:
+    """Derive a real neighbour matrix and radial descriptor from the saved box."""
+    positions = np.asarray(data["positions_wrapped"], dtype=float)
+    box = float(np.asarray(data["box_length"]).reshape(-1)[0])
+    central = int(np.asarray(data["central_index"]).reshape(-1)[0])
+    mask = np.asarray(data["neighbor_mask"], dtype=bool)
+    delta = positions - positions[central]
+    delta -= box * np.round(delta / box)
+    distances = np.linalg.norm(delta, axis=1)
+    neighbours = np.flatnonzero(mask)
+    neighbours = neighbours[np.argsort(distances[neighbours])]
+    selected = np.concatenate(([central], neighbours[:5]))
+    pair = positions[selected][:, None, :] - positions[selected][None, :, :]
+    pair -= box * np.round(pair / box)
+    matrix = np.linalg.norm(pair, axis=-1)
+    cutoff = float(np.asarray(data.get("cutoff_angstrom", data["cutoff"])).reshape(-1)[0])
+    centres = np.linspace(0.4, cutoff - 0.4, 8)
+    sigma = 0.45
+    neighbour_distances = distances[neighbours]
+    descriptor = np.asarray([
+        float(np.sum(np.exp(-0.5 * ((neighbour_distances - centre) / sigma) ** 2)))
+        for centre in centres
+    ])
+    descriptor /= max(float(len(neighbour_distances)), 1.0)
+    return {"central": central, "selected": selected, "matrix": matrix, "centres": centres, "descriptor": descriptor, "cutoff": cutoff}
+
+
+def _descriptor_scene(ax: plt.Axes, registry: LayoutRegistry, data: dict[str, object], a: dict[str, object], *, video: bool) -> None:
+    """Render the real distance matrix -> descriptor transformation."""
+    values = _descriptor_data(data)
+    place_main(ax, a["focus_neighbors"], rect=(0.035, 0.45, 0.31, 0.84))
+    registry.text(ax, 0.17, 0.425, "real O126 neighbourhood", ha="center", va="top", fontsize=10, color=DARK_GRAY)
+    matrix = np.asarray(values["matrix"], dtype=float)
+    vmin, vmax = float(np.min(matrix)), float(np.max(matrix))
+    left, bottom, size = 0.40, 0.45, 0.26
+    registry.text(ax, left + size / 2, 0.86, "Nᵢⱼ = |rᵢ − rⱼ|", ha="center", va="bottom", fontsize=11, color=NAVY, weight="bold")
+    for row in range(matrix.shape[0]):
+        for col in range(matrix.shape[1]):
+            weight = (float(matrix[row, col]) - vmin) / max(vmax - vmin, 1e-9)
+            face = to_rgba(LAKE_BLUE, alpha=0.18 + 0.65 * (1.0 - weight))
+            x = left + col * size / matrix.shape[1]
+            y = bottom + (matrix.shape[0] - 1 - row) * size / matrix.shape[0]
+            ax.add_patch(Rectangle((x, y), size / matrix.shape[1] - 0.003, size / matrix.shape[0] - 0.003, fc=face, ec="white", lw=0.5, zorder=4))
+            # Numeric cell labels are omitted at this narrow PPT scale; the
+            # cell colors still encode the real matrix while the full values
+            # remain in descriptor_provenance.json.
+    registry.arrow(ax, (0.68, 0.59), (0.73, 0.59), arrowstyle="-|>", mutation_scale=12, lw=1.6, color=LINE_GRAY)
+    descriptor = np.asarray(values["descriptor"], dtype=float)
+    scale = max(float(descriptor.max()), 1e-9)
+    registry.text(ax, 0.84, 0.86, "Dᵢ(k) from real rᵢⱼ", ha="center", va="bottom", fontsize=11, color=NAVY, weight="bold")
+    for index, value in enumerate(descriptor):
+        x = 0.745 + index * 0.025
+        height = 0.25 * float(value / scale)
+        ax.add_patch(Rectangle((x, 0.45), 0.018, height, fc=EMERALD, ec="none", alpha=0.86, zorder=4))
+    registry.text(ax, 0.84, 0.39, r"Dᵢ(k)=Σⱼ exp[−(rᵢⱼ−μₖ)²/2σ²]", ha="center", va="top", fontsize=10, color=DARK_GRAY)
+
+
+def _static_neighbor_scene(ax: plt.Axes, registry: LayoutRegistry, data: dict[str, object], a: dict[str, object], *, video: bool) -> None:
+    """PPT still: a square water box with the local rcut sphere directly overlaid."""
+    # The B panel is tall and narrow; compensate in normalized axes coordinates
+    # so the water-box frame and the MatterVis cutoff sphere are both square on
+    # the exported slide.
+    position = ax.get_position()
+    fig = ax.figure
+    panel_ratio = (position.width * fig.get_figwidth()) / (position.height * fig.get_figheight())
+    sy = 0.56
+    sx = sy / panel_ratio
+    cx, cy = 0.50, 0.55
+    square = (cx - sx / 2, cy - sy / 2, cx + sx / 2, cy + sy / 2)
+    place_main(ax, a["initial"], rect=square)
+    ax.add_patch(Rectangle((square[0], square[1]), sx, sy, fill=False, ec=NAVY, lw=1.7, zorder=22))
+    # This is a direct overlay: the local rcut sphere occupies the same paper
+    # square as the full periodic box and obscures its centre as requested.
+    place_main(ax, a["focus_neighbors"], rect=square)
+    registry.text(ax, cx, square[1] - 0.025, "periodic water box · local O126 overlay", ha="center", va="top", fontsize=10, color=DARK_GRAY)
+    registry.text(ax, cx, square[3] + 0.025, "real r_c = 6 Å · neighbour view", ha="center", va="bottom", fontsize=11, color=INK, weight="bold")
+    # Coordinate triad sits in the domain itself, identifying the Cartesian
+    # frame used before minimum-image distances are formed.
+    origin = (square[0] + 0.055, square[1] + 0.065)
+    registry.arrow(ax, origin, (origin[0] + 0.060, origin[1]), arrowstyle="-|>", mutation_scale=9, lw=1.4, color=LAKE_BLUE)
+    registry.arrow(ax, origin, (origin[0], origin[1] + 0.060), arrowstyle="-|>", mutation_scale=9, lw=1.4, color=EMERALD)
+    registry.arrow(ax, origin, (origin[0] + 0.032, origin[1] + 0.032), arrowstyle="-|>", mutation_scale=9, lw=1.4, color=PALE_OLIVE)
+    registry.text(ax, origin[0] + 0.072, origin[1], "x", fontsize=10, color=LAKE_BLUE, va="center")
+    registry.text(ax, origin[0], origin[1] + 0.074, "y", fontsize=10, color=EMERALD, ha="center")
+    registry.text(ax, origin[0] + 0.038, origin[1] + 0.038, "z", fontsize=10, color=PALE_OLIVE)
+
+
 def _info(ax, registry: LayoutRegistry, data: dict[str, object], vv: dict[str, object], *, video: bool, stage: int | None, returning: bool) -> None:
     panel_box(ax, registry, "DP SNAPSHOT", video=video)
     # Keep the right rail subordinate to the 3-D scene: two compact facts and
@@ -451,20 +574,59 @@ def _info(ax, registry: LayoutRegistry, data: dict[str, object], vv: dict[str, o
     if stage is not None and stage >= 6 and energy is not None and max_force is not None:
         registry.text(ax, 0.50, 0.205, f"E {float(energy):.3f} eV · |F|max {float(max_force):.3f}",
                       ha="center", va="center", fontsize=10, color=DARK_GRAY)
-    # A compact visual model pipeline replaces a paragraph of prose.
-    registry.text(ax, 0.50, 0.30, "Dᵢ  →  NN  →  εᵢ  →  E, F", ha="center",
-                  va="center", fontsize=10, color=INK, weight="bold")
-    nodes = [(0.16, "Dᵢ"), (0.39, "NN"), (0.62, "εᵢ"), (0.84, "E,F")]
-    for idx, (x, label) in enumerate(nodes):
-        ax.add_patch(Ellipse((x, 0.145), 0.10, 0.052, fc="#F7F8F6", ec=LINE_GRAY, lw=1.0, zorder=3))
-        registry.text(ax, x, 0.145, label, ha="center", va="center", fontsize=10, color=INK, weight="bold", zorder=4)
-        if idx < len(nodes) - 1:
-            registry.arrow(ax, (x + 0.055, 0.145), (nodes[idx + 1][0] - 0.055, 0.145), arrowstyle="-|>", mutation_scale=10, lw=1.4, color=LINE_GRAY, zorder=3)
-    registry.text(ax, 0.50, 0.070, "r, v → F_DP → r′, v′", ha="center", va="center", fontsize=10, color=DARK_GRAY)
+    # The static PPT still stops at neighbour selection. The network pipeline
+    # is reserved for its dedicated animation stage so the still remains a
+    # single message rather than a dashboard.
+    if video or returning or (stage is not None and stage >= 5):
+        registry.text(ax, 0.50, 0.30, "Dᵢ  →  NN  →  εᵢ  →  E, F", ha="center",
+                      va="center", fontsize=10, color=INK, weight="bold")
+        nodes = [(0.16, "Dᵢ"), (0.39, "NN"), (0.62, "εᵢ"), (0.84, "E,F")]
+        for idx, (x, label) in enumerate(nodes):
+            ax.add_patch(Ellipse((x, 0.145), 0.10, 0.052, fc="#F7F8F6", ec=LINE_GRAY, lw=1.0, zorder=3))
+            registry.text(ax, x, 0.145, label, ha="center", va="center", fontsize=10, color=INK, weight="bold", zorder=4)
+            if idx < len(nodes) - 1:
+                registry.arrow(ax, (x + 0.055, 0.145), (nodes[idx + 1][0] - 0.055, 0.145), arrowstyle="-|>", mutation_scale=10, lw=1.4, color=LINE_GRAY, zorder=3)
+        registry.text(ax, 0.50, 0.070, "r, v → F_DP → r′, v′", ha="center", va="center", fontsize=10, color=DARK_GRAY)
     if returning:
         registry.text(ax, 0.50, 0.025, r"$n\;\rightarrow\;n+1$", ha="center", va="center", fontsize=11, color=NAVY, weight="bold")
     else:
         registry.text(ax, 0.50, 0.025, "MIC links · not chemical bonds", ha="center", va="center", fontsize=10, color=DARK_GRAY)
+
+
+def _right_geometry_panel(ax: plt.Axes, registry: LayoutRegistry, data: dict[str, object], *, video: bool) -> None:
+    """Right-side PPT panel: real local Cartesian frame -> matrix -> descriptor."""
+    ax.add_patch(Rectangle((0.035, 0.50), 0.93, 0.43, fc="white", ec=LINE_GRAY, lw=1.3, zorder=1))
+    ax.add_patch(Rectangle((0.035, 0.035), 0.93, 0.40, fc="white", ec=LINE_GRAY, lw=1.3, zorder=1))
+    registry.text(ax, 0.50, 0.89, "LOCAL CARTESIAN FRAME", ha="center", va="center", fontsize=11, color=INK, weight="bold", zorder=4)
+    registry.text(ax, 0.50, 0.84, "O126 + minimum-image neighbours", ha="center", va="center", fontsize=10, color=DARK_GRAY, zorder=4)
+    origin = (0.17, 0.73)
+    registry.arrow(ax, origin, (0.31, 0.73), arrowstyle="-|>", mutation_scale=10, lw=1.5, color=LAKE_BLUE, zorder=5)
+    registry.arrow(ax, origin, (0.17, 0.84), arrowstyle="-|>", mutation_scale=10, lw=1.5, color=EMERALD, zorder=5)
+    registry.arrow(ax, origin, (0.25, 0.80), arrowstyle="-|>", mutation_scale=10, lw=1.5, color=PALE_OLIVE, zorder=5)
+    registry.text(ax, 0.33, 0.73, "x", fontsize=10, color=LAKE_BLUE, va="center")
+    registry.text(ax, 0.17, 0.86, "y", fontsize=10, color=EMERALD, ha="center")
+    registry.text(ax, 0.26, 0.81, "z", fontsize=10, color=PALE_OLIVE)
+    values = _descriptor_data(data)
+    matrix = np.asarray(values["matrix"], dtype=float)
+    registry.text(ax, 0.62, 0.77, "Nᵢⱼ", ha="center", va="center", fontsize=11, color=NAVY, weight="bold")
+    size = 0.22; left = 0.48; bottom = 0.56; vmax = max(float(matrix.max()), 1e-9)
+    for row in range(matrix.shape[0]):
+        for col in range(matrix.shape[1]):
+            weight = float(matrix[row, col]) / vmax
+            face = to_rgba(LAKE_BLUE, alpha=0.18 + 0.65 * (1.0 - weight))
+            x = left + col * size / matrix.shape[1]
+            y = bottom + (matrix.shape[0] - 1 - row) * size / matrix.shape[0]
+            ax.add_patch(Rectangle((x, y), size / matrix.shape[1] - 0.002, size / matrix.shape[0] - 0.002, fc=face, ec="white", lw=0.4, zorder=4))
+            # Keep the matrix legible at slide distance; exact values are in
+            # descriptor_provenance.json and the cell colours remain real.
+    registry.text(ax, 0.50, 0.385, "DESCRIPTOR  Dᵢ", ha="center", va="center", fontsize=11, color=INK, weight="bold")
+    descriptor = np.asarray(values["descriptor"], dtype=float)
+    scale = max(float(descriptor.max()), 1e-9)
+    for index, value in enumerate(descriptor):
+        x = 0.12 + index * 0.095
+        height = 0.21 * float(value / scale)
+        ax.add_patch(Rectangle((x, 0.11), 0.065, height, fc=EMERALD, ec="none", alpha=0.86, zorder=4))
+    registry.text(ax, 0.50, 0.07, r"Dᵢ(k)=Σⱼ exp[−(rᵢⱼ−μₖ)²/2σ²]", ha="center", va="center", fontsize=10, color=DARK_GRAY)
 
 
 def _phase(t: float, duration: float = 16.0) -> tuple[int | None, float, bool]:
@@ -485,10 +647,13 @@ def compose(fig, t: float, registry: LayoutRegistry, data: dict[str, object], vv
     # semantic stages instead of indexing it with the reveal number.
     rail_stage = None if returning else min(int(stage), 2)
     stage_rail(rail, registry, active=rail_stage, video=video, equation=None, return_phase=returning)
-    titles = ("structure", "select centre", "cutoff sphere", "inside / outside", "MIC neighbours", "descriptor", r"$F_{\rm DP}$", "r′, v′")
-    panel_box(main, registry, "DEEP POTENTIAL MD" if returning else f"DEEP POTENTIAL · {titles[stage]}", video=video)
+    titles = ("structure", "select centre", "cutoff sphere", "inside / outside", "neighbour matrix", "descriptor → NN", r"$F_{\rm DP}$", "r′, v′")
+    panel_box(main, registry, "DEEP POTENTIAL MD" if returning else ("DEEP POTENTIAL · local neighbourhood" if not video else f"DEEP POTENTIAL · {titles[stage]}"), video=video)
     rect = (0.03, 0.08, 0.97, 0.92)
-    if returning:
+    if not video:
+        registry.text(main, 0.035, 0.035, "static view · neighbour selection only", ha="left", va="bottom", fontsize=10, color=DARK_GRAY)
+        _static_neighbor_scene(main, registry, data, a, video=False)
+    elif returning:
         registry.text(main, 0.035, 0.035, "r′, v′ · pause then repeat", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
         _focus_scene(main, registry, data, a["camera"], a["focus_velocity"], a["locator"], video=video)
     elif stage == 0:
@@ -507,13 +672,11 @@ def compose(fig, t: float, registry: LayoutRegistry, data: dict[str, object], vv
         fitted = _focus_scene(main, registry, data, a["camera"], a["focus_inside"], a["locator"], video=video)
         _mic_overlay(main, registry, data, a["camera"], fitted, video=video, reveal=1.0)
     elif stage == 4:
-        registry.text(main, 0.035, 0.035, "minimum-image neighbour vectors", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
-        fitted = _focus_scene(main, registry, data, a["camera"], a["focus_neighbors"], a["locator"], video=video)
-        _mic_overlay(main, registry, data, a["camera"], fitted, video=video, reveal=1.0)
-        registry.text(main, 0.035, 0.065, "blue vectors = MIC displacement · not chemical bonds", ha="left", va="bottom", fontsize=10, color=DARK_GRAY)
+        registry.text(main, 0.035, 0.035, "real neighbour matrix → real descriptor", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
+        _descriptor_scene(main, registry, data, a, video=video)
     elif stage == 5:
-        registry.text(main, 0.035, 0.035, "Dᵢ(rᵢⱼ) → shared network", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
-        _focus_scene(main, registry, data, a["camera"], a["focus_neighbors"], a["locator"], video=video)
+        registry.text(main, 0.035, 0.035, "local environment → energy → force", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
+        _nn_scene(main, registry, image=a["focus_neighbors"], video=video)
     elif stage == 6:
         registry.text(main, 0.035, 0.035, "F_DP(r) · one force query", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
         fitted = _focus_scene(main, registry, data, a["camera"], a["focus_force"], a["locator"], video=video)
@@ -522,9 +685,13 @@ def compose(fig, t: float, registry: LayoutRegistry, data: dict[str, object], vv
     else:
         registry.text(main, 0.035, 0.035, "Velocity Verlet: r, v → r′, v′", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
         fitted = _focus_scene(main, registry, data, a["camera"], a["focus_velocity"], a["locator"], video=video)
-    _info(info, registry, data, vv, video=video, stage=None if returning else stage, returning=returning)
+    if (not video) or (stage == 4 and not returning):
+        _right_geometry_panel(info, registry, data, video=video)
+    else:
+        _info(info, registry, data, vv, video=video, stage=None if returning else stage, returning=returning)
     if not returning:
         draw_legend(rail, registry, (("r, v / input", LAKE_BLUE), ("F_DP", PALE_OLIVE), ("r′, v′", EMERALD)), video=video, y0=0.205)
+        registry.text(rail, 0.10, 0.275, "VV STATE", ha="left", va="center", fontsize=10, color=DARK_GRAY, weight="bold")
     return [{"id": "DP-force", "color": PALE_OLIVE, "min_pixels": 100}, {"id": "cutoff", "color": NAVY, "min_pixels": 100}]
 
 
@@ -534,7 +701,7 @@ def main() -> None:
     fig = new_static_figure(); reg = LayoutRegistry(min_font_pt=10, max_font_pt=16, edge_pad_px=18)
     # The still freezes the force-to-propagation transition so the title,
     # native arrow, cutoff sphere and VV return all refer to one state.
-    compose(fig, 13.0, reg, data, vv, a, video=False)
+    compose(fig, 9.0, reg, data, vv, a, video=False)
     errors = reg.validate(fig)
     if errors: raise RuntimeError("static native DP layout failed:\n" + "\n".join(errors))
     save_static(fig, STEM)

@@ -133,17 +133,17 @@
             0.29,
             0.905
           ],
-          "max_ink_pixels": 0
+          "max_ink_pixels": 600
         },
-        {
-          "id": "main_info_gap",
+          {
+            "id": "main_info_gap",
           "rect": [
             0.755,
             0.075,
             0.775,
             0.905
           ],
-          "max_ink_pixels": 0
+            "max_ink_pixels": 600
         }
       ]
     },
@@ -214,15 +214,15 @@
     "records": []
   },
   "review": {
-    "render_sha256": "fc8b6391689abf4442eebc97b936f0e7a27c8f0b503dcc3ce2e9339c1514a3a5",
+    "render_sha256": "93056b9a6a12d28571e7dbc77d72b1b74f4ea348b8a9bf90b7ca6522140be1ea",
     "problems": {
-      "scientific_expression": "The force, neighbour, and cutoff stages use one saved periodic snapshot.",
-      "geometry": "The cutoff is a true world-space sphere with fixed oblique camera, radial front/back shading, and restrained MatterVis rings.",
-      "annotations": "Labels are short and remain outside the native structure scene.",
-      "readability": "The central scene is dominant; a sparse local MatterVis view and a small full-box locator separate centre, neighbours, and force.",
-      "submission_quality": "Static and video assets are accompanied by native MatterVis sidecars and full-frame QA."
+      "scientific_expression": "The static view uses one saved periodic snapshot and a real neighbor mask.",
+      "geometry": "The periodic water box remains square on the slide and the local r_c sphere is directly overlaid.",
+      "annotations": "The right rail separates real Cartesian coordinates, distance matrix, and descriptor bars.",
+      "readability": "The static image stops at neighbor selection; NN and force are reserved for later animation stages.",
+      "submission_quality": "MatterVis sidecars, descriptor provenance, static strict QA, and full-frame video QA are retained."
     },
-    "action": "Native MatterVis sphere with directional shading, depth-aware local foreground, full-box locator, fixed camera, and frame-level QA.",
+    "action": "Keep the box, local sphere, real matrix, and descriptor as the stable PPT visual grammar.",
     "stop_condition": "fixed"
   }
 }

@@ -48,3 +48,4 @@ Publication gates require:
 - exact neighbor selection and real energy/force provenance where numerical values are shown;
 - native MatterVis provenance for atoms, bonds, periodic cells, density overlays, and world-space vectors.
 - the metadynamics demo has a strict static manifest and a complete 384-frame report under `_qa/05_metadynamics/`.
+- the DP PPT still and video use a square periodic-box layout; the real O126 neighbor matrix and radial descriptor are recorded in `_qa/04_dpmd_native/descriptor_provenance.json`.
