@@ -18,7 +18,7 @@ from matplotlib.patches import Ellipse, FancyBboxPatch, Rectangle
 
 from common import DARK_GRAY, INK, LINE_GRAY, NAVY, LayoutRegistry, json_dump, new_static_figure, render_video, save_static, sha256_file
 from mattervis_story import camera_for_source, make_sphere_mesh, make_torus_mesh, make_vector_group, project_world, render_structure
-from responsive_story import EMERALD, LAKE_BLUE, PALE_OLIVE, draw_legend, panel_box, place_main, simple_audit, stage_rail, story_axes
+from responsive_story import EMERALD, LAKE_BLUE, PALE_OLIVE, draw_legend, panel_box, place_main, place_render_cropped, simple_audit, stage_rail, story_axes
 from PIL import Image
 
 
@@ -558,41 +558,41 @@ def _descriptor_scene(ax: plt.Axes, registry: LayoutRegistry, data: dict[str, ob
 
 
 def _static_neighbor_scene(ax: plt.Axes, registry: LayoutRegistry, data: dict[str, object], a: dict[str, object], *, video: bool) -> None:
-    """PPT still: whole water box, source circle, and a clean magnified local circle."""
+    """PPT still: box context, source circle, and a masked magnifier."""
     position = ax.get_position()
     fig = ax.figure
     panel_ratio = (position.width * fig.get_figwidth()) / (position.height * fig.get_figheight())
-    box_sy = 0.54
+    box_sy = 0.50
     box_sx = box_sy / panel_ratio
-    box_cx, box_cy = 0.30, 0.55
+    box_cx, box_cy = 0.29, 0.55
     box = (box_cx - box_sx / 2, box_cy - box_sy / 2, box_cx + box_sx / 2, box_cy + box_sy / 2)
-    place_main(ax, a["context"], rect=box)
-    ax.add_patch(Rectangle((box[0], box[1]), box_sx, box_sy, fill=False, ec=NAVY, lw=1.7, zorder=22))
+    place_render_cropped(ax, a["context"], box, alpha=0.30, zorder=5)
+    ax.add_patch(Rectangle((box[0], box[1]), box_sx, box_sy, fill=False, ec="#AEB9BC", lw=1.4, zorder=10))
     registry.text(ax, box_cx, box[1] - 0.025, "periodic water box", ha="center", va="top", fontsize=10, color=DARK_GRAY)
     # A small source circle marks the local O126 in the original box.
-    source = (box_cx + 0.02, box_cy - 0.02)
-    source_y = 0.070
+    source = (box_cx + 0.015, box_cy - 0.015)
+    source_y = 0.060
     source_x = source_y / panel_ratio
-    ax.add_patch(Ellipse(source, 2 * source_x, 2 * source_y, fc="white", ec="none", lw=0.0, zorder=8))
+    ax.add_patch(Ellipse(source, 2 * source_x, 2 * source_y, fc="white", ec="none", lw=0.0, zorder=20))
     source_rect = (source[0] - source_x, source[1] - source_y, source[0] + source_x, source[1] + source_y)
-    place_main(ax, a["focus_source"], rect=source_rect)
-    ax.add_patch(Ellipse(source, 2 * source_x, 2 * source_y, fill=False, ec=PALE_OLIVE, lw=2.0, zorder=26))
-    registry.text(ax, source[0], source[1] - source_y - 0.018, "local O126", ha="center", va="top", fontsize=10, color=DARK_GRAY)
+    place_render_cropped(ax, a["focus_source"], source_rect, zorder=21)
+    ax.add_patch(Ellipse(source, 2 * source_x, 2 * source_y, fill=False, ec=PALE_OLIVE, lw=1.8, zorder=22))
+    registry.text(ax, source[0], source[1] - source_y - 0.015, "O126", ha="center", va="top", fontsize=10, color=DARK_GRAY)
     # The magnified local render is a transparent MatterVis atom/bond/vector
     # layer inside a clean paper circle; no second network or dashboard is
     # drawn over it.
-    focus_sy = 0.46
+    focus_sy = 0.42
     focus_sx = focus_sy / panel_ratio
-    focus_cx, focus_cy = 0.68, 0.57
+    focus_cx, focus_cy = 0.70, 0.57
     focus = (focus_cx - focus_sx / 2, focus_cy - focus_sy / 2, focus_cx + focus_sx / 2, focus_cy + focus_sy / 2)
-    ax.add_patch(Ellipse((focus_cx, focus_cy), focus_sx, focus_sy, fc="white", ec="none", lw=0.0, zorder=8))
-    place_main(ax, a["focus_mag"], rect=focus)
-    ax.add_patch(Ellipse((focus_cx, focus_cy), focus_sx, focus_sy, fill=False, ec=NAVY, lw=2.0, zorder=24))
-    registry.text(ax, focus_cx, focus[3] + 0.025, "magnified local r_c", ha="center", va="bottom", fontsize=11, color=INK, weight="bold")
+    ax.add_patch(Ellipse((focus_cx, focus_cy), focus_sx, focus_sy, fc="white", ec="none", lw=0.0, zorder=30))
     # Two leader lines form the magnifying-glass geometry in the reference
     # sketch and terminate on the clean circle boundary.
-    ax.plot([source[0] + source_x, focus[0]], [source[1] + source_y * 0.65, focus_cy + focus_sy * 0.38], color=PALE_OLIVE, lw=1.6, zorder=25)
-    ax.plot([source[0] + source_x, focus[0]], [source[1] - source_y * 0.65, focus_cy - focus_sy * 0.38], color=PALE_OLIVE, lw=1.6, zorder=25)
+    ax.plot([source[0] + source_x, focus[0]], [source[1] + source_y * 0.65, focus_cy + focus_sy * 0.38], color=PALE_OLIVE, lw=1.5, zorder=28)
+    ax.plot([source[0] + source_x, focus[0]], [source[1] - source_y * 0.65, focus_cy - focus_sy * 0.38], color=PALE_OLIVE, lw=1.5, zorder=28)
+    place_render_cropped(ax, a["focus_mag"], focus, zorder=31)
+    ax.add_patch(Ellipse((focus_cx, focus_cy), focus_sx, focus_sy, fill=False, ec="#466C7A", lw=1.8, zorder=32))
+    registry.text(ax, focus_cx, focus[3] + 0.022, "magnified local", ha="center", va="bottom", fontsize=11, color=INK, weight="bold")
 
 
 def _info(ax, registry: LayoutRegistry, data: dict[str, object], vv: dict[str, object], *, video: bool, stage: int | None, returning: bool) -> None:
@@ -654,7 +654,7 @@ def _right_geometry_panel(ax: plt.Axes, registry: LayoutRegistry, data: dict[str
     ax.add_patch(Rectangle((0.035, 0.50), 0.93, 0.43, fc="white", ec=LINE_GRAY, lw=1.3, zorder=1))
     ax.add_patch(Rectangle((0.035, 0.035), 0.93, 0.40, fc="white", ec=LINE_GRAY, lw=1.3, zorder=1))
     registry.text(ax, 0.50, 0.89, "LOCAL CARTESIAN FRAME", ha="center", va="center", fontsize=11, color=INK, weight="bold", zorder=4)
-    registry.text(ax, 0.50, 0.84, "O126 + minimum-image neighbours", ha="center", va="center", fontsize=10, color=DARK_GRAY, zorder=4)
+    registry.text(ax, 0.50, 0.84, "O126 · MIC neighbours", ha="center", va="center", fontsize=10, color=DARK_GRAY, zorder=4)
     origin = (0.17, 0.73)
     registry.arrow(ax, origin, (0.31, 0.73), arrowstyle="-|>", mutation_scale=10, lw=1.5, color=LAKE_BLUE, zorder=5)
     registry.arrow(ax, origin, (0.17, 0.84), arrowstyle="-|>", mutation_scale=10, lw=1.5, color=EMERALD, zorder=5)
