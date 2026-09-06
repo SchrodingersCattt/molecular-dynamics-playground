@@ -1,0 +1,140 @@
+{
+  "version": 1,
+  "figure": {
+    "canonical_stem": "06_rigid_water_descriptor_invariance"
+  },
+  "outputs": [
+    {
+      "path": "../../figures/06_rigid_water_descriptor_invariance.png"
+    },
+    {
+      "path": "../../figures/06_rigid_water_descriptor_invariance.svg"
+    }
+  ],
+  "target": {
+    "width_mm": 297,
+    "qa_dpi": 300,
+    "min_dpi": 200,
+    "max_dpi": 600
+  },
+  "panels": [
+    {
+      "id": "structure",
+      "source": "../../figures/06_rigid_water_descriptor_invariance.png",
+      "slot": [
+        0.29,
+        0.075,
+        0.755,
+        0.905
+      ],
+      "source_min_clearance_px": 0,
+      "min_clearance_px": 0,
+      "allow_touch_edges": [
+        "left",
+        "right",
+        "top",
+        "bottom"
+      ]
+    },
+    {
+      "id": "descriptor",
+      "source": "../../figures/06_rigid_water_descriptor_invariance.png",
+      "slot": [
+        0.775,
+        0.105,
+        0.97,
+        0.905
+      ],
+      "source_min_clearance_px": 0,
+      "min_clearance_px": 0,
+      "allow_touch_edges": [
+        "left",
+        "right",
+        "top",
+        "bottom"
+      ]
+    }
+  ],
+  "checks": {
+    "whitespace": {
+      "background_threshold": 245,
+      "min_ink_fraction": 0.02,
+      "min_panel_bbox_fill": 0.16,
+      "grid_rows": 12,
+      "grid_columns": 24
+    },
+    "boundaries": {
+      "bands": [
+        {
+          "id": "gap",
+          "rect": [
+            0.755,
+            0.075,
+            0.775,
+            0.905
+          ],
+          "max_ink_pixels": 5000
+        }
+      ]
+    },
+    "colors": {
+      "semantics": [
+        {
+          "id": "descriptor",
+          "color": "#2F8562",
+          "min_pixels": 80
+        },
+        {
+          "id": "box",
+          "color": "#8E8E8E",
+          "min_pixels": 80
+        }
+      ]
+    }
+  },
+  "integrity": {
+    "required_content": [
+      "rigid_translation",
+      "rigid_rotation",
+      "constant_descriptor"
+    ],
+    "evidence": {
+      "rigid_translation": "descriptor_provenance.json",
+      "rigid_rotation": "descriptor_provenance.json",
+      "constant_descriptor": "descriptor_provenance.json"
+    },
+    "scientific_changes": []
+  },
+  "consistency": {
+    "constraints": [
+      "fixed_cell",
+      "fixed_molecule_geometry",
+      "fixed_camera"
+    ],
+    "evidence": {}
+  },
+  "quantitative": {
+    "transformations": [
+      "minimum-image descriptor",
+      "rigid rotation and translation"
+    ],
+    "units": {
+      "distance": "angstrom"
+    }
+  },
+  "deviations": {
+    "records": []
+  },
+  "review": {
+    "render_sha256": "97710539590566e8af58fd4f21ea92553d0b023ab64789ebde7501102ff9bc95",
+    "problems": {
+      "scientific_expression": "Rigid transforms preserve the geometric descriptor while Cartesian positions change.",
+      "geometry": "MatterVis renders the same molecule in a fixed periodic cell and camera.",
+      "annotations": "Coordinates and invariant descriptor rows are explicit.",
+      "readability": "The proof panel shows changing position alongside constant geometry values.",
+      "submission_quality": "Static and full-frame video QA are retained."
+    },
+    "action": "Keep the water rigid and compute descriptors with minimum-image distances.",
+    "stop_condition": "fixed"
+  }
+}

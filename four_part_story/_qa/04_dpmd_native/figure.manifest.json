@@ -135,15 +135,15 @@
           ],
           "max_ink_pixels": 600
         },
-          {
-            "id": "main_info_gap",
+        {
+          "id": "main_info_gap",
           "rect": [
             0.755,
             0.075,
             0.775,
             0.905
           ],
-            "max_ink_pixels": 600
+          "max_ink_pixels": 600
         }
       ]
     },
@@ -214,15 +214,15 @@
     "records": []
   },
   "review": {
-    "render_sha256": "93056b9a6a12d28571e7dbc77d72b1b74f4ea348b8a9bf90b7ca6522140be1ea",
+    "render_sha256": "c275fbc81a15a8070545a033801043e1fa7460b77145839f34520612419f86ce",
     "problems": {
-      "scientific_expression": "The static view uses one saved periodic snapshot and a real neighbor mask.",
-      "geometry": "The periodic water box remains square on the slide and the local r_c sphere is directly overlaid.",
-      "annotations": "The right rail separates real Cartesian coordinates, distance matrix, and descriptor bars.",
-      "readability": "The static image stops at neighbor selection; NN and force are reserved for later animation stages.",
-      "submission_quality": "MatterVis sidecars, descriptor provenance, static strict QA, and full-frame video QA are retained."
+      "scientific_expression": "The still and video use one saved periodic snapshot and real O126 minimum-image neighbours.",
+      "geometry": "The whole water box is square; the native local sphere is magnified in place and linked to its original O126 position.",
+      "annotations": "The right upper panel defines the real local Cartesian frame and distance matrix; the lower panel shows the derived descriptor.",
+      "readability": "The still stops at neighbor selection; the animation then reveals matrix, descriptor, shared NN, energy and force in order.",
+      "submission_quality": "MatterVis sidecars, descriptor provenance, static strict QA, and 384-frame video QA are retained."
     },
-    "action": "Keep the box, local sphere, real matrix, and descriptor as the stable PPT visual grammar.",
+    "action": "Preserve the square-box plus in-place magnifier grammar for PPT export.",
     "stop_condition": "fixed"
   }
 }
