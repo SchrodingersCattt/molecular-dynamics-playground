@@ -154,7 +154,11 @@ def _render_assets(data: dict[str, object], vv: dict[str, object]) -> dict[str, 
     # projection for the native force arrow.
     camera = camera_for_source(
         VV_SOURCE, target=target, ortho_scale=15.2, frame=0,
-        direction=(0.20, -1.0, 0.70),
+        # The water box is shown along the crystallographic x direction for
+        # the group-meeting slides. Keep this camera fixed across every DP
+        # asset and frame; do not auto-fit or rotate it per stage.
+        direction=(1.0, 0.0, 0.0),
+        up=(0.0, 0.0, 1.0),
     )
     force = np.asarray(data["result_forces_ev_per_angstrom"], dtype=float)[central]
     velocity = np.asarray(vv["velocities"], dtype=float)[central]

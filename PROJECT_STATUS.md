@@ -1,6 +1,6 @@
 # Molecular-dynamics project status
 
-更新：2026-09-05
+更新：2026-09-06
 
 ## 已完成并留存
 
@@ -17,6 +17,10 @@
 - 刚体水分子对称性 Demo 已新增为第六套视频：同一个真实 H₂O 在固定周期盒内只做平移和旋转，Cartesian 坐标变化而 O–H、H–H 距离与 cos(H–O–H) descriptor 保持不变；minimum-image descriptor provenance 和 240 帧 QA 已保存。
 - 04 Deep Potential 已按组会 PPT 线稿重排：方形完整 water box、左侧原位 O126 局域圆、右侧放大局域圆和绿色真实邻居线；右栏分为 Cartesian/邻居矩阵与 descriptor 两块。
 - 04 Deep Potential 已按组会 PPT 线稿重排：方形完整 water box、左侧原位 O126 局域圆、右侧放大局域圆和绿色真实邻居线；右栏分为 Cartesian/邻居矩阵与 descriptor 两块。
+
+独立物理审查已完成并落盘：`_staging/md-qa/independent_physics_review.md`。本轮已按审查意见修正：DP 水盒固定沿 +x 视角；邻居连线从中心原子出发且不再冒充力箭头；力/速度/位置箭头与中心原子锚定；DP 右栏改为真实 O126 局部坐标、邻居距离矩阵和由真实 `r_ij` 计算的描述符；刚体水示例改为完整笛卡尔坐标随平移/旋转变化，而 DeepMD `R_i=[s,sx/r,sy/r,sz/r]` 保持不变。
+
+四套视频和两个附加视频已完成全帧 QA：VV 216/216、LJ 216/216、AIMD 360/360、DP 384/384、metadynamics 384/384、刚体对称性 240/240，均 `passed=true`。仍未完成的工作仅包括文章最终 XeLaTeX/PDF 排版与逐页 QA、Bohrium Notebook 全单元运行，以及将最终图版嵌入文章。
 
 ## 当前推送内容
 

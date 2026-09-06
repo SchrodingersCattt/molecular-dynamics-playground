@@ -17,8 +17,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "f345cca6c98b363d5d9be5bf4108b91de58b884b9ecc86397258685df9fe0fd5",
-      "output_sha256": "6e2e490daa879f221083b8ef53557fa260d0dc17c4cc5ce868b68e595723486f",
+      "plan_sha256": "fd80c20c7e7ef19df944993db1c08c2365f1f0783c97c66b63a32b84ec778e8c",
+      "output_sha256": "d93c04113a0838578d8b406963e4ccf6e970809aa2f14e062451bae38e6f15c8",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\motion_00.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 0,
@@ -29,7 +29,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -51,12 +51,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[]",
       "vector_count": 0,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -82,7 +88,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -115,8 +121,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "6e7176688a8eca8dc4c335386d38f4b683600975b37d83eab000ec9cd77274fe",
-      "output_sha256": "becfbbb58bc23bd5328eaf31d263d674ce20c58ddc179ac57f4708a25c03d776",
+      "plan_sha256": "7894c566e194be44887d1961fca3dd23384ff7aa37cd8d06d050de8d68d56f42",
+      "output_sha256": "594212dab70f99b012c7463ef554bf6b9ea0e8c8828e8f099f354409d9519bab",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\position_00.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 0,
@@ -127,7 +133,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -149,12 +155,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"lj-position-0\",\"opacity\":1.0,\"origin\":[-1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#4E9BB5\",\"id\":\"lj-position-1\",\"opacity\":1.0,\"origin\":[1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
       "vector_count": 2,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -180,7 +192,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -213,8 +225,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "3e4a66a7b8cd80058d4bcfc43d2dd60feaf3665dc61aa7ac6d45d86afd5f4ffb",
-      "output_sha256": "3063557f1fb421aa2525e8487b02e18c35f2eb8d0d999b6f2393594a0a62ac71",
+      "plan_sha256": "a12c6991b8d7921abab77f9ae7603d4341abfc0c010a9cc44017d1988ddda9c2",
+      "output_sha256": "c547b7a0a2f9bb691b350dbd8499e02e6c7b27ae35770d07cca589fccf774e20",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\motion_01.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 1,
@@ -225,7 +237,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -247,12 +259,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[]",
       "vector_count": 0,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -278,7 +296,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -311,8 +329,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "7040b83bde81166444627d3e61e0399d03df70ccc641ff64f1cb2f5fcfc6e564",
-      "output_sha256": "c22e612465b0faa9e5b83ead8aedb3e3d755b98fedf7403b1f637b532d871e71",
+      "plan_sha256": "40b517b1d40239a9519423e9a1c0a7b5f61d1e4098638f4f52bb74fb5b2c1f31",
+      "output_sha256": "b3793865aa3b606370b0bc321fc472b6f99ef00f06f2a81a20dc05f3972d74a4",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\position_01.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 1,
@@ -323,7 +341,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -345,12 +363,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"lj-position-0\",\"opacity\":1.0,\"origin\":[-1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#4E9BB5\",\"id\":\"lj-position-1\",\"opacity\":1.0,\"origin\":[1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
       "vector_count": 2,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -376,7 +400,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -409,8 +433,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "f87c83c12586c97d28809c916f3722a8c148802adeb2dae5b123aa44cc64e6e1",
-      "output_sha256": "2717dc1f65e517d45eb42e3848c5f3e903f0291317b72ea1e259c85cd86d4327",
+      "plan_sha256": "973fb30e2e216d3a857ca860f14bac6304f625b8056f8574667d9b5e5ce1877b",
+      "output_sha256": "34b75bdc2e80acefc26d9e3db9f94ec4846c95669d1a16aede68ad77e1b84df9",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\motion_02.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 2,
@@ -421,7 +445,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -443,12 +467,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[]",
       "vector_count": 0,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -474,7 +504,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -507,8 +537,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "f0043e0aa53d2ebee8e87543bd5281e36b4867a44cce7ac642c1de686d4b351b",
-      "output_sha256": "fc168dc62d7ab39d10fa98d36d39557dce38af8bc0c8485141d46171454e2138",
+      "plan_sha256": "bc0b6afa8abd62c88e5d077b9bf8ef777aa906fd5482f9cbeff779579fd03bf2",
+      "output_sha256": "4c09223b7af8edb7fa0dc80051b2717bbde6138564065eb1c0f8468f5d032b97",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\position_02.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 2,
@@ -519,7 +549,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -541,12 +571,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"lj-position-0\",\"opacity\":1.0,\"origin\":[-1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#4E9BB5\",\"id\":\"lj-position-1\",\"opacity\":1.0,\"origin\":[1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
       "vector_count": 2,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -572,7 +608,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -605,8 +641,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "b379be436b23f1e748a7925aae4afa4ee79c57f180dd48391067b8ee6b5a1d18",
-      "output_sha256": "d0db571edc293ab2935d8af0aeed981d47974f19f92443f52b7f82fce6309094",
+      "plan_sha256": "d6db06b20f57ce76867460b4b24c84853f57d04af30ab7a81c9207f581470d3c",
+      "output_sha256": "2b9cdb8f7a1ccc456743d18b5966a062401a3319e5037905897dbeffaadb6ebc",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\motion_03.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 3,
@@ -617,7 +653,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -639,12 +675,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[]",
       "vector_count": 0,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -670,7 +712,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -703,8 +745,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "1fc84935354e45ab24a5e0d446c592630ed306652310039afd04fffd8c40a01c",
-      "output_sha256": "824bbda4c4f84f8b7c5c4d25808328d27cab97b3258f16526b7ad0bd8ce0b7f8",
+      "plan_sha256": "ae4ff5e498fb83d885f1ba6e76bbdf53dd05f3a850718d12b19e70dddd2d32cf",
+      "output_sha256": "cd50fed422ab91ee9fecb5218509b086136f15c65c928027469e33e949f69581",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\position_03.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 3,
@@ -715,7 +757,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -737,12 +779,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"lj-position-0\",\"opacity\":1.0,\"origin\":[-1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#4E9BB5\",\"id\":\"lj-position-1\",\"opacity\":1.0,\"origin\":[1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
       "vector_count": 2,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -768,7 +816,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -801,8 +849,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "ad43b7af100120adeda6e0ca36efe6bb1f3d26bfa8a20515fdfae0a5db55f297",
-      "output_sha256": "b9f073e808f19ebb0f55465ebede235010fa641c8d99968a2d26a0d99f9c4b68",
+      "plan_sha256": "a12f2ec34394e4975d632c926dea3f594e76bc26fa43d4dd849d1e5b64389067",
+      "output_sha256": "a4e202f442305f2c93d5b222addd2d52b197338e6ad95a7782c0b74531e7a625",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\motion_04.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 4,
@@ -813,7 +861,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -835,12 +883,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[]",
       "vector_count": 0,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -866,7 +920,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -899,8 +953,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "7d227cd8597cd721fe82e526428b06d521ab0af91863dd93d74e7e644d196d6f",
-      "output_sha256": "78fe63b02a3f4194782f5accb57fafa822655cd29525e4dcbd416b59439fecf5",
+      "plan_sha256": "cd3276e31285c44cf9848b8d7898793809bb7f2a71f6a7c6def05ee501de4137",
+      "output_sha256": "f207392a1df03c8a759dba5fcb52e14554fab57b45f905f0bb3ec75afa7966a0",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\position_04.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 4,
@@ -911,7 +965,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -933,12 +987,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"lj-position-0\",\"opacity\":1.0,\"origin\":[-1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#4E9BB5\",\"id\":\"lj-position-1\",\"opacity\":1.0,\"origin\":[1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
       "vector_count": 2,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -964,7 +1024,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -997,8 +1057,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "08cec16f81856bd732bfe9239252b2ecc037622507f81fc514547daddc223dfb",
-      "output_sha256": "1ced93be31ebf0585df7b1550736629c1616d8eeabc4d5c5fa22171d0b2c63d4",
+      "plan_sha256": "bc7e7f959ae6e592da168d32ea7137aadbfbe5835d73f4a3634f72c0cea2ee25",
+      "output_sha256": "aaa9d061a8a284be5f9b36d6624a587021b786305d70545aa4a730b473d58c68",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\motion_05.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 5,
@@ -1009,7 +1069,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -1031,12 +1091,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[]",
       "vector_count": 0,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -1062,7 +1128,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -1095,8 +1161,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "332178f13985cbcba601f8b28c3ea157d977e4768d079d8ff40b65dfd317f9c9",
-      "output_sha256": "ab8c70617da8bae4eb61e9429dd1fdb97ab04fc4f8a057a0d852e7bcdc364f42",
+      "plan_sha256": "9135e72b843d968e0287729cc679ef3580e4e1cac0e99a1576edb6d30327cc2d",
+      "output_sha256": "c940ae024832a24c602761873b733abffff9e9e556470e6a273c397f8dba6b3b",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\position_05.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 5,
@@ -1107,7 +1173,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -1129,12 +1195,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"lj-position-0\",\"opacity\":1.0,\"origin\":[-1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#4E9BB5\",\"id\":\"lj-position-1\",\"opacity\":1.0,\"origin\":[1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
       "vector_count": 2,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -1160,7 +1232,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -1193,8 +1265,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "e846c2d27f3b98974e117eaec5d81571bcfc7b41f24956c5e5746c26b87ace3e",
-      "output_sha256": "d5e2867919d6ca5e45a31a51ebd7735e249f344cd49204c86243d5145fbe1ef6",
+      "plan_sha256": "7ef5478d88158a9cea35a8554cefae3221e5252464362468f99b50f9bf925778",
+      "output_sha256": "3a8cd521e00c6f1e1dc90320d331bb591b25945556497feefe2ef8f605fd6afd",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\motion_06.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 6,
@@ -1205,7 +1277,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -1227,12 +1299,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[]",
       "vector_count": 0,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -1258,7 +1336,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -1291,8 +1369,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "22a528f70dcabbc369fb3ddc67b3ecce7ab014784d0a9fcea0992202829c5d0a",
-      "output_sha256": "f4cbb8ace12b8ed68ff8ba0618f3929ce4d92f86e1febf73ee429ce493988008",
+      "plan_sha256": "693655ec2474c853698bf9c3556a80542f0adcc4fd35159ba2cddaed077b0ce7",
+      "output_sha256": "6d3f1b9afef7f7ff0d980b4c418b083b9629c21bd3378bc208c5f51ee76a8b2b",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\position_06.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 6,
@@ -1303,7 +1381,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -1325,12 +1403,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"lj-position-0\",\"opacity\":1.0,\"origin\":[-1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#4E9BB5\",\"id\":\"lj-position-1\",\"opacity\":1.0,\"origin\":[1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
       "vector_count": 2,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -1356,7 +1440,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -1389,8 +1473,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "6d33d1dd3aef3835529f2e2a6f8e2ba25da4953e2a7882b8a3a62ba7593c1253",
-      "output_sha256": "88dc3ceab94fe6980b0a2b5df3c6c546a747dea9bb0777bf65787eb56a25463b",
+      "plan_sha256": "86602a65a131a9b973d005b28a91a1ddac10e3475a659eb4438ed52167939df2",
+      "output_sha256": "903e00dfb82370e82f7f9bce101ec39bd4586564f69d73b64e531163ecdd2fc4",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\motion_07.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 7,
@@ -1401,7 +1485,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -1423,12 +1507,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[]",
       "vector_count": 0,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -1454,7 +1544,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -1487,8 +1577,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "000162c258c1d781b37329d98cdc54d636222bc5be9d65fb6598bb964522c404",
-      "output_sha256": "34f8cf729940f6e0e8d369750267a173ac531eecdabf5149eabf298cce0fcb8d",
+      "plan_sha256": "aa2fcb2f5a0df389e8631bb1c788fb38c0689f328607a7d0ea5bd2ea6262d9dc",
+      "output_sha256": "310a644b5eba736011850e765e41ff7eed2c5a779f49e7a0fd93d1701ff9c043",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\position_07.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 7,
@@ -1499,7 +1589,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -1521,12 +1611,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"lj-position-0\",\"opacity\":1.0,\"origin\":[-1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#4E9BB5\",\"id\":\"lj-position-1\",\"opacity\":1.0,\"origin\":[1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
       "vector_count": 2,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -1552,7 +1648,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -1585,8 +1681,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "4aeb9a8f3d2128a92692b056de0b656772313260e548a13208d4e886dbc10f72",
-      "output_sha256": "65233b47f012baac8c7089f200a58420f4e804726c05a2058aae2f40a4516bb3",
+      "plan_sha256": "ce94777bf3b8bc2605a93d4d4ff60144ec4e0c08ec127f6c439e910bf36f223b",
+      "output_sha256": "c1a874afc47feb814713e2b0ffc053ec8b21a21988075984ad43735ff6b630a5",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\motion_08.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 8,
@@ -1597,7 +1693,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -1619,12 +1715,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[]",
       "vector_count": 0,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -1650,7 +1752,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -1683,8 +1785,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "a74ad7398527dfb50c340c5f72628b1bbf6e2c26f5857f69f592bb95ad82f291",
-      "output_sha256": "7eb76074f9a63d5a88ef9da2b9ea09ad03db304aa8087789d75ee7bbf4b84e89",
+      "plan_sha256": "0400ab038fb87590157c670e6834863f4ee8288f9c5e4ab86867a1baf2b1f6b2",
+      "output_sha256": "0a8ecf1daecd33e353e96465c1aad3993b51bfd7db532575f6b28bd5997098c4",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\position_08.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 8,
@@ -1695,7 +1797,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -1717,12 +1819,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"lj-position-0\",\"opacity\":1.0,\"origin\":[-1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#4E9BB5\",\"id\":\"lj-position-1\",\"opacity\":1.0,\"origin\":[1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
       "vector_count": 2,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -1748,7 +1856,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -1781,8 +1889,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "8682d3a03b486d0f991c1b036839d1ae43039b2ef389e56ed443fddc4dcf7132",
-      "output_sha256": "ae451b36b50f327267d2b596f36bf347328b32abf1aa756ed1b86e8bb9619dbd",
+      "plan_sha256": "841a3a5d8191fc5352939fe31cd85811090e83ad7ada5d7c5fc6988c3515cc31",
+      "output_sha256": "1e77f7b7d566f5444d49d29e1c90c481ac880f486a181212e7b3ef96599749ec",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\motion_09.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 9,
@@ -1793,7 +1901,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -1815,12 +1923,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[]",
       "vector_count": 0,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -1846,7 +1960,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -1879,8 +1993,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "e201897dacc33128eb24cb89accd78ea0871293daffeeb57d472180287f7d45d",
-      "output_sha256": "a446dbbabe71a1bc5140dff15cae548d6208df3a892e8b1e4df986694b178204",
+      "plan_sha256": "5bfcf82e172d69cdebd7597d8eaed4e923e67bfa7be3396f0f18d8ae26031fe8",
+      "output_sha256": "31e9dce2461f34169274799eebc92adad2e91d617e5d3d5c60f2e6b42b66d2eb",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\position_09.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 9,
@@ -1891,7 +2005,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -1913,12 +2027,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"lj-position-0\",\"opacity\":1.0,\"origin\":[-1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#4E9BB5\",\"id\":\"lj-position-1\",\"opacity\":1.0,\"origin\":[1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
       "vector_count": 2,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -1944,7 +2064,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -1977,8 +2097,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "e878e8db6d4a3ab4c1245bedfce5a9091d29a80d4d60abc0ffaff825a2cdbead",
-      "output_sha256": "12cee25342e3c51be9ebe510aefa3e54909b00fe3e0377bdb1746e359c255951",
+      "plan_sha256": "6914ba0ab9add6033c27feedcee7f4bd5d0b25f971ad4c136b74eb4c0d387f6f",
+      "output_sha256": "fc2712a7bda51ec9a5482c8e98068a5da18861d9d1950b84b40603be2fbc27d3",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\motion_10.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 10,
@@ -1989,7 +2109,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -2011,12 +2131,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[]",
       "vector_count": 0,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -2042,7 +2168,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -2075,8 +2201,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "3effc868ad4ef3eb8c5a7bbcc166fe14f06238a6e36a679abd9618fbf74f5964",
-      "output_sha256": "c5aa405e17e3660f994caad8177c8bb75a0ab1e60ab100968fc14a813cc2c7d9",
+      "plan_sha256": "fadecc94ae21603239633071ca9f77cc68019a03588f0b231e6495ada2720ae8",
+      "output_sha256": "2017074ca5dccb87c51f920479b0015b6f006e88ac87215a948ecced5aeb1392",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\position_10.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 10,
@@ -2087,7 +2213,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -2109,12 +2235,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"lj-position-0\",\"opacity\":1.0,\"origin\":[-1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#4E9BB5\",\"id\":\"lj-position-1\",\"opacity\":1.0,\"origin\":[1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
       "vector_count": 2,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -2140,7 +2272,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -2173,8 +2305,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "e754b12744800f1fbe379281d83c6843b7b7424d6fe5b86e2a607bbc17eaf3ee",
-      "output_sha256": "4827b989d157399814283f6355ab59b2d8bd5f5138f7882618e249bd15097e2d",
+      "plan_sha256": "ab5347e51f17381b6b4321a83457752491a5bb477e15b2beafa97ca64bea3179",
+      "output_sha256": "33ef9b8dae2ed2de759b0ce9073ee979cb90049592d0df6acec7ed66aca4d882",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\motion_11.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 11,
@@ -2185,7 +2317,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -2207,12 +2339,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[]",
       "vector_count": 0,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -2238,7 +2376,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -2271,8 +2409,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "97c9ae1cae34e127b7e194696ec70331ef4511b99e318b43ea6ecb1b3d01cc91",
-      "output_sha256": "b26cca63af82f11dc0978ec150d37ef90751231a8ab1fce58c2d3bffcfa37e78",
+      "plan_sha256": "870928170dfb0bbc56c711ac88ea0f98931cddda83702b6dcfd7ee70135f4a81",
+      "output_sha256": "e1475612604d0f080ff7fa6079b23c121a2e5b0dbe3e372b90a3e0899a4428f6",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\position_11.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 11,
@@ -2283,7 +2421,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -2305,12 +2443,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"lj-position-0\",\"opacity\":1.0,\"origin\":[-1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#4E9BB5\",\"id\":\"lj-position-1\",\"opacity\":1.0,\"origin\":[1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
       "vector_count": 2,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -2336,7 +2480,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -2369,8 +2513,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "01d819c795abe01f9c673e3cfefde2cf36cc9ba0bf80fe21f90cd69b9207e9f3",
-      "output_sha256": "1b7acfd71677882bcb9f88b54c41a090eb7a32c97402f1dee6d22cb6c9a8a02d",
+      "plan_sha256": "72caf5fca73d10d0d4521d64690341a449df3d7bd4844e7b312bd80d92772524",
+      "output_sha256": "21eae7a4583761e8d7f8cd02500cf57e709c49d60df32205f0332fbcb8f57000",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\motion_12.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 12,
@@ -2381,7 +2525,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -2403,12 +2547,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[]",
       "vector_count": 0,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -2434,7 +2584,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -2467,8 +2617,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "c33d76fabe0f8c8a4d73605b9e93bd0650f2b9bddfaa97dbfc77e59e3731a712",
-      "output_sha256": "8e9edb9d87f5814184179acab26ecce78211e572adc2b99921c0e4f9e13926f4",
+      "plan_sha256": "103c7f9b64f278a54f013b6d77d609d56a3601dfe283624fb1deb9b4705423e0",
+      "output_sha256": "53a776cb0d891d645234d3b10c4606a3bce1207101ece0eb197cf149a450a490",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\position_12.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 12,
@@ -2479,7 +2629,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -2501,12 +2651,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"lj-position-0\",\"opacity\":1.0,\"origin\":[-1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#4E9BB5\",\"id\":\"lj-position-1\",\"opacity\":1.0,\"origin\":[1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
       "vector_count": 2,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -2532,7 +2688,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -2565,8 +2721,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "dc75e19a200434572a9d6f7e9b19998b58494dda1160bba64de787abc731c663",
-      "output_sha256": "d37dac2433bd07fec4db514e282a2be010d16805f9d77765713ca3142f544a8a",
+      "plan_sha256": "656fcb31fc6a438a3afcb94f2df818ce1ccc0b854634caa3bd7afce7bd1244bc",
+      "output_sha256": "668967f6876016e207b97a9cee380097c66c426529b922029bad62167c72a759",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\motion_13.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 13,
@@ -2577,7 +2733,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -2599,12 +2755,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[]",
       "vector_count": 0,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -2630,7 +2792,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -2663,8 +2825,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "450350b7c0811764b91feb6a475d29d2e8e6eed90f2814db9f81c9c35ad4a569",
-      "output_sha256": "2f927687fdb7311e3130e140fdd0c05d7c8566f002ef92a17bacd932c3d9ed05",
+      "plan_sha256": "e1dbb8a2247a6b154607a24019943ef86df145a6820face1bd0f1b8be9f0da9e",
+      "output_sha256": "0fd04b4390543b95242259c643bf15799dd927199738b86cbb1eacf26e2f4515",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\position_13.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 13,
@@ -2675,7 +2837,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -2697,12 +2859,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"lj-position-0\",\"opacity\":1.0,\"origin\":[-1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#4E9BB5\",\"id\":\"lj-position-1\",\"opacity\":1.0,\"origin\":[1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
       "vector_count": 2,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -2728,7 +2896,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -2761,8 +2929,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "8bca149fb5c2304c3f2421326c907fc17bfee88bfb5517c80115a2f46e103557",
-      "output_sha256": "3f557189ad481465e8f8cc586cbcf1fec94877a0525080f900d4dc67b9d8a951",
+      "plan_sha256": "c924e3843fc61ee6b02fb6d5977d708fa34ae2781c09831b9edb84d39e311ba5",
+      "output_sha256": "cdd9e1472d23ebe8d116ca79de73d91f75dacb463ccc479b10478e840434d007",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\motion_14.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 14,
@@ -2773,7 +2941,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -2795,12 +2963,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[]",
       "vector_count": 0,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -2826,7 +3000,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -2859,8 +3033,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "2039ae7c234b2fab0be61396435b4cb8e2e3dd896ef044877d04e0038e86e28e",
-      "output_sha256": "8a26845ba8788a7d3c4a5704b25cb4d8b3e5f2473cdaa58e2cd7c04d42cd4a4b",
+      "plan_sha256": "7a1d390bc587035b63842028fe1730efa9ee9e405138e0c6d82f496b9494e5bc",
+      "output_sha256": "957284cfd9a24804ee2b6137d52a318c27a4642e7fc426403899f78aea8c12d3",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\position_14.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 14,
@@ -2871,7 +3045,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -2893,12 +3067,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"lj-position-0\",\"opacity\":1.0,\"origin\":[-1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#4E9BB5\",\"id\":\"lj-position-1\",\"opacity\":1.0,\"origin\":[1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
       "vector_count": 2,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -2924,7 +3104,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -2957,8 +3137,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "a06f321950695bc0115d2b98316173af7351c6387517477d3eee62ad288ecaef",
-      "output_sha256": "ad22656649a567506f102ca7361e0ffbf8b9c76f2109db843da77ed630cbe0fa",
+      "plan_sha256": "40f3c461f11c1673fcfd580c21737e179431a00d3d5a14e3674a6e6fd6ae6fc1",
+      "output_sha256": "0386a3e2990f713f6ebc67d3e0fbd9d5e092d8b41a5534d1b0efc1310c5778f5",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\motion_15.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 15,
@@ -2969,7 +3149,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -2991,12 +3171,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[]",
       "vector_count": 0,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -3022,7 +3208,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -3055,8 +3241,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "d8976520f9194df5957359822e8bf9118b647fc98418ffc11a2e977bcc7d2df1",
-      "output_sha256": "ab45d00ebae09068efd56dd464f9bea9499884a2234b0164799d28595dd47e61",
+      "plan_sha256": "f2d0e98c8a5c22c8275e5fda5000b5b01b9f8a17584301ff5774d9276143aa4d",
+      "output_sha256": "752ca0fc41e1155f9640f1314bd8c0644512a7afdf825739c43bcb3df914bf20",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\position_15.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 15,
@@ -3067,7 +3253,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -3089,12 +3275,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"lj-position-0\",\"opacity\":1.0,\"origin\":[-1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#4E9BB5\",\"id\":\"lj-position-1\",\"opacity\":1.0,\"origin\":[1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
       "vector_count": 2,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -3120,7 +3312,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -3153,8 +3345,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "0eec4d1425e9d1e5ae92c8a2fe8eb23ee4ff96efca059db1baead4d175f0ba11",
-      "output_sha256": "92510516fb766b84e8859d1ab94c026759d0b2caf62bf31c503da731f7135dde",
+      "plan_sha256": "6d5ef66af248689945a77a6779665361603fe6acc4d4953b540166f1ee22cf8f",
+      "output_sha256": "4a8d55e0790854c69f0eca74e0fe9681cbab5afe19e0b40cd5d28097af247811",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\motion_16.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 16,
@@ -3165,7 +3357,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -3187,12 +3379,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[]",
       "vector_count": 0,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -3218,7 +3416,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -3251,8 +3449,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "40457941b0b1f592b217c3c780d828f936dda2f8a3f5bcdc433873620fd024e3",
-      "output_sha256": "9d8a8bd02ac4ad00ae1224c1f86cf114f019be67b8eeb935c6157a47eb1efc03",
+      "plan_sha256": "a2abdfea042c15e7bf1055b568a97779c6df9bc7597915290667dd84c2d6d30a",
+      "output_sha256": "29ac1f07e092598fbb3c8c1d835546553ce32a341d1006728b8fad955f8b7078",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\position_16.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 16,
@@ -3263,7 +3461,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -3285,12 +3483,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"lj-position-0\",\"opacity\":1.0,\"origin\":[-1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#4E9BB5\",\"id\":\"lj-position-1\",\"opacity\":1.0,\"origin\":[1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
       "vector_count": 2,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -3316,7 +3520,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -3349,8 +3553,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "902745c596f873b1b026fa55a743b1da6d3583f9fd0fcab52fc82c1c2c08ebfb",
-      "output_sha256": "ba305a03a6d501d4ccc2ec7faf0fd2f6be3445a0113565a1d92916b0ebe57a36",
+      "plan_sha256": "cda29bcf996a6641079987c8fe167f1849eb16b64b016eff60c91f4c46173ded",
+      "output_sha256": "102cb0f238ddef9622adf5abdb6586fa31802dfc56b8df22495784c0e4be1a0a",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\motion_17.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 17,
@@ -3361,7 +3565,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -3383,12 +3587,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[]",
       "vector_count": 0,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -3414,7 +3624,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -3447,8 +3657,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "c61cec88e77150be0d89caa53fe9ef57aaa6829606386ab207d9f9594bc6283e",
-      "output_sha256": "8f7c21ad7365e3a4d50e43781b869c1183c5dfb7d2e0ce1b2fb317e62cc2633c",
+      "plan_sha256": "6a208fa65bcb0b5845c5457ca341dc818e68d64036ada9a82f92603c641b84a4",
+      "output_sha256": "90f074eb7ded7b2042e64c24c3d06e16af34f62c1dd0395036be58226c627c46",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\position_17.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 17,
@@ -3459,7 +3669,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -3481,12 +3691,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"lj-position-0\",\"opacity\":1.0,\"origin\":[-1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#4E9BB5\",\"id\":\"lj-position-1\",\"opacity\":1.0,\"origin\":[1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
       "vector_count": 2,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -3512,7 +3728,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -3545,8 +3761,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "04f5dc263a24856bf0742709a868cec5fb01b8ef8292defbbf1a4723e6d65b8f",
-      "output_sha256": "b9ee1c8b00d50890efdf4c60a3b2262eea6df55c80319171fd746ae75e0892e4",
+      "plan_sha256": "d207dd188c539ddfa3f2b0b17332e84527b7b824b8171ca06f0d3dd459ec2de9",
+      "output_sha256": "1158788cdd9e2757462c8c0020c7844f13e824ea8b70410407931400eef60dcd",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\motion_18.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 18,
@@ -3557,7 +3773,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -3579,12 +3795,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[]",
       "vector_count": 0,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -3610,7 +3832,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -3643,8 +3865,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "f874cb5679e92b842b13e8f517b8bc954ca7a4dc990eae6597217adafd026029",
-      "output_sha256": "d0fb6a5d81655318eb753f13238cda10cc6966e500e43c05b5ddd5e59e3cef61",
+      "plan_sha256": "96e1d27403b1268d4661f19ca7c25470a4f06befabafafdd2c75a5fa69bc780d",
+      "output_sha256": "9f00c3aeedccc7d01d498e6527193f4f566ecf240fa7a4f6a2514a95e503e2db",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\position_18.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 18,
@@ -3655,7 +3877,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -3677,12 +3899,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"lj-position-0\",\"opacity\":1.0,\"origin\":[-1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#4E9BB5\",\"id\":\"lj-position-1\",\"opacity\":1.0,\"origin\":[1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
       "vector_count": 2,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -3708,7 +3936,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -3741,8 +3969,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "694c905afc4ecd52be518871eb0014cdb6fc23c8e717a9c41dd6c2008494443a",
-      "output_sha256": "55cfc8c6d872b46148f0d3498a7311f8448937e775d95813c12c94f76da196f7",
+      "plan_sha256": "45687d5d5579d1178fa0a4105981e9af2ac0ca54062e0fa2e0cb7ed85220c49b",
+      "output_sha256": "e3cbacb73ae7f3a03498a36da5795fca1fc06484f3f4af458d77d9d517864d21",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\motion_19.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 19,
@@ -3753,7 +3981,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -3775,12 +4003,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[]",
       "vector_count": 0,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -3806,7 +4040,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -3839,8 +4073,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "d9f6e9af38a66463940561ded1d5f14698d9ddf4435ae7d4da9d615aaceed2df",
-      "output_sha256": "a1c35cf7c0b0c763d660e5e66f729409f282eeda5cf1498218fabdc47e6db6d3",
+      "plan_sha256": "d80143a727c3d50126c7da107ae0af90f0cc1c6188e6686afa8cf5e000a71bdb",
+      "output_sha256": "a68813caff3dca2560185cfbea6086aaf55bcbcbbdcc97392e0496edeeb2c75d",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\position_19.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 19,
@@ -3851,7 +4085,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -3873,12 +4107,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"lj-position-0\",\"opacity\":1.0,\"origin\":[-1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#4E9BB5\",\"id\":\"lj-position-1\",\"opacity\":1.0,\"origin\":[1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
       "vector_count": 2,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -3904,7 +4144,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -3937,8 +4177,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "8bdda4d807af757974870286319b564ec7b9a557d5eb556c38a6baba0854f6a3",
-      "output_sha256": "372dd995006135bdda6cf187b0eabd719b62c1333b480aa8c97ecd7535918088",
+      "plan_sha256": "8f049455b29ea523e28c29916e32b3882cee0eabcd732c9fd7a2fb2e9ecf736f",
+      "output_sha256": "9f4e92434a67ca7f5d51f9336a46be7fdbcfee6a046bfc33bfe797cfbab8731c",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\motion_20.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 20,
@@ -3949,7 +4189,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -3971,12 +4211,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[]",
       "vector_count": 0,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -4002,7 +4248,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -4035,8 +4281,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "c0830051971a8742fc2501728c38f3b18cc9dafb7fa324158f5d18a6db916fce",
-      "output_sha256": "17d8146fdad70d6b3bbf9c7d28bc8b377fec2036c78611e226655c84ae1b0330",
+      "plan_sha256": "9ad964b172f0ea5e31c518e12adc97678d2c27f36ce4403d3d152ba0effc589e",
+      "output_sha256": "aeed032c518ea408b22f7d7e9e22a04718cdf9d0f85abe8023d6fb8e9a997d4d",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\position_20.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 20,
@@ -4047,7 +4293,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -4069,12 +4315,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"lj-position-0\",\"opacity\":1.0,\"origin\":[-1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#4E9BB5\",\"id\":\"lj-position-1\",\"opacity\":1.0,\"origin\":[1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
       "vector_count": 2,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -4100,7 +4352,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -4133,8 +4385,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "769bd41c7fb5536a12c8d26acffbe3ffe6a06a562d2d501de7e0ca1fb9ed2a62",
-      "output_sha256": "e6798a9ad8e44d207498a318cf90d27c064391bfc68cf57bddcb03d6dd603036",
+      "plan_sha256": "defad8a783184e6e02b88fb112a09dcd4e724100dac4b6c191aaef5e5f7f00eb",
+      "output_sha256": "59512ea78d38b9df6186a9d38f82041315b5b8cea08df6d2c9683c84f382abeb",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\motion_21.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 21,
@@ -4145,7 +4397,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -4167,12 +4419,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[]",
       "vector_count": 0,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -4198,7 +4456,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -4231,8 +4489,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "08d1dcfeede18baceeb152c3452626ccd88a8d477232e5fe545aba3fe48ceddc",
-      "output_sha256": "2a0e52872180bf24530da1cf53afbd464e547bcfe7dfb0192d4aac2675b517ae",
+      "plan_sha256": "fb4465581ac94b10f6a5beb8da36bbc4eabca33fd078f28c41039495dc27c950",
+      "output_sha256": "0b34cf6a57a6a7f752a469d6af95d214fb543b5ef424af45687d10e0438df678",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\position_21.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 21,
@@ -4243,7 +4501,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -4265,12 +4523,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"lj-position-0\",\"opacity\":1.0,\"origin\":[-1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#4E9BB5\",\"id\":\"lj-position-1\",\"opacity\":1.0,\"origin\":[1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
       "vector_count": 2,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -4296,7 +4560,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -4329,8 +4593,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "f8f7ca3bef1f5056d8eb28006e88f97a65003168a57fb21d3ec80677f87ea2b8",
-      "output_sha256": "86ec3687e8b6a96a01849bc80c51003f5b45d24f626b798f9bae50d822afa51d",
+      "plan_sha256": "a1c41ab9acd8a73408a9ebdf23ce701c1502e41830250830c9dbfbdc032083fe",
+      "output_sha256": "32523d925ef5830a3bc5476e90b5429e19f9561648c53fe026591437140d113b",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\motion_22.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 22,
@@ -4341,7 +4605,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -4363,12 +4627,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[]",
       "vector_count": 0,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -4394,7 +4664,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -4427,8 +4697,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "721a3dcbafe5461ccf418711b6976ef213e34433ef5ea93060b431bb3498bcf2",
-      "output_sha256": "ff6ff90e7f3a38f9694b7d2e88986c2b599b666dab8cb2bb4b7bfb0d1c8d7637",
+      "plan_sha256": "e15f84f59b7fd5c99eb5ae09cd242796fc6cedb0afbf105cf93a7d0ad1039395",
+      "output_sha256": "d7de7b10035e4cd7447d1e78d5b1190ea56835f548863fb97e38e13a8a7487d8",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\position_22.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 22,
@@ -4439,7 +4709,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -4461,12 +4731,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"lj-position-0\",\"opacity\":1.0,\"origin\":[-1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#4E9BB5\",\"id\":\"lj-position-1\",\"opacity\":1.0,\"origin\":[1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
       "vector_count": 2,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -4492,7 +4768,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -4525,8 +4801,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "20bb0062e9ac41abbbdc3176d5ccd5ab2ebe5b98d4c49adf9d789bbf8f636b21",
-      "output_sha256": "a1a98aad72adc3c4848a086ba993be57152ed6243c3154af798524849a59437f",
+      "plan_sha256": "0be7b6c7f3f0524a0f8388074c4b6793f3cda6a5044fd6fc63cb80032de3e77e",
+      "output_sha256": "85a32739ca0b6f31638d54e99469e86a4fada1c5630a7eac2e215253e5271e36",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\motion_23.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 23,
@@ -4537,7 +4813,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -4559,12 +4835,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[]",
       "vector_count": 0,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -4590,7 +4872,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -4623,8 +4905,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "997f23dbd8ba2cc3258b8fb344a9c9f88014a816f04c32fbdbfa766e624645da",
-      "output_sha256": "869ba44af19b73ff36a69c8a3ff66caac65d31fbffbf0c4c8f0f20fed4a4b53e",
+      "plan_sha256": "67bf2f8d9b26a1beba50e2473ebc85a43223fb89233c6def09d10afb40bb57a3",
+      "output_sha256": "cd86fef3ab33763cbe65ab1331c5d68190ad77e5364ee2dca7ab7e756985edd3",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\position_23.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 23,
@@ -4635,7 +4917,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -4657,12 +4939,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"lj-position-0\",\"opacity\":1.0,\"origin\":[-1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#4E9BB5\",\"id\":\"lj-position-1\",\"opacity\":1.0,\"origin\":[1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
       "vector_count": 2,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -4688,7 +4976,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -4721,8 +5009,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "8ec314642cdec5ff047a10b855b5777a62d44b805f830e84ab14de08ce58eb5a",
-      "output_sha256": "839458e17b4c56c700867eff205bd962cc5bfa24d28540abddbc223020758fc5",
+      "plan_sha256": "e8991b99a490bdf6f63bcdd62caab3c0ecbc29df7f33ba8c796540b0fa9b7198",
+      "output_sha256": "26c8e660c45864c08a6dec05add95673d7432eb7cb49e2c427b43ce41cda7964",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\motion_24.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 24,
@@ -4733,7 +5021,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -4755,12 +5043,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[]",
       "vector_count": 0,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -4786,7 +5080,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -4819,8 +5113,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "411403206bc991c504a4e8940cd7d3191b1193bf53c3ac3785780c4fcb92f70b",
-      "output_sha256": "742fbb2d32d53f53abe2e060884cdf8a08d5c238af3fd73278c83be640288ae3",
+      "plan_sha256": "a8bd7ef12d1a7b876ed97533021c99b0c079ec0b12f0d90772e8de2d8ec850a4",
+      "output_sha256": "fb8adcbac23610665242ecf6f25d617ddcc1af7a8eac16117b7f9e3487f75250",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\position_24.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 24,
@@ -4831,7 +5125,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -4853,12 +5147,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"lj-position-0\",\"opacity\":1.0,\"origin\":[-1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#4E9BB5\",\"id\":\"lj-position-1\",\"opacity\":1.0,\"origin\":[1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
       "vector_count": 2,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -4884,7 +5184,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -4917,9 +5217,9 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "409cb22414c4301283b3958ae37b0b1f19366fc1316d09bf552b509279358280",
-      "output_sha256": "ed7aca5694a3e47c9d70a469c75bf05c6ef87f4187955a63519023ba38f99b7b",
-      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\lj_force.png",
+      "plan_sha256": "c2073ec235b141798725fb47cc6d91e5199794a6e67752503afb88e6ab4f43b2",
+      "output_sha256": "38f5c84817fead12d8ab27707133c1f8d1caad6b4d9b3b2f9f94309a9df94a5f",
+      "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\lj_force_v3.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 24,
       "view": "cluster",
@@ -4929,7 +5229,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -4951,12 +5251,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
-      "vector_signature": "[{\"color\":\"#A89B52\",\"id\":\"oo-lj-force-0\",\"opacity\":1.0,\"origin\":[-1.4502200224295259,-0.009486832980505138,0.02846049894151541],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.8167831827446328,-0.00534311036679973,0.01602933110039919]},{\"color\":\"#A89B52\",\"id\":\"oo-lj-force-1\",\"opacity\":1.0,\"origin\":[1.4502200224295259,0.009486832980505138,-0.02846049894151541],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[0.8167831827446328,0.00534311036679973,-0.01602933110039919]}]",
+      "vector_signature": "[{\"color\":\"#A89B52\",\"id\":\"oo-lj-force-0\",\"opacity\":1.0,\"origin\":[-1.4502200224295259,-0.009486832980505138,0.02846049894151541],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.4492307505095481,-0.0029387107017398518,0.008816132105219554]},{\"color\":\"#A89B52\",\"id\":\"oo-lj-force-1\",\"opacity\":1.0,\"origin\":[1.4502200224295259,0.009486832980505138,-0.02846049894151541],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[0.4492307505095481,0.0029387107017398518,-0.008816132105219554]}]",
       "vector_count": 2,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -4982,7 +5288,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,
@@ -5015,8 +5321,8 @@
       "format": "png",
       "width": 1700,
       "height": 1180,
-      "plan_sha256": "b0181310271c139b2914ddb5abadd7e502b592252895c474ba3653a26768c067",
-      "output_sha256": "309c3856d16486cdbf395e3e1aa1ee163df4fd735ecd99e989f0c5accd47fa45",
+      "plan_sha256": "d66126034510f462d4d61e565de458dd4cf1d88844957fff0397a073bfa2c1fa",
+      "output_sha256": "d83224ceadbb1c1be5a20046317f8045dda60c9f2b7cf004da4a392de23c6692",
       "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\velocity.png",
       "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
       "frame": 24,
@@ -5027,7 +5333,7 @@
           0.15441954864030816,
           1.3877787807814457e-19
         ],
-        "ortho_scale": 1.5,
+        "ortho_scale": 1.7,
         "direction": [
           0.12,
           -0.82,
@@ -5049,12 +5355,18 @@
         "height": 1180,
         "atom_scale": 1.06,
         "bond_radius": 0.135,
-        "show_cell": false
+        "show_cell": false,
+        "include_boundary_replicas": true,
+        "cell_color": "#333333",
+        "cell_width_px": 2.0
       },
       "vector_signature": "[{\"color\":\"#2F8562\",\"id\":\"oo-velocity-0\",\"opacity\":1.0,\"origin\":[-1.4502200224295259,-0.009486832980505138,0.02846049894151541],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.012065474789427894,-0.26092725406443545,0.7827817621933063]},{\"color\":\"#2F8562\",\"id\":\"oo-velocity-1\",\"opacity\":1.0,\"origin\":[1.4502200224295259,0.009486832980505138,-0.02846049894151541],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[0.012065474789427894,0.26092725406443545,-0.7827817621933063]}]",
       "vector_count": 2,
       "vector_renderer": "MatterVis native world-space vector_overlays",
-      "pipeline_version": 3,
+      "mesh_signature": "[]",
+      "atom_signature": "{\"color\":{},\"opacity\":{}}",
+      "mesh_renderer": "MatterVis native world-space mesh overlay",
+      "pipeline_version": 7,
       "warnings": [],
       "metadata": {
         "transparent_compositor": "per-pixel-fragment-list",
@@ -5080,7 +5392,7 @@
           "fov_y_deg": 45.0,
           "near": 0.01,
           "far": 10000.0,
-          "ortho_scale": 1.5
+          "ortho_scale": 1.7
         },
         "source": {
           "path": null,

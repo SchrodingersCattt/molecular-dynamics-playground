@@ -4,8 +4,8 @@
   "format": "png",
   "width": 1700,
   "height": 1180,
-  "plan_sha256": "7040b83bde81166444627d3e61e0399d03df70ccc641ff64f1cb2f5fcfc6e564",
-  "output_sha256": "c22e612465b0faa9e5b83ead8aedb3e3d755b98fedf7403b1f637b532d871e71",
+  "plan_sha256": "40b517b1d40239a9519423e9a1c0a7b5f61d1e4098638f4f52bb74fb5b2c1f31",
+  "output_sha256": "b3793865aa3b606370b0bc321fc472b6f99ef00f06f2a81a20dc05f3972d74a4",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\position_01.png",
   "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
   "frame": 1,
@@ -16,7 +16,7 @@
       0.15441954864030816,
       1.3877787807814457e-19
     ],
-    "ortho_scale": 1.5,
+    "ortho_scale": 1.7,
     "direction": [
       0.12,
       -0.82,
@@ -38,12 +38,18 @@
     "height": 1180,
     "atom_scale": 1.06,
     "bond_radius": 0.135,
-    "show_cell": false
+    "show_cell": false,
+    "include_boundary_replicas": true,
+    "cell_color": "#333333",
+    "cell_width_px": 2.0
   },
   "vector_signature": "[{\"color\":\"#4E9BB5\",\"id\":\"lj-position-0\",\"opacity\":1.0,\"origin\":[-1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.0052805383086216295,-0.22768399153212332,0.6830519745963699]},{\"color\":\"#4E9BB5\",\"id\":\"lj-position-1\",\"opacity\":1.0,\"origin\":[1.45,0.0,0.0],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[0.0052805383086216295,0.22768399153212332,-0.6830519745963699]}]",
   "vector_count": 2,
   "vector_renderer": "MatterVis native world-space vector_overlays",
-  "pipeline_version": 3,
+  "mesh_signature": "[]",
+  "atom_signature": "{\"color\":{},\"opacity\":{}}",
+  "mesh_renderer": "MatterVis native world-space mesh overlay",
+  "pipeline_version": 7,
   "warnings": [],
   "metadata": {
     "transparent_compositor": "per-pixel-fragment-list",
@@ -69,7 +75,7 @@
       "fov_y_deg": 45.0,
       "near": 0.01,
       "far": 10000.0,
-      "ortho_scale": 1.5
+      "ortho_scale": 1.7
     },
     "source": {
       "path": null,

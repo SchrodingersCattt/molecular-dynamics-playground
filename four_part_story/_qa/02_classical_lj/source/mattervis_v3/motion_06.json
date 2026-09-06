@@ -4,8 +4,8 @@
   "format": "png",
   "width": 1700,
   "height": 1180,
-  "plan_sha256": "e846c2d27f3b98974e117eaec5d81571bcfc7b41f24956c5e5746c26b87ace3e",
-  "output_sha256": "d5e2867919d6ca5e45a31a51ebd7735e249f344cd49204c86243d5145fbe1ef6",
+  "plan_sha256": "7ef5478d88158a9cea35a8554cefae3221e5252464362468f99b50f9bf925778",
+  "output_sha256": "3a8cd521e00c6f1e1dc90320d331bb591b25945556497feefe2ef8f605fd6afd",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\02_classical_lj\\source\\mattervis_v3\\motion_06.png",
   "source_sha256": "d2bab7e2d8beb9c277559954ed3773d529192108a439c3db1310fdcf3dc6cc93",
   "frame": 6,
@@ -16,7 +16,7 @@
       0.15441954864030816,
       1.3877787807814457e-19
     ],
-    "ortho_scale": 1.5,
+    "ortho_scale": 1.7,
     "direction": [
       0.12,
       -0.82,
@@ -38,12 +38,18 @@
     "height": 1180,
     "atom_scale": 1.06,
     "bond_radius": 0.135,
-    "show_cell": false
+    "show_cell": false,
+    "include_boundary_replicas": true,
+    "cell_color": "#333333",
+    "cell_width_px": 2.0
   },
   "vector_signature": "[]",
   "vector_count": 0,
   "vector_renderer": "MatterVis native world-space vector_overlays",
-  "pipeline_version": 3,
+  "mesh_signature": "[]",
+  "atom_signature": "{\"color\":{},\"opacity\":{}}",
+  "mesh_renderer": "MatterVis native world-space mesh overlay",
+  "pipeline_version": 7,
   "warnings": [],
   "metadata": {
     "transparent_compositor": "per-pixel-fragment-list",
@@ -69,7 +75,7 @@
       "fov_y_deg": 45.0,
       "near": 0.01,
       "far": 10000.0,
-      "ortho_scale": 1.5
+      "ortho_scale": 1.7
     },
     "source": {
       "path": null,

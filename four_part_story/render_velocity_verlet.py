@@ -27,7 +27,7 @@ from responsive_story import (
 ROOT = Path(__file__).resolve().parent
 STEM = "01_velocity_verlet"
 QA_DIR = ROOT / "_qa" / STEM
-MATTERVIS_DIR = QA_DIR / "source" / "mattervis_v3"
+MATTERVIS_DIR = QA_DIR / "source" / "mattervis_v4"
 SOURCE = ROOT / "data" / "vv_h2o_motion.extxyz"
 
 ARROW_STYLE = {
@@ -38,6 +38,7 @@ ARROW_STYLE = {
     "head_radius": 0.046,
     "sides": 18,
 }
+POSITION_ARROW_STYLE = {"shaft_radius": 0.008, "head_length": 0.018, "head_radius": 0.012, "sides": 14}
 
 
 def load_data() -> dict[str, np.ndarray]:
@@ -60,20 +61,15 @@ def prepare_mattervis(data: dict[str, np.ndarray]) -> dict[str, object]:
     # the same camera for every trajectory frame.
     camera = camera_for_source(SOURCE, target=target, ortho_scale=1.16, frame=0)
     displacement = data["positions"][1] - data["positions"][0]
-    position_vectors = make_vector_group(
-        "vv-position", data["motion_positions"][0], displacement,
-        scale=float(data["display_displacement_scale"]), color=LAKE_BLUE,
-        style=ARROW_STYLE,
-    )
     acceleration_vectors = make_vector_group(
         "vv-acceleration", data["positions"][1], data["accelerations"][1],
         scale=float(data["display_acceleration_scale"]), color=PALE_OLIVE,
-        style=ARROW_STYLE,
+        style=POSITION_ARROW_STYLE,
     )
     velocity_vectors = make_vector_group(
         "vv-velocity", data["positions"][1], data["velocities"][1],
         scale=float(data["display_velocity_scale"]), color=EMERALD,
-        style=ARROW_STYLE,
+        style=POSITION_ARROW_STYLE,
     )
     plain: list[Path] = []
     position: list[Path] = []
@@ -81,6 +77,12 @@ def prepare_mattervis(data: dict[str, np.ndarray]) -> dict[str, object]:
     for frame in range(frame_count):
         plain_path = MATTERVIS_DIR / f"motion_{frame:02d}.png"
         pos_path = MATTERVIS_DIR / f"position_{frame:02d}.png"
+        progress = frame / max(frame_count - 1, 1)
+        frame_position_vectors = [] if progress <= 0.50 else make_vector_group(
+            "vv-position", data["motion_positions"][frame], displacement * progress,
+            scale=float(data["display_displacement_scale"]) * 4.0, color=LAKE_BLUE,
+            style=POSITION_ARROW_STYLE,
+        )
         records.append(render_structure(
             SOURCE, plain_path, camera=camera, frame=frame, view="cluster",
             width=1700, height=1180, atom_scale=1.12, bond_radius=0.14,
@@ -88,7 +90,7 @@ def prepare_mattervis(data: dict[str, np.ndarray]) -> dict[str, object]:
         records.append(render_structure(
             SOURCE, pos_path, camera=camera, frame=frame, view="cluster",
             width=1700, height=1180, atom_scale=1.12, bond_radius=0.14,
-            vector_overlays=position_vectors,
+            vector_overlays=frame_position_vectors,
         ))
         plain.append(plain_path)
         position.append(pos_path)
