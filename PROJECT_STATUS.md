@@ -18,7 +18,7 @@
 - 04 Deep Potential 已按组会 PPT 线稿重排：方形完整 water box、左侧原位 O126 局域圆、右侧放大局域圆和绿色真实邻居线；右栏分为 Cartesian/邻居矩阵与 descriptor 两块。
 - 04 Deep Potential 已按组会 PPT 线稿重排：方形完整 water box、左侧原位 O126 局域圆、右侧放大局域圆和绿色真实邻居线；右栏分为 Cartesian/邻居矩阵与 descriptor 两块。
 
-独立物理审查已完成并落盘：`_staging/md-qa/independent_physics_review.md`。本轮已按审查意见修正：DP 水盒固定沿 +x 视角；邻居连线从中心原子出发且不再冒充力箭头；力/速度/位置箭头与中心原子锚定；DP 右栏改为真实 O126 局部坐标、邻居距离矩阵和由真实 `r_ij` 计算的描述符；刚体水示例改为完整笛卡尔坐标随平移/旋转变化，而 DeepMD `R_i=[s,sx/r,sy/r,sz/r]` 保持不变。
+独立物理审查已完成并落盘：`_staging/md-qa/independent_physics_review.md`。本轮已按审查意见修正：DP 水盒固定沿 +x 视角；邻居边改为 MatterVis 原生细圆柱线段，每条边从中心原子 `i` 到真实最小镜像邻居 `j`，不带箭头、不承担力语义；力/速度/位置箭头与中心原子锚定；放大图使用同一快照按最小镜像展开的局域子结构，避免旧 CPU 后端透明度残影；DP 右栏为真实 O126 局部坐标、邻居距离矩阵和由真实 `r_ij` 计算的描述符；刚体水示例改为完整笛卡尔坐标随平移/旋转变化，而 DeepMD `R_i=[s,sx/r,sy/r,sz/r]` 保持不变。邻居边逐条记录在 `neighbor_edge_provenance.json`，共 83 个 cutoff 邻居，静态放大图显示其中 23 个真实 `j`。
 
 四套视频和两个附加视频已完成全帧 QA：VV 216/216、LJ 216/216、AIMD 360/360、DP 384/384、metadynamics 384/384、刚体对称性 240/240，均 `passed=true`。仍未完成的工作仅包括文章最终 XeLaTeX/PDF 排版与逐页 QA、Bohrium Notebook 全单元运行，以及将最终图版嵌入文章。
 

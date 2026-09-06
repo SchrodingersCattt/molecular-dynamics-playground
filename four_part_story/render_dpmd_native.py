@@ -20,6 +20,7 @@ from common import DARK_GRAY, INK, LINE_GRAY, NAVY, LayoutRegistry, json_dump, n
 from mattervis_story import camera_for_source, make_sphere_mesh, make_torus_mesh, make_vector_group, project_world, render_structure
 from responsive_story import EMERALD, LAKE_BLUE, PALE_OLIVE, draw_legend, panel_box, place_main, place_render_cropped, simple_audit, stage_rail, story_axes
 from PIL import Image
+from mat_viewer.render.geometry import cylinder_mesh
 
 
 ROOT = Path(__file__).resolve().parent
@@ -30,6 +31,7 @@ BASE_PATH = ROOT / "data" / "water_box_64.npz"
 RESULT_PATH = ROOT / "data" / "dpmd_water_box_results.npz"
 META_PATH = ROOT / "data" / "dpmd_eval.json"
 VV_SOURCE = QA_DIR / "vv_snapshot.extxyz"
+FOCUS_CLUSTER_SOURCE = QA_DIR / "focus_cluster.extxyz"
 MATTERVIS_DIR = QA_DIR / "mattervis_v3"
 BOX_IMAGE = MATTERVIS_DIR / "box_initial.png"
 BOX_CONTEXT_IMAGE = MATTERVIS_DIR / "box_context.png"
@@ -53,6 +55,31 @@ FOCUS_FOREGROUND_IMAGE = MATTERVIS_DIR / "focus_foreground.png"
 DT_FS = 0.5
 VV_SEED = 260829
 EV_A_TO_A_FS2 = 0.00964853399
+
+
+def _neighbor_edge_meshes(origins: np.ndarray, vectors: np.ndarray, *, color: str, opacity: float, radius: float = 0.018) -> list[dict]:
+    """Return thin MatterVis world-space line segments for real i→j edges.
+
+    These are cylinders, not vector arrows: a neighbour list has membership
+    but no direction or magnitude.  The endpoints remain the raw Cartesian
+    atom positions after minimum-image wrapping.
+    """
+    meshes: list[dict] = []
+    for index, (origin, vector) in enumerate(zip(np.asarray(origins, float), np.asarray(vectors, float))):
+        end = origin + vector
+        if float(np.linalg.norm(vector)) <= 1.0e-10:
+            continue
+        vertices, triangles, normals = cylinder_mesh(origin, end, radius, sides=6, capped=False)
+        meshes.append({
+            "id": f"neighbor-edge-{index}",
+            "vertices": vertices,
+            "triangles": triangles,
+            "normals": normals,
+            "color": color,
+            "opacity": opacity,
+            "metadata": {"semantic": "minimum-image neighbor edge", "edge_origin": origin.tolist(), "edge_end": end.tolist()},
+        })
+    return meshes
 
 
 def load_data() -> dict[str, object]:
@@ -258,6 +285,16 @@ def _render_assets(data: dict[str, object], vv: dict[str, object]) -> dict[str, 
         int(index): (float(0.92 * depth_factor[index]) if int(index) in focus_indices else 0.0)
         for index in range(len(positions))
     }
+    # Some older public CPU MatterVis builds rasterize an atom with opacity
+    # zero as a black point.  Explicitly whitening hidden atoms keeps the
+    # focus crop honest (only the selected real waters are visible) without
+    # changing the source coordinates or neighbour membership.
+    focus_colour = {
+        int(index): "#FFFFFF"
+        for index in range(len(positions))
+        if int(index) not in focus_indices
+    }
+    focus_colour[central] = "#234A67"
     # A second, native MatterVis pass keeps the camera-facing local molecules
     # crisp above the translucent shell. It uses the same coordinates and
     # source-index mask; the compositing is pixel-aligned before paper layout.
@@ -268,6 +305,7 @@ def _render_assets(data: dict[str, object], vv: dict[str, object]) -> dict[str, 
         )
         for index in range(len(positions))
     }
+    foreground_colour = dict(focus_colour)
     locator_scales = {
         int(index): (1.0 if int(index) == central else 0.0)
         for index in range(len(positions))
@@ -278,19 +316,74 @@ def _render_assets(data: dict[str, object], vv: dict[str, object]) -> dict[str, 
         for index in range(len(positions))
     }
     centre_colour = {central: "#234A67"}
+    # Build a real local source for the magnifier. This avoids asking an old
+    # CPU backend to hide 64 waters with alpha (some versions leave black
+    # silhouettes behind). Each selected molecule is unwrapped around its O
+    # with the same minimum-image displacement used by the neighbour list.
+    elements = np.asarray(data["elements"]).astype(str)
+    molecule_ids = np.asarray(data["molecule_ids"], dtype=int)
+    focus_indices_sorted = sorted(int(index) for index in focus_indices)
+    focus_index_map = {old: new for new, old in enumerate(focus_indices_sorted)}
+    focus_positions = np.zeros((len(focus_indices_sorted), 3), dtype=float)
+    for molecule_id in sorted(set(int(molecule_ids[index]) for index in focus_indices_sorted)):
+        members = [index for index in focus_indices_sorted if int(molecule_ids[index]) == molecule_id]
+        oxygens = [index for index in members if elements[index] == "O"]
+        if not oxygens:
+            continue
+        oxygen_index = int(central if molecule_id == int(molecule_ids[central]) else oxygens[0])
+        oxygen_position = positions[central] + deltas[oxygen_index]
+        for index in members:
+            if index == oxygen_index:
+                focus_positions[focus_index_map[index]] = oxygen_position
+            else:
+                local_h = positions[index] - positions[oxygen_index]
+                local_h -= box * np.round(local_h / box)
+                focus_positions[focus_index_map[index]] = oxygen_position + local_h
+    with FOCUS_CLUSTER_SOURCE.open("w", encoding="utf-8") as out:
+        out.write(f"{len(focus_indices_sorted)}\nProperties=species:S:1:pos:R:3\n")
+        for new_index, old_index in enumerate(focus_indices_sorted):
+            xyz = focus_positions[new_index]
+            out.write(f"{elements[old_index]} {xyz[0]:.10f} {xyz[1]:.10f} {xyz[2]:.10f}\n")
+    focus_colour_subset = {focus_index_map[central]: centre_colour[central]}
+    # A DeePMD neighbour is a real atom j in the minimum-image list of the
+    # centre i, not a ray pointing toward the cutoff sphere.  Keep the raw
+    # displacement unscaled so every line terminates at the actual neighbour
+    # Cartesian position.  The tiny head is only a renderer primitive; the
+    # line is deliberately read as an undirected neighbour edge, never as a
+    # force or velocity arrow.
     neighbour_indices = np.flatnonzero(neighbour_mask)
     neighbour_indices = neighbour_indices[np.argsort(np.asarray(data["neighbor_distances"], dtype=float)[neighbour_indices])]
-    neighbour_indices = neighbour_indices[:8]
     neighbour_origins = np.repeat(positions[central:central + 1], len(neighbour_indices), axis=0)
     neighbour_vectors = deltas[neighbour_indices]
-    neighbour_style = {"shaft_radius": 0.022, "head_length": 0.24, "head_radius": 0.050, "sides": 14}
+    neighbour_style = {"shaft_radius": 0.012, "head_length": 0.002, "head_radius": 0.002, "sides": 10}
     neighbour_vectors_native = make_vector_group(
         "MIC-neighbours", neighbour_origins, neighbour_vectors,
-        scale=1.65, color="#2E89A7", opacity=0.98, style=neighbour_style,
+        scale=1.0, color="#2E89A7", opacity=0.62, style=neighbour_style,
+    )
+
+    # The focus render contains only complete representative waters.  Build a
+    # second group from exactly those visible atom indices; this prevents a
+    # line from ending at a hidden H/O and then appearing to pass through a
+    # different molecule in the magnifier.
+    focus_neighbour_indices = np.asarray(
+        sorted(int(index) for index in focus_indices if int(index) != central and bool(neighbour_mask[int(index)])),
+        dtype=int,
+    )
+    focus_origins = np.repeat(positions[central:central + 1], len(focus_neighbour_indices), axis=0)
+    focus_vectors = deltas[focus_neighbour_indices] if len(focus_neighbour_indices) else np.empty((0, 3), dtype=float)
+    focus_neighbour_vectors = make_vector_group(
+        "MIC-neighbours-focus", focus_origins, focus_vectors,
+        scale=1.0, color=EMERALD, opacity=0.78, style=neighbour_style,
     )
     neighbour_vectors_green = make_vector_group(
-        "MIC-neighbours-green", neighbour_origins, neighbour_vectors,
-        scale=1.65, color=EMERALD, opacity=0.95, style=neighbour_style,
+        "MIC-neighbours-green", focus_origins, focus_vectors,
+        scale=1.0, color=EMERALD, opacity=0.78, style=neighbour_style,
+    )
+    neighbour_edges_native = _neighbor_edge_meshes(
+        neighbour_origins, neighbour_vectors, color="#2E89A7", opacity=0.72, radius=0.016,
+    )
+    focus_edges = _neighbor_edge_meshes(
+        focus_origins, focus_vectors, color=EMERALD, opacity=0.82, radius=0.015,
     )
     common_kwargs = dict(camera=camera, frame=0, view="unit_cell", width=1700,
                          height=1180, atom_scale=0.72, bond_radius=0.075,
@@ -316,9 +409,9 @@ def _render_assets(data: dict[str, object], vv: dict[str, object]) -> dict[str, 
                      vector_overlays=radius_vector,
                      atom_color_overrides=centre_colour)
     render_structure(VV_SOURCE, NEIGHBOR_IMAGE, **common_kwargs,
-                     mesh_overlays=soft_overlays, atom_opacity_scales=selected_scales,
-                     atom_color_overrides=centre_colour,
-                     vector_overlays=neighbour_vectors_native)
+                     mesh_overlays=soft_overlays + neighbour_edges_native,
+                     atom_opacity_scales=selected_scales,
+                     atom_color_overrides=centre_colour)
     render_structure(VV_SOURCE, FORCE_IMAGE, **common_kwargs,
                      mesh_overlays=soft_overlays, atom_opacity_scales=selected_scales,
                      atom_color_overrides=centre_colour, vector_overlays=force_vectors)
@@ -330,37 +423,33 @@ def _render_assets(data: dict[str, object], vv: dict[str, object]) -> dict[str, 
     focus_kwargs = dict(camera=camera, frame=0, view="cluster", width=1700,
                         height=1180, atom_scale=1.02, bond_radius=0.095,
                         show_cell=False, include_boundary_replicas=False,
-                        atom_opacity_scales=focus_scales,
-                        atom_color_overrides=centre_colour)
-    render_structure(VV_SOURCE, FOCUS_CUTOFF_IMAGE, **{**focus_kwargs, "atom_opacity_scales": context_scales},
+                        atom_color_overrides=focus_colour_subset)
+    render_structure(FOCUS_CLUSTER_SOURCE, FOCUS_CUTOFF_IMAGE, **focus_kwargs,
                      mesh_overlays=sphere_overlays, vector_overlays=radius_vector)
-    render_structure(VV_SOURCE, FOCUS_INSIDE_IMAGE, **focus_kwargs,
+    render_structure(FOCUS_CLUSTER_SOURCE, FOCUS_INSIDE_IMAGE, **focus_kwargs,
                      mesh_overlays=sphere_overlays, vector_overlays=radius_vector)
-    render_structure(VV_SOURCE, FOCUS_NEIGHBOR_IMAGE, **focus_kwargs,
-                     mesh_overlays=soft_overlays, vector_overlays=neighbour_vectors_native)
+    render_structure(FOCUS_CLUSTER_SOURCE, FOCUS_NEIGHBOR_IMAGE, **focus_kwargs,
+                     mesh_overlays=soft_overlays + focus_edges)
     static_sphere = dict(sphere, opacity=0.78)
-    render_structure(VV_SOURCE, FOCUS_STATIC_IMAGE, **focus_kwargs,
-                     mesh_overlays=[static_sphere, equator, meridian, oblique_ring, centre_marker],
-                     vector_overlays=neighbour_vectors_native)
-    render_structure(VV_SOURCE, FOCUS_MAG_IMAGE, **focus_kwargs,
-                     mesh_overlays=[], vector_overlays=neighbour_vectors_green)
-    render_structure(VV_SOURCE, FOCUS_SOURCE_IMAGE, **focus_kwargs, mesh_overlays=[])
-    render_structure(VV_SOURCE, FOCUS_FORCE_IMAGE, **focus_kwargs,
+    render_structure(FOCUS_CLUSTER_SOURCE, FOCUS_STATIC_IMAGE, **focus_kwargs,
+                     mesh_overlays=[static_sphere, equator, meridian, oblique_ring, centre_marker] + focus_edges)
+    render_structure(FOCUS_CLUSTER_SOURCE, FOCUS_MAG_IMAGE, **focus_kwargs,
+                     mesh_overlays=focus_edges)
+    render_structure(FOCUS_CLUSTER_SOURCE, FOCUS_SOURCE_IMAGE, **focus_kwargs, mesh_overlays=[])
+    render_structure(FOCUS_CLUSTER_SOURCE, FOCUS_FORCE_IMAGE, **focus_kwargs,
                      mesh_overlays=soft_overlays, vector_overlays=force_vectors)
-    render_structure(VV_SOURCE, FOCUS_VELOCITY_IMAGE, frame=1, camera=camera,
+    render_structure(FOCUS_CLUSTER_SOURCE, FOCUS_VELOCITY_IMAGE, frame=0, camera=camera,
                      view="cluster", width=1700, height=1180, atom_scale=0.88,
                      bond_radius=0.085, show_cell=False,
                      include_boundary_replicas=False,
                      mesh_overlays=soft_overlays,
-                     atom_opacity_scales=focus_scales,
-                     atom_color_overrides=centre_colour,
+                     atom_color_overrides=focus_colour_subset,
                      vector_overlays=velocity_vectors)
-    render_structure(VV_SOURCE, FOCUS_FOREGROUND_IMAGE, camera=camera, frame=0,
+    render_structure(FOCUS_CLUSTER_SOURCE, FOCUS_FOREGROUND_IMAGE, camera=camera, frame=0,
                      view="cluster", width=1700, height=1180, atom_scale=1.04,
                      bond_radius=0.098, show_cell=False,
                      include_boundary_replicas=False,
-                     atom_opacity_scales=foreground_scales,
-                     atom_color_overrides=centre_colour)
+                     atom_color_overrides=focus_colour_subset)
     # Foreground atoms are still rendered by MatterVis; alpha-compositing only
     # combines the two same-camera native passes and records the provenance.
     for target_image in (FOCUS_CUTOFF_IMAGE, FOCUS_INSIDE_IMAGE,
@@ -385,6 +474,26 @@ def _render_assets(data: dict[str, object], vv: dict[str, object]) -> dict[str, 
         "radial_centres_angstrom": np.asarray(descriptor["centres"], dtype=float).round(6).tolist(),
         "descriptor_values": np.asarray(descriptor["descriptor"], dtype=float).round(8).tolist(),
         "descriptor_definition": "D_i(k)=mean_j exp(-0.5*((r_ij-mu_k)/sigma)^2), sigma=0.45 A",
+    })
+    json_dump(QA_DIR / "neighbor_edge_provenance.json", {
+        "source": str(BASE_PATH),
+        "central_index": central,
+        "cutoff_angstrom": cutoff,
+        "neighbor_count": int(np.count_nonzero(neighbour_mask)),
+        "edge_semantics": "undirected minimum-image atom-to-atom membership in N_i(r_c); no force direction",
+        "focus_source": str(FOCUS_CLUSTER_SOURCE),
+        "focus_source_indices": focus_indices_sorted,
+        "edges": [
+            {
+                "neighbor_index": int(index),
+                "element": str(elements[index]),
+                "distance_angstrom": float(distances[index]),
+                "minimum_image_displacement_angstrom": np.asarray(deltas[index], dtype=float).round(8).tolist(),
+                "endpoint_angstrom": (positions[central] + np.asarray(deltas[index], dtype=float)).round(8).tolist(),
+                "shown_in_focus": bool(int(index) in focus_indices),
+            }
+            for index in neighbour_indices.tolist()
+        ],
     })
     return {"initial": BOX_IMAGE, "context": BOX_CONTEXT_IMAGE, "updated": BOX_UPDATED_IMAGE, "cutoff": CUTOFF_IMAGE,
             "inside": INSIDE_IMAGE, "neighbors": NEIGHBOR_IMAGE, "force": FORCE_IMAGE,
@@ -471,27 +580,10 @@ def _nn_scene(ax: plt.Axes, registry: LayoutRegistry, data: dict[str, object], *
     ax.add_patch(Ellipse(magnifier, 2 * magnifier_x, 2 * magnifier_y, fc="white", ec=NAVY, lw=2.0, zorder=15))
     ax.plot([source[0] + small_x, magnifier[0] - magnifier_x * 0.82], [source[1] + small_y * 0.55, magnifier[1] + magnifier_y * 0.62], color=PALE_OLIVE, lw=1.6, zorder=24)
     ax.plot([source[0] + small_x, magnifier[0] - magnifier_x * 0.82], [source[1] - small_y * 0.55, magnifier[1] - magnifier_y * 0.62], color=PALE_OLIVE, lw=1.6, zorder=24)
-    # Green links are drawn from the same saved O126 minimum-image neighbours
-    # used by the matrix/descriptor panel; they are explanatory geometry, not
-    # chemical bonds.
-    positions = np.asarray(data["positions_wrapped"], dtype=float)
-    central = int(np.asarray(data["central_index"]).reshape(-1)[0])
-    box_length = float(np.asarray(data["box_length"]).reshape(-1)[0])
-    mask = np.asarray(data["neighbor_mask"], dtype=bool)
-    deltas = positions - positions[central]
-    deltas -= box_length * np.round(deltas / box_length)
-    distances = np.linalg.norm(deltas, axis=1)
-    neighbours = np.flatnonzero(mask)
-    neighbours = neighbours[np.argsort(distances[neighbours])][:7]
-    for neighbour in neighbours:
-        vector = deltas[int(neighbour)]
-        projected = np.asarray([vector[0], vector[1]], dtype=float)
-        norm = float(np.linalg.norm(projected))
-        if norm < 1.0e-8:
-            continue
-        projected /= norm
-        end = (magnifier[0] + projected[0] * magnifier_x * 0.70, magnifier[1] + projected[1] * magnifier_y * 0.70)
-        ax.plot([magnifier[0], end[0]], [magnifier[1], end[1]], color=EMERALD, lw=1.5, alpha=0.90, zorder=18)
+    # The magnifier image already contains the world-space, minimum-image
+    # neighbour edges rendered by MatterVis.  Do not draw projected rays to
+    # the paper-space circle boundary here: those are not atom-to-atom
+    # neighbours and make the physical graph unreadable.
     xs = [0.53, 0.65, 0.77, 0.87]
     labels = ["Dᵢ", "shared NN", "Σ εᵢ", "E → F"]
     colours = [LAKE_BLUE, NAVY, EMERALD, PALE_OLIVE]
@@ -597,6 +689,7 @@ def _static_neighbor_scene(ax: plt.Axes, registry: LayoutRegistry, data: dict[st
     place_render_cropped(ax, a["focus_mag"], focus, zorder=31)
     ax.add_patch(Ellipse((focus_cx, focus_cy), focus_sx, focus_sy, fill=False, ec="#466C7A", lw=1.8, zorder=32))
     registry.text(ax, focus_cx, focus[3] + 0.022, "magnified local", ha="center", va="bottom", fontsize=11, color=INK, weight="bold")
+    registry.text(ax, focus_cx, focus[1] - 0.018, "23 real j shown · 83 in Nᵢ(r_c)", ha="center", va="top", fontsize=10, color=DARK_GRAY)
 
 
 def _info(ax, registry: LayoutRegistry, data: dict[str, object], vv: dict[str, object], *, video: bool, stage: int | None, returning: bool) -> None:
@@ -650,7 +743,7 @@ def _info(ax, registry: LayoutRegistry, data: dict[str, object], vv: dict[str, o
     if returning:
         registry.text(ax, 0.50, 0.025, r"$n\;\rightarrow\;n+1$", ha="center", va="center", fontsize=11, color=NAVY, weight="bold")
     else:
-        registry.text(ax, 0.50, 0.025, "MIC links · not chemical bonds", ha="center", va="center", fontsize=10, color=DARK_GRAY)
+        registry.text(ax, 0.50, 0.025, "thin lines = real Nᵢ(r_c) · not forces", ha="center", va="center", fontsize=10, color=DARK_GRAY)
 
 
 def _right_geometry_panel(ax: plt.Axes, registry: LayoutRegistry, data: dict[str, object], *, video: bool) -> None:
@@ -712,7 +805,7 @@ def compose(fig, t: float, registry: LayoutRegistry, data: dict[str, object], vv
     panel_box(main, registry, "DEEP POTENTIAL MD" if returning else ("DEEP POTENTIAL · local neighbourhood" if not video else f"DEEP POTENTIAL · {titles[stage]}"), video=video)
     rect = (0.03, 0.08, 0.97, 0.92)
     if not video:
-        registry.text(main, 0.035, 0.035, "static view · neighbour selection only", ha="left", va="bottom", fontsize=10, color=DARK_GRAY)
+        registry.text(main, 0.035, 0.035, "thin lines = real Nᵢ(r_c) · not forces", ha="left", va="bottom", fontsize=10, color=DARK_GRAY)
         _static_neighbor_scene(main, registry, data, a, video=False)
     elif returning:
         registry.text(main, 0.035, 0.035, "r′, v′ · pause then repeat", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
