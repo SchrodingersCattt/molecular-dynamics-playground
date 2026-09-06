@@ -17,3 +17,6 @@
 - `four_part_story/figures/05_well_tempered_metadynamics.png`
 - `four_part_story/videos/05_well_tempered_metadynamics.mp4`
 - `four_part_story/_qa/05_metadynamics/qa_report_strict.json`
+- `four_part_story/figures/06_rigid_water_descriptor_invariance.png`
+- `four_part_story/videos/06_rigid_water_descriptor_invariance.mp4`
+- `four_part_story/_qa/06_symmetry_invariance/descriptor_provenance.json`

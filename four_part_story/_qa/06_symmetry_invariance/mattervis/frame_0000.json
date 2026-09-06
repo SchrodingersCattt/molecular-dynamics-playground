@@ -4,10 +4,10 @@
   "format": "png",
   "width": 1700,
   "height": 1180,
-  "plan_sha256": "6eb2ca764d4d4592e0070b6457aa55e8422e33c5b47350b4adff558c0504de76",
-  "output_sha256": "6e3abbbc8d1cb4dd52aa10c9386894f893e6304fea431b144aaf0e288cee7c31",
+  "plan_sha256": "0eb25b53ebf6e9791f3670c884f8770306144dbbe80d83c56548622b832baf5b",
+  "output_sha256": "9e8730ba5adfb65db791f845846943651e867a5b8c7b0f82a179946db4d83fdc",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\06_symmetry_invariance\\mattervis\\frame_0000.png",
-  "source_sha256": "d7f8958ec13c0c86eac564866713bff13053b6632f594c30cb54fd3440683f2c",
+  "source_sha256": "4a653d0adb3c3024841ac890ee76461f5dd4f159aed5c88074f73ced3c454ba9",
   "frame": 0,
   "view": "unit_cell",
   "camera": {

@@ -1,0 +1,8 @@
+{
+  "command": "mat-vis inspect water_rigid.extxyz --json",
+  "ok": true,
+  "schema": "mattervis.inspect/v1",
+  "source": {"total_frames": 240, "input_format": "ase-auto"},
+  "structure": {"bond_records": 2, "displayed_atoms": 3, "fragments": 1, "has_disorder": false, "parsed_atoms": 3, "site_records": 3},
+  "warnings": []
+}
