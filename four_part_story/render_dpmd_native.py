@@ -46,6 +46,8 @@ FOCUS_NEIGHBOR_IMAGE = MATTERVIS_DIR / "focus_neighbors.png"
 FOCUS_FORCE_IMAGE = MATTERVIS_DIR / "focus_force.png"
 FOCUS_VELOCITY_IMAGE = MATTERVIS_DIR / "focus_velocity.png"
 FOCUS_STATIC_IMAGE = MATTERVIS_DIR / "focus_static_neighbors.png"
+FOCUS_MAG_IMAGE = MATTERVIS_DIR / "focus_magnifier.png"
+FOCUS_SOURCE_IMAGE = MATTERVIS_DIR / "focus_source.png"
 FOCUS_FOREGROUND_IMAGE = MATTERVIS_DIR / "focus_foreground.png"
 
 DT_FS = 0.5
@@ -282,6 +284,10 @@ def _render_assets(data: dict[str, object], vv: dict[str, object]) -> dict[str, 
         "MIC-neighbours", neighbour_origins, neighbour_vectors,
         scale=1.65, color="#2E89A7", opacity=0.98, style=neighbour_style,
     )
+    neighbour_vectors_green = make_vector_group(
+        "MIC-neighbours-green", neighbour_origins, neighbour_vectors,
+        scale=1.65, color=EMERALD, opacity=0.95, style=neighbour_style,
+    )
     common_kwargs = dict(camera=camera, frame=0, view="unit_cell", width=1700,
                          height=1180, atom_scale=0.72, bond_radius=0.075,
                          show_cell=True, cell_color="#9AA5AA", cell_width_px=1.15)
@@ -332,6 +338,9 @@ def _render_assets(data: dict[str, object], vv: dict[str, object]) -> dict[str, 
     render_structure(VV_SOURCE, FOCUS_STATIC_IMAGE, **focus_kwargs,
                      mesh_overlays=[static_sphere, equator, meridian, oblique_ring, centre_marker],
                      vector_overlays=neighbour_vectors_native)
+    render_structure(VV_SOURCE, FOCUS_MAG_IMAGE, **focus_kwargs,
+                     mesh_overlays=[], vector_overlays=neighbour_vectors_green)
+    render_structure(VV_SOURCE, FOCUS_SOURCE_IMAGE, **focus_kwargs, mesh_overlays=[])
     render_structure(VV_SOURCE, FOCUS_FORCE_IMAGE, **focus_kwargs,
                      mesh_overlays=soft_overlays, vector_overlays=force_vectors)
     render_structure(VV_SOURCE, FOCUS_VELOCITY_IMAGE, frame=1, camera=camera,
@@ -377,7 +386,7 @@ def _render_assets(data: dict[str, object], vv: dict[str, object]) -> dict[str, 
             "inside": INSIDE_IMAGE, "neighbors": NEIGHBOR_IMAGE, "force": FORCE_IMAGE,
             "velocity": VELOCITY_IMAGE, "locator": LOCATOR_IMAGE,
             "focus_cutoff": FOCUS_CUTOFF_IMAGE, "focus_inside": FOCUS_INSIDE_IMAGE,
-            "focus_neighbors": FOCUS_NEIGHBOR_IMAGE, "focus_static": FOCUS_STATIC_IMAGE, "focus_force": FOCUS_FORCE_IMAGE,
+            "focus_neighbors": FOCUS_NEIGHBOR_IMAGE, "focus_static": FOCUS_STATIC_IMAGE, "focus_mag": FOCUS_MAG_IMAGE, "focus_source": FOCUS_SOURCE_IMAGE, "focus_force": FOCUS_FORCE_IMAGE,
             "focus_velocity": FOCUS_VELOCITY_IMAGE, "focus_foreground": FOCUS_FOREGROUND_IMAGE,
             "camera": camera, "central": central, "radius_vector": radius_vector}
 
@@ -549,42 +558,41 @@ def _descriptor_scene(ax: plt.Axes, registry: LayoutRegistry, data: dict[str, ob
 
 
 def _static_neighbor_scene(ax: plt.Axes, registry: LayoutRegistry, data: dict[str, object], a: dict[str, object], *, video: bool) -> None:
-    """PPT still: whole water box plus an in-place magnified local overlay."""
+    """PPT still: whole water box, source circle, and a clean magnified local circle."""
     position = ax.get_position()
     fig = ax.figure
     panel_ratio = (position.width * fig.get_figwidth()) / (position.height * fig.get_figheight())
-    box_sy = 0.48
+    box_sy = 0.54
     box_sx = box_sy / panel_ratio
-    box_cx, box_cy = 0.31, 0.55
+    box_cx, box_cy = 0.30, 0.55
     box = (box_cx - box_sx / 2, box_cy - box_sy / 2, box_cx + box_sx / 2, box_cy + box_sy / 2)
-    place_main(ax, a["initial"], rect=box)
+    place_main(ax, a["context"], rect=box)
     ax.add_patch(Rectangle((box[0], box[1]), box_sx, box_sy, fill=False, ec=NAVY, lw=1.7, zorder=22))
     registry.text(ax, box_cx, box[1] - 0.025, "periodic water box", ha="center", va="top", fontsize=10, color=DARK_GRAY)
-    # The magnified native sphere is placed over the same O126 coordinate,
-    # then enlarged and shifted right like a physical magnifying-glass view.
-    focus_sy = 0.58
+    # A small source circle marks the local O126 in the original box.
+    source = (box_cx + 0.02, box_cy - 0.02)
+    source_y = 0.070
+    source_x = source_y / panel_ratio
+    ax.add_patch(Ellipse(source, 2 * source_x, 2 * source_y, fc="white", ec="none", lw=0.0, zorder=8))
+    source_rect = (source[0] - source_x, source[1] - source_y, source[0] + source_x, source[1] + source_y)
+    place_main(ax, a["focus_source"], rect=source_rect)
+    ax.add_patch(Ellipse(source, 2 * source_x, 2 * source_y, fill=False, ec=PALE_OLIVE, lw=2.0, zorder=26))
+    registry.text(ax, source[0], source[1] - source_y - 0.018, "local O126", ha="center", va="top", fontsize=10, color=DARK_GRAY)
+    # The magnified local render is a transparent MatterVis atom/bond/vector
+    # layer inside a clean paper circle; no second network or dashboard is
+    # drawn over it.
+    focus_sy = 0.46
     focus_sx = focus_sy / panel_ratio
-    focus_cx, focus_cy = 0.67, 0.56
+    focus_cx, focus_cy = 0.68, 0.57
     focus = (focus_cx - focus_sx / 2, focus_cy - focus_sy / 2, focus_cx + focus_sx / 2, focus_cy + focus_sy / 2)
-    place_main(ax, a["focus_static"], rect=focus)
+    ax.add_patch(Ellipse((focus_cx, focus_cy), focus_sx, focus_sy, fc="white", ec="none", lw=0.0, zorder=8))
+    place_main(ax, a["focus_mag"], rect=focus)
+    ax.add_patch(Ellipse((focus_cx, focus_cy), focus_sx, focus_sy, fill=False, ec=NAVY, lw=2.0, zorder=24))
     registry.text(ax, focus_cx, focus[3] + 0.025, "magnified local r_c", ha="center", va="bottom", fontsize=11, color=INK, weight="bold")
-    # Small O126 marker in the original water box and two leader lines make
-    # the spatial correspondence explicit in one frame.
-    small_y = 0.025
-    small_x = small_y / panel_ratio
-    ax.add_patch(Ellipse((box_cx, box_cy), 2 * small_x, 2 * small_y, fill=False, ec=PALE_OLIVE, lw=2.0, zorder=30))
-    registry.text(ax, box_cx, box_cy - 0.045, "O126", ha="center", va="top", fontsize=10, color=NAVY, weight="bold")
-    ax.plot([box_cx + small_x, focus[0]], [box_cy, focus_cy + 0.10], color=PALE_OLIVE, lw=1.4, zorder=28)
-    ax.plot([box_cx + small_x, focus[0]], [box_cy, focus_cy - 0.10], color=PALE_OLIVE, lw=1.4, zorder=28)
-    # Coordinate triad sits in the full box, identifying the Cartesian frame
-    # used before minimum-image distances are formed.
-    origin = (box[0] + 0.045, box[1] + 0.055)
-    registry.arrow(ax, origin, (origin[0] + 0.060, origin[1]), arrowstyle="-|>", mutation_scale=9, lw=1.4, color=LAKE_BLUE)
-    registry.arrow(ax, origin, (origin[0], origin[1] + 0.060), arrowstyle="-|>", mutation_scale=9, lw=1.4, color=EMERALD)
-    registry.arrow(ax, origin, (origin[0] + 0.032, origin[1] + 0.032), arrowstyle="-|>", mutation_scale=9, lw=1.4, color=PALE_OLIVE)
-    registry.text(ax, origin[0] + 0.072, origin[1], "x", fontsize=10, color=LAKE_BLUE, va="center")
-    registry.text(ax, origin[0], origin[1] + 0.074, "y", fontsize=10, color=EMERALD, ha="center")
-    registry.text(ax, origin[0] + 0.038, origin[1] + 0.038, "z", fontsize=10, color=PALE_OLIVE)
+    # Two leader lines form the magnifying-glass geometry in the reference
+    # sketch and terminate on the clean circle boundary.
+    ax.plot([source[0] + source_x, focus[0]], [source[1] + source_y * 0.65, focus_cy + focus_sy * 0.38], color=PALE_OLIVE, lw=1.6, zorder=25)
+    ax.plot([source[0] + source_x, focus[0]], [source[1] - source_y * 0.65, focus_cy - focus_sy * 0.38], color=PALE_OLIVE, lw=1.6, zorder=25)
 
 
 def _info(ax, registry: LayoutRegistry, data: dict[str, object], vv: dict[str, object], *, video: bool, stage: int | None, returning: bool) -> None:
