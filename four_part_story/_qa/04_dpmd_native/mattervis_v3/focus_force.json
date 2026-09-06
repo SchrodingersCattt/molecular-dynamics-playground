@@ -4,10 +4,10 @@
   "format": "png",
   "width": 1700,
   "height": 1180,
-  "plan_sha256": "9fb3d1e12d811680bf8d7245fb84de681d0ed33003de8dbc489e1ede19292438",
-  "output_sha256": "f6cca7589101f79502cdfdcdc3456ea7eb5607141708058b0983dc962e900a64",
+  "plan_sha256": "8c076680600e296815381167133510a1e719be0448e175429db3ed1d87c79787",
+  "output_sha256": "3a0bd23fc3e16abc2886e878eda701debca76a56d61a7c77b16a66ef19197bab",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\04_dpmd_native\\mattervis_v3\\focus_force.png",
-  "source_sha256": "3cfb9dd1e84ca6948bb3e2f37b32f0931bcb8b6e257ae998add395160465c54d",
+  "source_sha256": "e229e6aa1ecacedc79fc96f945f9abdf754c546f33b9090d2a9f5beb1edb409d",
   "frame": 0,
   "view": "cluster",
   "camera": {
@@ -40,6 +40,7 @@
     "bond_radius": 0.095,
     "show_cell": false,
     "include_boundary_replicas": false,
+    "show_bonds": true,
     "cell_color": "#333333",
     "cell_width_px": 2.0
   },

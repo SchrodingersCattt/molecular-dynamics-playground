@@ -4,8 +4,8 @@
   "format": "png",
   "width": 1700,
   "height": 1180,
-  "plan_sha256": "6f3c747d84e08a5ad7e7fbce8cab75436d08cedd57e11e34431b617e102b47d0",
-  "output_sha256": "c6be32cc6400e147e44cb4664964a11bf87ba0f67c728fbca5e1c133cf540ad4",
+  "plan_sha256": "8bcecb2992ee162d03eec3589753e3d50304632bf76dd74a71685fa222b9f4ff",
+  "output_sha256": "b9392d887c2252b7ed57e42d9cfa866f8eb146e12de80bf13523f36f82cca514",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\04_dpmd_native\\mattervis_v3\\box_updated.png",
   "source_sha256": "76cb90befcfd47db8daf4483ed53dd4bebca12d532d2e39ccf5b2464dba67441",
   "frame": 1,
@@ -40,6 +40,7 @@
     "bond_radius": 0.075,
     "show_cell": true,
     "include_boundary_replicas": true,
+    "show_bonds": true,
     "cell_color": "#9AA5AA",
     "cell_width_px": 1.15
   },

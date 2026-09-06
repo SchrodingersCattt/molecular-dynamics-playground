@@ -340,7 +340,7 @@ def _render_assets(data: dict[str, object], vv: dict[str, object]) -> dict[str, 
                 local_h -= box * np.round(local_h / box)
                 focus_positions[focus_index_map[index]] = oxygen_position + local_h
     with FOCUS_CLUSTER_SOURCE.open("w", encoding="utf-8") as out:
-        out.write(f"{len(focus_indices_sorted)}\nProperties=species:S:1:pos:R:3\n")
+        out.write(f"{len(focus_indices_sorted)}\nLattice=\"{box:.10f} 0 0 0 {box:.10f} 0 0 0 {box:.10f}\" Properties=species:S:1:pos:R:3 pbc=\"T T T\"\n")
         for new_index, old_index in enumerate(focus_indices_sorted):
             xyz = focus_positions[new_index]
             out.write(f"{elements[old_index]} {xyz[0]:.10f} {xyz[1]:.10f} {xyz[2]:.10f}\n")
@@ -384,6 +384,11 @@ def _render_assets(data: dict[str, object], vv: dict[str, object]) -> dict[str, 
     )
     focus_edges = _neighbor_edge_meshes(
         focus_origins, focus_vectors, color=EMERALD, opacity=0.82, radius=0.015,
+    )
+    focus_centre_marker = make_torus_mesh(
+        positions[central], 0.34, 0.040, normal=camera.direction,
+        color="#183153", opacity=0.98, major_steps=48, tube_steps=6,
+        mesh_id="O126_focus_marker",
     )
     common_kwargs = dict(camera=camera, frame=0, view="unit_cell", width=1700,
                          height=1180, atom_scale=0.72, bond_radius=0.075,
@@ -429,12 +434,14 @@ def _render_assets(data: dict[str, object], vv: dict[str, object]) -> dict[str, 
     render_structure(FOCUS_CLUSTER_SOURCE, FOCUS_INSIDE_IMAGE, **focus_kwargs,
                      mesh_overlays=sphere_overlays, vector_overlays=radius_vector)
     render_structure(FOCUS_CLUSTER_SOURCE, FOCUS_NEIGHBOR_IMAGE, **focus_kwargs,
-                     mesh_overlays=soft_overlays + focus_edges)
+                     mesh_overlays=[focus_centre_marker] + focus_edges,
+                     show_bonds=False)
     static_sphere = dict(sphere, opacity=0.78)
     render_structure(FOCUS_CLUSTER_SOURCE, FOCUS_STATIC_IMAGE, **focus_kwargs,
                      mesh_overlays=[static_sphere, equator, meridian, oblique_ring, centre_marker] + focus_edges)
     render_structure(FOCUS_CLUSTER_SOURCE, FOCUS_MAG_IMAGE, **focus_kwargs,
-                     mesh_overlays=focus_edges)
+                     mesh_overlays=[focus_centre_marker] + focus_edges,
+                     show_bonds=False)
     render_structure(FOCUS_CLUSTER_SOURCE, FOCUS_SOURCE_IMAGE, **focus_kwargs, mesh_overlays=[])
     render_structure(FOCUS_CLUSTER_SOURCE, FOCUS_FORCE_IMAGE, **focus_kwargs,
                      mesh_overlays=soft_overlays, vector_overlays=force_vectors)
