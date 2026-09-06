@@ -1,0 +1,19 @@
+{
+  "source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\06_symmetry_invariance\\water_rigid.extxyz",
+  "box_angstrom": 12.0,
+  "frame_count": 240,
+  "descriptor_definition": [
+    "O-H distance 1",
+    "O-H distance 2",
+    "H-H distance",
+    "cos(H-O-H)"
+  ],
+  "descriptor_frame_0": [
+    0.6503118418721551,
+    0.9572000000000002,
+    1.105295513755601,
+    0.09434796534083015
+  ],
+  "descriptor_max_abs_delta": 0.0,
+  "rigid_transform": "rotation + translation only; bond lengths and angle unchanged"
+}

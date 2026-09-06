@@ -32,6 +32,7 @@ META_PATH = ROOT / "data" / "dpmd_eval.json"
 VV_SOURCE = QA_DIR / "vv_snapshot.extxyz"
 MATTERVIS_DIR = QA_DIR / "mattervis_v3"
 BOX_IMAGE = MATTERVIS_DIR / "box_initial.png"
+BOX_CONTEXT_IMAGE = MATTERVIS_DIR / "box_context.png"
 BOX_UPDATED_IMAGE = MATTERVIS_DIR / "box_updated.png"
 LOCATOR_IMAGE = MATTERVIS_DIR / "box_locator.png"
 FORCE_IMAGE = MATTERVIS_DIR / "box_force.png"
@@ -265,6 +266,7 @@ def _render_assets(data: dict[str, object], vv: dict[str, object]) -> dict[str, 
         int(index): (1.0 if int(index) == central else 0.0)
         for index in range(len(positions))
     }
+    faded_context_scales = {int(index): 0.16 for index in range(len(positions))}
     context_scales = {
         int(index): (0.98 if int(index) in focus_indices else 0.025)
         for index in range(len(positions))
@@ -284,6 +286,9 @@ def _render_assets(data: dict[str, object], vv: dict[str, object]) -> dict[str, 
                          height=1180, atom_scale=0.72, bond_radius=0.075,
                          show_cell=True, cell_color="#9AA5AA", cell_width_px=1.15)
     render_structure(VV_SOURCE, BOX_IMAGE, **common_kwargs)
+    render_structure(VV_SOURCE, BOX_CONTEXT_IMAGE, **common_kwargs,
+                     atom_opacity_scales=faded_context_scales,
+                     atom_color_overrides=centre_colour)
     render_structure(VV_SOURCE, BOX_UPDATED_IMAGE, frame=1, camera=camera,
                      view="unit_cell", width=1700, height=1180, atom_scale=0.72,
                      bond_radius=0.075, show_cell=True,
@@ -368,7 +373,7 @@ def _render_assets(data: dict[str, object], vv: dict[str, object]) -> dict[str, 
         "descriptor_values": np.asarray(descriptor["descriptor"], dtype=float).round(8).tolist(),
         "descriptor_definition": "D_i(k)=mean_j exp(-0.5*((r_ij-mu_k)/sigma)^2), sigma=0.45 A",
     })
-    return {"initial": BOX_IMAGE, "updated": BOX_UPDATED_IMAGE, "cutoff": CUTOFF_IMAGE,
+    return {"initial": BOX_IMAGE, "context": BOX_CONTEXT_IMAGE, "updated": BOX_UPDATED_IMAGE, "cutoff": CUTOFF_IMAGE,
             "inside": INSIDE_IMAGE, "neighbors": NEIGHBOR_IMAGE, "force": FORCE_IMAGE,
             "velocity": VELOCITY_IMAGE, "locator": LOCATOR_IMAGE,
             "focus_cutoff": FOCUS_CUTOFF_IMAGE, "focus_inside": FOCUS_INSIDE_IMAGE,
@@ -433,28 +438,57 @@ def _focus_scene(
     return rect
 
 
-def _nn_scene(ax: plt.Axes, registry: LayoutRegistry, *, image: Path, video: bool) -> None:
-    """Show the missing causal link: local environment -> energy -> force."""
-    # Keep one real MatterVis local environment visible, but give the neural
-    # network itself enough paper space to read at slide distance.
-    place_main(ax, image, rect=(0.035, 0.33, 0.34, 0.80))
-    registry.text(ax, 0.19, 0.285, "one local environment", ha="center", va="top",
-                  fontsize=10, color=DARK_GRAY)
-    xs = [0.47, 0.62, 0.77, 0.92]
+def _nn_scene(ax: plt.Axes, registry: LayoutRegistry, data: dict[str, object], *, context: Path, image: Path, video: bool) -> None:
+    """Follow the reference sketch: box, source circle, magnifier, pipeline."""
+    # Full periodic box remains visible underneath. The local render is then
+    # placed in a small source circle, with two leader lines to the magnified
+    # descriptor/NN circle that overlaps the box in the same frame.
+    box = (0.035, 0.18, 0.66, 0.88)
+    place_main(ax, context, rect=box)
+    ax.add_patch(Rectangle((box[0], box[1]), box[2] - box[0], box[3] - box[1], fill=False, ec=NAVY, lw=1.6, zorder=18))
+    source = (0.20, 0.48)
+    small_y = 0.075
+    small_x = small_y / ((ax.get_position().width * ax.figure.get_figwidth()) / (ax.get_position().height * ax.figure.get_figheight()))
+    place_main(ax, image, rect=(source[0] - small_x, source[1] - small_y, source[0] + small_x, source[1] + small_y))
+    ax.add_patch(Ellipse(source, 2 * small_x, 2 * small_y, fill=False, ec=PALE_OLIVE, lw=2.0, zorder=25))
+    registry.text(ax, source[0], source[1] - small_y - 0.025, "local O126", ha="center", va="top", fontsize=10, color=DARK_GRAY)
+    magnifier = (0.69, 0.56)
+    magnifier_y = 0.245
+    magnifier_x = magnifier_y / ((ax.get_position().width * ax.figure.get_figwidth()) / (ax.get_position().height * ax.figure.get_figheight()))
+    ax.add_patch(Ellipse(magnifier, 2 * magnifier_x, 2 * magnifier_y, fc="white", ec=NAVY, lw=2.0, zorder=15))
+    ax.plot([source[0] + small_x, magnifier[0] - magnifier_x * 0.82], [source[1] + small_y * 0.55, magnifier[1] + magnifier_y * 0.62], color=PALE_OLIVE, lw=1.6, zorder=24)
+    ax.plot([source[0] + small_x, magnifier[0] - magnifier_x * 0.82], [source[1] - small_y * 0.55, magnifier[1] - magnifier_y * 0.62], color=PALE_OLIVE, lw=1.6, zorder=24)
+    # Green links are drawn from the same saved O126 minimum-image neighbours
+    # used by the matrix/descriptor panel; they are explanatory geometry, not
+    # chemical bonds.
+    positions = np.asarray(data["positions_wrapped"], dtype=float)
+    central = int(np.asarray(data["central_index"]).reshape(-1)[0])
+    box_length = float(np.asarray(data["box_length"]).reshape(-1)[0])
+    mask = np.asarray(data["neighbor_mask"], dtype=bool)
+    deltas = positions - positions[central]
+    deltas -= box_length * np.round(deltas / box_length)
+    distances = np.linalg.norm(deltas, axis=1)
+    neighbours = np.flatnonzero(mask)
+    neighbours = neighbours[np.argsort(distances[neighbours])][:7]
+    for neighbour in neighbours:
+        vector = deltas[int(neighbour)]
+        projected = np.asarray([vector[0], vector[1]], dtype=float)
+        norm = float(np.linalg.norm(projected))
+        if norm < 1.0e-8:
+            continue
+        projected /= norm
+        end = (magnifier[0] + projected[0] * magnifier_x * 0.70, magnifier[1] + projected[1] * magnifier_y * 0.70)
+        ax.plot([magnifier[0], end[0]], [magnifier[1], end[1]], color=EMERALD, lw=1.5, alpha=0.90, zorder=18)
+    xs = [0.53, 0.65, 0.77, 0.87]
     labels = ["Dᵢ", "shared NN", "Σ εᵢ", "E → F"]
     colours = [LAKE_BLUE, NAVY, EMERALD, PALE_OLIVE]
     for index, (x, label, colour) in enumerate(zip(xs, labels, colours)):
-        ax.add_patch(Ellipse((x, 0.56), 0.105, 0.105, fc="white", ec=colour, lw=2.0, zorder=5))
-        registry.text(ax, x, 0.56, label, ha="center", va="center",
-                      fontsize=10, color=colour, weight="bold", zorder=6)
+        ax.add_patch(Ellipse((x, 0.56), 0.095, 0.095, fc="white", ec=colour, lw=1.7, zorder=20))
+        registry.text(ax, x, 0.56, label, ha="center", va="center", fontsize=10, color=colour, weight="bold", zorder=21)
         if index < len(xs) - 1:
-            registry.arrow(ax, (x + 0.06, 0.56), (xs[index + 1] - 0.06, 0.56),
-                           arrowstyle="-|>", mutation_scale=12, lw=1.7,
-                           color=LINE_GRAY, zorder=4)
-    registry.text(ax, 0.69, 0.41, "same network for every atom", ha="center", va="center",
-                  fontsize=10, color=DARK_GRAY)
-    registry.text(ax, 0.69, 0.34, "Fᵢ = −∂E / ∂rᵢ", ha="center", va="center",
-                  fontsize=12, color=INK, weight="bold")
+            registry.arrow(ax, (x + 0.052, 0.56), (xs[index + 1] - 0.052, 0.56), arrowstyle="-|>", mutation_scale=10, lw=1.4, color=LINE_GRAY, zorder=19)
+    registry.text(ax, magnifier[0], magnifier[1] - 0.12, "same network for every atom", ha="center", va="center", fontsize=10, color=DARK_GRAY, zorder=21)
+    registry.text(ax, magnifier[0], magnifier[1] - 0.18, "Fᵢ = −∂E / ∂rᵢ", ha="center", va="center", fontsize=12, color=INK, weight="bold", zorder=21)
 
 
 def _descriptor_data(data: dict[str, object]) -> dict[str, object]:
@@ -691,7 +725,7 @@ def compose(fig, t: float, registry: LayoutRegistry, data: dict[str, object], vv
         _descriptor_scene(main, registry, data, a, video=video)
     elif stage == 5:
         registry.text(main, 0.035, 0.035, "local environment → energy → force", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
-        _nn_scene(main, registry, image=a["focus_neighbors"], video=video)
+        _nn_scene(main, registry, data, context=a["context"], image=a["focus_neighbors"], video=video)
     elif stage == 6:
         registry.text(main, 0.035, 0.035, "F_DP(r) · one force query", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
         fitted = _focus_scene(main, registry, data, a["camera"], a["focus_force"], a["locator"], video=video)

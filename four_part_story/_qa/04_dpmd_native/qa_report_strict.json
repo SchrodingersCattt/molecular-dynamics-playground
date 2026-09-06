@@ -1,10 +1,10 @@
 {
-  "passed": false,
+  "passed": true,
   "checks": [
     {
       "check": "outputs",
       "passed": true,
-      "duration_seconds": 0.1059428000007756,
+      "duration_seconds": 0.06949990000066464,
       "metrics": {
         "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\figures\\04_deep_potential_md.png": {
           "bytes": 1319688,
@@ -12,7 +12,7 @@
         },
         "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\figures\\04_deep_potential_md.svg": {
           "bytes": 1731591,
-          "sha256": "2563cbf475f2a2c7bd47d3c88b69136d3f7f4cfabb60b54acc03f3e4fcc9fdc1"
+          "sha256": "a6a4ddb32342e168b1c1a4a5c9e6213817ded8efeba7a4670f15916abd5db3ac"
         }
       },
       "findings": []
@@ -20,7 +20,7 @@
     {
       "check": "print",
       "passed": true,
-      "duration_seconds": 1.1500000255182385e-05,
+      "duration_seconds": 1.0300000212737359e-05,
       "metrics": {
         "width_px": 3508,
         "height_px": 2480,
@@ -32,7 +32,7 @@
     {
       "check": "whitespace",
       "passed": true,
-      "duration_seconds": 0.17946420000043872,
+      "duration_seconds": 0.23354830000062066,
       "metrics": {
         "width": 3508,
         "height": 2480,
@@ -333,7 +333,7 @@
     {
       "check": "clipping",
       "passed": true,
-      "duration_seconds": 0.15541529999973136,
+      "duration_seconds": 0.17813620000015362,
       "metrics": {
         "integrator": {
           "clearances_px": {
@@ -377,7 +377,7 @@
     {
       "check": "boundaries",
       "passed": true,
-      "duration_seconds": 0.12056550000124844,
+      "duration_seconds": 0.1475640000007843,
       "metrics": {
         "rail_main_gap": {
           "ink_pixels": 0,
@@ -393,7 +393,7 @@
     {
       "check": "colors",
       "passed": true,
-      "duration_seconds": 1.444336700000349,
+      "duration_seconds": 1.3076266999996733,
       "metrics": {
         "cutoff": {
           "pixels": 47104,
@@ -421,7 +421,7 @@
     {
       "check": "integrity",
       "passed": true,
-      "duration_seconds": 1.2599999536178075e-05,
+      "duration_seconds": 1.2099999366910197e-05,
       "metrics": {
         "required_content": [
           "equilibrated_dp_trajectory",
@@ -436,7 +436,7 @@
     {
       "check": "clipping",
       "passed": true,
-      "duration_seconds": 0.03683369999998831,
+      "duration_seconds": 0.03600680000090506,
       "metrics": {
         "integrator": {
           "clearances_px": {
@@ -453,7 +453,7 @@
     {
       "check": "clipping",
       "passed": true,
-      "duration_seconds": 0.03385859999980312,
+      "duration_seconds": 0.03562609999971755,
       "metrics": {
         "water_box": {
           "clearances_px": {
@@ -470,7 +470,7 @@
     {
       "check": "clipping",
       "passed": true,
-      "duration_seconds": 0.03524209999886807,
+      "duration_seconds": 0.030017200000656885,
       "metrics": {
         "centre_and_cutoff": {
           "clearances_px": {
@@ -487,7 +487,7 @@
     {
       "check": "clipping",
       "passed": true,
-      "duration_seconds": 0.03960719999849971,
+      "duration_seconds": 0.031807400000616326,
       "metrics": {
         "dp_force": {
           "clearances_px": {
@@ -551,20 +551,12 @@
     },
     {
       "check": "review",
-      "passed": false,
-      "duration_seconds": 1.700000029813964e-05,
+      "passed": true,
+      "duration_seconds": 8.099999831756577e-06,
       "metrics": {},
-      "findings": [
-        {
-          "rule": "review-render-hash",
-          "level": "error",
-          "message": "Review is stale for the current render",
-          "panel": null,
-          "metrics": {}
-        }
-      ]
+      "findings": []
     }
   ],
-  "duration_seconds": 2.151307199999792,
-  "wall_seconds": 4.046912900001189
+  "duration_seconds": 2.0698631000032037,
+  "wall_seconds": 3.457193800000823
 }

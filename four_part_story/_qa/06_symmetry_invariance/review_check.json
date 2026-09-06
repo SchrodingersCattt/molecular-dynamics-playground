@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "check": "review",
+      "passed": true,
+      "duration_seconds": 6.300000677583739e-06,
+      "metrics": {},
+      "findings": []
+    }
+  ],
+  "duration_seconds": 6.300000677583739e-06
+}
