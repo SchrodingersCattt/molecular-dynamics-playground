@@ -9,7 +9,7 @@
 - 四套视觉交付物已有独立 A4 静态图和 16:9 视频入口：Velocity Verlet、TIP3P/Lennard–Jones、水二聚体 RHF–SCF、64 水 Deep Potential MD。
 - AIMD 已保存多个离子步、每个离子步的 SCF 密度/残差、固定分子平面网格和位置/速度/力阶段素材；RHF 画面把等值线随真实密度收敛呈现为由粗到清晰。
 - DPMD 已保存 64 水周期盒、O126 中心原子、83 个 6 Å 内最小镜像邻居、同一快照的 DP 能量/力和可复现的冻结力 Velocity–Verlet 步。
-- DP 截断邻域已改为 MatterVis 原生世界坐标球面；球心与 O126 对齐，投影保持正圆，采用固定斜视相机、方向光、前后半球透明度和原生 MIC 向量。对应素材位于 `four_part_story/_qa/04_dpmd_native/mattervis_v3/`。
+- DP 截断邻域已改为 MatterVis 原生世界坐标球面；球心与 O126 对齐，投影保持正圆，采用固定斜视相机、方向光、前后半球透明度和原生 MIC 向量。对应素材位于 `product/qa/04_dpmd_native/mattervis_v3/`。
 - `visualize-data --strict` 已用于静态图；DP 视频保留 384/384 帧逐帧 QA 报告，尺寸为 1920×1080、24 fps。
 - MatterVis 已增加原生 overlay metadata 传递、CPU 球面方向光/高光、零透明度原子/键隐藏和对应测试；测试文件为 `MatterVis/tests/test_native_overlay_metadata.py`。
 - 中文读书笔记已有 LaTeX 源、参考文献、PDF 和渲染页；历史、Euler/Verlet、SCF、Deep Potential、采样章节已加入具体数字例子。
@@ -38,8 +38,9 @@
 
 ## 可复核证据位置
 
-- 视觉说明：`four_part_story/README.md`
-- DP 数据与 QA：`four_part_story/_qa/04_dpmd_native/`
+- 视觉说明：`docs/four_part_story.md`
+- 活动脚本：`scripts/md_visuals/`、`scripts/build_box/`、`scripts/run_md/`、`scripts/submit_calculation/`。
+- DP 数据与 QA：`product/qa/04_dpmd_native/`
 - 文章源稿与 PDF：`report/md_reading_notes.tex`、`report/output/pdf/md_reading_notes.pdf`
 - 文章修订日志：`report/_qa_revision_log.md`
 - MatterVis API 记录：`MatterVis/docs/agents/scene_api.md`
@@ -51,13 +52,15 @@ DP 视频时序已改为固定舞台：水盒、O126、小圆、放大圆和引�
 
 当前输出：
 
-- `four_part_story/figures/01_velocity_verlet.png` 至 `04_deep_potential_md.png`
-- `four_part_story/videos/01_velocity_verlet.mp4` 至 `04_deep_potential_md.mp4`
-- `four_part_story/_qa/04_dpmd_native/qa_report_strict.json`
-- `four_part_story/_qa/04_dpmd_native/_qa/every_frame_qa.json`
-- `four_part_story/figures/05_well_tempered_metadynamics.png`
-- `four_part_story/videos/05_well_tempered_metadynamics.mp4`
-- `four_part_story/_qa/05_metadynamics/qa_report_strict.json`
-- `four_part_story/figures/06_rigid_water_descriptor_invariance.png`
-- `four_part_story/videos/06_rigid_water_descriptor_invariance.mp4`
-- `four_part_story/_qa/06_symmetry_invariance/descriptor_provenance.json`
+- `product/figures/01_velocity_verlet.png` 至 `04_deep_potential_md.png`
+- `product/videos/01_velocity_verlet.mp4` 至 `04_deep_potential_md.mp4`
+- `product/qa/04_dpmd_native/qa_report_strict.json`
+- `product/qa/04_dpmd_native/_qa/every_frame_qa.json`
+- `product/figures/05_well_tempered_metadynamics.png`
+- `product/videos/05_well_tempered_metadynamics.mp4`
+- `product/qa/05_metadynamics/qa_report_strict.json`
+- `product/figures/06_rigid_water_descriptor_invariance.png`
+- `product/videos/06_rigid_water_descriptor_invariance.mp4`
+- `product/qa/06_symmetry_invariance/descriptor_provenance.json`
+
+

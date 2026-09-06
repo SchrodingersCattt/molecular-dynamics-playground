@@ -44,10 +44,8 @@ dist/
 *.temp
 
 # Media / rendered outputs
-media/
 *.mp4
-!three_slide_story/videos/*.mp4
-!four_part_story/videos/*.mp4
+!product/videos/*.mp4
 *.mov
 *.avi
 *.mkv
@@ -57,10 +55,15 @@ media/
 # Scientific / generated data
 *.npz
 *.npy
-!four_part_story/data/*.npz
+!product/data/*.npz
 
 # Bohrium / dispatcher workdirs
-md_workflows/bohrium_work/
+scripts/submit_calculation/bohrium_work/
+
+# Archived local Bohrium outputs are retained on disk but are not versioned.
+_archive/legacy/md_workflows/bohrium_work/
+_archive/root_duplicates/
+_archive/legacy/media/
+_archive/legacy/plans/
 
 # Roo Code generated planning files
-plans/

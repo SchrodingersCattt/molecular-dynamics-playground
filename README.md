@@ -1,6 +1,6 @@
 # Molecular Dynamics Visualization
 
-The canonical deliverables are in [`four_part_story`](four_part_story/README.md): four white-background A4 figures and four independent, PowerPoint-ready 16:9 videos.
+The canonical deliverables are organized under `product/`: A4 figures, independent PowerPoint-ready videos, scientific source data, and QA records. Rendering and data-generation entry points live under `scripts/`.
 
 1. Velocity Verlet: exact position → acceleration → velocity update.
 2. Classical potential: the 12–6 Lennard-Jones potential for a real Ar pair.
@@ -9,4 +9,13 @@ The canonical deliverables are in [`four_part_story`](four_part_story/README.md)
 
 The visual grammar uses grey construction lines with sparse crimson, green, and navy accents. Static figures are 3508 × 2480 px at A4 landscape width with a 10 pt minimum font. Videos are 1920 × 1080, 24 fps, H.264/yuv420p with an 18 pt minimum font.
 
-Older `three_slide_story`, `integrator_animations`, and `md_workflows` outputs remain in Git for provenance; they are not the current presentation set.
+Older stories, workflows, media, and plans are preserved under `_archive/legacy/` for provenance; they are not the current presentation set.
+
+## Active entry points
+
+- `scripts/md_visuals/`: render figures, videos, MatterVis scenes, and QA.
+- `scripts/build_box/`: build the reproducible H₂O, LJ, AIMD, and water-box source cases.
+- `scripts/run_md/`: local MD/RHF engines and evaluation runs.
+- `scripts/submit_calculation/`: Bohrium/DeepMD submission and worker scripts.
+- `docs/`: visual documentation and review records.
+- `report/`: the Chinese MD reading notes and references.

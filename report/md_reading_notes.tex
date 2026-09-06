@@ -231,7 +231,7 @@ Classical RK4 & 4 & 否 & 否 & 4 & 短时很准，长期可漂移 & 参考传�
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.96\textwidth]{../integrator_animations/figures/integrator_comparison.pdf}
+  \includegraphics[width=0.96\textwidth]{../_archive/legacy/integrator_animations/figures/integrator_comparison.pdf}
   \caption{谐振子上对积分器的统一比较：短时轨迹、相空间几何和长期相对能量误差。配套 Notebook 的步长收敛测试给出 velocity Verlet 的实测阶数 2.004 和 2.001，与二阶全局误差一致。}
   \label{fig:integrators}
 \end{figure}
@@ -274,11 +274,11 @@ Fermi--Pasta--Ulam 1955 年的数值实验研究非线性振子链的能量弛�
 \begin{figure}[htbp]
   \centering
   \begin{subfigure}[t]{0.485\textwidth}
-    \includegraphics[width=\linewidth]{../four_part_story/figures/01_velocity_verlet.png}
+    \includegraphics[width=\linewidth]{../product/figures/01_velocity_verlet.png}
     \caption{Velocity Verlet：抽象三步与刚体水分子示例（位移箭头为显示放大）。}
   \end{subfigure}\hfill
   \begin{subfigure}[t]{0.485\textwidth}
-    \includegraphics[width=\linewidth]{../four_part_story/figures/02_classical_lj.png}
+    \includegraphics[width=\linewidth]{../product/figures/02_classical_lj.png}
     \caption{经典势：水二聚体上的 O--O LJ 分量（非完整 TIP3P 力）。}
   \end{subfigure}
   \caption{Velocity Verlet 与经验势在水体系中的具体对应。左图显示位置、加速度和速度的离散更新及一个刚体水分子的示例位移；右图只以水二聚体的 O--O 距离说明 LJ 分量的解析势能、力与加速度关系，静电和分子内项未显示。}
@@ -319,7 +319,7 @@ Born--Oppenheimer MD 在每个离子步把电子自由度收敛到基态，再�
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.93\textwidth]{../four_part_story/figures/03_aimd_scf.png}
+  \includegraphics[width=0.93\textwidth]{../product/figures/03_aimd_scf.png}
   \caption{AIMD 中电子步与离子步的嵌套关系（本图为 RHF/STO-3G 教学示例）。每个离子构型先经过 SCF 迭代得到收敛电子密度和核力，随后更新速度与位置并进入下一离子步；右上曲线是能量误差示意，不等同于密度残差。}
   \label{fig:aimd}
 \end{figure}
@@ -341,7 +341,7 @@ Deep Potential 的局域计算可由同一快照中的数据链展开：中心�
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.93\textwidth]{../four_part_story/figures/04_deep_potential_md.png}
+  \includegraphics[width=0.93\textwidth]{../product/figures/04_deep_potential_md.png}
   \caption{Deep Potential MD 中从局域环境到全局力的映射（示意）。每个中心原子的截断邻域分别经过共享模型得到 $E_i$，遍历全部原子后求和，最后对总能量求梯度并返回外层积分器；图中 $r_c=6$~\AA{}、83 个邻居和能量数值仅对应示例水盒。}
   \label{fig:dpmd}
 \end{figure}
@@ -485,3 +485,5 @@ MLIP 还需要外推诊断。一个模型在随机测试集上误差很低，可
 \end{multicols}
 
 \end{document}
+
+
