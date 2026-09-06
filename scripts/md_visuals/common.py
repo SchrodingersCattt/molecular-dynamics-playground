@@ -4,6 +4,8 @@ import hashlib
 import json
 import math
 import subprocess
+import os
+import time
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -420,7 +422,7 @@ def render_video(
     representative_dir = qa_directory / "video_frames"
     representative_dir.mkdir(parents=True, exist_ok=True)
     output = VIDEO_DIR / f"{stem}.mp4"
-    temporary = VIDEO_DIR / f"_{stem}.encoding.mp4"
+    temporary = VIDEO_DIR / f"_{stem}.{os.getpid()}.{time.time_ns()}.encoding.mp4"
     frames = int(round(duration_seconds * FPS))
     representative_indices = {int(round(value * FPS)): value for value in representative_times}
     command = [

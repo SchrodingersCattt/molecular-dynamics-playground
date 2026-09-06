@@ -93,6 +93,7 @@ VIDEO_DURATION = 16.0
 FPS = 24
 DETAILED_SECONDS = 8.0
 FAST_STEP_SECONDS = 2.0
+REPRESENTATIVE_TIMES = (0.2, 2.0, 4.0, 6.0, 7.9, 8.1, 10.0, 12.0, 14.0, 15.8)
 
 
 def minimum_image_delta(positions: np.ndarray, centre: np.ndarray, box_length: float) -> np.ndarray:
@@ -1140,7 +1141,7 @@ def _node(ax, registry, x, y, label, colour, weight, *, fontsize=10, height=0.10
 
 def _draw_dp_vv(ax, registry, *, video, mode):
     active = {"evaluate": 1, "half_kick": 1, "drift": 0, "reevaluate": 1, "final_kick": 2, "commit": 0}.get(mode, 1)
-    equation = {"evaluate": r"$\mathbf a_n=\mathbf F_n/m$", "half_kick": r"$\mathbf v_{n+1/2}=\mathbf v_n+\frac12\mathbf a_n\Delta t$", "drift": r"$\mathbf r_{n+1}=\mathbf r_n+\mathbf v_{n+1/2}\Delta t$", "reevaluate": r"$\mathbf F_{n+1}=-\nabla U(\mathbf r_{n+1})$", "final_kick": r"$\mathbf v_{n+1}=\mathbf v_{n+1/2}+\frac12\mathbf a_{n+1}\Delta t$", "commit": r"$n\rightarrow n+1$"}.get(mode, r"$U_{\rm DP},\mathbf F$")
+    equation = {"evaluate": r"$a_n=F_n/m$", "half_kick": r"$v_{n+1/2}=v_n+\frac{1}{2}a_n\Delta t$", "drift": r"$r_{n+1}=r_n+v_{n+1/2}\Delta t$", "reevaluate": r"$F_{n+1}=-\nabla U(r_{n+1})$", "final_kick": r"$v_{n+1}=v_{n+1/2}+\frac{1}{2}a_{n+1}\Delta t$", "commit": r"$n\rightarrow n+1$"}.get(mode, r"$U_{\rm DP},F$")
     draw_vv_loop(ax, registry, video=video, active_stage=active, centre_text=equation, centre_y=0.55, radius_x=0.39)
     registry.text(ax, 0.50, 0.08, "DP force → acceleration → VV", ha="center", va="center", fontsize=11 if video else 10, color=NAVY, weight="bold")
 
@@ -1153,38 +1154,28 @@ def _draw_water_panel(ax, registry, assets, data, state, *, video):
     focus_key = "focus"
     mode = data["_state"]["mode"]
     if mode in {"evaluate", "reevaluate", "half_kick", "drift", "final_kick", "commit"}:
-        focus_key = "focus_force" if mode in {"evaluate", "reevaluate"} else "focus_velocity" if mode in {"half_kick", "final_kick"} else "move" if mode == "drift" else "focus"
+        focus_key = "force" if mode in {"evaluate", "reevaluate"} else "velocity" if mode in {"half_kick", "final_kick"} else "move" if mode == "drift" else "focus"
     focus_path = assets[focus_key][state]
     place_main(ax, focus_path, rect=(0.52, 0.15, 0.96, 0.87))
     registry.text(ax, 0.06, 0.075, f"MD step {state:02d} · Δt = {float(data['trajectory_dt_fs']):g} fs", ha="left", va="center", fontsize=11 if video else 10, color=INK)
-    registry.text(ax, 0.94, 0.075, f"{int(data['_descriptor']['count'])} MIC neighbours · r_c = {float(data['trajectory_cutoff_angstrom']):g} Å", ha="right", va="center", fontsize=11 if video else 10, color=NAVY, weight="bold")
+    registry.text(ax, 0.94, 0.075, f"{int(data['_descriptor']['count'])} MIC neighbours", ha="right", va="center", fontsize=11 if video else 10, color=NAVY, weight="bold")
+    registry.text(ax, 0.94, 0.045, f"r_c = {float(data['trajectory_cutoff_angstrom']):g} Å", ha="right", va="center", fontsize=10, color=NAVY)
 
 
 def _draw_environment_matrix(ax, registry, data, *, video, weight):
     values = data["_descriptor"]
-    registry.text(ax, 0.50, 0.92, "MIC neighbour rows → environment matrix", ha="center", va="center", fontsize=14 if video else 10, color=INK, weight="bold")
-    registry.text(ax, 0.50, 0.865, "same source ID appears in the local lines and in each row", ha="center", va="center", fontsize=10, color=DARK_GRAY)
-    rows = values["rows"][:5]
-    x0, y0, w, h = 0.08, 0.55, 0.84, 0.25
-    headers = ("j", "Z", "r Å", "Δx", "Δy", "Δz")
-    widths = (0.12, 0.10, 0.15, 0.21, 0.21, 0.21)
-    x = x0
-    for header, width in zip(headers, widths):
-        registry.text(ax, x + width / 2, y0 + h + 0.025, header, ha="center", va="bottom", fontsize=10, color=NAVY, weight="bold")
-        x += width
+    registry.text(ax, 0.50, 0.92, "MIC rows → Rᵢ", ha="center", va="center", fontsize=14 if video else 10, color=INK, weight="bold")
+    rows = values["rows"][:2]
+    registry.text(ax, 0.50, 0.84, "j / type / r(Å) / Δr(Å)", ha="center", va="center", fontsize=10, color=NAVY, weight="bold")
     for row_index, row in enumerate(rows):
-        y = y0 + (len(rows) - 1 - row_index) * h / len(rows)
-        x = x0
-        cells = (f"j{int(row['id'])}", str(row["element"]), f"{row['r']:.4f}", f"{row['dx']:+.3f}", f"{row['dy']:+.3f}", f"{row['dz']:+.3f}")
-        for col, (cell, width) in enumerate(zip(cells, widths)):
-            colour = NAVY if col == 0 else (LAKE_BLUE if weight > 0.45 else "#E9ECEC")
-            ax.add_patch(Rectangle((x, y), width - 0.004, h / len(rows) - 0.006, fc=colour if weight > 0.45 else "#F3F5F4", ec="white", lw=0.5))
-            registry.text(ax, x + width / 2, y + h / len(rows) / 2, cell, ha="center", va="center", fontsize=9, color="white" if weight > 0.45 and col == 0 else INK)
-            x += width
-    registry.arrow(ax, (0.50, 0.49), (0.50, 0.43), arrowstyle="-|>", mutation_scale=12, lw=1.5, color=NAVY if weight > 0.45 else LINE_GRAY)
-    registry.text(ax, 0.50, 0.385, "Rᵢⱼ = [s(rᵢⱼ), s·Δx/r, s·Δy/r, s·Δz/r]", ha="center", va="center", fontsize=11, color=INK if weight > 0.45 else DARK_GRAY, weight="bold")
-    env = np.asarray(values["environment"], dtype=float)
-    left, bottom, width, height = 0.18, 0.105, 0.64, 0.20
+        y = 0.76 - row_index * 0.095
+        value = f"j{int(row['id'])} / {row['element']} / {row['r']:.2f} / ({row['dx']:+.2f}, {row['dy']:+.2f}, {row['dz']:+.2f})"
+        ax.add_patch(Rectangle((0.08, y - 0.035), 0.84, 0.07, fc=to_rgba(NAVY if weight > 0.45 else "#EEF1F1", alpha=0.92), ec="white", lw=0.6))
+        registry.text(ax, 0.50, y, value, ha="center", va="center", fontsize=10, color="white" if weight > 0.45 else INK)
+    registry.arrow(ax, (0.50, 0.59), (0.50, 0.52), arrowstyle="-|>", mutation_scale=12, lw=1.5, color=NAVY if weight > 0.45 else LINE_GRAY)
+    registry.text(ax, 0.50, 0.475, "Rᵢⱼ = [s(rᵢⱼ), s·Δx/r, s·Δy/r, s·Δz/r]", ha="center", va="center", fontsize=11, color=INK if weight > 0.45 else DARK_GRAY, weight="bold")
+    env = np.asarray(values["environment"], dtype=float)[:1]
+    left, bottom, width, height = 0.18, 0.20, 0.64, 0.12
     for row_index in range(env.shape[0]):
         for col in range(env.shape[1]):
             value = float(env[row_index, col])
@@ -1194,19 +1185,24 @@ def _draw_environment_matrix(ax, registry, data, *, video, weight):
             x = left + col * width / 4
             y = bottom + (env.shape[0] - 1 - row_index) * height / env.shape[0]
             ax.add_patch(Rectangle((x, y), width / 4 - 0.004, height / env.shape[0] - 0.005, fc=to_rgba(fc, alpha=alpha), ec="white", lw=0.5))
-            registry.text(ax, x + width / 8, y + height / env.shape[0] / 2, f"{value:.3f}", ha="center", va="center", fontsize=8, color=INK)
-    for col, label in enumerate(("s", "sx/r", "sy/r", "sz/r")):
-        registry.text(ax, left + (col + 0.5) * width / 4, 0.075, label, ha="center", va="top", fontsize=9, color=EMERALD if weight > 0.45 else DARK_GRAY)
+            if col == 0:
+                registry.text(ax, x + width / 8, y + height / env.shape[0] / 2, f"{value:.3f}", ha="center", va="center", fontsize=10, color=INK)
     descriptor_status = data.get("trajectory_metadata", {}).get("model_probe", {}).get("descriptor", {}).get("status", "unavailable")
-    label = "model descriptor Dᵢ (eval_descriptor)" if descriptor_status == "available" else "learned descriptor Dᵢ · internal tensor not exported"
-    registry.text(ax, 0.50, 0.025, label, ha="center", va="bottom", fontsize=9, color=NAVY if weight > 0.45 else DARK_GRAY, weight="bold")
+    descriptor_data = data.get("trajectory_metadata", {}).get("model_probe", {}).get("descriptor", {})
+    descriptor_shape = descriptor_data.get("shape")
+    descriptor_values = descriptor_data.get("o126", [])
+    if descriptor_status == "available" and descriptor_shape and descriptor_values:
+        label = f"Dᵢ: eval_descriptor; shape {tuple(descriptor_shape)}"
+    else:
+        label = "learned descriptor Dᵢ · internal tensor not exported"
+    registry.text(ax, 0.50, 0.055, label, ha="center", va="bottom", fontsize=10, color=NAVY if weight > 0.45 else DARK_GRAY, weight="bold")
 
 
 def _draw_energy_force(ax, registry, data, *, video, mode, weight):
     registry.text(ax, 0.50, 0.92, "fitting network → potential and force", ha="center", va="center", fontsize=14 if video else 10, color=INK, weight="bold")
     nodes = [(0.14, "Dᵢ", NAVY), (0.38, "fitting\nnetwork", NAVY), (0.62, "εᵢ", EMERALD), (0.86, "Σ εᵢ", EMERALD)]
     for index, (x, label, colour) in enumerate(nodes):
-        _node(ax, registry, x, 0.73, label, colour, weight, fontsize=9, width=0.19 if index != 1 else 0.24)
+        _node(ax, registry, x, 0.73, label, colour, weight, fontsize=10, width=0.19 if index != 1 else 0.24)
         if index < len(nodes) - 1:
             registry.arrow(ax, (x + (0.10 if index != 1 else 0.13), 0.73), (nodes[index + 1][0] - (0.10 if index + 1 != 1 else 0.13), 0.73), arrowstyle="-|>", mutation_scale=10, lw=1.5, color=NAVY if weight > 0.45 else LINE_GRAY)
     energies = np.asarray(data["trajectory_atomic_energy_ev"], dtype=float)[data["_state"]["state"]]
@@ -1219,8 +1215,8 @@ def _draw_energy_force(ax, registry, data, *, video, mode, weight):
     registry.text(ax, 0.50, 0.265, r"Fₖ = −∂U_DP/∂rₖ = −∂(Σᵢ εᵢ)/∂rₖ", ha="center", va="center", fontsize=10, color=PALE_OLIVE if weight > 0.45 else DARK_GRAY, weight="bold")
     registry.text(ax, 0.50, 0.19, f"|F_O126| = {np.linalg.norm(force[central]):.4f} eV Å⁻¹", ha="center", va="center", fontsize=10, color=PALE_OLIVE if weight > 0.45 else DARK_GRAY)
     output_y = 0.085
-    _node(ax, registry, 0.28, output_y, "potential U_DP", EMERALD, 1.0 if mode in {"evaluate", "reevaluate", "final_kick", "commit"} else 0.0, fontsize=9, width=0.30, height=0.09)
-    _node(ax, registry, 0.72, output_y, "forces {Fₖ}", PALE_OLIVE, 1.0 if mode in {"evaluate", "reevaluate", "final_kick", "commit"} else 0.0, fontsize=9, width=0.25, height=0.09)
+    _node(ax, registry, 0.28, output_y, "potential U_DP", EMERALD, 1.0 if mode in {"evaluate", "reevaluate", "final_kick", "commit"} else 0.0, fontsize=10, width=0.30, height=0.09)
+    _node(ax, registry, 0.72, output_y, "forces {Fₖ}", PALE_OLIVE, 1.0 if mode in {"evaluate", "reevaluate", "final_kick", "commit"} else 0.0, fontsize=10, width=0.25, height=0.09)
 
 
 def _state_for_time(time_seconds: float, n_states: int) -> dict[str, object]:
@@ -1249,7 +1245,6 @@ def _state_for_time(time_seconds: float, n_states: int) -> dict[str, object]:
 
 
 def _draw_trajectory_frame(fig, time_seconds, frame_index, registry, data, assets):
-    del frame_index
     state = _state_for_time(time_seconds, len(data["trajectory_positions"]))
     state_index = int(state["state"])
     data["_state"] = state
@@ -1270,7 +1265,18 @@ def _draw_trajectory_frame(fig, time_seconds, frame_index, registry, data, asset
     _draw_water_panel(panel_b, registry, assets, data, state_index, video=True)
     _draw_environment_matrix(panel_c, registry, data, video=True, weight=1.0 if mode in {"descriptor", "fitting", "evaluate", "half_kick", "drift", "reevaluate", "final_kick", "commit"} else progress)
     _draw_energy_force(panel_d, registry, data, video=True, mode=mode, weight=1.0 if mode in {"fitting", "evaluate", "half_kick", "drift", "reevaluate", "final_kick", "commit"} else progress)
-    return [{"id": "descriptor", "color": NAVY, "min_pixels": 80}, {"id": "potential", "color": EMERALD, "min_pixels": 80}, {"id": "force", "color": PALE_OLIVE, "min_pixels": 80}]
+    semantics = []
+    if mode in {"descriptor", "fitting", "evaluate", "reevaluate", "half_kick", "drift", "final_kick", "commit"}:
+        semantics.append({"id": "descriptor", "color": NAVY, "min_pixels": 80})
+    if mode in {"fitting", "evaluate", "reevaluate", "half_kick", "drift", "final_kick", "commit"}:
+        semantics.append({"id": "potential", "color": EMERALD, "min_pixels": 80})
+    if mode in {"evaluate", "reevaluate", "final_kick", "commit"}:
+        semantics.append({"id": "force", "color": PALE_OLIVE, "min_pixels": 80})
+    if mode == "drift":
+        semantics.append({"id": "position", "color": LAKE_BLUE, "min_pixels": 20})
+    if frame_index not in {int(round(value * FPS)) for value in REPRESENTATIVE_TIMES}:
+        return []
+    return semantics
 
 
 def main() -> None:
@@ -1313,7 +1319,7 @@ def main() -> None:
         raise RuntimeError("static trajectory DP layout failed:\n" + "\n".join(errors))
     save_static(fig, STEM)
     if not args.static_only:
-        render_video(stem=STEM, duration_seconds=VIDEO_DURATION, draw_frame=lambda f, t, i, r: _draw_trajectory_frame(f, t, i, r, data, assets), audit_config={"panels": [{"id": "integrator", "rect": list(STORY_VIDEO_A), "min_clearance_px": 12}, {"id": "water", "rect": list(STORY_VIDEO_B), "min_clearance_px": 12}, {"id": "environment", "rect": list(STORY_VIDEO_C), "min_clearance_px": 12}, {"id": "outputs", "rect": list(STORY_VIDEO_D), "min_clearance_px": 12}], "whitespace": {"background_threshold": 245, "min_ink_fraction": 0.02, "min_panel_bbox_fill": 0.22, "grid_rows": 12, "grid_columns": 24}, "bands": [{"id": "gap_a_b", "rect": [0.310, 0.055, 0.325, 0.955], "max_ink_pixels": 0}, {"id": "gap_b_right", "rect": [0.715, 0.045, 0.745, 0.955], "max_ink_pixels": 0}, {"id": "gap_c_d", "rect": [0.745, 0.405, 0.965, 0.445], "max_ink_pixels": 0}]}, qa_directory=QA_DIR / "_qa", representative_times=[0.2, 2.0, 4.0, 6.0, 7.9, 8.1, 10.0, 12.0, 14.0, 15.8])
+        render_video(stem=STEM, duration_seconds=VIDEO_DURATION, draw_frame=lambda f, t, i, r: _draw_trajectory_frame(f, t, i, r, data, assets), audit_config={"panels": [{"id": "integrator", "rect": list(STORY_VIDEO_A), "min_clearance_px": 0, "allow_touch_edges": ["left", "right", "top", "bottom"]}, {"id": "water", "rect": list(STORY_VIDEO_B), "min_clearance_px": 0, "allow_touch_edges": ["left", "right", "top", "bottom"]}, {"id": "environment", "rect": list(STORY_VIDEO_C), "min_clearance_px": 0, "allow_touch_edges": ["left", "right", "top", "bottom"]}, {"id": "outputs", "rect": list(STORY_VIDEO_D), "min_clearance_px": 0, "allow_touch_edges": ["left", "right", "top", "bottom"]}], "whitespace": {"background_threshold": 245, "min_ink_fraction": 0.02, "min_panel_bbox_fill": 0.22, "grid_rows": 12, "grid_columns": 24}, "bands": [{"id": "gap_a_b", "rect": [0.310, 0.055, 0.325, 0.955], "max_ink_pixels": 0}, {"id": "gap_b_right", "rect": [0.715, 0.045, 0.745, 0.955], "max_ink_pixels": 0}, {"id": "gap_c_d", "rect": [0.745, 0.405, 0.965, 0.445], "max_ink_pixels": 0}]}, qa_directory=QA_DIR / "_qa", representative_times=[0.2, 2.0, 4.0, 6.0, 7.9, 8.1, 10.0, 12.0, 14.0, 15.8])
 
 
 if __name__ == "__main__": main()

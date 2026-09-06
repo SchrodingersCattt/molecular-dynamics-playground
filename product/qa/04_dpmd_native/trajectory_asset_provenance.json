@@ -1,0 +1,51 @@
+{
+  "schema": "dpmd_trajectory_mattervis_assets/v1",
+  "source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04_dpmd_native\\trajectory_sources\\water_box_trajectory.extxyz",
+  "focus_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04_dpmd_native\\trajectory_sources\\focus_trajectory.extxyz",
+  "camera": {
+    "target": [
+      6.214816559541218,
+      6.214816559541218,
+      6.214816559541218
+    ],
+    "direction": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "up": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "ortho_scale": 15.2
+  },
+  "states": 6,
+  "focus_indices": [
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    114,
+    115,
+    116,
+    123,
+    124,
+    125,
+    126,
+    127,
+    128,
+    129,
+    130,
+    131,
+    138,
+    139,
+    140,
+    174,
+    175,
+    176
+  ],
+  "trajectory_metadata": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\data\\dpmd_water_box_trajectory.json"
+}
