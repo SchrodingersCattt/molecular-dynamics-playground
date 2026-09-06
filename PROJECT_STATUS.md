@@ -45,6 +45,9 @@
 - MatterVis API 记录：`MatterVis/docs/agents/scene_api.md`
 
 ## 可复核交付物
+DP 静态 PPT 主图已另行改为纯矢量 SVG：`render_dpmd_vector_static.py` 直接从同一份真实坐标绘制 +x 方向 water box、局域放大、原子端点邻居边、Cartesian 距离矩阵和 DeepPot-SE `R_i` 环境矩阵；SVG 不含嵌入位图。视频仍使用 MatterVis 原生 3D 帧并通过 `visualize-data` 做全帧 QA。
+
+当前输出：
 
 - `four_part_story/figures/01_velocity_verlet.png` 至 `04_deep_potential_md.png`
 - `four_part_story/videos/01_velocity_verlet.mp4` 至 `04_deep_potential_md.mp4`
