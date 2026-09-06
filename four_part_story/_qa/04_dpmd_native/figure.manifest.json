@@ -214,15 +214,15 @@
     "records": []
   },
   "review": {
-    "render_sha256": "9d764afb33088baa0398414f48fe920edf8edd049838f2ae23a8030048d84b3f",
+    "render_sha256": "5764cf9141e63bf0e6f12f9665db1355f429fabadfa04df5a238533d69b3c2ea",
     "problems": {
-      "scientific_expression": "The static and animated neighbour scene uses one saved periodic snapshot and real minimum-image neighbours.",
-      "geometry": "The whole water box is square; the O126 local is marked by a small circle and magnified in a second circle linked by leader lines.",
-      "annotations": "The right rail is split into local Cartesian coordinates plus distance matrix, then descriptor values.",
-      "readability": "The magnifier scene is sparse and reserves matrix/descriptor logic for the right rail.",
+      "scientific_expression": "The still and video use one saved periodic snapshot and real O126 minimum-image neighbours.",
+      "geometry": "The whole water box is a pale square context; a white masked local circle is connected to its original O126 position by two leader lines.",
+      "annotations": "The right upper panel defines the local Cartesian frame and distance matrix; the lower panel shows the derived descriptor.",
+      "readability": "The central magnifier contains only the local atoms and neighbor vectors; the box context remains subordinate.",
       "submission_quality": "MatterVis sidecars, descriptor provenance, static strict QA, and 384-frame video QA are retained."
     },
-    "action": "Preserve the square water-box and two-circle magnifier geometry for PPT use.",
+    "action": "Keep the square context, source circle, masked magnifier, and right-side matrix/descriptor panels as the PPT grammar.",
     "stop_condition": "fixed"
   }
 }
