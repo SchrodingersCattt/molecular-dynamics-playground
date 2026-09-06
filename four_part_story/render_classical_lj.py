@@ -47,7 +47,7 @@ def prepare_mattervis(data: dict[str, np.ndarray]) -> dict[str, object]:
     frame_count = len(data["motion_atomic_positions"])
     plain = [MATTERVIS_DIR / f"motion_{frame:02d}.png" for frame in range(frame_count)]
     position = [MATTERVIS_DIR / f"position_{frame:02d}.png" for frame in range(frame_count)]
-    force_path = MATTERVIS_DIR / "lj_force.png"
+    force_path = MATTERVIS_DIR / "lj_force_v3.png"
     velocity_path = MATTERVIS_DIR / "velocity.png"
     cached = (plain[0], plain[-1], position[0], position[-1], force_path, velocity_path)
     def is_current(path: Path) -> bool:
@@ -58,7 +58,7 @@ def prepare_mattervis(data: dict[str, np.ndarray]) -> dict[str, object]:
     if all(is_current(path) for path in cached):
         target = np.mean(data["motion_atomic_positions"], axis=(0, 1))
         camera = camera_for_source(
-            SOURCE, target=target, ortho_scale=1.50, frame=0,
+            SOURCE, target=target, ortho_scale=1.70, frame=0,
             direction=(0.12, -0.82, 0.56), up=(0.0, 0.0, 1.0),
         )
         return {"plain": plain, "position": position, "force": force_path, "velocity": velocity_path, "camera": camera}
@@ -67,7 +67,7 @@ def prepare_mattervis(data: dict[str, np.ndarray]) -> dict[str, object]:
     # Look across (rather than along) the O--O axis so the interaction line
     # remains legible and does not run through an H--O stick in projection.
     camera = camera_for_source(
-        SOURCE, target=target, ortho_scale=1.50, frame=0,
+        SOURCE, target=target, ortho_scale=1.70, frame=0,
         direction=(0.12, -0.82, 0.56), up=(0.0, 0.0, 1.0),
     )
     q0 = data["motion_oxygen_positions"][0]
@@ -77,9 +77,16 @@ def prepare_mattervis(data: dict[str, np.ndarray]) -> dict[str, object]:
                                          style=ARROW_STYLE)
     # Two equal-and-opposite vectors are anchored directly at the two O atoms;
     # this makes the displayed term unambiguously O--O rather than molecular.
-    force_vectors = make_vector_group("oo-lj-force", data["oxygen_positions"][1], data["molecule_forces"][1],
-                                      scale=float(data["display_force_scale"]), color=PALE_OLIVE,
-                                      style=ARROW_STYLE)
+    # The pair force is equal and opposite on the two O centres. Draw both
+    # native arrows from the same snapshot; a single arrow would be physically
+    # incomplete and visually ambiguous.
+    oo_force = np.asarray(data["molecule_forces"][1], dtype=float)
+    force_origins = np.asarray(data["oxygen_positions"][1], dtype=float)
+    force_vectors = make_vector_group(
+        "oo-lj-force", force_origins,
+        np.asarray([-oo_force[1], oo_force[1]], dtype=float),
+        scale=float(data["display_force_scale"]) * 0.55, color=PALE_OLIVE,
+        style=ARROW_STYLE)
     velocity_vectors = make_vector_group("oo-velocity", data["oxygen_positions"][1], data["molecule_velocities"][1],
                                          scale=float(data["display_velocity_scale"]), color=EMERALD,
                                          style=ARROW_STYLE)

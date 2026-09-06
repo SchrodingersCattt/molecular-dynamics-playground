@@ -4,8 +4,8 @@
   "format": "png",
   "width": 1700,
   "height": 1180,
-  "plan_sha256": "69934cf8ae55613f1b66a59dfa90f3ad9c19f8575766df0ddea63ff8e1d130d1",
-  "output_sha256": "85066d81bd1653863959aa22a6a6c2bf202fe0112a995d479be02fdf33d4e964",
+  "plan_sha256": "37aabc34101009b6dbf15cb921b30e1760e4e618abada000a36934b371c9e1e2",
+  "output_sha256": "1fd49bd22c33f4c6465d1ae6a6a45f0db46e68acb7d8544ee3c11d2a2f42660c",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\04_dpmd_native\\mattervis_v3\\box_context.png",
   "source_sha256": "76cb90befcfd47db8daf4483ed53dd4bebca12d532d2e39ccf5b2464dba67441",
   "frame": 0,
@@ -18,9 +18,9 @@
     ],
     "ortho_scale": 15.2,
     "direction": [
-      0.2,
-      -1.0,
-      0.7
+      1.0,
+      0.0,
+      0.0
     ],
     "up": [
       0.0,
@@ -57,9 +57,9 @@
     "actual_backend": "cpu",
     "camera": {
       "position": [
-        10.095386560122545,
-        -13.188033443365418,
-        19.796811561575865
+        30.21481655954122,
+        6.214816559541218,
+        6.214816559541218
       ],
       "target": [
         6.214816559541218,
