@@ -729,8 +729,8 @@ def compose(fig, t: float, registry: LayoutRegistry, data: dict[str, object], vv
         fitted = _focus_scene(main, registry, data, a["camera"], a["focus_inside"], a["locator"], video=video)
         _mic_overlay(main, registry, data, a["camera"], fitted, video=video, reveal=1.0)
     elif stage == 4:
-        registry.text(main, 0.035, 0.035, "real neighbour matrix → real descriptor", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
-        _descriptor_scene(main, registry, data, a, video=video)
+        registry.text(main, 0.035, 0.035, "local O126 → magnified neighbours", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
+        _static_neighbor_scene(main, registry, data, a, video=video)
     elif stage == 5:
         registry.text(main, 0.035, 0.035, "local environment → energy → force", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
         _nn_scene(main, registry, data, context=a["context"], image=a["focus_neighbors"], video=video)
