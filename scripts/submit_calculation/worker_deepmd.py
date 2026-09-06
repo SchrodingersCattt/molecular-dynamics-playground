@@ -25,6 +25,8 @@ import subprocess
 import traceback
 import numpy as np
 
+from pathlib import Path
+
 # ══════════════════════════════════════════════════════════════════════════════
 # Crash logger — writes to worker_crash.log so dpdispatcher can download it
 # ══════════════════════════════════════════════════════════════════════════════
@@ -362,6 +364,96 @@ def run_simulation(model_path, n_steps, dt_fs):
     print("\n[worker] Saved results.npz", flush=True)
 
 
+def run_periodic_box_simulation(model_path, input_path, n_steps, dt_fs, output_path):
+    """Run the general 192-atom periodic-box worker used by the 04 story."""
+    from deepmd.infer import DeepPot
+
+    with np.load(input_path, allow_pickle=False) as source:
+        pos = np.asarray(source["positions_wrapped"], dtype=float)
+        elements = np.asarray(source["elements"]).astype(str)
+        box_length = float(np.asarray(source["box_length"]).reshape(-1)[0])
+    if pos.ndim != 2 or pos.shape[1] != 3:
+        raise ValueError(f"Expected Cartesian positions, got {pos.shape}")
+    atom_types = np.asarray([0 if item == "O" else 1 for item in elements], dtype=int)
+    masses = np.where(elements == "O", 15.9994, 1.008)
+    cell = np.eye(3) * box_length
+    dp = DeepPot(model_path)
+    if list(dp.get_type_map()) != ["O", "H"]:
+        raise ValueError(f"Unexpected model type map: {dp.get_type_map()}")
+
+    def evaluate(current):
+        coords = current.reshape(1, len(current), 3)
+        cells = cell.reshape(1, 9)
+        try:
+            energy, forces, virial, atomic_energy, _ = dp.eval(
+                coords, cells=cells, atom_types=atom_types, atomic=True
+            )
+            atomic_energy = np.asarray(atomic_energy).reshape(len(current))
+        except TypeError:
+            energy, forces, virial = dp.eval(
+                coords, cells=cells, atom_types=atom_types
+            )
+            atomic_energy = np.full(
+                len(current), float(np.asarray(energy).reshape(-1)[0]) / len(current)
+            )
+        return (
+            float(np.asarray(energy).reshape(-1)[0]),
+            np.asarray(forces).reshape(len(current), 3),
+            np.asarray(virial).reshape(3, 3),
+            atomic_energy,
+        )
+
+    rng = np.random.default_rng(260906)
+    velocities = rng.normal(0.0, 0.010, size=pos.shape)
+    velocities -= np.average(velocities, axis=0, weights=masses)
+    energy, force, virial, atomic = evaluate(pos)
+    n_states = n_steps + 1
+    positions = np.zeros((n_states, len(pos), 3))
+    velocity_states = np.zeros_like(positions)
+    forces = np.zeros_like(positions)
+    energies = np.zeros(n_states)
+    atomic_energies = np.zeros((n_states, len(pos)))
+    virials = np.zeros((n_states, 3, 3))
+    half_velocities = np.zeros((n_steps, len(pos), 3))
+    displacements = np.zeros_like(half_velocities)
+    positions[0], velocity_states[0] = pos, velocities
+    forces[0], energies[0], atomic_energies[0], virials[0] = force, energy, atomic, virial
+    for step in range(n_steps):
+        acceleration = force * CONV_ACCEL / masses[:, None]
+        half = velocities + 0.5 * acceleration * dt_fs
+        updated = (pos + half * dt_fs) % box_length
+        next_energy, next_force, next_virial, next_atomic = evaluate(updated)
+        next_acceleration = next_force * CONV_ACCEL / masses[:, None]
+        next_velocity = half + 0.5 * next_acceleration * dt_fs
+        half_velocities[step] = half
+        displacements[step] = updated - pos
+        positions[step + 1] = updated
+        velocity_states[step + 1] = next_velocity
+        forces[step + 1] = next_force
+        energies[step + 1] = next_energy
+        atomic_energies[step + 1] = next_atomic
+        virials[step + 1] = next_virial
+        pos, velocities, force, energy, atomic, virial = (
+            updated, next_velocity, next_force, next_energy, next_atomic, next_virial
+        )
+    np.savez_compressed(
+        output_path,
+        elements=elements,
+        box_length=np.array(box_length),
+        positions=positions,
+        velocities=velocity_states,
+        half_velocities=half_velocities,
+        displacements=displacements,
+        forces_ev_per_angstrom=forces,
+        atomic_energy_ev=atomic_energies,
+        total_energy_ev=energies,
+        virial_ev=virials,
+        dt_fs=np.array(dt_fs),
+        model=np.array(Path(model_path).name),
+    )
+    print(f"[worker] Saved periodic trajectory: {output_path}", flush=True)
+
+
 # ══════════════════════════════════════════════════════════════════════════════
 if __name__ == "__main__":
     # Ensure ASE is available before anything else
@@ -371,10 +463,16 @@ if __name__ == "__main__":
     parser.add_argument("--model",  default="H2O-Phase-Diagram-model_compressed.pb")
     parser.add_argument("--steps",  type=int,   default=20)
     parser.add_argument("--dt",     type=float, default=0.5)
+    parser.add_argument("--input", default=None,
+                        help="Prepared periodic water-box NPZ; enables the 192-atom mode")
+    parser.add_argument("--output", default="results.npz")
     args = parser.parse_args()
 
     try:
-        run_simulation(args.model, args.steps, args.dt)
+        if args.input:
+            run_periodic_box_simulation(args.model, args.input, args.steps, args.dt, args.output)
+        else:
+            run_simulation(args.model, args.steps, args.dt)
     except SystemExit:
         raise   # _crash() already wrote worker_crash.log
     except Exception as e:

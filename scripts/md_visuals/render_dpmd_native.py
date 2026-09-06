@@ -1,4 +1,4 @@
-"""Native MatterVis Deep-Potential neighbourhood and frozen-force VV preview.
+"""MatterVis Deep-Potential MD story with a fixed four-panel composition.
 
 This module is intentionally isolated from the production renderers.  MatterVis
 owns every atom, bond, periodic-cell pixel, cutoff sphere, and neighbour vector;
@@ -16,9 +16,40 @@ import numpy as np
 from matplotlib.colors import to_rgba
 from matplotlib.patches import Ellipse, FancyBboxPatch, Rectangle
 
-from common import DARK_GRAY, INK, LINE_GRAY, NAVY, LayoutRegistry, json_dump, new_static_figure, render_video, save_static, sha256_file
-from mattervis_story import camera_for_source, make_sphere_mesh, make_torus_mesh, make_vector_group, project_world, render_structure
-from responsive_story import EMERALD, LAKE_BLUE, PALE_OLIVE, draw_horizontal_key, draw_legend, panel_box, place_main, place_render_cropped, simple_audit, stage_rail, story_axes
+from common import (
+    DARK_GRAY,
+    GREEN,
+    INK,
+    LINE_GRAY,
+    NAVY,
+    LayoutRegistry,
+    axes_from_top_slot,
+    json_dump,
+    new_static_figure,
+    new_video_figure,
+    render_video,
+    save_static,
+    sha256_file,
+    smoothstep,
+)
+from mattervis_story import (
+    STORY_STATIC_A,
+    STORY_STATIC_B,
+    STORY_STATIC_C,
+    STORY_STATIC_D,
+    STORY_VIDEO_A,
+    STORY_VIDEO_B,
+    STORY_VIDEO_C,
+    STORY_VIDEO_D,
+    camera_for_source,
+    draw_vv_loop,
+    make_sphere_mesh,
+    make_torus_mesh,
+    make_vector_group,
+    project_world,
+    render_structure,
+)
+from responsive_story import EMERALD, LAKE_BLUE, PALE_OLIVE, place_main
 from PIL import Image
 from mat_viewer.render.geometry import cylinder_mesh
 
@@ -30,9 +61,12 @@ SOURCE = ROOT / "data" / "water_box_64.extxyz"
 BASE_PATH = ROOT / "data" / "water_box_64.npz"
 RESULT_PATH = ROOT / "data" / "dpmd_water_box_results.npz"
 META_PATH = ROOT / "data" / "dpmd_eval.json"
+TRAJECTORY_PATH = ROOT / "data" / "dpmd_water_box_trajectory.npz"
+TRAJECTORY_META_PATH = ROOT / "data" / "dpmd_water_box_trajectory.json"
 VV_SOURCE = QA_DIR / "vv_snapshot.extxyz"
 FOCUS_CLUSTER_SOURCE = QA_DIR / "focus_cluster.extxyz"
 MATTERVIS_DIR = QA_DIR / "mattervis_v3"
+TRAJECTORY_ASSET_DIR = QA_DIR / "mattervis_trajectory_v1"
 BOX_IMAGE = MATTERVIS_DIR / "box_initial.png"
 BOX_CONTEXT_IMAGE = MATTERVIS_DIR / "box_context.png"
 BOX_UPDATED_IMAGE = MATTERVIS_DIR / "box_updated.png"
@@ -55,6 +89,15 @@ FOCUS_FOREGROUND_IMAGE = MATTERVIS_DIR / "focus_foreground.png"
 DT_FS = 0.5
 VV_SEED = 260829
 EV_A_TO_A_FS2 = 0.00964853399
+VIDEO_DURATION = 16.0
+FPS = 24
+DETAILED_SECONDS = 8.0
+FAST_STEP_SECONDS = 2.0
+
+
+def minimum_image_delta(positions: np.ndarray, centre: np.ndarray, box_length: float) -> np.ndarray:
+    delta = np.asarray(positions, dtype=float) - np.asarray(centre, dtype=float)
+    return delta - box_length * np.rint(delta / box_length)
 
 
 def _neighbor_edge_meshes(origins: np.ndarray, vectors: np.ndarray, *, color: str, opacity: float, radius: float = 0.018) -> list[dict]:
@@ -88,6 +131,28 @@ def load_data() -> dict[str, object]:
     with np.load(RESULT_PATH, allow_pickle=False) as r:
         data.update({f"result_{key}": r[key] for key in r.files})
     data["metadata"] = json.loads(META_PATH.read_text(encoding="utf-8"))
+    if TRAJECTORY_PATH.exists():
+        with np.load(TRAJECTORY_PATH, allow_pickle=False) as trajectory:
+            data.update({f"trajectory_{key}": trajectory[key] for key in trajectory.files})
+        if TRAJECTORY_META_PATH.exists():
+            data["trajectory_metadata"] = json.loads(
+                TRAJECTORY_META_PATH.read_text(encoding="utf-8")
+            )
+    else:
+        raise FileNotFoundError(
+            f"Missing real periodic trajectory: {TRAJECTORY_PATH}. "
+            "Run the periodic DeepMD producer before rendering 04. "
+            "The renderer will not silently publish a frozen-force fallback."
+        )
+    trajectory_positions = np.asarray(data["trajectory_positions"], dtype=float)
+    trajectory_energy = np.asarray(data["trajectory_total_energy_ev"], dtype=float)
+    trajectory_atomic = np.asarray(data["trajectory_atomic_energy_ev"], dtype=float)
+    if trajectory_positions.ndim != 3 or trajectory_positions.shape[1:] != (192, 3):
+        raise RuntimeError("Periodic trajectory must have shape (n_states, 192, 3)")
+    if not np.allclose(trajectory_atomic.sum(axis=1), trajectory_energy, atol=1.0e-7):
+        raise RuntimeError("Periodic trajectory atomic energies do not sum to U_DP")
+    if not np.all(np.isfinite(trajectory_positions)):
+        raise RuntimeError("Periodic trajectory contains non-finite positions")
     return data
 
 
@@ -918,21 +983,337 @@ def compose(fig, t: float, registry: LayoutRegistry, data: dict[str, object], vv
     return [{"id": "DP-force", "color": PALE_OLIVE, "min_pixels": 100}, {"id": "cutoff", "color": NAVY, "min_pixels": 100}]
 
 
+def _write_trajectory_sources(data: dict[str, object]) -> tuple[Path, Path, set[int]]:
+    """Write stable multi-frame whole-box and local-focus sources for MatterVis."""
+    from ase import Atoms
+    from ase.io import write
+
+    positions = np.asarray(data["trajectory_positions"], dtype=float)
+    elements = np.asarray(data["trajectory_elements"]).astype(str)
+    box = float(np.asarray(data["trajectory_box_length"]).reshape(-1)[0])
+    central = int(np.asarray(data["trajectory_central_index"]).reshape(-1)[0])
+    base_elements = np.asarray(data["elements"]).astype(str)
+    molecule_ids = np.asarray(data["molecule_ids"], dtype=int)
+    initial = positions[0]
+    delta = initial - initial[central]
+    delta -= box * np.rint(delta / box)
+    distances = np.linalg.norm(delta, axis=1)
+    oxygen = np.flatnonzero(base_elements == "O")
+    ordered_oxygen = oxygen[np.argsort(distances[oxygen])]
+    chosen_oxygen = [central] + [int(item) for item in ordered_oxygen if int(item) != central][:7]
+    focus: set[int] = set()
+    hydrogen = np.flatnonzero(base_elements == "H")
+    for oxygen_index in chosen_oxygen:
+        focus.add(int(oxygen_index))
+        local_h = minimum_image_delta(initial[hydrogen], initial[oxygen_index], box)
+        nearest = hydrogen[np.argsort(np.linalg.norm(local_h, axis=1))[:2]]
+        focus.update(int(item) for item in nearest)
+    focus_sorted = sorted(focus)
+    focus_frames: list[Atoms] = []
+    focus_positions_by_state: list[np.ndarray] = []
+    box_frames: list[Atoms] = []
+    for frame in positions:
+        box_frames.append(Atoms(symbols=elements.tolist(), positions=frame, cell=np.eye(3) * box, pbc=True))
+        focus_pos = np.zeros((len(focus_sorted), 3), dtype=float)
+        frame_delta = frame - frame[central]
+        frame_delta -= box * np.rint(frame_delta / box)
+        for molecule_id in sorted(set(int(molecule_ids[index]) for index in focus_sorted)):
+            members = [index for index in focus_sorted if int(molecule_ids[index]) == molecule_id]
+            oxygens = [index for index in members if base_elements[index] == "O"]
+            if not oxygens:
+                continue
+            oxygen_index = central if molecule_id == int(molecule_ids[central]) else oxygens[0]
+            oxygen_position = frame[central] + frame_delta[oxygen_index]
+            for index in members:
+                local = frame[index] - frame[oxygen_index]
+                local -= box * np.rint(local / box)
+                focus_pos[focus_sorted.index(index)] = oxygen_position + local
+        focus_frames.append(Atoms(symbols=base_elements[focus_sorted].tolist(), positions=focus_pos))
+        focus_positions_by_state.append(focus_pos)
+    source_dir = QA_DIR / "trajectory_sources"
+    source_dir.mkdir(parents=True, exist_ok=True)
+    box_source = source_dir / "water_box_trajectory.extxyz"
+    focus_source = source_dir / "focus_trajectory.extxyz"
+    write(box_source, box_frames, format="extxyz")
+    write(focus_source, focus_frames, format="extxyz")
+    data["_focus_indices"] = focus_sorted
+    data["_focus_positions"] = np.asarray(focus_positions_by_state, dtype=float)
+    data["_focus_source"] = focus_source
+    data["_box_source"] = box_source
+    return box_source, focus_source, focus
+
+
+def _trajectory_assets(data: dict[str, object]) -> dict[str, object]:
+    """Render all retained trajectory states with one fixed MatterVis camera."""
+    box_source, focus_source, focus_indices = _write_trajectory_sources(data)
+    positions = np.asarray(data["trajectory_positions"], dtype=float)
+    forces = np.asarray(data["trajectory_forces_ev_per_angstrom"], dtype=float)
+    velocities = np.asarray(data["trajectory_velocities"], dtype=float)
+    central = int(data["trajectory_central_index"])
+    box = float(data["trajectory_box_length"])
+    target = positions[0, central]
+    camera = camera_for_source(box_source, target=target, ortho_scale=15.2, frame=0, direction=(1.0, 0.0, 0.0), up=(0.0, 0.0, 1.0))
+    output_dir = TRAJECTORY_ASSET_DIR
+    output_dir.mkdir(parents=True, exist_ok=True)
+    n_states = len(positions)
+    box_paths: list[Path] = []
+    focus_paths: list[Path] = []
+    force_paths: list[Path] = []
+    velocity_paths: list[Path] = []
+    move_paths: list[Path] = []
+    focus_list = sorted(focus_indices)
+    focus_map = {old: new for new, old in enumerate(focus_list)}
+    style = {"shaft_radius": 0.024, "head_length": 0.10, "head_radius": 0.060, "sides": 16}
+    for state in range(n_states):
+        box_path = output_dir / f"box_{state:02d}.png"
+        focus_path = output_dir / f"focus_{state:02d}.png"
+        force_path = output_dir / f"focus_force_{state:02d}.png"
+        velocity_path = output_dir / f"focus_velocity_{state:02d}.png"
+        move_path = output_dir / f"focus_move_{state:02d}.png"
+        focus_pos = np.asarray(data["_focus_positions"][state], dtype=float)
+        focus_centre = focus_pos[focus_map[central]]
+        force_vector = make_vector_group("F_DP", focus_centre[None, :], forces[state, central][None, :], scale=55.0, color=PALE_OLIVE, style=style)
+        velocity_vector = make_vector_group("v_half", focus_centre[None, :], velocities[state, central][None, :], scale=150.0, color=EMERALD, style=style)
+        neighbour_meshes = []
+        ids = np.asarray(data["trajectory_neighbour_ids"][state], dtype=int)
+        ids = ids[ids >= 0]
+        for index in ids:
+            if int(index) not in focus_map or int(index) == central:
+                continue
+            endpoint = focus_pos[focus_map[int(index)]]
+            neighbour_meshes.extend(_neighbor_edge_meshes(np.asarray([focus_centre]), np.asarray([endpoint - focus_centre]), color=NAVY, opacity=0.72, radius=0.016))
+        common_box = dict(camera=camera, frame=state, view="unit_cell", width=1700, height=1180, atom_scale=0.72, bond_radius=0.075, show_cell=True, cell_color="#9AA5AA", cell_width_px=1.15)
+        common_focus = dict(camera=camera, frame=state, view="cluster", width=1700, height=1180, atom_scale=1.02, bond_radius=0.095, show_cell=False, include_boundary_replicas=False)
+        render_structure(box_source, box_path, **common_box)
+        render_structure(focus_source, focus_path, **common_focus, mesh_overlays=neighbour_meshes, show_bonds=False)
+        render_structure(focus_source, force_path, **common_focus, mesh_overlays=neighbour_meshes, show_bonds=False, vector_overlays=force_vector)
+        render_structure(focus_source, velocity_path, **common_focus, mesh_overlays=neighbour_meshes, show_bonds=False, vector_overlays=velocity_vector)
+        if state < n_states - 1:
+            displacement = positions[state + 1, central] - positions[state, central]
+            displacement -= box * np.rint(displacement / box)
+            move_vector = make_vector_group("dr", focus_centre[None, :], displacement[None, :], scale=80.0, color=LAKE_BLUE, style=style)
+            render_structure(focus_source, move_path, frame=state, **{key: value for key, value in common_focus.items() if key != "frame"}, mesh_overlays=neighbour_meshes, show_bonds=False, vector_overlays=move_vector)
+        box_paths.append(box_path)
+        focus_paths.append(focus_path)
+        force_paths.append(force_path)
+        velocity_paths.append(velocity_path)
+        move_paths.append(move_path)
+    json_dump(QA_DIR / "trajectory_asset_provenance.json", {
+        "schema": "dpmd_trajectory_mattervis_assets/v1",
+        "source": str(data["_box_source"]),
+        "focus_source": str(data["_focus_source"]),
+        "camera": {"target": list(camera.target), "direction": list(camera.direction), "up": list(camera.up), "ortho_scale": camera.ortho_scale},
+        "states": n_states,
+        "focus_indices": focus_list,
+        "trajectory_metadata": str(TRAJECTORY_META_PATH),
+    })
+    return {"box": box_paths, "focus": focus_paths, "force": force_paths, "velocity": velocity_paths, "move": move_paths, "camera": camera}
+
+
+def _trajectory_descriptor(data: dict[str, object], state: int) -> dict[str, object]:
+    positions = np.asarray(data["trajectory_positions"], dtype=float)[state]
+    box = float(data["trajectory_box_length"])
+    central = int(data["trajectory_central_index"])
+    ids = np.asarray(data["trajectory_neighbour_ids"], dtype=int)[state]
+    ids = ids[ids >= 0]
+    delta = minimum_image_delta(positions[ids], positions[central], box)
+    distance = np.linalg.norm(delta, axis=1)
+    order = np.argsort(distance)
+    ids, delta, distance = ids[order], delta[order], distance[order]
+    sample_ids = ids[:5]
+    sample_delta = delta[:5]
+    sample_distance = distance[:5]
+    rs = 0.5 * float(data["trajectory_cutoff_angstrom"])
+    u = np.clip((sample_distance - rs) / max(float(data["trajectory_cutoff_angstrom"]) - rs, 1e-12), 0.0, 1.0)
+    smooth = np.where(sample_distance < rs, 1.0, u**3 * (-6.0 * u**2 + 15.0 * u - 10.0) + 1.0)
+    s = smooth / np.maximum(sample_distance, 1e-12)
+    environment = np.column_stack([s, s[:, None] * sample_delta / sample_distance[:, None]])
+    return {"ids": ids, "delta": delta, "distance": distance, "sample_ids": sample_ids, "environment": environment}
+
+
+def _node(ax, registry, x, y, label, colour, weight, *, fontsize=10, height=0.10, width=0.24):
+    fill = "#F2F4F3" if weight < 0.45 else colour
+    edge = LINE_GRAY if weight < 0.45 else colour
+    ax.add_patch(FancyBboxPatch((x - width / 2, y - height / 2), width, height, boxstyle="round,pad=0.012,rounding_size=0.018", fc=fill, ec=edge, lw=1.8, zorder=3))
+    registry.text(ax, x, y, label, ha="center", va="center", fontsize=fontsize, color="white" if weight >= 0.45 else INK, weight="bold", zorder=4)
+
+
+def _draw_dp_vv(ax, registry, *, video, mode):
+    active = {"evaluate": 1, "half_kick": 1, "drift": 0, "reevaluate": 1, "final_kick": 2, "commit": 0}.get(mode, 1)
+    equation = {"evaluate": r"$\mathbf a_n=\mathbf F_n/m$", "half_kick": r"$\mathbf v_{n+1/2}=\mathbf v_n+\frac12\mathbf a_n\Delta t$", "drift": r"$\mathbf r_{n+1}=\mathbf r_n+\mathbf v_{n+1/2}\Delta t$", "reevaluate": r"$\mathbf F_{n+1}=-\nabla U(\mathbf r_{n+1})$", "final_kick": r"$\mathbf v_{n+1}=\mathbf v_{n+1/2}+\frac12\mathbf a_{n+1}\Delta t$", "commit": r"$n\rightarrow n+1$"}.get(mode, r"$U_{\rm DP},\mathbf F$")
+    draw_vv_loop(ax, registry, video=video, active_stage=active, centre_text=equation, centre_y=0.55, radius_x=0.39)
+    registry.text(ax, 0.50, 0.08, "DP force → acceleration → VV", ha="center", va="center", fontsize=11 if video else 10, color=NAVY, weight="bold")
+
+
+def _draw_water_panel(ax, registry, assets, data, state, *, video):
+    ax.add_patch(Rectangle((0.025, 0.04), 0.95, 0.92, fill=False, ec=LINE_GRAY, lw=2.0 if video else 1.1))
+    registry.text(ax, 0.25, 0.925, "periodic water box", ha="center", va="center", fontsize=15 if video else 11, color=INK, weight="bold")
+    registry.text(ax, 0.735, 0.925, "O126 local environment", ha="center", va="center", fontsize=15 if video else 11, color=INK, weight="bold")
+    place_main(ax, assets["box"][state], rect=(0.04, 0.15, 0.46, 0.87))
+    focus_key = "focus"
+    mode = data["_state"]["mode"]
+    if mode in {"evaluate", "reevaluate", "half_kick", "drift", "final_kick", "commit"}:
+        focus_key = "focus_force" if mode in {"evaluate", "reevaluate"} else "focus_velocity" if mode in {"half_kick", "final_kick"} else "move" if mode == "drift" else "focus"
+    focus_path = assets[focus_key][state]
+    place_main(ax, focus_path, rect=(0.52, 0.15, 0.96, 0.87))
+    registry.text(ax, 0.06, 0.075, f"MD step {state:02d} · Δt = {float(data['trajectory_dt_fs']):g} fs", ha="left", va="center", fontsize=11 if video else 10, color=INK)
+    registry.text(ax, 0.94, 0.075, f"{int(data['_descriptor']['count'])} MIC neighbours · r_c = {float(data['trajectory_cutoff_angstrom']):g} Å", ha="right", va="center", fontsize=11 if video else 10, color=NAVY, weight="bold")
+
+
+def _draw_environment_matrix(ax, registry, data, *, video, weight):
+    values = data["_descriptor"]
+    registry.text(ax, 0.50, 0.92, "MIC neighbour rows → environment matrix", ha="center", va="center", fontsize=14 if video else 10, color=INK, weight="bold")
+    registry.text(ax, 0.50, 0.865, "same source ID appears in the local lines and in each row", ha="center", va="center", fontsize=10, color=DARK_GRAY)
+    rows = values["rows"][:5]
+    x0, y0, w, h = 0.08, 0.55, 0.84, 0.25
+    headers = ("j", "Z", "r Å", "Δx", "Δy", "Δz")
+    widths = (0.12, 0.10, 0.15, 0.21, 0.21, 0.21)
+    x = x0
+    for header, width in zip(headers, widths):
+        registry.text(ax, x + width / 2, y0 + h + 0.025, header, ha="center", va="bottom", fontsize=10, color=NAVY, weight="bold")
+        x += width
+    for row_index, row in enumerate(rows):
+        y = y0 + (len(rows) - 1 - row_index) * h / len(rows)
+        x = x0
+        cells = (f"j{int(row['id'])}", str(row["element"]), f"{row['r']:.4f}", f"{row['dx']:+.3f}", f"{row['dy']:+.3f}", f"{row['dz']:+.3f}")
+        for col, (cell, width) in enumerate(zip(cells, widths)):
+            colour = NAVY if col == 0 else (LAKE_BLUE if weight > 0.45 else "#E9ECEC")
+            ax.add_patch(Rectangle((x, y), width - 0.004, h / len(rows) - 0.006, fc=colour if weight > 0.45 else "#F3F5F4", ec="white", lw=0.5))
+            registry.text(ax, x + width / 2, y + h / len(rows) / 2, cell, ha="center", va="center", fontsize=9, color="white" if weight > 0.45 and col == 0 else INK)
+            x += width
+    registry.arrow(ax, (0.50, 0.49), (0.50, 0.43), arrowstyle="-|>", mutation_scale=12, lw=1.5, color=NAVY if weight > 0.45 else LINE_GRAY)
+    registry.text(ax, 0.50, 0.385, "Rᵢⱼ = [s(rᵢⱼ), s·Δx/r, s·Δy/r, s·Δz/r]", ha="center", va="center", fontsize=11, color=INK if weight > 0.45 else DARK_GRAY, weight="bold")
+    env = np.asarray(values["environment"], dtype=float)
+    left, bottom, width, height = 0.18, 0.105, 0.64, 0.20
+    for row_index in range(env.shape[0]):
+        for col in range(env.shape[1]):
+            value = float(env[row_index, col])
+            scale = np.clip((value - env.min()) / max(env.max() - env.min(), 1e-12), 0.0, 1.0)
+            fc = EMERALD if weight > 0.45 else "#E9ECEC"
+            alpha = 0.25 + 0.65 * scale if weight > 0.45 else 1.0
+            x = left + col * width / 4
+            y = bottom + (env.shape[0] - 1 - row_index) * height / env.shape[0]
+            ax.add_patch(Rectangle((x, y), width / 4 - 0.004, height / env.shape[0] - 0.005, fc=to_rgba(fc, alpha=alpha), ec="white", lw=0.5))
+            registry.text(ax, x + width / 8, y + height / env.shape[0] / 2, f"{value:.3f}", ha="center", va="center", fontsize=8, color=INK)
+    for col, label in enumerate(("s", "sx/r", "sy/r", "sz/r")):
+        registry.text(ax, left + (col + 0.5) * width / 4, 0.075, label, ha="center", va="top", fontsize=9, color=EMERALD if weight > 0.45 else DARK_GRAY)
+    descriptor_status = data.get("trajectory_metadata", {}).get("model_probe", {}).get("descriptor", {}).get("status", "unavailable")
+    label = "model descriptor Dᵢ (eval_descriptor)" if descriptor_status == "available" else "learned descriptor Dᵢ · internal tensor not exported"
+    registry.text(ax, 0.50, 0.025, label, ha="center", va="bottom", fontsize=9, color=NAVY if weight > 0.45 else DARK_GRAY, weight="bold")
+
+
+def _draw_energy_force(ax, registry, data, *, video, mode, weight):
+    registry.text(ax, 0.50, 0.92, "fitting network → potential and force", ha="center", va="center", fontsize=14 if video else 10, color=INK, weight="bold")
+    nodes = [(0.14, "Dᵢ", NAVY), (0.38, "fitting\nnetwork", NAVY), (0.62, "εᵢ", EMERALD), (0.86, "Σ εᵢ", EMERALD)]
+    for index, (x, label, colour) in enumerate(nodes):
+        _node(ax, registry, x, 0.73, label, colour, weight, fontsize=9, width=0.19 if index != 1 else 0.24)
+        if index < len(nodes) - 1:
+            registry.arrow(ax, (x + (0.10 if index != 1 else 0.13), 0.73), (nodes[index + 1][0] - (0.10 if index + 1 != 1 else 0.13), 0.73), arrowstyle="-|>", mutation_scale=10, lw=1.5, color=NAVY if weight > 0.45 else LINE_GRAY)
+    energies = np.asarray(data["trajectory_atomic_energy_ev"], dtype=float)[data["_state"]["state"]]
+    total = float(data["trajectory_total_energy_ev"][data["_state"]["state"]])
+    force = np.asarray(data["trajectory_forces_ev_per_angstrom"], dtype=float)[data["_state"]["state"]]
+    central = int(data["trajectory_central_index"])
+    registry.text(ax, 0.50, 0.56, f"ε_O126 = {energies[central]:+.4f} eV", ha="center", va="center", fontsize=10, color=EMERALD if weight > 0.45 else DARK_GRAY, weight="bold")
+    registry.text(ax, 0.50, 0.47, f"U_DP = Σᵢ εᵢ = {total:+.4f} eV", ha="center", va="center", fontsize=11, color=EMERALD if weight > 0.45 else DARK_GRAY, weight="bold")
+    registry.arrow(ax, (0.50, 0.39), (0.50, 0.30), arrowstyle="-|>", mutation_scale=12, lw=1.8, color=PALE_OLIVE if weight > 0.45 else LINE_GRAY)
+    registry.text(ax, 0.50, 0.265, r"Fₖ = −∂U_DP/∂rₖ = −∂(Σᵢ εᵢ)/∂rₖ", ha="center", va="center", fontsize=10, color=PALE_OLIVE if weight > 0.45 else DARK_GRAY, weight="bold")
+    registry.text(ax, 0.50, 0.19, f"|F_O126| = {np.linalg.norm(force[central]):.4f} eV Å⁻¹", ha="center", va="center", fontsize=10, color=PALE_OLIVE if weight > 0.45 else DARK_GRAY)
+    output_y = 0.085
+    _node(ax, registry, 0.28, output_y, "potential U_DP", EMERALD, 1.0 if mode in {"evaluate", "reevaluate", "final_kick", "commit"} else 0.0, fontsize=9, width=0.30, height=0.09)
+    _node(ax, registry, 0.72, output_y, "forces {Fₖ}", PALE_OLIVE, 1.0 if mode in {"evaluate", "reevaluate", "final_kick", "commit"} else 0.0, fontsize=9, width=0.25, height=0.09)
+
+
+def _state_for_time(time_seconds: float, n_states: int) -> dict[str, object]:
+    t = float(np.clip(time_seconds, 0.0, VIDEO_DURATION - 1e-9))
+    if t < DETAILED_SECONDS:
+        state = 0
+        local = t / DETAILED_SECONDS
+        phases = (("neighbors", 1.0), ("descriptor", 1.8), ("fitting", 1.8), ("evaluate", 1.5), ("half_kick", 0.7), ("drift", 0.7), ("reevaluate", 0.9), ("final_kick", 0.4), ("commit", 0.2))
+        total = sum(duration for _, duration in phases)
+        cursor = 0.0
+        for mode, duration in phases:
+            if local * total < cursor + duration:
+                return {"state": state, "mode": mode, "progress": (local * total - cursor) / duration}
+            cursor += duration
+        return {"state": state, "mode": "commit", "progress": 1.0}
+    fast_index = min(int((t - DETAILED_SECONDS) // FAST_STEP_SECONDS), max(n_states - 2, 0))
+    state = min(fast_index + 1, n_states - 1)
+    local = ((t - DETAILED_SECONDS) - fast_index * FAST_STEP_SECONDS) / FAST_STEP_SECONDS
+    phases = (("neighbors", 0.24), ("descriptor", 0.30), ("evaluate", 0.20), ("half_kick", 0.10), ("drift", 0.08), ("reevaluate", 0.05), ("final_kick", 0.02), ("commit", 0.01))
+    cursor = 0.0
+    for mode, fraction in phases:
+        if local < cursor + fraction:
+            return {"state": state, "mode": mode, "progress": (local - cursor) / fraction}
+        cursor += fraction
+    return {"state": min(fast_index + 1, n_states - 1), "mode": "commit", "progress": 1.0}
+
+
+def _draw_trajectory_frame(fig, time_seconds, frame_index, registry, data, assets):
+    del frame_index
+    state = _state_for_time(time_seconds, len(data["trajectory_positions"]))
+    state_index = int(state["state"])
+    data["_state"] = state
+    data["_descriptor"] = _trajectory_descriptor(data, state_index)
+    data["_descriptor"]["count"] = int(np.asarray(data["trajectory_neighbour_counts"])[state_index])
+    data["_descriptor"]["rows"] = []
+    elements = np.asarray(data["trajectory_elements"]).astype(str)
+    values = data["_descriptor"]
+    for index, distance, vector in zip(values["sample_ids"], values["distance"][:5], values["delta"][:5]):
+        data["_descriptor"]["rows"].append({"id": int(index), "element": str(elements[int(index)]), "r": float(distance), "dx": float(vector[0]), "dy": float(vector[1]), "dz": float(vector[2])})
+    mode = str(state["mode"])
+    progress = smoothstep(float(state["progress"]))
+    panel_a = axes_from_top_slot(fig, STORY_VIDEO_A)
+    panel_b = axes_from_top_slot(fig, STORY_VIDEO_B)
+    panel_c = axes_from_top_slot(fig, STORY_VIDEO_C)
+    panel_d = axes_from_top_slot(fig, STORY_VIDEO_D)
+    _draw_dp_vv(panel_a, registry, video=True, mode=mode)
+    _draw_water_panel(panel_b, registry, assets, data, state_index, video=True)
+    _draw_environment_matrix(panel_c, registry, data, video=True, weight=1.0 if mode in {"descriptor", "fitting", "evaluate", "half_kick", "drift", "reevaluate", "final_kick", "commit"} else progress)
+    _draw_energy_force(panel_d, registry, data, video=True, mode=mode, weight=1.0 if mode in {"fitting", "evaluate", "half_kick", "drift", "reevaluate", "final_kick", "commit"} else progress)
+    return [{"id": "descriptor", "color": NAVY, "min_pixels": 80}, {"id": "potential", "color": EMERALD, "min_pixels": 80}, {"id": "force", "color": PALE_OLIVE, "min_pixels": 80}]
+
+
 def main() -> None:
-    parser = argparse.ArgumentParser(); parser.add_argument("--static-only", action="store_true"); args = parser.parse_args()
-    data = load_data(); vv = _make_vv_snapshot(data); a = _render_assets(data, vv)
-    fig = new_static_figure(); reg = LayoutRegistry(min_font_pt=10, max_font_pt=16, edge_pad_px=18)
-    # The still freezes the force-to-propagation transition so the title,
-    # native arrow, cutoff sphere and VV return all refer to one state.
-    compose(fig, 9.0, reg, data, vv, a, video=False)
-    errors = reg.validate(fig)
-    if errors: raise RuntimeError("static native DP layout failed:\n" + "\n".join(errors))
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--static-only", action="store_true")
+    args = parser.parse_args()
+    data = load_data()
+    data["trajectory_positions"] = np.asarray(data["trajectory_positions"], dtype=float)
+    data["trajectory_elements"] = np.asarray(data["trajectory_elements"]).astype(str)
+    data["trajectory_box_length"] = float(np.asarray(data["trajectory_box_length"]).reshape(-1)[0])
+    data["trajectory_central_index"] = int(np.asarray(data["trajectory_central_index"]).reshape(-1)[0])
+    data["trajectory_dt_fs"] = float(np.asarray(data["trajectory_dt_fs"]).reshape(-1)[0])
+    data["trajectory_cutoff_angstrom"] = float(data.get("trajectory_metadata", {}).get("model_cutoff_angstrom", 6.0))
+    data["trajectory_neighbour_ids"] = np.asarray(data["trajectory_neighbour_ids"], dtype=int)
+    data["trajectory_neighbour_counts"] = np.asarray(data["trajectory_neighbour_counts"], dtype=int)
+    data["trajectory_atomic_energy_ev"] = np.asarray(data["trajectory_atomic_energy_ev"], dtype=float)
+    data["trajectory_total_energy_ev"] = np.asarray(data["trajectory_total_energy_ev"], dtype=float)
+    data["trajectory_forces_ev_per_angstrom"] = np.asarray(data["trajectory_forces_ev_per_angstrom"], dtype=float)
+    data["trajectory_velocities"] = np.asarray(data["trajectory_velocities"], dtype=float)
+    data["trajectory_cutoff_angstrom"] = float(
+        np.asarray(data.get("trajectory_cutoff_angstrom", data["trajectory_metadata"].get("model_cutoff_angstrom", 6.0))).reshape(-1)[0]
+    )
+    assets = _trajectory_assets(data)
+    fig = new_static_figure()
+    registry = LayoutRegistry(min_font_pt=10, max_font_pt=16, edge_pad_px=18)
+    state = _state_for_time(7.0, len(data["trajectory_positions"]))
+    data["_state"] = state
+    data["_descriptor"] = _trajectory_descriptor(data, int(state["state"]))
+    data["_descriptor"]["count"] = int(data["trajectory_neighbour_counts"][int(state["state"])])
+    data["_descriptor"]["rows"] = []
+    elements = np.asarray(data["trajectory_elements"]).astype(str)
+    for index, distance, vector in zip(data["_descriptor"]["sample_ids"], data["_descriptor"]["distance"][:5], data["_descriptor"]["delta"][:5]):
+        data["_descriptor"]["rows"].append({"id": int(index), "element": str(elements[int(index)]), "r": float(distance), "dx": float(vector[0]), "dy": float(vector[1]), "dz": float(vector[2])})
+    _draw_dp_vv(axes_from_top_slot(fig, STORY_STATIC_A), registry, video=False, mode="reevaluate")
+    _draw_water_panel(axes_from_top_slot(fig, STORY_STATIC_B), registry, assets, data, 0, video=False)
+    _draw_environment_matrix(axes_from_top_slot(fig, STORY_STATIC_C), registry, data, video=False, weight=1.0)
+    _draw_energy_force(axes_from_top_slot(fig, STORY_STATIC_D), registry, data, video=False, mode="evaluate", weight=1.0)
+    errors = registry.validate(fig)
+    if errors:
+        raise RuntimeError("static trajectory DP layout failed:\n" + "\n".join(errors))
     save_static(fig, STEM)
     if not args.static_only:
-        render_video(stem=STEM, duration_seconds=16.0,
-                     draw_frame=lambda f,t,i,r: compose(f,t,r,data,vv,a,video=True),
-                     audit_config=simple_audit(("rail","structure","dp_info")), qa_directory=QA_DIR / "_qa",
-                     representative_times=[1.0,2.0,4.0,6.0,8.0,10.0,12.0,14.0,15.0,15.5])
+        render_video(stem=STEM, duration_seconds=VIDEO_DURATION, draw_frame=lambda f, t, i, r: _draw_trajectory_frame(f, t, i, r, data, assets), audit_config={"panels": [{"id": "integrator", "rect": list(STORY_VIDEO_A), "min_clearance_px": 12}, {"id": "water", "rect": list(STORY_VIDEO_B), "min_clearance_px": 12}, {"id": "environment", "rect": list(STORY_VIDEO_C), "min_clearance_px": 12}, {"id": "outputs", "rect": list(STORY_VIDEO_D), "min_clearance_px": 12}], "whitespace": {"background_threshold": 245, "min_ink_fraction": 0.02, "min_panel_bbox_fill": 0.22, "grid_rows": 12, "grid_columns": 24}, "bands": [{"id": "gap_a_b", "rect": [0.310, 0.055, 0.325, 0.955], "max_ink_pixels": 0}, {"id": "gap_b_right", "rect": [0.715, 0.045, 0.745, 0.955], "max_ink_pixels": 0}, {"id": "gap_c_d", "rect": [0.745, 0.405, 0.965, 0.445], "max_ink_pixels": 0}]}, qa_directory=QA_DIR / "_qa", representative_times=[0.2, 2.0, 4.0, 6.0, 7.9, 8.1, 10.0, 12.0, 14.0, 15.8])
 
 
 if __name__ == "__main__": main()

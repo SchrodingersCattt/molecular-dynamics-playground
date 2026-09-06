@@ -32,18 +32,24 @@ REPO_ROOT = os.path.dirname(os.path.dirname(HERE))
 
 # ── Model ──────────────────────────────────────────────────────────────────────
 MODEL_FILENAME = "H2O-Phase-Diagram-model_compressed.pb"
+BOX_FILENAME = "water_box_64.npz"
 
 # ── Output paths ───────────────────────────────────────────────────────────────
 NPZ_OUT      = os.path.join(REPO_ROOT, "product", "data", "deepmd_data.npz")
+PERIODIC_NPZ_OUT = os.path.join(REPO_ROOT, "product", "data", "dpmd_water_box_trajectory.npz")
 WORK_DIR     = os.path.join(HERE, "bohrium_work")
 MODEL_PATH   = os.path.join(HERE, MODEL_FILENAME)
 WORKER_PATH  = os.path.join(HERE, "worker_deepmd.py")
+BOX_PATH    = os.path.join(REPO_ROOT, "product", "data", BOX_FILENAME)
+PERIODIC_RUNNER = os.path.join(REPO_ROOT, "scripts", "run_md", "run_water_box_dpmd.py")
 
 # ── Bohrium job parameters ─────────────────────────────────────────────────────
 DOCKER_IMAGE = "registry.dp.tech/dptech/dpmd:2.2.8-cuda12.0"
 MACHINE_TYPE = "c2_m8_cpu"
 N_STEPS      = 100    # enough steps for visible dynamics in the animation
 DT_FS        = 0.5
+PERIODIC_STEPS = 5
+DEFAULT_BOHRIUM_PROJECT_ID = 17142
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -79,27 +85,31 @@ def run_bohrium():
     """Submit worker_deepmd.py to Bohrium and download results."""
     # ── Load .env ──────────────────────────────────────────────────────────────
     env_path = os.path.join(HERE, ".env")
-    if not os.path.exists(env_path):
+    if not os.path.exists(env_path) and not os.environ.get("BOHR_ACCESS_KEY"):
         sys.exit(
             f"[ERROR] {env_path} not found.\n"
             f"Copy scripts/submit_calculation/.env.template → scripts/submit_calculation/.env and fill in credentials."
         )
+    if os.environ.get("BOHR_ACCESS_KEY") and not os.environ.get("BOHR_TICKET"):
+        os.environ["BOHR_TICKET"] = os.environ["BOHR_ACCESS_KEY"]
     try:
         from dotenv import load_dotenv
-        load_dotenv(env_path)
+        if os.path.exists(env_path):
+            load_dotenv(env_path)
     except ImportError:
         # Manual parse if python-dotenv not installed
-        with open(env_path) as fh:
-            for line in fh:
-                line = line.strip()
-                if line and not line.startswith("#") and "=" in line:
-                    k, v = line.split("=", 1)
-                    os.environ.setdefault(k.strip(), v.strip())
+        if os.path.exists(env_path):
+            with open(env_path) as fh:
+                for line in fh:
+                    line = line.strip()
+                    if line and not line.startswith("#") and "=" in line:
+                        k, v = line.split("=", 1)
+                        os.environ.setdefault(k.strip(), v.strip())
 
     ticket     = os.environ.get("BOHR_TICKET", "").strip()
     email      = os.environ.get("BOHR_EMAIL", "").strip()
     password   = os.environ.get("BOHR_PASSWORD", "").strip()
-    project_id = int(os.environ.get("BOHR_PROJECT_ID", "0"))
+    project_id = int(os.environ.get("BOHR_PROJECT_ID", str(DEFAULT_BOHRIUM_PROJECT_ID)))
 
     if not ticket and not (email and password):
         sys.exit(
@@ -124,6 +134,10 @@ def run_bohrium():
             f"[ERROR] Worker file not found: {WORKER_PATH}\n"
             "Expected: scripts/submit_calculation/worker_deepmd.py"
         )
+    if not os.path.exists(BOX_PATH):
+        sys.exit(f"[ERROR] Periodic input not found: {BOX_PATH}")
+    if not os.path.exists(PERIODIC_RUNNER):
+        sys.exit(f"[ERROR] Periodic runner not found: {PERIODIC_RUNNER}")
 
     # ── Import dpdispatcher ────────────────────────────────────────────────────
     try:
@@ -149,6 +163,17 @@ def run_bohrium():
             print(f"[setup] Removed stale file: {os.path.basename(stale)}", flush=True)
         except OSError:
             pass
+    submission_home = os.path.join(os.path.expanduser("~"), ".dpdispatcher", "submission")
+    if os.path.isdir(submission_home):
+        for stale in glob.glob(os.path.join(submission_home, "*.json")):
+            try:
+                with open(stale, encoding="utf-8") as handle:
+                    content = handle.read()
+                if WORK_DIR.replace("\\", "/") in content.replace("\\", "/"):
+                    os.remove(stale)
+                    print(f"[setup] Removed stale submission record: {os.path.basename(stale)}", flush=True)
+            except OSError:
+                pass
     # Also clear the dpdispatcher home-dir submission JSON for this work_base
     import glob as _glob
     home_dp = os.path.join(os.path.expanduser("~"), ".dpdispatcher", "dp_cloud_server")
@@ -166,6 +191,8 @@ def run_bohrium():
     os.makedirs(WORK_DIR, exist_ok=True)
     shutil.copy(WORKER_PATH, os.path.join(WORK_DIR, "worker_deepmd.py"))
     shutil.copy(MODEL_PATH,  os.path.join(WORK_DIR, MODEL_FILENAME))
+    shutil.copy(BOX_PATH, os.path.join(WORK_DIR, BOX_FILENAME))
+    shutil.copy(PERIODIC_RUNNER, os.path.join(WORK_DIR, "run_water_box_dpmd.py"))
 
     # ── Build remote_profile ───────────────────────────────────────────────────
     # Auth option A: BOHR_TICKET — set env var; BohriumContext reads it via
@@ -187,10 +214,11 @@ def run_bohrium():
             # packaging out.zip.  By setting this here, the if-not check in
             # do_submit() skips _gen_backward_files_list entirely.
             "backward_files": [
-                "./results.npz",
-                "./worker.log",
-                "./worker.err",
-                "./worker_crash.log",
+                "periodic_results.npz",
+                "periodic_metadata.json",
+                "worker.log",
+                "worker.err",
+                "worker_crash.log",
             ], 
         },
     }
@@ -209,7 +237,7 @@ def run_bohrium():
         remote_profile= remote_profile,
     )
 
-    machine = Machine(batch_type="Bohrium", context=context)
+    machine = Machine.subclasses_dict["Bohrium"](context)
 
     resources = Resources(
         number_node   = 1,
@@ -221,15 +249,18 @@ def run_bohrium():
 
     task = Task(
         command       = (
-            f"python worker_deepmd.py "
+            f"python run_water_box_dpmd.py "
             f"--model {MODEL_FILENAME} "
-            f"--steps {N_STEPS} "
-            f"--dt {DT_FS}"
+            f"--input {BOX_FILENAME} "
+            f"--output periodic_results.npz "
+            f"--metadata periodic_metadata.json "
+            f"--steps {PERIODIC_STEPS} "
+            f"--dt {DT_FS} "
         ),
         task_work_path= ".",
-        forward_files = ["worker_deepmd.py", MODEL_FILENAME],
+        forward_files = ["run_water_box_dpmd.py", MODEL_FILENAME, BOX_FILENAME],
         # Download results + diagnostic logs regardless of exit code
-        backward_files= ["results.npz", "worker.log", "worker.err", "worker_crash.log"],
+        backward_files= ["periodic_results.npz", "periodic_metadata.json", "worker.log", "worker.err", "worker_crash.log"],
         outlog        = "worker.log",
         errlog        = "worker.err",
     )
@@ -260,7 +291,7 @@ def run_bohrium():
                 print(f"  (could not read: {e})", flush=True)
 
     # ── Repack results.npz → deepmd_data.npz ──────────────────────────────────
-    results_path = os.path.join(WORK_DIR, "results.npz")
+    results_path = os.path.join(WORK_DIR, "periodic_results.npz")
     if not os.path.exists(results_path):
         # Print crash log if available before exiting
         crash_log = os.path.join(WORK_DIR, "worker_crash.log")
@@ -270,14 +301,15 @@ def run_bohrium():
                 print(fh.read(), flush=True)
         sys.exit(f"[ERROR] results.npz not found in {WORK_DIR} after job completion.")
 
-    z = np.load(results_path)
-    _save_npz(
-        z["steps"], z["time_fs"], z["positions"], z["velocities"], z["forces"],
-        z["E_total"], z["per_atom_e"], z["KE"], z["TE"],
-        z["r_ij"], z["s_ij"], z["n_nbr"],
-        label="DeePMD-kit (H2O-Phase-Diagram)",
-    )
-    print(f"[Bohrium] Repacked → {NPZ_OUT}", flush=True)
+    metadata_result = os.path.join(WORK_DIR, "periodic_metadata.json")
+    os.makedirs(os.path.dirname(PERIODIC_NPZ_OUT), exist_ok=True)
+    shutil.copy(results_path, PERIODIC_NPZ_OUT)
+    if os.path.exists(metadata_result):
+        shutil.copy(
+            metadata_result,
+            os.path.join(os.path.dirname(PERIODIC_NPZ_OUT), "dpmd_water_box_trajectory.json"),
+        )
+    print(f"[Bohrium] Repacked → {PERIODIC_NPZ_OUT}", flush=True)
 
 
 # ══════════════════════════════════════════════════════════════════════════════
