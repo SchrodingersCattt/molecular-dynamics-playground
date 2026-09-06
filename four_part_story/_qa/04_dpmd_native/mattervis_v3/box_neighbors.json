@@ -40,6 +40,7 @@
     "bond_radius": 0.075,
     "show_cell": true,
     "include_boundary_replicas": true,
+    "show_bonds": true,
     "cell_color": "#9AA5AA",
     "cell_width_px": 1.15
   },

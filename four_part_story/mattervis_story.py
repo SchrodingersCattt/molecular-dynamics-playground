@@ -327,6 +327,7 @@ def render_structure(
     atom_opacity_scales: dict[int, float] | None = None,
     atom_color_overrides: dict[int, str] | None = None,
     include_boundary_replicas: bool = True,
+    show_bonds: bool = True,
     cell_color: str = "#333333",
     cell_width_px: float = 2.0,
 ) -> dict:
@@ -340,6 +341,7 @@ def render_structure(
         "bond_radius": float(bond_radius),
         "show_cell": bool(show_cell),
         "include_boundary_replicas": bool(include_boundary_replicas),
+        "show_bonds": bool(show_bonds),
         "cell_color": str(cell_color),
         "cell_width_px": float(cell_width_px),
     }
@@ -460,6 +462,11 @@ def render_structure(
                 ]
                 if scales:
                     bond["_render_opacity_scale"] = min(scales)
+    if not show_bonds:
+        # Neighbor view is an atom graph, not a second chemical-bond drawing.
+        # Keep the native atoms and world-space edges, but remove the inferred
+        # covalent bond layer so the i-j membership can be read directly.
+        scene["bonds"] = []
     offset = np.asarray(camera.scene_offset, dtype=float)
     native_meshes = []
     for mesh in mesh_overlays:

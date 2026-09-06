@@ -4,10 +4,10 @@
   "format": "png",
   "width": 1700,
   "height": 1180,
-  "plan_sha256": "4c735eb66f425437825e54d1cb457be5286916a78a1d51fa60e76b42fea98cda",
-  "output_sha256": "57f5df9db734efb7c496b487983733ce16dc9fdb54fda0530fe4fb4102196e80",
+  "plan_sha256": "d19313c788c860ecab3b591fe9572f15979a46080cd760941af0a5995bc9f4ad",
+  "output_sha256": "6c3736e69e97c157c87274f24bd1d8f97ce06d91c7eebd5e6e26a78357ebfdad",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\04_dpmd_native\\mattervis_v3\\focus_velocity.png",
-  "source_sha256": "3cfb9dd1e84ca6948bb3e2f37b32f0931bcb8b6e257ae998add395160465c54d",
+  "source_sha256": "e229e6aa1ecacedc79fc96f945f9abdf754c546f33b9090d2a9f5beb1edb409d",
   "frame": 0,
   "view": "cluster",
   "camera": {
@@ -40,6 +40,7 @@
     "bond_radius": 0.085,
     "show_cell": false,
     "include_boundary_replicas": false,
+    "show_bonds": true,
     "cell_color": "#333333",
     "cell_width_px": 2.0
   },
