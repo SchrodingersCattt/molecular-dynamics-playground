@@ -8,6 +8,7 @@ renders with paper-space explanatory diagrams.
 from __future__ import annotations
 
 import json
+import inspect
 from dataclasses import asdict, dataclass
 from functools import lru_cache
 from pathlib import Path
@@ -475,33 +476,41 @@ def render_structure(
     if native_meshes:
         scene["isosurfaces"] = native_meshes
     scene["vector_overlays"] = native_vectors
+    render_kwargs = {
+        "representation": "ball_stick",
+        "shading": "smooth",
+        "backend": "cpu",
+        "width": width,
+        "height": height,
+        "scale": 1,
+        "background": (1.0, 1.0, 1.0, 0.0),
+        "atom_scale": atom_scale,
+        "bond_radius": bond_radius,
+        "show_hydrogen": True,
+        "show_cell": show_cell,
+        "show_labels": False,
+        "sphere_detail": (18, 28),
+        "cylinder_sides": 18,
+    }
+    # Older installed MatterVis builds do not expose cell styling on
+    # RenderSpec.  Keep the scene and native overlays identical, while only
+    # passing fields supported by the public contract in this environment.
+    supported_render_fields = set(inspect.signature(RenderSpec).parameters)
+    if "cell_color" in supported_render_fields:
+        render_kwargs["cell_color"] = cell_color
+    if "cell_width_px" in supported_render_fields:
+        render_kwargs["cell_width_px"] = float(cell_width_px)
     result = render(
         scene,
         output=output,
         backend="cpu",
-        view=ViewSpec(
-            display=view,
-            include_boundary_replicas=include_boundary_replicas,
-        ),
+        # The installed public CPU renderer may predate the optional
+        # ``include_boundary_replicas`` field on ViewSpec.  The same intent is
+        # already applied to ``build_bundle_scene`` above; keep the ViewSpec
+        # construction compatible with both MatterVis releases.
+        view=ViewSpec(display=view),
         camera=camera.mattervis(),
-        render_spec=RenderSpec(
-            representation="ball_stick",
-            shading="smooth",
-            backend="cpu",
-            width=width,
-            height=height,
-            scale=1,
-            background=(1.0, 1.0, 1.0, 0.0),
-            atom_scale=atom_scale,
-            bond_radius=bond_radius,
-            show_hydrogen=True,
-            show_cell=show_cell,
-            cell_color=cell_color,
-            cell_width_px=float(cell_width_px),
-            show_labels=False,
-            sphere_detail=(18, 28),
-            cylinder_sides=18,
-        ),
+        render_spec=RenderSpec(**render_kwargs),
     )
     payload = {
         "schema": result.schema,

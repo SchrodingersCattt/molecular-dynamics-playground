@@ -1,0 +1,1364 @@
+{
+  "source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\data\\water_box_64.npz",
+  "central_index": 126,
+  "cutoff_angstrom": 6.0,
+  "neighbor_count": 83,
+  "edge_semantics": "undirected minimum-image atom-to-atom membership in N_i(r_c); no force direction",
+  "focus_source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\04_dpmd_native\\focus_cluster.extxyz",
+  "focus_source_indices": [
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    114,
+    115,
+    116,
+    123,
+    124,
+    125,
+    126,
+    127,
+    128,
+    129,
+    130,
+    131,
+    138,
+    139,
+    140,
+    174,
+    175,
+    176
+  ],
+  "edges": [
+    {
+      "neighbor_index": 127,
+      "element": "H",
+      "distance_angstrom": 0.9571999999999998,
+      "minimum_image_displacement_angstrom": [
+        -0.23107776,
+        0.69669691,
+        0.61436824
+      ],
+      "endpoint_angstrom": [
+        5.98373879,
+        6.91151346,
+        6.8291848
+      ],
+      "shown_in_focus": true
+    },
+    {
+      "neighbor_index": 128,
+      "element": "H",
+      "distance_angstrom": 0.9571999999999999,
+      "minimum_image_displacement_angstrom": [
+        0.57957467,
+        -0.57655632,
+        0.49790345
+      ],
+      "endpoint_angstrom": [
+        6.79439123,
+        5.63826024,
+        6.71272001
+      ],
+      "shown_in_focus": true
+    },
+    {
+      "neighbor_index": 124,
+      "element": "H",
+      "distance_angstrom": 2.137061775700274,
+      "minimum_image_displacement_angstrom": [
+        0.15061651,
+        -0.0266853,
+        -2.13158054
+      ],
+      "endpoint_angstrom": [
+        6.36543307,
+        6.18813125,
+        4.08323602
+      ],
+      "shown_in_focus": true
+    },
+    {
+      "neighbor_index": 80,
+      "element": "H",
+      "distance_angstrom": 2.4490172081614334,
+      "minimum_image_displacement_angstrom": [
+        -2.35535467,
+        -0.45719301,
+        -0.49088107
+      ],
+      "endpoint_angstrom": [
+        3.85946189,
+        5.75762355,
+        5.72393549
+      ],
+      "shown_in_focus": true
+    },
+    {
+      "neighbor_index": 130,
+      "element": "H",
+      "distance_angstrom": 2.701209038994581,
+      "minimum_image_displacement_angstrom": [
+        -0.39598942,
+        0.51885633,
+        2.62116592
+      ],
+      "endpoint_angstrom": [
+        5.81882714,
+        6.73367289,
+        8.83598248
+      ],
+      "shown_in_focus": true
+    },
+    {
+      "neighbor_index": 116,
+      "element": "H",
+      "distance_angstrom": 2.800018492673853,
+      "minimum_image_displacement_angstrom": [
+        -0.42248573,
+        -2.68447089,
+        0.67470393
+      ],
+      "endpoint_angstrom": [
+        5.79233083,
+        3.53034567,
+        6.88952049
+      ],
+      "shown_in_focus": true
+    },
+    {
+      "neighbor_index": 78,
+      "element": "O",
+      "distance_angstrom": 2.877500478676291,
+      "minimum_image_displacement_angstrom": [
+        -2.87417414,
+        0.06165737,
+        0.12381599
+      ],
+      "endpoint_angstrom": [
+        3.34064242,
+        6.27647393,
+        6.33863255
+      ],
+      "shown_in_focus": true
+    },
+    {
+      "neighbor_index": 140,
+      "element": "H",
+      "distance_angstrom": 3.0103537126050077,
+      "minimum_image_displacement_angstrom": [
+        -0.50383924,
+        2.83773724,
+        0.86926571
+      ],
+      "endpoint_angstrom": [
+        5.71097732,
+        9.0525538,
+        7.08408227
+      ],
+      "shown_in_focus": true
+    },
+    {
+      "neighbor_index": 123,
+      "element": "O",
+      "distance_angstrom": 3.0749412957649986,
+      "minimum_image_displacement_angstrom": [
+        0.05596185,
+        0.12536242,
+        -3.07187508
+      ],
+      "endpoint_angstrom": [
+        6.27077841,
+        6.34017898,
+        3.14294148
+      ],
+      "shown_in_focus": true
+    },
+    {
+      "neighbor_index": 79,
+      "element": "H",
+      "distance_angstrom": 3.099526968317499,
+      "minimum_image_displacement_angstrom": [
+        -2.94495152,
+        0.9224562,
+        -0.28879495
+      ],
+      "endpoint_angstrom": [
+        3.26986504,
+        7.13727276,
+        5.92602161
+      ],
+      "shown_in_focus": true
+    },
+    {
+      "neighbor_index": 138,
+      "element": "O",
+      "distance_angstrom": 3.1319499161000754,
+      "minimum_image_displacement_angstrom": [
+        0.10243556,
+        3.12471948,
+        0.18640123
+      ],
+      "endpoint_angstrom": [
+        6.31725212,
+        9.33953604,
+        6.40121779
+      ],
+      "shown_in_focus": true
+    },
+    {
+      "neighbor_index": 114,
+      "element": "O",
+      "distance_angstrom": 3.1927296374782386,
+      "minimum_image_displacement_angstrom": [
+        0.11063438,
+        -3.19022279,
+        0.06132818
+      ],
+      "endpoint_angstrom": [
+        6.32545094,
+        3.02459377,
+        6.27614474
+      ],
+      "shown_in_focus": true
+    },
+    {
+      "neighbor_index": 174,
+      "element": "O",
+      "distance_angstrom": 3.1954251908053157,
+      "minimum_image_displacement_angstrom": [
+        3.19272233,
+        -0.1026254,
+        0.08206285
+      ],
+      "endpoint_angstrom": [
+        9.40753889,
+        6.11219116,
+        6.2968794
+      ],
+      "shown_in_focus": true
+    },
+    {
+      "neighbor_index": 175,
+      "element": "H",
+      "distance_angstrom": 3.1973136857449753,
+      "minimum_image_displacement_angstrom": [
+        3.02491561,
+        -1.03381072,
+        -0.06273573
+      ],
+      "endpoint_angstrom": [
+        9.23973216,
+        5.18100583,
+        6.15208083
+      ],
+      "shown_in_focus": true
+    },
+    {
+      "neighbor_index": 129,
+      "element": "O",
+      "distance_angstrom": 3.39583335211687,
+      "minimum_image_displacement_angstrom": [
+        -0.01734896,
+        0.10038382,
+        3.39430497
+      ],
+      "endpoint_angstrom": [
+        6.1974676,
+        6.31520038,
+        9.60912153
+      ],
+      "shown_in_focus": true
+    },
+    {
+      "neighbor_index": 131,
+      "element": "H",
+      "distance_angstrom": 3.4937177799688715,
+      "minimum_image_displacement_angstrom": [
+        0.91267957,
+        0.32370922,
+        3.35682771
+      ],
+      "endpoint_angstrom": [
+        7.12749613,
+        6.53852578,
+        9.57164427
+      ],
+      "shown_in_focus": true
+    },
+    {
+      "neighbor_index": 115,
+      "element": "H",
+      "distance_angstrom": 3.5180003340054107,
+      "minimum_image_displacement_angstrom": [
+        0.9290089,
+        -3.35132275,
+        0.53094695
+      ],
+      "endpoint_angstrom": [
+        7.14382546,
+        2.86349381,
+        6.74576351
+      ],
+      "shown_in_focus": true
+    },
+    {
+      "neighbor_index": 125,
+      "element": "H",
+      "distance_angstrom": 3.570685660101039,
+      "minimum_image_displacement_angstrom": [
+        0.5048938,
+        -0.61444252,
+        -3.4809968
+      ],
+      "endpoint_angstrom": [
+        6.71971036,
+        5.60037404,
+        2.73381976
+      ],
+      "shown_in_focus": true
+    },
+    {
+      "neighbor_index": 142,
+      "element": "H",
+      "distance_angstrom": 3.6667260386797635,
+      "minimum_image_displacement_angstrom": [
+        -0.39299419,
+        2.44906862,
+        2.70046261
+      ],
+      "endpoint_angstrom": [
+        5.82182237,
+        8.66388518,
+        8.91527917
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 188,
+      "element": "H",
+      "distance_angstrom": 3.7664623366715104,
+      "minimum_image_displacement_angstrom": [
+        3.03232857,
+        2.19202354,
+        0.43157246
+      ],
+      "endpoint_angstrom": [
+        9.24714513,
+        8.4068401,
+        6.64638902
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 172,
+      "element": "H",
+      "distance_angstrom": 3.820899406190438,
+      "minimum_image_displacement_angstrom": [
+        2.47363685,
+        0.75698308,
+        -2.81200456
+      ],
+      "endpoint_angstrom": [
+        8.68845341,
+        6.97179964,
+        3.402812
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 92,
+      "element": "H",
+      "distance_angstrom": 3.878311065676373,
+      "minimum_image_displacement_angstrom": [
+        -2.19753371,
+        3.19528014,
+        0.04824045
+      ],
+      "endpoint_angstrom": [
+        4.01728285,
+        9.4100967,
+        6.26305701
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 179,
+      "element": "H",
+      "distance_angstrom": 3.8837964934529765,
+      "minimum_image_displacement_angstrom": [
+        3.03091291,
+        -0.54827106,
+        2.36576435
+      ],
+      "endpoint_angstrom": [
+        9.24572947,
+        5.6665455,
+        8.58058091
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 163,
+      "element": "H",
+      "distance_angstrom": 3.8893352756775013,
+      "minimum_image_displacement_angstrom": [
+        2.86936507,
+        -2.56649302,
+        -0.55388315
+      ],
+      "endpoint_angstrom": [
+        9.08418163,
+        3.64832354,
+        5.66093341
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 178,
+      "element": "H",
+      "distance_angstrom": 4.046499811337767,
+      "minimum_image_displacement_angstrom": [
+        2.56828287,
+        0.72484034,
+        3.04182352
+      ],
+      "endpoint_angstrom": [
+        8.78309943,
+        6.9396569,
+        9.25664008
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 139,
+      "element": "H",
+      "distance_angstrom": 4.060333139295332,
+      "minimum_image_displacement_angstrom": [
+        0.32337778,
+        4.02510619,
+        0.42456113
+      ],
+      "endpoint_angstrom": [
+        6.53819434,
+        10.23992275,
+        6.63937769
+      ],
+      "shown_in_focus": true
+    },
+    {
+      "neighbor_index": 82,
+      "element": "H",
+      "distance_angstrom": 4.062965450830057,
+      "minimum_image_displacement_angstrom": [
+        -3.17204004,
+        0.51206618,
+        2.48669228
+      ],
+      "endpoint_angstrom": [
+        3.04277652,
+        6.72688274,
+        8.70150884
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 176,
+      "element": "H",
+      "distance_angstrom": 4.084043946546077,
+      "minimum_image_displacement_angstrom": [
+        4.07558446,
+        0.03814965,
+        -0.25994401
+      ],
+      "endpoint_angstrom": [
+        10.29040102,
+        6.25296621,
+        5.95487255
+      ],
+      "shown_in_focus": true
+    },
+    {
+      "neighbor_index": 75,
+      "element": "O",
+      "distance_angstrom": 4.179729509585392,
+      "minimum_image_displacement_angstrom": [
+        -2.96941537,
+        0.01281876,
+        -2.94152117
+      ],
+      "endpoint_angstrom": [
+        3.24540119,
+        6.22763532,
+        3.27329539
+      ],
+      "shown_in_focus": true
+    },
+    {
+      "neighbor_index": 91,
+      "element": "H",
+      "distance_angstrom": 4.2027036072441915,
+      "minimum_image_displacement_angstrom": [
+        -3.2778911,
+        2.49185324,
+        0.84191148
+      ],
+      "endpoint_angstrom": [
+        2.93692546,
+        8.7066698,
+        7.05672804
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 111,
+      "element": "O",
+      "distance_angstrom": 4.2927919350360835,
+      "minimum_image_displacement_angstrom": [
+        0.05698196,
+        -3.04421858,
+        -3.02614422
+      ],
+      "endpoint_angstrom": [
+        6.27179852,
+        3.17059798,
+        3.18867233
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 171,
+      "element": "O",
+      "distance_angstrom": 4.34138493739062,
+      "minimum_image_displacement_angstrom": [
+        3.04434672,
+        0.04245525,
+        -3.09479786
+      ],
+      "endpoint_angstrom": [
+        9.25916328,
+        6.2572718,
+        3.1200187
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 66,
+      "element": "O",
+      "distance_angstrom": 4.356259387283616,
+      "minimum_image_displacement_angstrom": [
+        -3.05625538,
+        -3.10186934,
+        0.12126632
+      ],
+      "endpoint_angstrom": [
+        3.15856118,
+        3.11294722,
+        6.33608288
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 135,
+      "element": "O",
+      "distance_angstrom": 4.375150683634585,
+      "minimum_image_displacement_angstrom": [
+        0.06604664,
+        3.10187405,
+        -3.08479476
+      ],
+      "endpoint_angstrom": [
+        6.28086319,
+        9.31669061,
+        3.1300218
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 77,
+      "element": "H",
+      "distance_angstrom": 4.410728324606736,
+      "minimum_image_displacement_angstrom": [
+        -2.70603451,
+        -0.78937586,
+        -3.39246036
+      ],
+      "endpoint_angstrom": [
+        3.50878205,
+        5.4254407,
+        2.8223562
+      ],
+      "shown_in_focus": true
+    },
+    {
+      "neighbor_index": 90,
+      "element": "O",
+      "distance_angstrom": 4.414645121016584,
+      "minimum_image_displacement_angstrom": [
+        -3.14738099,
+        3.09373094,
+        0.10914809
+      ],
+      "endpoint_angstrom": [
+        3.06743557,
+        9.3085475,
+        6.32396465
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 186,
+      "element": "O",
+      "distance_angstrom": 4.422791534756281,
+      "minimum_image_displacement_angstrom": [
+        3.15106163,
+        3.09979799,
+        0.15214474
+      ],
+      "endpoint_angstrom": [
+        9.36587819,
+        9.31461455,
+        6.3669613
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 141,
+      "element": "O",
+      "distance_angstrom": 4.423275974166462,
+      "minimum_image_displacement_angstrom": [
+        0.09877088,
+        3.1819699,
+        3.07094158
+      ],
+      "endpoint_angstrom": [
+        6.31358744,
+        9.39678646,
+        9.28575814
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 117,
+      "element": "O",
+      "distance_angstrom": 4.42427809465927,
+      "minimum_image_displacement_angstrom": [
+        0.00906096,
+        -3.02006753,
+        3.23316357
+      ],
+      "endpoint_angstrom": [
+        6.22387752,
+        3.19474903,
+        9.44798013
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 81,
+      "element": "O",
+      "distance_angstrom": 4.463465132534425,
+      "minimum_image_displacement_angstrom": [
+        -2.99121361,
+        0.06269935,
+        3.31228485
+      ],
+      "endpoint_angstrom": [
+        3.22360295,
+        6.27751591,
+        9.52710141
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 177,
+      "element": "O",
+      "distance_angstrom": 4.466111228832117,
+      "minimum_image_displacement_angstrom": [
+        3.16848211,
+        -0.01328383,
+        3.14749014
+      ],
+      "endpoint_angstrom": [
+        9.38329867,
+        6.20153273,
+        9.3623067
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 162,
+      "element": "O",
+      "distance_angstrom": 4.488658389940303,
+      "minimum_image_displacement_angstrom": [
+        3.19063126,
+        -3.15453902,
+        0.12965308
+      ],
+      "endpoint_angstrom": [
+        9.40544782,
+        3.06027754,
+        6.34446964
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 76,
+      "element": "H",
+      "distance_angstrom": 4.529102672875259,
+      "minimum_image_displacement_angstrom": [
+        -3.77855863,
+        -0.22188775,
+        -2.48717341
+      ],
+      "endpoint_angstrom": [
+        2.43625793,
+        5.99292881,
+        3.72764315
+      ],
+      "shown_in_focus": true
+    },
+    {
+      "neighbor_index": 70,
+      "element": "H",
+      "distance_angstrom": 4.596573962411587,
+      "minimum_image_displacement_angstrom": [
+        -2.52490075,
+        -3.05538403,
+        2.32765908
+      ],
+      "endpoint_angstrom": [
+        3.68991581,
+        3.15943253,
+        8.54247564
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 68,
+      "element": "H",
+      "distance_angstrom": 4.628335376866165,
+      "minimum_image_displacement_angstrom": [
+        -3.82740614,
+        -2.57975382,
+        0.34252121
+      ],
+      "endpoint_angstrom": [
+        2.38741041,
+        3.63506274,
+        6.55733777
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 65,
+      "element": "H",
+      "distance_angstrom": 4.666993292665463,
+      "minimum_image_displacement_angstrom": [
+        -2.40071492,
+        -3.22279727,
+        -2.37296692
+      ],
+      "endpoint_angstrom": [
+        3.81410164,
+        2.99201929,
+        3.84184963
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 191,
+      "element": "H",
+      "distance_angstrom": 4.700086238219502,
+      "minimum_image_displacement_angstrom": [
+        2.24259698,
+        3.12603103,
+        2.69990731
+      ],
+      "endpoint_angstrom": [
+        8.45741354,
+        9.34084759,
+        8.91472387
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 143,
+      "element": "H",
+      "distance_angstrom": 4.759271175504745,
+      "minimum_image_displacement_angstrom": [
+        -0.25778105,
+        3.95545851,
+        2.63411446
+      ],
+      "endpoint_angstrom": [
+        5.95703551,
+        10.17027507,
+        8.84893102
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 164,
+      "element": "H",
+      "distance_angstrom": 4.773421274769445,
+      "minimum_image_displacement_angstrom": [
+        3.91500041,
+        -2.67803745,
+        0.53519892
+      ],
+      "endpoint_angstrom": [
+        10.12981697,
+        3.53677911,
+        6.75001548
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 136,
+      "element": "H",
+      "distance_angstrom": 4.7836154721310855,
+      "minimum_image_displacement_angstrom": [
+        -0.6245512,
+        3.74218197,
+        -2.9135866
+      ],
+      "endpoint_angstrom": [
+        5.59026536,
+        9.95699853,
+        3.30122996
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 118,
+      "element": "H",
+      "distance_angstrom": 4.797103245366882,
+      "minimum_image_displacement_angstrom": [
+        -0.67019284,
+        -2.76934015,
+        3.85924815
+      ],
+      "endpoint_angstrom": [
+        5.54462372,
+        3.44547641,
+        10.07406471
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 112,
+      "element": "H",
+      "distance_angstrom": 4.810962039996526,
+      "minimum_image_displacement_angstrom": [
+        0.89639297,
+        -3.23813949,
+        -3.4432961
+      ],
+      "endpoint_angstrom": [
+        7.11120952,
+        2.97667707,
+        2.77152046
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 113,
+      "element": "H",
+      "distance_angstrom": 4.870413094021006,
+      "minimum_image_displacement_angstrom": [
+        -0.57710409,
+        -3.06236163,
+        -3.74296885
+      ],
+      "endpoint_angstrom": [
+        5.63771247,
+        3.15245493,
+        2.47184771
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 161,
+      "element": "H",
+      "distance_angstrom": 4.9329820367620405,
+      "minimum_image_displacement_angstrom": [
+        3.17078278,
+        -3.16077592,
+        -2.07121798
+      ],
+      "endpoint_angstrom": [
+        9.38559934,
+        3.05404064,
+        4.14359858
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 83,
+      "element": "H",
+      "distance_angstrom": 5.05364533175002,
+      "minimum_image_displacement_angstrom": [
+        -3.02920015,
+        0.75283052,
+        3.9744841
+      ],
+      "endpoint_angstrom": [
+        3.18561641,
+        6.96764708,
+        10.18930066
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 119,
+      "element": "H",
+      "distance_angstrom": 5.0573968333126365,
+      "minimum_image_displacement_angstrom": [
+        -0.09210282,
+        -3.96690131,
+        3.13567757
+      ],
+      "endpoint_angstrom": [
+        6.12271374,
+        2.24791525,
+        9.35049413
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 187,
+      "element": "H",
+      "distance_angstrom": 5.138693381134983,
+      "minimum_image_displacement_angstrom": [
+        4.06206453,
+        3.14431085,
+        -0.13824147
+      ],
+      "endpoint_angstrom": [
+        10.27688109,
+        9.35912741,
+        6.07657509
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 71,
+      "element": "H",
+      "distance_angstrom": 5.151294550277608,
+      "minimum_image_displacement_angstrom": [
+        -2.88058357,
+        -2.30634575,
+        3.59427922
+      ],
+      "endpoint_angstrom": [
+        3.33423299,
+        3.90847081,
+        9.80909578
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 64,
+      "element": "H",
+      "distance_angstrom": 5.152403636980946,
+      "minimum_image_displacement_angstrom": [
+        -2.54012767,
+        -2.52065371,
+        -3.70692858
+      ],
+      "endpoint_angstrom": [
+        3.67468889,
+        3.69416285,
+        2.50788798
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 137,
+      "element": "H",
+      "distance_angstrom": 5.186248598027413,
+      "minimum_image_displacement_angstrom": [
+        0.5788594,
+        3.48630506,
+        -3.79575728
+      ],
+      "endpoint_angstrom": [
+        6.79367596,
+        9.70112162,
+        2.41905928
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 190,
+      "element": "H",
+      "distance_angstrom": 5.197646007246836,
+      "minimum_image_displacement_angstrom": [
+        3.25655075,
+        2.23157782,
+        3.38089658
+      ],
+      "endpoint_angstrom": [
+        9.47136731,
+        8.44639438,
+        9.59571314
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 173,
+      "element": "H",
+      "distance_angstrom": 5.2076625010706,
+      "minimum_image_displacement_angstrom": [
+        3.38965583,
+        0.3311161,
+        -3.93958681
+      ],
+      "endpoint_angstrom": [
+        9.60447239,
+        6.54593266,
+        2.27522975
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 67,
+      "element": "H",
+      "distance_angstrom": 5.228154050547235,
+      "minimum_image_displacement_angstrom": [
+        -3.40611449,
+        -3.96511317,
+        -0.09927968
+      ],
+      "endpoint_angstrom": [
+        2.80870207,
+        2.24970339,
+        6.11553688
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 63,
+      "element": "O",
+      "distance_angstrom": 5.250455429143489,
+      "minimum_image_displacement_angstrom": [
+        -3.04130304,
+        -3.00311029,
+        -3.04944038
+      ],
+      "endpoint_angstrom": [
+        3.17351352,
+        3.21170627,
+        3.16537618
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 88,
+      "element": "H",
+      "distance_angstrom": 5.2770733499930245,
+      "minimum_image_displacement_angstrom": [
+        -2.47234283,
+        2.94608188,
+        -3.61325693
+      ],
+      "endpoint_angstrom": [
+        3.74247373,
+        9.16089844,
+        2.60155963
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 159,
+      "element": "O",
+      "distance_angstrom": 5.331959748931692,
+      "minimum_image_displacement_angstrom": [
+        3.0777514,
+        -3.13301749,
+        -3.02348185
+      ],
+      "endpoint_angstrom": [
+        9.29256796,
+        3.08179907,
+        3.19133471
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 104,
+      "element": "H",
+      "distance_angstrom": 5.357258898252734,
+      "minimum_image_displacement_angstrom": [
+        0.00599743,
+        5.32546129,
+        0.58279412
+      ],
+      "endpoint_angstrom": [
+        6.22081399,
+        11.54027785,
+        6.79761068
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 69,
+      "element": "O",
+      "distance_angstrom": 5.36548894110016,
+      "minimum_image_displacement_angstrom": [
+        -3.07286349,
+        -3.10967025,
+        3.11061609
+      ],
+      "endpoint_angstrom": [
+        3.14195307,
+        3.10514631,
+        9.32543265
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 31,
+      "element": "H",
+      "distance_angstrom": 5.370913471717235,
+      "minimum_image_displacement_angstrom": [
+        5.34506622,
+        -0.10252783,
+        0.51620409
+      ],
+      "endpoint_angstrom": [
+        11.55988278,
+        6.11228873,
+        6.73102065
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 183,
+      "element": "O",
+      "distance_angstrom": 5.387259352353393,
+      "minimum_image_displacement_angstrom": [
+        3.24899917,
+        3.23695177,
+        -2.82643077
+      ],
+      "endpoint_angstrom": [
+        9.46381573,
+        9.45176833,
+        3.38838579
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 165,
+      "element": "O",
+      "distance_angstrom": 5.404812972536739,
+      "minimum_image_displacement_angstrom": [
+        3.16416199,
+        -3.04552686,
+        3.15037273
+      ],
+      "endpoint_angstrom": [
+        9.37897855,
+        3.1692897,
+        9.36518929
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 87,
+      "element": "O",
+      "distance_angstrom": 5.422765494796319,
+      "minimum_image_displacement_angstrom": [
+        -3.24904228,
+        3.071898,
+        -3.06815133
+      ],
+      "endpoint_angstrom": [
+        2.96577428,
+        9.28671456,
+        3.14666523
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 189,
+      "element": "O",
+      "distance_angstrom": 5.4289438485497925,
+      "minimum_image_displacement_angstrom": [
+        3.06704032,
+        3.14929866,
+        3.18568877
+      ],
+      "endpoint_angstrom": [
+        9.28185688,
+        9.36411522,
+        9.40050533
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 184,
+      "element": "H",
+      "distance_angstrom": 5.451170128407723,
+      "minimum_image_displacement_angstrom": [
+        3.9988747,
+        2.75864569,
+        -2.47267687
+      ],
+      "endpoint_angstrom": [
+        10.21369126,
+        8.97346224,
+        3.74213969
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 89,
+      "element": "H",
+      "distance_angstrom": 5.464649518787896,
+      "minimum_image_displacement_angstrom": [
+        -3.7773454,
+        2.28799463,
+        -3.21856128
+      ],
+      "endpoint_angstrom": [
+        2.43747116,
+        8.50281118,
+        2.99625528
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 93,
+      "element": "O",
+      "distance_angstrom": 5.514951681704614,
+      "minimum_image_displacement_angstrom": [
+        -3.15646975,
+        3.16416514,
+        3.23101374
+      ],
+      "endpoint_angstrom": [
+        3.05834681,
+        9.3789817,
+        9.4458303
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 122,
+      "element": "H",
+      "distance_angstrom": 5.6069135655607125,
+      "minimum_image_displacement_angstrom": [
+        -0.38221709,
+        0.39874178,
+        5.5796411
+      ],
+      "endpoint_angstrom": [
+        5.83259947,
+        6.61355834,
+        11.79445766
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 167,
+      "element": "H",
+      "distance_angstrom": 5.732159936852881,
+      "minimum_image_displacement_angstrom": [
+        2.81099258,
+        -2.94603716,
+        4.034457
+      ],
+      "endpoint_angstrom": [
+        9.02580914,
+        3.2687794,
+        10.24927356
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 94,
+      "element": "H",
+      "distance_angstrom": 5.867370910383438,
+      "minimum_image_displacement_angstrom": [
+        -2.58128533,
+        3.55598834,
+        3.88818137
+      ],
+      "endpoint_angstrom": [
+        3.63353123,
+        9.7708049,
+        10.10299793
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 28,
+      "element": "H",
+      "distance_angstrom": 5.9221516918705905,
+      "minimum_image_displacement_angstrom": [
+        -5.41282443,
+        -0.36851883,
+        -2.37432227
+      ],
+      "endpoint_angstrom": [
+        0.80199213,
+        5.84629773,
+        3.84049429
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 185,
+      "element": "H",
+      "distance_angstrom": 5.948248934958657,
+      "minimum_image_displacement_angstrom": [
+        3.33985312,
+        3.15737499,
+        -3.77598063
+      ],
+      "endpoint_angstrom": [
+        9.55466968,
+        9.37219155,
+        2.43883593
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 95,
+      "element": "H",
+      "distance_angstrom": 5.975062243857026,
+      "minimum_image_displacement_angstrom": [
+        -3.55581276,
+        3.91134001,
+        2.78549526
+      ],
+      "endpoint_angstrom": [
+        2.6590038,
+        10.12615656,
+        9.00031181
+      ],
+      "shown_in_focus": false
+    },
+    {
+      "neighbor_index": 32,
+      "element": "H",
+      "distance_angstrom": 5.97895055004119,
+      "minimum_image_displacement_angstrom": [
+        5.91348421,
+        0.32640234,
+        -0.81976563
+      ],
+      "endpoint_angstrom": [
+        12.12830077,
+        6.5412189,
+        5.39505093
+      ],
+      "shown_in_focus": false
+    }
+  ]
+}
