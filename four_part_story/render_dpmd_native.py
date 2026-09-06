@@ -478,9 +478,10 @@ def _render_assets(data: dict[str, object], vv: dict[str, object]) -> dict[str, 
         "selected_indices": np.asarray(descriptor["selected"], dtype=int).tolist(),
         "cutoff_angstrom": float(descriptor["cutoff"]),
         "neighbor_distance_matrix_angstrom": np.asarray(descriptor["matrix"], dtype=float).round(6).tolist(),
-        "radial_centres_angstrom": np.asarray(descriptor["centres"], dtype=float).round(6).tolist(),
-        "descriptor_values": np.asarray(descriptor["descriptor"], dtype=float).round(8).tolist(),
-        "descriptor_definition": "D_i(k)=mean_j exp(-0.5*((r_ij-mu_k)/sigma)^2), sigma=0.45 A",
+        "environment_indices": np.asarray(descriptor["environment_indices"], dtype=int).tolist(),
+        "environment_matrix_Ri": np.asarray(descriptor["environment"], dtype=float).round(8).tolist(),
+        "environment_definition": "R_i,j=[s(r_ij), s(r_ij)*x_ij/r_ij, s(r_ij)*y_ij/r_ij, s(r_ij)*z_ij/r_ij]",
+        "descriptor_definition": "DeepPot-SE D_i=(G_i)^T R_i R_i^T G_i / N_c^2; G_i is the shared embedding of s(r_ij)",
     })
     json_dump(QA_DIR / "neighbor_edge_provenance.json", {
         "source": str(BASE_PATH),
@@ -619,19 +620,23 @@ def _descriptor_data(data: dict[str, object]) -> dict[str, object]:
     pair -= box * np.round(pair / box)
     matrix = np.linalg.norm(pair, axis=-1)
     cutoff = float(np.asarray(data.get("cutoff_angstrom", data["cutoff"])).reshape(-1)[0])
-    centres = np.linspace(0.4, cutoff - 0.4, 8)
-    sigma = 0.45
-    neighbour_distances = distances[neighbours]
-    descriptor = np.asarray([
-        float(np.sum(np.exp(-0.5 * ((neighbour_distances - centre) / sigma) ** 2)))
-        for centre in centres
-    ])
-    descriptor /= max(float(len(neighbour_distances)), 1.0)
-    return {"central": central, "selected": selected, "matrix": matrix, "centres": centres, "descriptor": descriptor, "cutoff": cutoff}
+    # DeepPot-SE environment rows: [s(r), s(r) * r_hat].  These are real
+    # minimum-image neighbour coordinates, not an invented radial bar chart.
+    env_indices = neighbours[:5]
+    env_delta = delta[env_indices]
+    env_r = np.maximum(distances[env_indices], 1.0e-12)
+    rs = 0.5 * cutoff
+    x = np.clip((env_r - rs) / max(cutoff - rs, 1.0e-12), 0.0, 1.0)
+    smooth = np.where(env_r < rs, 1.0, x**3 * (-6.0 * x**2 + 15.0 * x - 10.0) + 1.0)
+    s = smooth / env_r
+    environment = np.column_stack([s, s[:, None] * env_delta / env_r[:, None]])
+    return {"central": central, "selected": selected, "matrix": matrix,
+            "environment_indices": env_indices, "environment": environment,
+            "cutoff": cutoff, "smoothing_start": rs}
 
 
 def _descriptor_scene(ax: plt.Axes, registry: LayoutRegistry, data: dict[str, object], a: dict[str, object], *, video: bool) -> None:
-    """Render the real distance matrix -> descriptor transformation."""
+    """Render real neighbour distances -> DeepPot-SE environment matrix."""
     values = _descriptor_data(data)
     place_main(ax, a["focus_neighbors"], rect=(0.035, 0.45, 0.31, 0.84))
     registry.text(ax, 0.17, 0.425, "real O126 neighbourhood", ha="center", va="top", fontsize=10, color=DARK_GRAY)
@@ -650,14 +655,25 @@ def _descriptor_scene(ax: plt.Axes, registry: LayoutRegistry, data: dict[str, ob
             # cell colors still encode the real matrix while the full values
             # remain in descriptor_provenance.json.
     registry.arrow(ax, (0.68, 0.59), (0.73, 0.59), arrowstyle="-|>", mutation_scale=12, lw=1.6, color=LINE_GRAY)
-    descriptor = np.asarray(values["descriptor"], dtype=float)
-    scale = max(float(descriptor.max()), 1e-9)
-    registry.text(ax, 0.84, 0.86, "Dᵢ(k) from real rᵢⱼ", ha="center", va="bottom", fontsize=11, color=NAVY, weight="bold")
-    for index, value in enumerate(descriptor):
-        x = 0.745 + index * 0.025
-        height = 0.25 * float(value / scale)
-        ax.add_patch(Rectangle((x, 0.45), 0.018, height, fc=EMERALD, ec="none", alpha=0.86, zorder=4))
-    registry.text(ax, 0.84, 0.39, r"Dᵢ(k)=Σⱼ exp[−(rᵢⱼ−μₖ)²/2σ²]", ha="center", va="top", fontsize=10, color=DARK_GRAY)
+    environment = np.asarray(values["environment"], dtype=float)
+    env_min = float(np.min(environment)); env_max = float(np.max(environment))
+    registry.text(ax, 0.84, 0.86, "Rᵢ  (DeepPot-SE)", ha="center", va="bottom", fontsize=11, color=NAVY, weight="bold")
+    env_left, env_bottom, env_w, env_h = 0.745, 0.48, 0.19, 0.25
+    for row in range(environment.shape[0]):
+        for col in range(environment.shape[1]):
+            value = float(environment[row, col])
+            weight = (value - env_min) / max(env_max - env_min, 1.0e-12)
+            face = to_rgba(EMERALD, alpha=0.18 + 0.68 * float(np.clip(weight, 0.0, 1.0)))
+            x = env_left + col * env_w / environment.shape[1]
+            y = env_bottom + (environment.shape[0] - 1 - row) * env_h / environment.shape[0]
+            ax.add_patch(Rectangle((x, y), env_w / environment.shape[1] - 0.002,
+                                   env_h / environment.shape[0] - 0.003,
+                                   fc=face, ec="white", lw=0.4, zorder=4))
+    for col, label in enumerate(("s", "sx/r", "sy/r", "sz/r")):
+        registry.text(ax, env_left + (col + 0.5) * env_w / 4.0, 0.445, label,
+                      ha="center", va="top", fontsize=10, color=EMERALD)
+    registry.text(ax, 0.84, 0.39, r"Rᵢⱼ=[s, sx/r, sy/r, sz/r]", ha="center", va="top", fontsize=10, color=DARK_GRAY)
+    registry.text(ax, 0.84, 0.34, r"Dᵢ=(Gᵢ)ᵀRᵢRᵢᵀGᵢ/Nc²", ha="center", va="top", fontsize=10, color=DARK_GRAY)
 
 
 def _static_neighbor_scene(ax: plt.Axes, registry: LayoutRegistry, data: dict[str, object], a: dict[str, object], *, video: bool) -> None:
@@ -780,14 +796,24 @@ def _right_geometry_panel(ax: plt.Axes, registry: LayoutRegistry, data: dict[str
             ax.add_patch(Rectangle((x, y), size / matrix.shape[1] - 0.002, size / matrix.shape[0] - 0.002, fc=face, ec="white", lw=0.4, zorder=4))
             # Keep the matrix legible at slide distance; exact values are in
             # descriptor_provenance.json and the cell colours remain real.
-    registry.text(ax, 0.50, 0.385, "DESCRIPTOR  Dᵢ", ha="center", va="center", fontsize=11, color=INK, weight="bold")
-    descriptor = np.asarray(values["descriptor"], dtype=float)
-    scale = max(float(descriptor.max()), 1e-9)
-    for index, value in enumerate(descriptor):
-        x = 0.12 + index * 0.095
-        height = 0.21 * float(value / scale)
-        ax.add_patch(Rectangle((x, 0.11), 0.065, height, fc=EMERALD, ec="none", alpha=0.86, zorder=4))
-    registry.text(ax, 0.50, 0.07, r"Dᵢ(k)=Σⱼ exp[−(rᵢⱼ−μₖ)²/2σ²]", ha="center", va="center", fontsize=10, color=DARK_GRAY)
+    registry.text(ax, 0.50, 0.385, "ENVIRONMENT  Rᵢ", ha="center", va="center", fontsize=11, color=INK, weight="bold")
+    environment = np.asarray(values["environment"], dtype=float)
+    env_min = float(np.min(environment)); env_max = float(np.max(environment))
+    env_left, env_bottom, env_w, env_h = 0.20, 0.17, 0.60, 0.15
+    for row in range(environment.shape[0]):
+        for col in range(environment.shape[1]):
+            weight = (float(environment[row, col]) - env_min) / max(env_max - env_min, 1.0e-12)
+            face = to_rgba(EMERALD, alpha=0.18 + 0.68 * float(np.clip(weight, 0.0, 1.0)))
+            x = env_left + col * env_w / environment.shape[1]
+            y = env_bottom + (environment.shape[0] - 1 - row) * env_h / environment.shape[0]
+            ax.add_patch(Rectangle((x, y), env_w / environment.shape[1] - 0.003,
+                                   env_h / environment.shape[0] - 0.003,
+                                   fc=face, ec="white", lw=0.4, zorder=4))
+    for col, label in enumerate(("s", "sx/r", "sy/r", "sz/r")):
+        registry.text(ax, env_left + (col + 0.5) * env_w / 4.0, 0.14, label,
+                      ha="center", va="top", fontsize=10, color=EMERALD)
+    registry.text(ax, 0.50, 0.095, r"Rᵢⱼ=[s, sx/r, sy/r, sz/r]", ha="center", va="center", fontsize=10, color=DARK_GRAY)
+    registry.text(ax, 0.50, 0.055, r"Dᵢ=(Gᵢ)ᵀRᵢRᵢᵀGᵢ/Nc²", ha="center", va="center", fontsize=10, color=DARK_GRAY)
 
 
 def _phase(t: float, duration: float = 16.0) -> tuple[int | None, float, bool]:
