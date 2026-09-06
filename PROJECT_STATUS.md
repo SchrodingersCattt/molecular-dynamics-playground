@@ -12,6 +12,8 @@
 
 DP 静态 PPT 主图已另行改为纯矢量 SVG：`render_dpmd_vector_static.py` 直接从同一份真实坐标绘制 +x 方向 water box、局域放大、原子端点邻居边、Cartesian 距离矩阵和 DeepPot-SE `R_i` 环境矩阵；SVG 不含嵌入位图。视频仍使用 MatterVis 原生 3D 帧并通过 `visualize-data` 做全帧 QA。
 
+DP 视频时序已改为固定舞台：水盒、O126、小圆、放大圆和引导线全程原位不动；前半段详细展示 `R_i → shared fitting NN → ε_i → E → −∂E/∂r_i → F_i`，右框显示真实 O126 per-atom energy、总能量和力；后半段快速重复邻居、descriptor、力和 VV 更新。颜色 legend 固定在中间主框底部，右框不承担 legend。
+
 当前输出：
 
 - `four_part_story/figures/01_velocity_verlet.png` 至 `04_deep_potential_md.png`

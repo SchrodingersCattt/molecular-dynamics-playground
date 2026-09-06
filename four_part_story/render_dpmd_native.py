@@ -18,7 +18,7 @@ from matplotlib.patches import Ellipse, FancyBboxPatch, Rectangle
 
 from common import DARK_GRAY, INK, LINE_GRAY, NAVY, LayoutRegistry, json_dump, new_static_figure, render_video, save_static, sha256_file
 from mattervis_story import camera_for_source, make_sphere_mesh, make_torus_mesh, make_vector_group, project_world, render_structure
-from responsive_story import EMERALD, LAKE_BLUE, PALE_OLIVE, draw_legend, panel_box, place_main, place_render_cropped, simple_audit, stage_rail, story_axes
+from responsive_story import EMERALD, LAKE_BLUE, PALE_OLIVE, draw_horizontal_key, draw_legend, panel_box, place_main, place_render_cropped, simple_audit, stage_rail, story_axes
 from PIL import Image
 from mat_viewer.render.geometry import cylinder_mesh
 
@@ -676,7 +676,7 @@ def _descriptor_scene(ax: plt.Axes, registry: LayoutRegistry, data: dict[str, ob
     registry.text(ax, 0.84, 0.34, r"Dᵢ=(Gᵢ)ᵀRᵢRᵢᵀGᵢ/Nc²", ha="center", va="top", fontsize=10, color=DARK_GRAY)
 
 
-def _static_neighbor_scene(ax: plt.Axes, registry: LayoutRegistry, data: dict[str, object], a: dict[str, object], *, video: bool) -> None:
+def _static_neighbor_scene(ax: plt.Axes, registry: LayoutRegistry, data: dict[str, object], a: dict[str, object], *, video: bool, focus_image: Path | None = None, show_neighbor_count: bool = True) -> None:
     """PPT still: box context, source circle, and a masked magnifier."""
     position = ax.get_position()
     fig = ax.figure
@@ -709,10 +709,11 @@ def _static_neighbor_scene(ax: plt.Axes, registry: LayoutRegistry, data: dict[st
     # sketch and terminate on the clean circle boundary.
     ax.plot([source[0] + source_x, focus[0]], [source[1] + source_y * 0.65, focus_cy + focus_sy * 0.38], color=PALE_OLIVE, lw=1.5, zorder=28)
     ax.plot([source[0] + source_x, focus[0]], [source[1] - source_y * 0.65, focus_cy - focus_sy * 0.38], color=PALE_OLIVE, lw=1.5, zorder=28)
-    place_render_cropped(ax, a["focus_mag"], focus, zorder=31)
+    place_render_cropped(ax, focus_image or a["focus_mag"], focus, zorder=31)
     ax.add_patch(Ellipse((focus_cx, focus_cy), focus_sx, focus_sy, fill=False, ec="#466C7A", lw=1.8, zorder=32))
     registry.text(ax, focus_cx, focus[3] + 0.022, "magnified local", ha="center", va="bottom", fontsize=11, color=INK, weight="bold")
-    registry.text(ax, focus_cx, focus[1] - 0.018, "23 real j shown · 83 in Nᵢ(r_c)", ha="center", va="top", fontsize=10, color=DARK_GRAY)
+    if show_neighbor_count:
+        registry.text(ax, focus_cx, focus[1] - 0.018, "23 real j shown · 83 in Nᵢ(r_c)", ha="center", va="top", fontsize=10, color=DARK_GRAY)
 
 
 def _info(ax, registry: LayoutRegistry, data: dict[str, object], vv: dict[str, object], *, video: bool, stage: int | None, returning: bool) -> None:
@@ -734,12 +735,6 @@ def _info(ax, registry: LayoutRegistry, data: dict[str, object], vv: dict[str, o
                       weight="bold")
         registry.text(ax, 0.24, y - 0.028, value, ha="left", va="center",
                       fontsize=10, color=INK)
-    # A tiny native-colour key keeps the red/white water representation
-    # legible after the local sphere is composited over the atoms.
-    ax.plot([0.10, 0.19], [0.47, 0.47], color="#A32035", lw=4.0 if video else 3.0,
-            solid_capstyle="round", zorder=3)
-    registry.text(ax, 0.24, 0.47, "O/H₂O · MatterVis", ha="left", va="center",
-                  fontsize=10, color=DARK_GRAY)
     registry.text(ax, 0.50, 0.42, "minimum-image displacement", ha="center",
                   va="center", fontsize=10, color=DARK_GRAY)
     registry.text(ax, 0.50, 0.375, f"VV  Δt = {DT_FS:g} fs", ha="center",
@@ -816,14 +811,63 @@ def _right_geometry_panel(ax: plt.Axes, registry: LayoutRegistry, data: dict[str
     registry.text(ax, 0.50, 0.055, r"Dᵢ=(Gᵢ)ᵀRᵢRᵢᵀGᵢ/Nc²", ha="center", va="center", fontsize=10, color=DARK_GRAY)
 
 
+def _network_panel(ax: plt.Axes, registry: LayoutRegistry, data: dict[str, object], *, stage: int | None, returning: bool) -> None:
+    """Show the actual local-energy/fitting/force chain in the right rail."""
+    panel_box(ax, registry, "DP COMPUTE", video=True)
+    result_energy = float(np.asarray(data.get("result_total_energy_ev", 0.0)).reshape(-1)[0])
+    atomic = np.asarray(data.get("result_atomic_energy_ev", []), dtype=float).reshape(-1)
+    forces = np.asarray(data.get("result_forces_ev_per_angstrom", []), dtype=float)
+    central = int(np.asarray(data["central_index"]).reshape(-1)[0])
+    epsilon = float(atomic[central]) if atomic.size > central else float("nan")
+    force = forces[central] if forces.ndim == 2 and forces.shape[0] > central else np.zeros(3)
+    force_norm = float(np.linalg.norm(force))
+    current = 7 if returning or stage is None else int(stage)
+    if current <= 4:
+        registry.text(ax, 0.50, 0.82, "local environment", ha="center", va="center", fontsize=11, color=NAVY, weight="bold")
+        registry.text(ax, 0.50, 0.75, "Rᵢ  →  descriptor Dᵢ", ha="center", va="center", fontsize=11, color=INK)
+        registry.text(ax, 0.50, 0.67, "5 rows shown · 83 neighbours in Nᵢ(r_c)", ha="center", va="center", fontsize=10, color=DARK_GRAY)
+        registry.text(ax, 0.50, 0.52, "same local rule for every atom", ha="center", va="center", fontsize=10, color=DARK_GRAY)
+    elif current == 5:
+        nodes = [(0.17, "Dᵢ"), (0.50, "shared\nfitting NN"), (0.83, "εᵢ")]
+        for index, (x, label) in enumerate(nodes):
+            ax.add_patch(Ellipse((x, 0.63), 0.20 if index != 1 else 0.25, 0.11, fc="#F7F8F6", ec=[LAKE_BLUE, NAVY, EMERALD][index], lw=1.8))
+            registry.text(ax, x, 0.63, label, ha="center", va="center", fontsize=10, color=INK, weight="bold")
+            if index < len(nodes) - 1:
+                registry.arrow(ax, (x + (0.11 if index != 1 else 0.14), 0.63), (nodes[index + 1][0] - (0.11 if index + 1 != 1 else 0.14), 0.63), arrowstyle="-|>", mutation_scale=10, lw=1.5, color=LINE_GRAY)
+        registry.text(ax, 0.50, 0.43, f"ε_O126 = {epsilon:.4f} eV", ha="center", va="center", fontsize=10, color=EMERALD, weight="bold")
+        registry.text(ax, 0.50, 0.34, f"E = Σᵢ εᵢ = {result_energy:.4f} eV", ha="center", va="center", fontsize=10, color=INK)
+    elif current == 6:
+        registry.text(ax, 0.50, 0.78, "total energy", ha="center", va="center", fontsize=10, color=DARK_GRAY)
+        registry.text(ax, 0.50, 0.68, f"E = {result_energy:.4f} eV", ha="center", va="center", fontsize=11, color=INK, weight="bold")
+        registry.arrow(ax, (0.20, 0.50), (0.80, 0.50), arrowstyle="-|>", mutation_scale=12, lw=1.8, color=PALE_OLIVE)
+        registry.text(ax, 0.50, 0.57, r"−∂E/∂rᵢ", ha="center", va="center", fontsize=11, color=PALE_OLIVE, weight="bold")
+        registry.text(ax, 0.50, 0.40, f"F_DP(O126) = {force_norm:.4f} eV Å⁻¹", ha="center", va="center", fontsize=10, color=PALE_OLIVE, weight="bold")
+    else:
+        nodes = [(0.18, "Fᵢ"), (0.50, "aᵢ = Fᵢ/mᵢ"), (0.82, "VV\nr′, v′")]
+        for index, (x, label) in enumerate(nodes):
+            ax.add_patch(Ellipse((x, 0.63), 0.20 if index != 1 else 0.25, 0.11, fc="#F7F8F6", ec=[PALE_OLIVE, NAVY, EMERALD][index], lw=1.8))
+            registry.text(ax, x, 0.63, label, ha="center", va="center", fontsize=10, color=INK, weight="bold")
+            if index < len(nodes) - 1:
+                registry.arrow(ax, (x + (0.11 if index != 1 else 0.14), 0.63), (nodes[index + 1][0] - (0.11 if index + 1 != 1 else 0.14), 0.63), arrowstyle="-|>", mutation_scale=10, lw=1.5, color=LINE_GRAY)
+        registry.text(ax, 0.50, 0.43, f"Δt = {DT_FS:g} fs", ha="center", va="center", fontsize=10, color=NAVY, weight="bold")
+        registry.text(ax, 0.50, 0.34, "r, v → F_DP → r′, v′", ha="center", va="center", fontsize=10, color=DARK_GRAY)
+
+
 def _phase(t: float, duration: float = 16.0) -> tuple[int | None, float, bool]:
-    """Eight short, legible reveals followed by a two-second loop pause."""
+    """Detailed first pass, then several fast fixed-layout VV cycles."""
     if t >= duration - 2.0:
         return None, min((t - (duration - 2.0)) / 2.0, 1.0), True
-    active = duration - 2.0
-    segment = active / 7.0
-    stage = min(int(t // segment), 6)
-    return stage, (t - stage * segment) / segment, False
+    if t < 8.0:
+        segment = 8.0 / 7.0
+        stage = min(int(t // segment), 6)
+        return stage, (t - stage * segment) / segment, False
+    # Four fast semantic stages (neighbours, descriptor/energy, force, VV)
+    # repeat three times before the final pause.
+    fast_t = t - 8.0
+    segment = 1.5
+    stage = 4 + int((fast_t % 6.0) // segment)
+    stage = min(stage, 7)
+    return stage, (fast_t % segment) / segment, False
 
 
 def compose(fig, t: float, registry: LayoutRegistry, data: dict[str, object], vv: dict[str, object], a: dict[str, object], *, video: bool) -> list[dict]:
@@ -840,42 +884,34 @@ def compose(fig, t: float, registry: LayoutRegistry, data: dict[str, object], vv
     if not video:
         registry.text(main, 0.035, 0.035, "thin lines = real Nᵢ(r_c) · not forces", ha="left", va="bottom", fontsize=10, color=DARK_GRAY)
         _static_neighbor_scene(main, registry, data, a, video=False)
-    elif returning:
-        registry.text(main, 0.035, 0.035, "r′, v′ · pause then repeat", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
-        _focus_scene(main, registry, data, a["camera"], a["focus_velocity"], a["locator"], video=video)
-    elif stage == 0:
-        registry.text(main, 0.035, 0.035, "chemical-bond view · 64 H₂O", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
-        place_main(main, a["initial"], rect=rect)
-    elif stage == 1:
-        registry.text(main, 0.035, 0.035, "centre O126 · input r, v", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
-        place_main(main, a["initial"], rect=rect)
-    elif stage == 2:
-        registry.text(main, 0.035, 0.035, "draw real r_c = 6.0 Å", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
-        place_main(main, a["initial"], rect=rect, alpha=float(1.0 - np.clip(progress, 0.0, 1.0)))
-        fitted = _focus_scene(main, registry, data, a["camera"], a["focus_cutoff"], a["locator"], video=video)
-        _mic_overlay(main, registry, data, a["camera"], fitted, video=video, reveal=float(np.clip(progress, 0.0, 1.0)))
-    elif stage == 3:
-        registry.text(main, 0.035, 0.035, "inside normal · outside faded", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
-        fitted = _focus_scene(main, registry, data, a["camera"], a["focus_inside"], a["locator"], video=video)
-        _mic_overlay(main, registry, data, a["camera"], fitted, video=video, reveal=1.0)
-    elif stage == 4:
-        registry.text(main, 0.035, 0.035, "local O126 → magnified neighbours", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
-        _static_neighbor_scene(main, registry, data, a, video=video)
-    elif stage == 5:
-        registry.text(main, 0.035, 0.035, "local environment → energy → force", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
-        _nn_scene(main, registry, data, context=a["context"], image=a["focus_neighbors"], video=video)
-    elif stage == 6:
-        registry.text(main, 0.035, 0.035, "F_DP(r) · one force query", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
-        fitted = _focus_scene(main, registry, data, a["camera"], a["focus_force"], a["locator"], video=video)
-        _mic_overlay(main, registry, data, a["camera"], fitted, video=video, reveal=1.0)
-        registry.text(main, 0.035, 0.065, "F_DP starts at O126 · display length amplified", ha="left", va="bottom", fontsize=10, color=DARK_GRAY)
     else:
-        registry.text(main, 0.035, 0.035, "Velocity Verlet: r, v → r′, v′", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
-        fitted = _focus_scene(main, registry, data, a["camera"], a["focus_velocity"], a["locator"], video=video)
-    if (not video) or (stage == 4 and not returning):
+        # Keep the physical stage fixed in screen space. Only the native
+        # content inside the fixed magnifier changes, so the viewer tracks one
+        # O126 and one r_c circle through the complete DP step.
+        fixed_stage = 7 if returning else int(stage)
+        focus_by_stage = {
+            0: a["focus_source"],
+            1: a["focus_source"],
+            2: a["focus_cutoff"],
+            3: a["focus_inside"],
+            4: a["focus_mag"],
+            5: a["focus_neighbors"],
+            6: a["focus_force"],
+            7: a["focus_velocity"],
+        }
+        _static_neighbor_scene(main, registry, data, a, video=True,
+                               focus_image=focus_by_stage[fixed_stage],
+                               show_neighbor_count=fixed_stage >= 4)
+    if not video:
         _right_geometry_panel(info, registry, data, video=video)
+    elif (not returning) and stage == 4:
+        _right_geometry_panel(info, registry, data, video=video)
+    elif returning or (stage is not None and stage >= 5):
+        _network_panel(info, registry, data, stage=stage, returning=returning)
     else:
         _info(info, registry, data, vv, video=video, stage=None if returning else stage, returning=returning)
+    if video:
+        draw_horizontal_key(main, registry, (("r, v / input", LAKE_BLUE), ("F_DP", PALE_OLIVE), ("real neighbours", EMERALD)), y=0.035, video=video)
     if not returning:
         draw_legend(rail, registry, (("r, v / input", LAKE_BLUE), ("F_DP", PALE_OLIVE), ("r′, v′", EMERALD)), video=video, y0=0.205)
         registry.text(rail, 0.10, 0.275, "VV STATE", ha="left", va="center", fontsize=10, color=DARK_GRAY, weight="bold")
