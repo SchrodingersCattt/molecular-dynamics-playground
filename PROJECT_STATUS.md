@@ -39,3 +39,16 @@
 - 文章源稿与 PDF：`report/md_reading_notes.tex`、`report/output/pdf/md_reading_notes.pdf`
 - 文章修订日志：`report/_qa_revision_log.md`
 - MatterVis API 记录：`MatterVis/docs/agents/scene_api.md`
+
+## 可复核交付物
+
+- `four_part_story/figures/01_velocity_verlet.png` 至 `04_deep_potential_md.png`
+- `four_part_story/videos/01_velocity_verlet.mp4` 至 `04_deep_potential_md.mp4`
+- `four_part_story/_qa/04_dpmd_native/qa_report_strict.json`
+- `four_part_story/_qa/04_dpmd_native/_qa/every_frame_qa.json`
+- `four_part_story/figures/05_well_tempered_metadynamics.png`
+- `four_part_story/videos/05_well_tempered_metadynamics.mp4`
+- `four_part_story/_qa/05_metadynamics/qa_report_strict.json`
+- `four_part_story/figures/06_rigid_water_descriptor_invariance.png`
+- `four_part_story/videos/06_rigid_water_descriptor_invariance.mp4`
+- `four_part_story/_qa/06_symmetry_invariance/descriptor_provenance.json`

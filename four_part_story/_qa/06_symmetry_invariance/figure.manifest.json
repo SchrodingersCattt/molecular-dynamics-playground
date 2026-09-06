@@ -126,15 +126,15 @@
     "records": []
   },
   "review": {
-    "render_sha256": "97710539590566e8af58fd4f21ea92553d0b023ab64789ebde7501102ff9bc95",
+    "render_sha256": "137e3a39ca4b51eb7ca7b7097ceeed80b3bd3f18b4ab288469d84b36975ff7b2",
     "problems": {
-      "scientific_expression": "Rigid transforms preserve the geometric descriptor while Cartesian positions change.",
-      "geometry": "MatterVis renders the same molecule in a fixed periodic cell and camera.",
-      "annotations": "Coordinates and invariant descriptor rows are explicit.",
-      "readability": "The proof panel shows changing position alongside constant geometry values.",
-      "submission_quality": "Static and full-frame video QA are retained."
+      "scientific_expression": "A rigid-body trajectory changes all three Cartesian rows while the DeepMD environment matrix R_i remains invariant.",
+      "geometry": "The same three-atom H2O is rendered in a fixed periodic cell and camera.",
+      "annotations": "All O, H1, H2 Cartesian coordinates and all 2x4 R_i entries are shown.",
+      "readability": "The right panel separates full Cartesian coordinates from the descriptor input matrix.",
+      "submission_quality": "MatterVis provenance, self-check JSON, strict figure QA, and 240-frame video QA are retained."
     },
-    "action": "Keep the water rigid and compute descriptors with minimum-image distances.",
+    "action": "Keep PBC minimum-image unwrapping and the molecule-local frame fixed in definition across frames.",
     "stop_condition": "fixed"
   }
 }

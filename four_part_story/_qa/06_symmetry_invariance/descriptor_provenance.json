@@ -1,19 +1,96 @@
 {
   "source": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\06_symmetry_invariance\\water_rigid.extxyz",
+  "source_sha256": "4a653d0adb3c3024841ac890ee76461f5dd4f159aed5c88074f73ced3c454ba9",
   "box_angstrom": 12.0,
   "frame_count": 240,
-  "descriptor_definition": [
-    "O-H distance 1",
-    "O-H distance 2",
-    "H-H distance",
-    "cos(H-O-H)"
+  "rcut_angstrom": 6.0,
+  "rcut_smth_angstrom": 5.5,
+  "descriptor_name": "DeepMD environment matrix R_i (descriptor input)",
+  "descriptor_formula": "R_ij=[s(r_ij),s(r_ij)x_ij/r_ij,s(r_ij)y_ij/r_ij,s(r_ij)z_ij/r_ij] in molecule-local frame",
+  "matrix_shape": [
+    2,
+    4
   ],
-  "descriptor_frame_0": [
-    0.6503118418721551,
-    0.9572000000000002,
-    1.105295513755601,
-    0.09434796534083015
+  "environment_matrix_frame_0": [
+    [
+      1.5377238051226947,
+      1.5377238051226947,
+      4.962074540943907e-17,
+      2.901336554270014e-17
+    ],
+    [
+      1.044713748432929,
+      0.09856661652823669,
+      1.0400535747118784,
+      -3.197591981485283e-18
+    ]
   ],
-  "descriptor_max_abs_delta": 0.0,
-  "rigid_transform": "rotation + translation only; bond lengths and angle unchanged"
+  "cartesian_frame_0": [
+    [
+      3.2,
+      5.6,
+      6.25
+    ],
+    [
+      3.29857258,
+      6.13299745,
+      6.60930858
+    ],
+    [
+      3.69303158,
+      6.07159947,
+      5.57862407
+    ]
+  ],
+  "cartesian_frame_mid": [
+    [
+      5.30878661,
+      5.5927706,
+      5.35003888
+    ],
+    [
+      5.63234378,
+      5.71954042,
+      5.89971666
+    ],
+    [
+      4.77068105,
+      5.02729999,
+      5.90403998
+    ]
+  ],
+  "cartesian_frame_last": [
+    [
+      7.4,
+      5.6,
+      6.25
+    ],
+    [
+      7.49857258,
+      6.13299745,
+      6.60930858
+    ],
+    [
+      7.89303158,
+      6.07159947,
+      5.57862407
+    ]
+  ],
+  "cartesian_max_abs_change": 4.203113058975258,
+  "environment_matrix_max_abs_delta": 1.9984014443252818e-15,
+  "bond_length_min_max_angstrom": [
+    0.6503118418721554,
+    1.1052955137556035
+  ],
+  "bond_length_max_abs_delta_angstrom": 1.7763568394002505e-15,
+  "cos_angle_min_max": [
+    0.09434796534082672,
+    0.09434796534082916
+  ],
+  "cos_angle_max_abs_delta": 2.4424906541753444e-15,
+  "self_check": {
+    "rigid_bonds_pass": true,
+    "rigid_angle_pass": true,
+    "descriptor_invariance_pass": true
+  }
 }
