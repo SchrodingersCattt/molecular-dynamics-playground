@@ -44,6 +44,7 @@ FOCUS_INSIDE_IMAGE = MATTERVIS_DIR / "focus_inside.png"
 FOCUS_NEIGHBOR_IMAGE = MATTERVIS_DIR / "focus_neighbors.png"
 FOCUS_FORCE_IMAGE = MATTERVIS_DIR / "focus_force.png"
 FOCUS_VELOCITY_IMAGE = MATTERVIS_DIR / "focus_velocity.png"
+FOCUS_STATIC_IMAGE = MATTERVIS_DIR / "focus_static_neighbors.png"
 FOCUS_FOREGROUND_IMAGE = MATTERVIS_DIR / "focus_foreground.png"
 
 DT_FS = 0.5
@@ -322,6 +323,10 @@ def _render_assets(data: dict[str, object], vv: dict[str, object]) -> dict[str, 
                      mesh_overlays=sphere_overlays, vector_overlays=radius_vector)
     render_structure(VV_SOURCE, FOCUS_NEIGHBOR_IMAGE, **focus_kwargs,
                      mesh_overlays=soft_overlays, vector_overlays=neighbour_vectors_native)
+    static_sphere = dict(sphere, opacity=0.78)
+    render_structure(VV_SOURCE, FOCUS_STATIC_IMAGE, **focus_kwargs,
+                     mesh_overlays=[static_sphere, equator, meridian, oblique_ring, centre_marker],
+                     vector_overlays=neighbour_vectors_native)
     render_structure(VV_SOURCE, FOCUS_FORCE_IMAGE, **focus_kwargs,
                      mesh_overlays=soft_overlays, vector_overlays=force_vectors)
     render_structure(VV_SOURCE, FOCUS_VELOCITY_IMAGE, frame=1, camera=camera,
@@ -367,7 +372,7 @@ def _render_assets(data: dict[str, object], vv: dict[str, object]) -> dict[str, 
             "inside": INSIDE_IMAGE, "neighbors": NEIGHBOR_IMAGE, "force": FORCE_IMAGE,
             "velocity": VELOCITY_IMAGE, "locator": LOCATOR_IMAGE,
             "focus_cutoff": FOCUS_CUTOFF_IMAGE, "focus_inside": FOCUS_INSIDE_IMAGE,
-            "focus_neighbors": FOCUS_NEIGHBOR_IMAGE, "focus_force": FOCUS_FORCE_IMAGE,
+            "focus_neighbors": FOCUS_NEIGHBOR_IMAGE, "focus_static": FOCUS_STATIC_IMAGE, "focus_force": FOCUS_FORCE_IMAGE,
             "focus_velocity": FOCUS_VELOCITY_IMAGE, "focus_foreground": FOCUS_FOREGROUND_IMAGE,
             "camera": camera, "central": central, "radius_vector": radius_vector}
 
@@ -510,27 +515,36 @@ def _descriptor_scene(ax: plt.Axes, registry: LayoutRegistry, data: dict[str, ob
 
 
 def _static_neighbor_scene(ax: plt.Axes, registry: LayoutRegistry, data: dict[str, object], a: dict[str, object], *, video: bool) -> None:
-    """PPT still: a square water box with the local rcut sphere directly overlaid."""
-    # The B panel is tall and narrow; compensate in normalized axes coordinates
-    # so the water-box frame and the MatterVis cutoff sphere are both square on
-    # the exported slide.
+    """PPT still: whole water box plus an in-place magnified local overlay."""
     position = ax.get_position()
     fig = ax.figure
     panel_ratio = (position.width * fig.get_figwidth()) / (position.height * fig.get_figheight())
-    sy = 0.56
-    sx = sy / panel_ratio
-    cx, cy = 0.50, 0.55
-    square = (cx - sx / 2, cy - sy / 2, cx + sx / 2, cy + sy / 2)
-    place_main(ax, a["initial"], rect=square)
-    ax.add_patch(Rectangle((square[0], square[1]), sx, sy, fill=False, ec=NAVY, lw=1.7, zorder=22))
-    # This is a direct overlay: the local rcut sphere occupies the same paper
-    # square as the full periodic box and obscures its centre as requested.
-    place_main(ax, a["focus_neighbors"], rect=square)
-    registry.text(ax, cx, square[1] - 0.025, "periodic water box · local O126 overlay", ha="center", va="top", fontsize=10, color=DARK_GRAY)
-    registry.text(ax, cx, square[3] + 0.025, "real r_c = 6 Å · neighbour view", ha="center", va="bottom", fontsize=11, color=INK, weight="bold")
-    # Coordinate triad sits in the domain itself, identifying the Cartesian
-    # frame used before minimum-image distances are formed.
-    origin = (square[0] + 0.055, square[1] + 0.065)
+    box_sy = 0.48
+    box_sx = box_sy / panel_ratio
+    box_cx, box_cy = 0.31, 0.55
+    box = (box_cx - box_sx / 2, box_cy - box_sy / 2, box_cx + box_sx / 2, box_cy + box_sy / 2)
+    place_main(ax, a["initial"], rect=box)
+    ax.add_patch(Rectangle((box[0], box[1]), box_sx, box_sy, fill=False, ec=NAVY, lw=1.7, zorder=22))
+    registry.text(ax, box_cx, box[1] - 0.025, "periodic water box", ha="center", va="top", fontsize=10, color=DARK_GRAY)
+    # The magnified native sphere is placed over the same O126 coordinate,
+    # then enlarged and shifted right like a physical magnifying-glass view.
+    focus_sy = 0.58
+    focus_sx = focus_sy / panel_ratio
+    focus_cx, focus_cy = 0.67, 0.56
+    focus = (focus_cx - focus_sx / 2, focus_cy - focus_sy / 2, focus_cx + focus_sx / 2, focus_cy + focus_sy / 2)
+    place_main(ax, a["focus_static"], rect=focus)
+    registry.text(ax, focus_cx, focus[3] + 0.025, "magnified local r_c", ha="center", va="bottom", fontsize=11, color=INK, weight="bold")
+    # Small O126 marker in the original water box and two leader lines make
+    # the spatial correspondence explicit in one frame.
+    small_y = 0.025
+    small_x = small_y / panel_ratio
+    ax.add_patch(Ellipse((box_cx, box_cy), 2 * small_x, 2 * small_y, fill=False, ec=PALE_OLIVE, lw=2.0, zorder=30))
+    registry.text(ax, box_cx, box_cy - 0.045, "O126", ha="center", va="top", fontsize=10, color=NAVY, weight="bold")
+    ax.plot([box_cx + small_x, focus[0]], [box_cy, focus_cy + 0.10], color=PALE_OLIVE, lw=1.4, zorder=28)
+    ax.plot([box_cx + small_x, focus[0]], [box_cy, focus_cy - 0.10], color=PALE_OLIVE, lw=1.4, zorder=28)
+    # Coordinate triad sits in the full box, identifying the Cartesian frame
+    # used before minimum-image distances are formed.
+    origin = (box[0] + 0.045, box[1] + 0.055)
     registry.arrow(ax, origin, (origin[0] + 0.060, origin[1]), arrowstyle="-|>", mutation_scale=9, lw=1.4, color=LAKE_BLUE)
     registry.arrow(ax, origin, (origin[0], origin[1] + 0.060), arrowstyle="-|>", mutation_scale=9, lw=1.4, color=EMERALD)
     registry.arrow(ax, origin, (origin[0] + 0.032, origin[1] + 0.032), arrowstyle="-|>", mutation_scale=9, lw=1.4, color=PALE_OLIVE)
@@ -609,6 +623,7 @@ def _right_geometry_panel(ax: plt.Axes, registry: LayoutRegistry, data: dict[str
     values = _descriptor_data(data)
     matrix = np.asarray(values["matrix"], dtype=float)
     registry.text(ax, 0.62, 0.77, "Nᵢⱼ", ha="center", va="center", fontsize=11, color=NAVY, weight="bold")
+    registry.text(ax, 0.62, 0.715, "Nᵢⱼ = |rᵢ − rⱼ|", ha="center", va="center", fontsize=10, color=DARK_GRAY)
     size = 0.22; left = 0.48; bottom = 0.56; vmax = max(float(matrix.max()), 1e-9)
     for row in range(matrix.shape[0]):
         for col in range(matrix.shape[1]):
