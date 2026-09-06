@@ -14,6 +14,7 @@
 - MatterVis 已增加原生 overlay metadata 传递、CPU 球面方向光/高光、零透明度原子/键隐藏和对应测试；测试文件为 `MatterVis/tests/test_native_overlay_metadata.py`。
 - 中文读书笔记已有 LaTeX 源、参考文献、PDF 和渲染页；历史、Euler/Verlet、SCF、Deep Potential、采样章节已加入具体数字例子。
 - well-tempered metadynamics Demo 已新增为第五套独立静态图和 16 秒视频；一维双阱、Langevin 初期驻留、well-tempered Gaussian hills 和自由能恢复均有素材，静态 strict QA 与 384 帧视频 QA 已通过。
+- 刚体水分子对称性 Demo 已新增为第六套视频：同一个真实 H₂O 在固定周期盒内只做平移和旋转，Cartesian 坐标变化而 O–H、H–H 距离与 cos(H–O–H) descriptor 保持不变；minimum-image descriptor provenance 和 240 帧 QA 已保存。
 
 ## 当前推送内容
 
