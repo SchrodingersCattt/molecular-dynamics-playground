@@ -157,7 +157,7 @@
         {
           "id": "oxygen",
           "color": "#A32035",
-          "min_pixels": 180
+          "min_pixels": 100
         },
         {
           "id": "force",
@@ -214,15 +214,15 @@
     "records": []
   },
   "review": {
-    "render_sha256": "c275fbc81a15a8070545a033801043e1fa7460b77145839f34520612419f86ce",
+    "render_sha256": "9d764afb33088baa0398414f48fe920edf8edd049838f2ae23a8030048d84b3f",
     "problems": {
-      "scientific_expression": "The still and video use one saved periodic snapshot and real O126 minimum-image neighbours.",
-      "geometry": "The whole water box is square; the native local sphere is magnified in place and linked to its original O126 position.",
-      "annotations": "The right upper panel defines the real local Cartesian frame and distance matrix; the lower panel shows the derived descriptor.",
-      "readability": "The still stops at neighbor selection; the animation then reveals matrix, descriptor, shared NN, energy and force in order.",
+      "scientific_expression": "The static and animated neighbour scene uses one saved periodic snapshot and real minimum-image neighbours.",
+      "geometry": "The whole water box is square; the O126 local is marked by a small circle and magnified in a second circle linked by leader lines.",
+      "annotations": "The right rail is split into local Cartesian coordinates plus distance matrix, then descriptor values.",
+      "readability": "The magnifier scene is sparse and reserves matrix/descriptor logic for the right rail.",
       "submission_quality": "MatterVis sidecars, descriptor provenance, static strict QA, and 384-frame video QA are retained."
     },
-    "action": "Preserve the square-box plus in-place magnifier grammar for PPT export.",
+    "action": "Preserve the square water-box and two-circle magnifier geometry for PPT use.",
     "stop_condition": "fixed"
   }
 }

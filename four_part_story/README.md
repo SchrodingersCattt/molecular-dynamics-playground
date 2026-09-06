@@ -11,6 +11,7 @@ This directory contains four independent figures and four independent 16:9 video
 | 03 Ab initio MD | `figures/03_aimd_scf.png` / `.svg` | `videos/03_aimd_scf.mp4` | H₂O dimer, RHF/STO-3G SCF density on a fixed molecular-plane grid, seven ionic geometries |
 | 04 Deep Potential MD | `figures/04_deep_potential_md.png` / `.svg` | `videos/04_deep_potential_md.mp4` | 64-water periodic box, center atom O126, 83 atomic minimum-image neighbors inside 6.0 Å |
 | 05 Well-tempered metadynamics | `figures/05_well_tempered_metadynamics.png` / `.svg` | `videos/05_well_tempered_metadynamics.mp4` | one-dimensional double well, Langevin residence, tempered Gaussian hills, recovered free energy |
+| 06 Rigid-water invariance | `figures/06_rigid_water_descriptor_invariance.png` / `.svg` | `videos/06_rigid_water_descriptor_invariance.mp4` | one real H₂O rigidly translated and rotated in a periodic box; Cartesian coordinates change while the minimum-image descriptor is constant |
 
 ## Scientific evidence
 
@@ -49,3 +50,5 @@ Publication gates require:
 - native MatterVis provenance for atoms, bonds, periodic cells, density overlays, and world-space vectors.
 - the metadynamics demo has a strict static manifest and a complete 384-frame report under `_qa/05_metadynamics/`.
 - the DP PPT still and video use a square periodic-box layout; the real O126 neighbor matrix and radial descriptor are recorded in `_qa/04_dpmd_native/descriptor_provenance.json`.
+- the DP descriptor stage follows the PPT sketch: a square water box, an in-place local circle, a magnified local circle with real green neighbour links, and the matrix/descriptor logic in the right rail.
+- the rigid-water invariance demo uses minimum-image distances and records `max |ΔD|` plus all source coordinates in `_qa/06_symmetry_invariance/descriptor_provenance.json`.
