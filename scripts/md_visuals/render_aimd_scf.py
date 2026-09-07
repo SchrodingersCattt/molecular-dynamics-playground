@@ -97,6 +97,8 @@ DENSITY_COLORS = (
 VIDEO_DURATION = 15.0
 DETAILED_BLOCK_SECONDS = 5.0
 RAPID_BLOCK_SECONDS = 1.25
+SCF_LOOP_FRACTION = 0.60
+SCF_PAUSE_FRACTION = 0.15
 
 POSITION_EQUATION = (
     r"$\mathbf{r}_{n+1}=\mathbf{r}_n$"
@@ -560,17 +562,18 @@ def draw_case(
     if not isinstance(density_paths, list):
         raise TypeError("Density assets must be nested by ionic step")
     scene_rect = VIDEO_SCENE_RECT if video else STATIC_SCENE_RECT
-    ax.add_patch(
-        Rectangle(
-            (0.04, 0.04),
-            0.92,
-            0.92,
-            fill=False,
-            ec=LINE_GRAY,
-            lw=2.0 if video else 1.1,
-            zorder=20,
+    if not video:
+        ax.add_patch(
+            Rectangle(
+                (0.04, 0.04),
+                0.92,
+                0.92,
+                fill=False,
+                ec=LINE_GRAY,
+                lw=1.1,
+                zorder=20,
+            )
         )
-    )
 
     if mode in {"scf", "pause"}:
         if mode == "pause":
@@ -660,31 +663,31 @@ def draw_energy_curve(
     iteration_index: int,
     density_blend: float,
     scf_stage_weights: tuple[float, float, float, float],
+    scf_phase: str = "settled",
 ) -> None:
     """Draw the real SCF energy convergence for the current ionic step."""
-    ax.add_patch(
-        Rectangle(
-            (0.04, 0.04),
-            0.92,
-            0.92,
-            fill=False,
-            ec=LINE_GRAY,
-            lw=2.0 if video else 1.1,
-            zorder=2,
+    if not video:
+        ax.add_patch(
+            Rectangle(
+                (0.04, 0.04),
+                0.92,
+                0.92,
+                fill=False,
+                ec=LINE_GRAY,
+                lw=1.1,
+                zorder=2,
+            )
         )
-    )
     count = int(data["scf_counts"][ion_index])
     if mode == "scf":
-        actions = (
-            "build Fock matrix",
-            "solve orbitals",
-            "update density",
-            "check convergence",
-        )
-        action = actions[int(np.argmax(scf_stage_weights))]
-        electronic_status = (
-            f"Iteration {iteration_index + 1:02d} / {count:02d} · {action}"
-        )
+        if scf_phase == "loop":
+            electronic_status = f"Iteration {iteration_index + 1:02d} / {count:02d} · SCF loop · residual held"
+        elif scf_phase == "pause":
+            electronic_status = f"Iteration {iteration_index + 1:02d} / {count:02d} · ring complete · pause"
+        elif scf_phase == "curve":
+            electronic_status = f"Iteration {iteration_index + 1:02d} / {count:02d} · update residual"
+        else:
+            electronic_status = f"Iteration {iteration_index + 1:02d} / {count:02d} · residual held"
     elif mode == "pause":
         electronic_status = f"Iteration {count:02d} / {count:02d} · converged"
     else:
@@ -710,10 +713,7 @@ def draw_energy_curve(
     iterations = np.arange(1, count + 1, dtype=float)
 
     if mode == "scf":
-        progress_index = min(
-            iteration_index + float(density_blend),
-            count - 1.0,
-        )
+        progress_index = min(iteration_index + float(density_blend), count - 1.0)
     else:
         progress_index = count - 1.0
     current = int(np.floor(progress_index))
@@ -879,26 +879,64 @@ def _scf_state(
     rapid: bool,
 ) -> dict:
     progress = float(np.clip(progress, 0.0, 1.0))
-    iteration_float = min(
-        progress * (iteration_count - 1),
-        iteration_count - 1.0e-6,
+    # Every electronic iteration is deliberately split into three serial
+    # visual phases: the SCF ring turns, the completed ring holds briefly,
+    # and only then does the residual plot advance.  All three timings are
+    # linear; there is no ease-in/ease-out that makes the beginning appear
+    # slow and the end appear fast.
+    # There are N-1 saved transitions between N SCF snapshots.  Mapping onto
+    # those intervals prevents the density image from jumping at the instant
+    # a new electronic loop starts.
+    if progress >= 1.0 - 1.0e-12:
+        return {
+            "mode": "scf",
+            "ion": ion_index,
+            "iteration": iteration_count - 1,
+            "blend": 0.0,
+            "curve_progress": 1.0,
+            "scf_phase": "curve",
+            "stage_weights": (0.0, 0.0, 0.0, 1.0),
+            "progress": progress,
+            "scf_progress": progress,
+            "rapid": rapid,
+        }
+    cycle_position = progress * (iteration_count - 1)
+    iteration = int(cycle_position)
+    within_cycle = cycle_position - iteration
+    loop_progress = np.clip(within_cycle / SCF_LOOP_FRACTION, 0.0, 1.0)
+    curve_start = SCF_LOOP_FRACTION + SCF_PAUSE_FRACTION
+    curve_progress = np.clip(
+        (within_cycle - curve_start) / max(1.0 - curve_start, 1.0e-12),
+        0.0,
+        1.0,
     )
-    iteration = int(iteration_float)
-    within = iteration_float - iteration
-    loop_count = 1.0 if rapid else 2.0
-    stage_float = progress * loop_count * 4.0
-    active_stage = int(stage_float) % 4
-    following_stage = (active_stage + 1) % 4
-    stage_within = stage_float - int(stage_float)
-    stage_blend = smoothstep(stage_within)
-    stage_weights = [0.0, 0.0, 0.0, 0.0]
-    stage_weights[active_stage] = 1.0 - stage_blend
-    stage_weights[following_stage] = stage_blend
+    if within_cycle < SCF_LOOP_FRACTION:
+        stage_float = loop_progress * 4.0
+        active_stage = min(int(stage_float), 3)
+        following_stage = min(active_stage + 1, 3)
+        stage_within = stage_float - int(stage_float)
+        stage_blend = stage_within
+        stage_weights = [0.0, 0.0, 0.0, 0.0]
+        stage_weights[active_stage] = 1.0 - stage_blend
+        stage_weights[following_stage] = stage_blend
+        scf_phase = "loop"
+    elif within_cycle < curve_start:
+        # Keep the last SCF node visible during the explicit pause.  Do not
+        # wrap the ring back to F before the residual plot begins.
+        stage_weights = [0.0, 0.0, 0.0, 1.0]
+        scf_phase = "pause"
+    else:
+        # The completed loop remains visible but inactive while the upper
+        # right plot commits the next residual point at constant speed.
+        stage_weights = [0.0, 0.0, 0.0, 1.0]
+        scf_phase = "curve"
     return {
         "mode": "scf",
         "ion": ion_index,
         "iteration": iteration,
-        "blend": smoothstep(within),
+        "blend": 0.0,
+        "curve_progress": float(curve_progress),
+        "scf_phase": scf_phase,
         "stage_weights": tuple(float(weight) for weight in stage_weights),
         "progress": progress,
         "scf_progress": progress,
@@ -919,6 +957,8 @@ def _phase_state(
         "ion": ion_index,
         "iteration": iteration_count - 1,
         "blend": 0.0,
+        "curve_progress": 0.0,
+        "scf_phase": "settled",
         "stage_weights": (0.0, 0.0, 0.0, 0.0),
         "progress": float(np.clip(progress, 0.0, 1.0)),
         "scf_progress": 1.0,
@@ -1047,7 +1087,7 @@ def draw_video_frame(
         mode=state["mode"],
         ion_index=state["ion"],
         iteration_index=state["iteration"],
-        density_blend=state["blend"],
+        density_blend=state.get("curve_progress", 0.0),
         scf_stage_weights=state["stage_weights"],
         phase_progress=state["progress"],
     )
@@ -1059,8 +1099,9 @@ def draw_video_frame(
         mode=state["mode"],
         ion_index=state["ion"],
         iteration_index=state["iteration"],
-        density_blend=state["blend"],
+        density_blend=state.get("curve_progress", 0.0),
         scf_stage_weights=state["stage_weights"],
+        scf_phase=state.get("scf_phase", "settled"),
     )
     count = int(data["scf_counts"][state["ion"]])
     draw_scf_loop(
@@ -1072,6 +1113,20 @@ def draw_video_frame(
         iteration_count=count,
         converged=state["mode"] != "scf",
     )
+    if not state["rapid"]:
+        if state["mode"] in {"scf", "pause"}:
+            # The lower-right electronic loop is the active slow-stage panel.
+            # Quiet only the left and middle panels.  Keep the upper-right
+            # residual plot visible but held, so the later serial update is
+            # easy to read.
+            for panel in (panel_a, panel_b):
+                _deemphasize_panel(panel)
+        else:
+            # Force/velocity/position arrows are the active middle-panel
+            # event.  Quiet both sides so the arrow is not lost in competing
+            # panel changes.
+            for panel in (panel_a, panel_c, panel_d):
+                _deemphasize_panel(panel)
     if state["mode"] in {"scf", "pause"}:
         return [
             {
@@ -1103,6 +1158,23 @@ def draw_video_frame(
             "min_pixels": 120,
         }
     ]
+
+
+def _deemphasize_panel(ax: plt.Axes, alpha: float = 0.70) -> None:
+    """Lay a white veil over a whole panel, including inset axes."""
+    for target in (ax, *getattr(ax, "child_axes", [])):
+        target.add_patch(
+            Rectangle(
+                (0.0, 0.0),
+                1.0,
+                1.0,
+                transform=target.transAxes,
+                facecolor=WHITE,
+                edgecolor="none",
+                alpha=alpha,
+                zorder=1000,
+            )
+        )
 
 
 KEYFRAME_TIMES = [
