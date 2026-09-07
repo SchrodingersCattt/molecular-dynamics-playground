@@ -16,7 +16,10 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib import font_manager
+from matplotlib.font_manager import FontProperties
 from matplotlib.patches import Circle, FancyArrowPatch
+from matplotlib.text import Text
 from PIL import Image
 
 
@@ -42,10 +45,12 @@ STATIC_WIDTH_PX = 3508
 STATIC_HEIGHT_PX = 2480
 VIDEO_DPI = 100
 VIDEO_WIDTH_PX = 1920
-VIDEO_HEIGHT_PX = 1080
+VIDEO_HEIGHT_PX = 600
 FPS = 24
-FONT_MIN_PT = 10.0
-FONT_MAX_PT = 16.0
+FONT_MIN_PT = 16.0
+FONT_MAX_PT = 18.0
+VIDEO_FONT_FAMILY = "Arial"
+MAX_VERTICAL_BORDER_WHITESPACE_PX = 48
 
 CAMERA_DIRECTION = np.array([1.55, -1.0, 0.62], dtype=float)
 CAMERA_UP = np.array([0.0, 0.0, 1.0], dtype=float)
@@ -62,10 +67,21 @@ from visualize_data.checks.pixels import (  # noqa: E402
 )
 
 
+ARIAL_PATH = Path(
+    font_manager.findfont(
+        FontProperties(family=[VIDEO_FONT_FAMILY]),
+        fallback_to_default=False,
+    )
+)
+
+
 plt.rcParams.update(
     {
-        "font.family": "DejaVu Sans",
-        "mathtext.fontset": "dejavusans",
+        "font.family": VIDEO_FONT_FAMILY,
+        "mathtext.fontset": "custom",
+        "mathtext.rm": VIDEO_FONT_FAMILY,
+        "mathtext.it": f"{VIDEO_FONT_FAMILY}:italic",
+        "mathtext.bf": f"{VIDEO_FONT_FAMILY}:bold",
         "axes.unicode_minus": False,
         "svg.fonttype": "path",
     }
@@ -157,15 +173,22 @@ class LayoutRegistry:
     min_font_pt: float
     max_font_pt: float = FONT_MAX_PT
     edge_pad_px: float = 12.0
+    font_family: str | None = None
+    coerce_min_font: bool = False
     texts: list = field(default_factory=list)
     arrows: list = field(default_factory=list)
 
     def text(self, ax: plt.Axes, x: float, y: float, value: str, **kwargs):
         fontsize = float(kwargs.get("fontsize", self.min_font_pt))
+        if self.coerce_min_font:
+            fontsize = max(fontsize, self.min_font_pt)
+            kwargs["fontsize"] = fontsize
         if fontsize < self.min_font_pt:
             raise ValueError(f"Font {fontsize:g} pt is below the contract minimum {self.min_font_pt:g} pt")
         if fontsize > self.max_font_pt:
             raise ValueError(f"Font {fontsize:g} pt is above the contract maximum {self.max_font_pt:g} pt")
+        if self.font_family is not None:
+            kwargs.setdefault("fontfamily", self.font_family)
         artist = ax.text(x, y, value, **kwargs)
         self.texts.append(artist)
         return artist
@@ -182,13 +205,29 @@ class LayoutRegistry:
         width, height = fig.canvas.get_width_height()
         errors: list[str] = []
         boxes = []
-        for index, artist in enumerate(self.texts):
+        text_artists = list(self.texts)
+        if self.font_family is not None:
+            seen = {id(artist) for artist in text_artists}
+            for artist in fig.findobj(match=Text):
+                if id(artist) not in seen and artist.get_visible() and artist.get_text():
+                    text_artists.append(artist)
+                    seen.add(id(artist))
+        for index, artist in enumerate(text_artists):
             if float(artist.get_fontsize()) < self.min_font_pt:
                 errors.append(f"text[{index}] font below minimum")
             if float(artist.get_fontsize()) > self.max_font_pt:
                 errors.append(f"text[{index}] font above maximum")
+            if self.font_family is not None:
+                try:
+                    resolved = Path(font_manager.findfont(artist.get_fontproperties(), fallback_to_default=False))
+                except ValueError:
+                    errors.append(f"text[{index}] cannot resolve {self.font_family}")
+                else:
+                    if not resolved.name.lower().startswith("arial"):
+                        errors.append(f"text[{index}] resolved to {resolved.name}, not Arial")
             bbox = artist.get_window_extent(renderer=renderer)
-            boxes.append((index, bbox))
+            if artist in self.texts:
+                boxes.append((index, bbox))
             if bbox.x0 < self.edge_pad_px or bbox.y0 < self.edge_pad_px:
                 errors.append(f"text[{index}] crosses left/bottom canvas pad")
             if bbox.x1 > width - self.edge_pad_px or bbox.y1 > height - self.edge_pad_px:
@@ -408,6 +447,14 @@ def _frame_checks(image: np.ndarray, config: dict, semantics: list[dict]) -> lis
     ]
 
 
+def _vertical_border_whitespace(image: np.ndarray, threshold: int = 245) -> tuple[int, int]:
+    ink = np.any(image < threshold, axis=2)
+    rows = np.flatnonzero(np.any(ink, axis=1))
+    if rows.size == 0:
+        return image.shape[0], image.shape[0]
+    return int(rows[0]), int(image.shape[0] - 1 - rows[-1])
+
+
 def render_video(
     *,
     stem: str,
@@ -417,6 +464,8 @@ def render_video(
     qa_directory: Path,
     representative_times: Iterable[float],
 ) -> Path:
+    if VIDEO_WIDTH_PX * 5 != VIDEO_HEIGHT_PX * 16:
+        raise RuntimeError("Video canvas must use an exact 16:5 aspect ratio")
     VIDEO_DIR.mkdir(parents=True, exist_ok=True)
     qa_directory.mkdir(parents=True, exist_ok=True)
     representative_dir = qa_directory / "video_frames"
@@ -439,12 +488,18 @@ def render_video(
         for frame_index in range(frames):
             fig.clear()
             time_seconds = frame_index / FPS
-            registry = LayoutRegistry(min_font_pt=FONT_MIN_PT, max_font_pt=FONT_MAX_PT, edge_pad_px=12)
+            registry = LayoutRegistry(
+                min_font_pt=FONT_MIN_PT,
+                max_font_pt=FONT_MAX_PT,
+                edge_pad_px=12,
+                font_family=VIDEO_FONT_FAMILY,
+                coerce_min_font=True,
+            )
             semantics = draw_frame(fig, time_seconds, frame_index, registry)
             layout_errors = registry.validate(fig)
             rgba = np.asarray(fig.canvas.buffer_rgba())
             rgb = np.ascontiguousarray(rgba[:, :, :3])
-            thumbnail = Image.fromarray(rgb).resize((240, 135), Image.Resampling.LANCZOS)
+            thumbnail = Image.fromarray(rgb).resize((320, 100), Image.Resampling.LANCZOS)
             contact_thumbnails.append(thumbnail)
             checks = _frame_checks(rgb, audit_config, semantics)
             check_errors = [
@@ -453,7 +508,23 @@ def render_video(
                 for finding in result.findings
                 if finding.level == "error"
             ]
-            errors = layout_errors + check_errors
+            top_whitespace, bottom_whitespace = _vertical_border_whitespace(rgb)
+            whitespace_limit = int(
+                audit_config.get(
+                    "max_vertical_border_whitespace_px",
+                    MAX_VERTICAL_BORDER_WHITESPACE_PX,
+                )
+            )
+            vertical_errors = []
+            if top_whitespace > whitespace_limit:
+                vertical_errors.append(
+                    f"top border whitespace {top_whitespace}px exceeds {whitespace_limit}px"
+                )
+            if bottom_whitespace > whitespace_limit:
+                vertical_errors.append(
+                    f"bottom border whitespace {bottom_whitespace}px exceeds {whitespace_limit}px"
+                )
+            errors = layout_errors + check_errors + vertical_errors
             digest = hashlib.sha256(rgb.tobytes()).hexdigest()
             frame_records.append(
                 {
@@ -462,6 +533,11 @@ def render_video(
                     "sha256_rgb": digest,
                     "passed": not errors,
                     "layout_errors": layout_errors,
+                    "vertical_border_whitespace_px": {
+                        "top": top_whitespace,
+                        "bottom": bottom_whitespace,
+                        "maximum": whitespace_limit,
+                    },
                     "checks": [
                         {
                             "check": result.check,
@@ -494,8 +570,12 @@ def render_video(
             "frame_count_audited": len(frame_records),
             "fps": FPS,
             "dimensions": [VIDEO_WIDTH_PX, VIDEO_HEIGHT_PX],
+            "aspect_ratio": "16:5",
+            "font_family": VIDEO_FONT_FAMILY,
+            "font_path": str(ARIAL_PATH),
             "minimum_font_pt": FONT_MIN_PT,
             "maximum_font_pt": FONT_MAX_PT,
+            "maximum_vertical_border_whitespace_px": MAX_VERTICAL_BORDER_WHITESPACE_PX,
             "passed": len(frame_records) == frames and not failures and return_code == 0,
             "ffmpeg_return_code": return_code,
             "failures": failures,
@@ -508,12 +588,12 @@ def render_video(
         contact_dir = qa_directory / "contact_sheets"
         contact_dir.mkdir(parents=True, exist_ok=True)
         per_page = 48
-        columns = 8
-        rows = 6
+        columns = 6
+        rows = 8
         for page_index, start in enumerate(range(0, len(contact_thumbnails), per_page)):
-            page = Image.new("RGB", (columns * 240, rows * 135), WHITE)
+            page = Image.new("RGB", (columns * 320, rows * 100), WHITE)
             for offset, thumb in enumerate(contact_thumbnails[start : start + per_page]):
-                page.paste(thumb, ((offset % columns) * 240, (offset // columns) * 135))
+                page.paste(thumb, ((offset % columns) * 320, (offset // columns) * 100))
             page.save(contact_dir / f"contact_{page_index:02d}.jpg", quality=92, subsampling=0)
     if return_code != 0:
         raise RuntimeError(f"ffmpeg failed with exit code {return_code}")

@@ -11,7 +11,7 @@
 ## Target Size
 
 - Static: A4 landscape, 297 × 210 mm, 300 dpi, minimum 10 pt
-- Video: 1920 × 1080, 24 fps; all text 10–16 pt
+- Video: 1920 × 600 (exact 16:5), 24 fps; Arial text 16–18 pt
 
 ## Panels
 
@@ -37,7 +37,7 @@
 ## Style
 
 - White background; inactive loop light grey; active stage charcoal/black.
-- No page header; one type family throughout; every label is between 10 and 16 pt.
+- No page header; one type family throughout; every video label is Arial between 16 and 18 pt.
 - MatterVis orthographic camera direction `[1.55,-1.0,0.62]`, up `[0,0,1]`.
 - Arrow shafts at least 8 px and heads at least 20 px in video.
 

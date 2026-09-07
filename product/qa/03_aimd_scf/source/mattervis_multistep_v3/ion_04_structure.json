@@ -4,10 +4,10 @@
   "format": "png",
   "width": 1500,
   "height": 950,
-  "plan_sha256": "383abd5c245d9a0f15634187349cc7d7b86426a8b9c50d9e3d9abf57dd73b26b",
-  "output_sha256": "6828345265ab1b95770201e0a782d25a2a8cc3b9446504b4bcf6c305ceb90b3e",
-  "output": "D:\\CRYSTAL_PHD\\impromptus\\_staging\\md-visual\\four_part_story\\_qa\\03_aimd_scf\\source\\mattervis_multistep_v3\\ion_04_structure.png",
-  "source_sha256": "66b54386d29a47128e5fda1789675d47e56e6cb27723716dbd5eda01c7882ef0",
+  "plan_sha256": "de05378b227405343eecc241c8aab5707111c8acbbad300c3e5cae146d3189e4",
+  "output_sha256": "c8263fcdf15469befcbe8c36cca2fc6ced9ea73867704d01e99764df0c97447b",
+  "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03_aimd_scf\\source\\mattervis_multistep_v3\\ion_04_structure.png",
+  "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
   "frame": 4,
   "view": "cluster",
   "camera": {
@@ -16,7 +16,7 @@
       0.039999999999999994,
       0.05
     ],
-    "ortho_scale": 1.72,
+    "ortho_scale": 1.46,
     "direction": [
       -0.5381573536165152,
       -0.6201447889834582,
@@ -38,12 +38,19 @@
     "height": 950,
     "atom_scale": 0.9,
     "bond_radius": 0.102,
-    "show_cell": false
+    "show_cell": false,
+    "include_boundary_replicas": true,
+    "show_bonds": true,
+    "cell_color": "#333333",
+    "cell_width_px": 2.0
   },
   "vector_signature": "[]",
   "vector_count": 0,
   "vector_renderer": "MatterVis native world-space vector_overlays",
-  "pipeline_version": 3,
+  "mesh_signature": "[]",
+  "atom_signature": "{\"color\":{},\"opacity\":{}}",
+  "mesh_renderer": "MatterVis native world-space mesh overlay",
+  "pipeline_version": 7,
   "warnings": [],
   "metadata": {
     "transparent_compositor": "per-pixel-fragment-list",
@@ -69,7 +76,7 @@
       "fov_y_deg": 45.0,
       "near": 0.01,
       "far": 10000.0,
-      "ortho_scale": 1.72
+      "ortho_scale": 1.46
     },
     "source": {
       "path": null,

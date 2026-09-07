@@ -1158,13 +1158,12 @@ def _draw_water_panel(ax, registry, assets, data, state, *, video):
     focus_path = assets[focus_key][state]
     place_main(ax, focus_path, rect=(0.52, 0.15, 0.96, 0.87))
     registry.text(ax, 0.06, 0.075, f"MD step {state:02d} · Δt = {float(data['trajectory_dt_fs']):g} fs", ha="left", va="center", fontsize=11 if video else 10, color=INK)
-    registry.text(ax, 0.94, 0.075, f"{int(data['_descriptor']['count'])} MIC neighbours", ha="right", va="center", fontsize=11 if video else 10, color=NAVY, weight="bold")
-    registry.text(ax, 0.94, 0.045, f"r_c = {float(data['trajectory_cutoff_angstrom']):g} Å", ha="right", va="center", fontsize=10, color=NAVY)
+    registry.text(ax, 0.94, 0.075, f"{int(data['_descriptor']['count'])} MIC neighbours · " + rf"$r_c={float(data['trajectory_cutoff_angstrom']):g}$ Å", ha="right", va="center", fontsize=11 if video else 10, color=NAVY, weight="bold")
 
 
 def _draw_environment_matrix(ax, registry, data, *, video, weight):
     values = data["_descriptor"]
-    registry.text(ax, 0.50, 0.92, "MIC rows → Rᵢ", ha="center", va="center", fontsize=14 if video else 10, color=INK, weight="bold")
+    registry.text(ax, 0.50, 0.92, r"MIC rows → $R_i$", ha="center", va="center", fontsize=14 if video else 10, color=INK, weight="bold")
     rows = values["rows"][:2]
     registry.text(ax, 0.50, 0.84, "j / type / r(Å) / Δr(Å)", ha="center", va="center", fontsize=10, color=NAVY, weight="bold")
     for row_index, row in enumerate(rows):
@@ -1173,7 +1172,7 @@ def _draw_environment_matrix(ax, registry, data, *, video, weight):
         ax.add_patch(Rectangle((0.08, y - 0.035), 0.84, 0.07, fc=to_rgba(NAVY if weight > 0.45 else "#EEF1F1", alpha=0.92), ec="white", lw=0.6))
         registry.text(ax, 0.50, y, value, ha="center", va="center", fontsize=10, color="white" if weight > 0.45 else INK)
     registry.arrow(ax, (0.50, 0.59), (0.50, 0.52), arrowstyle="-|>", mutation_scale=12, lw=1.5, color=NAVY if weight > 0.45 else LINE_GRAY)
-    registry.text(ax, 0.50, 0.475, "Rᵢⱼ = [s(rᵢⱼ), s·Δx/r, s·Δy/r, s·Δz/r]", ha="center", va="center", fontsize=11, color=INK if weight > 0.45 else DARK_GRAY, weight="bold")
+    registry.text(ax, 0.50, 0.475, r"$R_{ij}=[s(r_{ij}),s\Delta x/r,s\Delta y/r,s\Delta z/r]$", ha="center", va="center", fontsize=11, color=INK if weight > 0.45 else DARK_GRAY, weight="bold")
     env = np.asarray(values["environment"], dtype=float)[:1]
     left, bottom, width, height = 0.18, 0.20, 0.64, 0.12
     for row_index in range(env.shape[0]):
@@ -1192,15 +1191,15 @@ def _draw_environment_matrix(ax, registry, data, *, video, weight):
     descriptor_shape = descriptor_data.get("shape")
     descriptor_values = descriptor_data.get("o126", [])
     if descriptor_status == "available" and descriptor_shape and descriptor_values:
-        label = f"Dᵢ: eval_descriptor; shape {tuple(descriptor_shape)}"
+        label = rf"$D_i$: eval_descriptor; shape {tuple(descriptor_shape)}"
     else:
-        label = "learned descriptor Dᵢ · internal tensor not exported"
+        label = r"learned descriptor $D_i$ · internal tensor not exported"
     registry.text(ax, 0.50, 0.055, label, ha="center", va="bottom", fontsize=10, color=NAVY if weight > 0.45 else DARK_GRAY, weight="bold")
 
 
 def _draw_energy_force(ax, registry, data, *, video, mode, weight):
     registry.text(ax, 0.50, 0.92, "fitting network → potential and force", ha="center", va="center", fontsize=14 if video else 10, color=INK, weight="bold")
-    nodes = [(0.14, "Dᵢ", NAVY), (0.38, "fitting\nnetwork", NAVY), (0.62, "εᵢ", EMERALD), (0.86, "Σ εᵢ", EMERALD)]
+    nodes = [(0.14, r"$D_i$", NAVY), (0.38, "fitting\nnetwork", NAVY), (0.62, r"$\varepsilon_i$", EMERALD), (0.86, r"$\sum_i\varepsilon_i$", EMERALD)]
     for index, (x, label, colour) in enumerate(nodes):
         _node(ax, registry, x, 0.73, label, colour, weight, fontsize=10, width=0.19 if index != 1 else 0.24)
         if index < len(nodes) - 1:
@@ -1209,14 +1208,12 @@ def _draw_energy_force(ax, registry, data, *, video, mode, weight):
     total = float(data["trajectory_total_energy_ev"][data["_state"]["state"]])
     force = np.asarray(data["trajectory_forces_ev_per_angstrom"], dtype=float)[data["_state"]["state"]]
     central = int(data["trajectory_central_index"])
-    registry.text(ax, 0.50, 0.56, f"ε_O126 = {energies[central]:+.4f} eV", ha="center", va="center", fontsize=10, color=EMERALD if weight > 0.45 else DARK_GRAY, weight="bold")
-    registry.text(ax, 0.50, 0.47, f"U_DP = Σᵢ εᵢ = {total:+.4f} eV", ha="center", va="center", fontsize=11, color=EMERALD if weight > 0.45 else DARK_GRAY, weight="bold")
-    registry.arrow(ax, (0.50, 0.39), (0.50, 0.30), arrowstyle="-|>", mutation_scale=12, lw=1.8, color=PALE_OLIVE if weight > 0.45 else LINE_GRAY)
-    registry.text(ax, 0.50, 0.265, r"Fₖ = −∂U_DP/∂rₖ = −∂(Σᵢ εᵢ)/∂rₖ", ha="center", va="center", fontsize=10, color=PALE_OLIVE if weight > 0.45 else DARK_GRAY, weight="bold")
-    registry.text(ax, 0.50, 0.19, f"|F_O126| = {np.linalg.norm(force[central]):.4f} eV Å⁻¹", ha="center", va="center", fontsize=10, color=PALE_OLIVE if weight > 0.45 else DARK_GRAY)
+    registry.text(ax, 0.50, 0.535, rf"$\varepsilon_{{O126}}={energies[central]:+.4f}$ eV · $U_{{DP}}={total:+.4f}$ eV", ha="center", va="center", fontsize=10, color=EMERALD if weight > 0.45 else DARK_GRAY, weight="bold")
+    registry.arrow(ax, (0.50, 0.455), (0.50, 0.385), arrowstyle="-|>", mutation_scale=12, lw=1.8, color=PALE_OLIVE if weight > 0.45 else LINE_GRAY)
+    registry.text(ax, 0.50, 0.295, rf"$F_k=-\partial(\sum_i\varepsilon_i)/\partial r_k$ · $|F_{{O126}}|={np.linalg.norm(force[central]):.4f}$ eV Å$^{{-1}}$", ha="center", va="center", fontsize=10, color=PALE_OLIVE if weight > 0.45 else DARK_GRAY, weight="bold")
     output_y = 0.085
     _node(ax, registry, 0.28, output_y, "potential U_DP", EMERALD, 1.0 if mode in {"evaluate", "reevaluate", "final_kick", "commit"} else 0.0, fontsize=10, width=0.30, height=0.09)
-    _node(ax, registry, 0.72, output_y, "forces {Fₖ}", PALE_OLIVE, 1.0 if mode in {"evaluate", "reevaluate", "final_kick", "commit"} else 0.0, fontsize=10, width=0.25, height=0.09)
+    _node(ax, registry, 0.72, output_y, r"forces $\{F_k\}$", PALE_OLIVE, 1.0 if mode in {"evaluate", "reevaluate", "final_kick", "commit"} else 0.0, fontsize=10, width=0.25, height=0.09)
 
 
 def _state_for_time(time_seconds: float, n_states: int) -> dict[str, object]:
@@ -1319,7 +1316,7 @@ def main() -> None:
         raise RuntimeError("static trajectory DP layout failed:\n" + "\n".join(errors))
     save_static(fig, STEM)
     if not args.static_only:
-        render_video(stem=STEM, duration_seconds=VIDEO_DURATION, draw_frame=lambda f, t, i, r: _draw_trajectory_frame(f, t, i, r, data, assets), audit_config={"panels": [{"id": "integrator", "rect": list(STORY_VIDEO_A), "min_clearance_px": 0, "allow_touch_edges": ["left", "right", "top", "bottom"]}, {"id": "water", "rect": list(STORY_VIDEO_B), "min_clearance_px": 0, "allow_touch_edges": ["left", "right", "top", "bottom"]}, {"id": "environment", "rect": list(STORY_VIDEO_C), "min_clearance_px": 0, "allow_touch_edges": ["left", "right", "top", "bottom"]}, {"id": "outputs", "rect": list(STORY_VIDEO_D), "min_clearance_px": 0, "allow_touch_edges": ["left", "right", "top", "bottom"]}], "whitespace": {"background_threshold": 245, "min_ink_fraction": 0.02, "min_panel_bbox_fill": 0.22, "grid_rows": 12, "grid_columns": 24}, "bands": [{"id": "gap_a_b", "rect": [0.310, 0.055, 0.325, 0.955], "max_ink_pixels": 0}, {"id": "gap_b_right", "rect": [0.715, 0.045, 0.745, 0.955], "max_ink_pixels": 0}, {"id": "gap_c_d", "rect": [0.745, 0.405, 0.965, 0.445], "max_ink_pixels": 0}]}, qa_directory=QA_DIR / "_qa", representative_times=[0.2, 2.0, 4.0, 6.0, 7.9, 8.1, 10.0, 12.0, 14.0, 15.8])
+        render_video(stem=STEM, duration_seconds=VIDEO_DURATION, draw_frame=lambda f, t, i, r: _draw_trajectory_frame(f, t, i, r, data, assets), audit_config={"panels": [{"id": "integrator", "rect": list(STORY_VIDEO_A), "min_clearance_px": 0, "allow_touch_edges": ["left", "right", "top", "bottom"]}, {"id": "water", "rect": list(STORY_VIDEO_B), "min_clearance_px": 0, "allow_touch_edges": ["left", "right", "top", "bottom"]}, {"id": "environment", "rect": list(STORY_VIDEO_C), "min_clearance_px": 0, "allow_touch_edges": ["left", "right", "top", "bottom"]}, {"id": "outputs", "rect": list(STORY_VIDEO_D), "min_clearance_px": 0, "allow_touch_edges": ["left", "right", "top", "bottom"]}], "whitespace": {"background_threshold": 245, "min_ink_fraction": 0.02, "min_panel_bbox_fill": 0.22, "grid_rows": 12, "grid_columns": 24}, "bands": [{"id": "gap_a_b", "rect": [0.215, 0.025, 0.230, 0.975], "max_ink_pixels": 5000}, {"id": "gap_b_right", "rect": [0.680, 0.025, 0.695, 0.975], "max_ink_pixels": 5000}, {"id": "gap_c_d", "rect": [0.695, 0.470, 0.985, 0.500], "max_ink_pixels": 5000}]}, qa_directory=QA_DIR / "_qa", representative_times=[0.2, 2.0, 4.0, 6.0, 7.9, 8.1, 10.0, 12.0, 14.0, 15.8])
 
 
 if __name__ == "__main__": main()

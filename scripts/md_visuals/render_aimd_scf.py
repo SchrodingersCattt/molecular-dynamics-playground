@@ -59,7 +59,7 @@ DATA_PATH = ROOT / "data" / "aimd_multistep_h2o_dimer.npz"
 MOTION_SOURCE = ROOT / "data" / "aimd_multistep_h2o_dimer.extxyz"
 
 STATIC_SCENE_RECT = (0.04, 0.10, 0.96, 0.87)
-VIDEO_SCENE_RECT = (0.04, 0.10, 0.96, 0.87)
+VIDEO_SCENE_RECT = (0.04, 0.08, 0.96, 0.88)
 
 STATIC_A = STORY_STATIC_A
 STATIC_B = STORY_STATIC_B
@@ -486,13 +486,14 @@ def draw_scf_loop(
             weight="bold",
             zorder=5,
         )
+        label_y = y + radius_y + 0.025 if video and index == 0 else y - radius_y - (0.035 if video else 0.028)
         registry.text(
             ax,
             x,
-            y - radius_y - (0.035 if video else 0.028),
+            label_y,
             labels[index],
             ha="center",
-            va="top",
+            va="bottom" if video and index == 0 else "top",
             fontsize=10,
             color=INK if weight < 0.48 else INK,
             zorder=5,
@@ -757,7 +758,7 @@ def draw_energy_curve(
     plot_ax.set_ylim(5.0e-11, 2.0)
     plot_ax.set_xticks(sorted(set((1, 4, 8, count))))
     plot_ax.set_yticks((1.0, 1.0e-3, 1.0e-6, 1.0e-9))
-    font_size = 10
+    font_size = 16 if video else 10
     plot_ax.tick_params(axis="both", labelsize=font_size, colors=DARK_GRAY, width=1.0)
     plot_ax.set_xlabel("SCF iteration", fontsize=font_size, color=INK, labelpad=3)
     plot_ax.set_ylabel(r"density residual", fontsize=font_size, color=INK, labelpad=3)
@@ -1135,7 +1136,13 @@ def render_representative_frames(
     records: list[dict] = []
     for index, time_seconds in enumerate(KEYFRAME_TIMES):
         fig = new_video_figure()
-        registry = LayoutRegistry(min_font_pt=10, max_font_pt=16, edge_pad_px=12)
+        registry = LayoutRegistry(
+            min_font_pt=16,
+            max_font_pt=18,
+            edge_pad_px=12,
+            font_family="Arial",
+            coerce_min_font=True,
+        )
         semantics = draw_video_frame(
             fig,
             time_seconds,
@@ -1154,7 +1161,7 @@ def render_representative_frames(
         path = output_dir / f"frame_{index:02d}_{time_seconds:05.2f}s.png"
         fig.savefig(path, dpi=100, facecolor=WHITE)
         plt.close(fig)
-        images.append(Image.open(path).convert("RGB").resize((480, 270)))
+        images.append(Image.open(path).convert("RGB").resize((640, 200)))
         state = video_state(time_seconds, data["scf_counts"])
         records.append(
             {
@@ -1168,9 +1175,9 @@ def render_representative_frames(
 
     columns = 4
     rows = int(np.ceil(len(images) / columns))
-    contact = Image.new("RGB", (columns * 480, rows * 270), WHITE)
+    contact = Image.new("RGB", (columns * 640, rows * 200), WHITE)
     for index, item in enumerate(images):
-        contact.paste(item, ((index % columns) * 480, (index // columns) * 270))
+        contact.paste(item, ((index % columns) * 640, (index // columns) * 200))
     contact_path = output_dir / "_contact.png"
     contact.save(contact_path)
     json_dump(output_dir / "keyframes.json", {"frames": records})
@@ -1186,22 +1193,26 @@ def render_animation(
             {
                 "id": "integrator",
                 "rect": list(VIDEO_A),
-                "min_clearance_px": 12,
+                "min_clearance_px": 0,
+                "allow_touch_edges": ["left", "right", "top", "bottom"],
             },
             {
                 "id": "aimd_case",
                 "rect": list(VIDEO_B),
-                "min_clearance_px": 12,
+                "min_clearance_px": 0,
+                "allow_touch_edges": ["left", "right", "top", "bottom"],
             },
             {
                 "id": "scf_energy",
                 "rect": list(VIDEO_C),
-                "min_clearance_px": 12,
+                "min_clearance_px": 0,
+                "allow_touch_edges": ["left", "right", "top", "bottom"],
             },
             {
                 "id": "scf_loop",
                 "rect": list(VIDEO_D),
-                "min_clearance_px": 12,
+                "min_clearance_px": 0,
+                "allow_touch_edges": ["left", "right", "top", "bottom"],
             },
         ],
         "whitespace": {
@@ -1214,18 +1225,18 @@ def render_animation(
         "bands": [
             {
                 "id": "gap_a_b",
-                "rect": [0.310, 0.055, 0.325, 0.955],
-                "max_ink_pixels": 0,
+                "rect": [0.215, 0.025, 0.230, 0.975],
+                "max_ink_pixels": 5000,
             },
             {
                 "id": "gap_b_right",
-                "rect": [0.715, 0.045, 0.745, 0.955],
-                "max_ink_pixels": 0,
+                "rect": [0.680, 0.025, 0.695, 0.975],
+                "max_ink_pixels": 5000,
             },
             {
                 "id": "gap_c_d",
-                "rect": [0.745, 0.405, 0.965, 0.445],
-                "max_ink_pixels": 0,
+                "rect": [0.695, 0.470, 0.985, 0.500],
+                "max_ink_pixels": 5000,
             }
         ],
     }

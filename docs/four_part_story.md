@@ -1,6 +1,6 @@
 # Four-part molecular-dynamics story
 
-This directory contains four independent figures and four independent 16:9 videos. Each movie is rendered from the same scientific snapshot chain as its still, but is composed as its own visual explanation; no movie is a stitched montage or a screenshot of a still.
+This directory contains independent figures and independent 16:5 videos. Each movie is rendered from the same scientific snapshot chain as its still, but is composed as its own visual explanation; no movie is a stitched montage or a screenshot of a still.
 
 ## Canonical outputs
 
@@ -44,8 +44,8 @@ Publication gates require:
 
 - 3508 × 2480 static PNG at 300 dpi-equivalent A4 width;
 - minimum 10 pt text in static figures;
-- 1920 × 1080, 24 fps, H.264/yuv420p independent videos;
-- 10–16 pt text in both stills and movies (the same compact type scale);
+- 1920 × 600 (exact 16:5), 24 fps, H.264/yuv420p independent videos;
+- 10–16 pt text in stills; Arial 16–18 pt text in movies;
 - zero frame-level clipping, text overlap, boundary, whitespace, or semantic-colour errors;
 - exact neighbor selection and real energy/force provenance where numerical values are shown;
 - native MatterVis provenance for atoms, bonds, periodic cells, density overlays, and world-space vectors.

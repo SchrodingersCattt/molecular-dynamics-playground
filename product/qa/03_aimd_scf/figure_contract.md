@@ -10,7 +10,7 @@
 ## Target Size
 
 - Static: A4 landscape, 297 × 210 mm, 300 dpi, minimum 10 pt
-- Video: 1920 × 1080, 24 fps, every font 10–16 pt
+- Video: 1920 × 600 (exact 16:5), 24 fps; every font is Arial 16–18 pt
 
 ## Panels
 

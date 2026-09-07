@@ -87,10 +87,10 @@ def _panel(ax: plt.Axes, reg: LayoutRegistry, title: str, *, video: bool) -> Non
 
 
 def _plot_axes(ax: plt.Axes, data: dict[str, np.ndarray], *, upto: float, video: bool, reg: LayoutRegistry, meta: bool) -> None:
-    ax.set_position([0.09, 0.22, 0.84, 0.58]); ax.set_facecolor("white")
+    ax.set_facecolor("white")
     ax.set_xlim(-1.55, 1.55); ax.set_ylim(-0.18, 1.95)
     ax.spines[["top", "right"]].set_visible(False); ax.spines["left"].set_color(LINE_GRAY); ax.spines["bottom"].set_color(LINE_GRAY)
-    ax.tick_params(labelsize=10, colors=DARK_GRAY)
+    ax.tick_params(labelsize=16 if video else 10, colors=DARK_GRAY)
     grid = np.linspace(-1.55, 1.55, 400)
     ax.plot(grid, potential(grid), color=NAVY, lw=2.4, label="V(x)")
     mask = data["time"] <= upto
@@ -108,13 +108,15 @@ def _plot_axes(ax: plt.Axes, data: dict[str, np.ndarray], *, upto: float, video:
     ax.set_xticks([-1.0, 0.0, 1.0]); ax.set_yticks([0.0, 0.75, 1.5])
 
 
-def compose(fig: plt.Figure, data: dict[str, np.ndarray], t: float, *, video: bool) -> list[dict]:
-    reg = LayoutRegistry(min_font_pt=10, max_font_pt=16, edge_pad_px=12)
-    left = axes_from_top_slot(fig, (0.04, 0.08, 0.49, 0.93)); right = axes_from_top_slot(fig, (0.53, 0.08, 0.96, 0.93))
+def compose(fig: plt.Figure, data: dict[str, np.ndarray], t: float, *, video: bool, reg: LayoutRegistry | None = None) -> list[dict]:
+    reg = reg or LayoutRegistry(min_font_pt=10, max_font_pt=16, edge_pad_px=12)
+    left_slot = (0.02, 0.025, 0.49, 0.975) if video else (0.04, 0.08, 0.49, 0.93)
+    right_slot = (0.51, 0.025, 0.98, 0.975) if video else (0.53, 0.08, 0.96, 0.93)
+    left = axes_from_top_slot(fig, left_slot); right = axes_from_top_slot(fig, right_slot)
     _panel(left, reg, "DOUBLE-WELL DYNAMICS", video=video); _panel(right, reg, "WELL-TEMPERED BIAS", video=video)
     active_time = min(t, float(data["time"][-1]))
-    ax = fig.add_axes([0.09, 0.22, 0.38, 0.58]); _plot_axes(ax, data, upto=active_time, video=video, reg=reg, meta=active_time >= 5.0)
-    ax2 = fig.add_axes([0.58, 0.22, 0.34, 0.58]); ax2.set_xlim(-1.55, 1.55); ax2.set_ylim(-0.18, 1.95); ax2.spines[["top", "right"]].set_visible(False); ax2.tick_params(labelsize=10, colors=DARK_GRAY)
+    ax = fig.add_axes([0.065, 0.18, 0.40, 0.68] if video else [0.09, 0.22, 0.38, 0.58]); _plot_axes(ax, data, upto=active_time, video=video, reg=reg, meta=active_time >= 5.0)
+    ax2 = fig.add_axes([0.555, 0.18, 0.40, 0.68] if video else [0.58, 0.22, 0.34, 0.58]); ax2.set_xlim(-1.55, 1.55); ax2.set_ylim(-0.18, 1.95); ax2.spines[["top", "right"]].set_visible(False); ax2.tick_params(labelsize=16 if video else 10, colors=DARK_GRAY)
     grid = np.linspace(-1.55, 1.55, 400); ax2.plot(grid, potential(grid), color=NAVY, lw=2.0, label="V(x)")
     hills = data["hill_x"][data["hill_x"] <= 0.0 if active_time < 8.0 else np.ones(len(data["hill_x"]), dtype=bool)]
     heights = data["hill_h"][: len(hills)] if len(hills) else np.array([])
@@ -135,12 +137,12 @@ def main() -> None:
     data = simulate(); fig = new_static_figure(); compose(fig, data, 16.0, video=False); save_static(fig, STEM)
     if args.static_only:
         return
-    def draw_frame(fig, t, _index, _registry):
-        return compose(fig, data, t, video=True)
+    def draw_frame(fig, t, _index, registry):
+        return compose(fig, data, t, video=True, reg=registry)
     audit = {
-        "panels": [{"id": "left", "rect": [0.04,0.08,0.49,0.93], "min_clearance_px": 0, "allow_touch_edges": ["left","right","top","bottom"]}, {"id":"right", "rect":[0.53,0.08,0.96,0.93], "min_clearance_px":0, "allow_touch_edges":["left","right","top","bottom"]}],
+        "panels": [{"id": "left", "rect": [0.02,0.025,0.49,0.975], "min_clearance_px": 0, "allow_touch_edges": ["left","right","top","bottom"]}, {"id":"right", "rect":[0.51,0.025,0.98,0.975], "min_clearance_px":0, "allow_touch_edges":["left","right","top","bottom"]}],
         "whitespace": {"background_threshold":245, "min_ink_fraction":0.012, "min_panel_bbox_fill":0.16, "grid_rows":12, "grid_columns":24},
-        "bands": [{"id":"gap", "rect":[0.49,0.08,0.53,0.93], "max_ink_pixels":5000}],
+        "bands": [{"id":"gap", "rect":[0.49,0.025,0.51,0.975], "max_ink_pixels":5000}],
     }
     render_video(stem=STEM, duration_seconds=16.0, draw_frame=draw_frame, audit_config=audit, qa_directory=QA_DIR / "_qa", representative_times=[1,4,6,8,10,12,14,15.5])
 

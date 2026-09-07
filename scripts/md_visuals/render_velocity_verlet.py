@@ -138,7 +138,7 @@ def draw_info(ax, registry: LayoutRegistry, *, video: bool, active: int | None, 
                       fontsize=11 if video else 10, color=INK, zorder=3)
     registry.text(ax, 0.50, 0.24, r"$\Delta t=0.5\;\mathrm{fs}$", ha="center", va="center",
                   fontsize=12 if video else 11, color=NAVY, weight="bold")
-    registry.text(ax, 0.50, 0.15, "one real H₂O step", ha="center", va="center",
+    registry.text(ax, 0.50, 0.15, r"one real H$_2$O step", ha="center", va="center",
                   fontsize=11 if video else 10, color=DARK_GRAY)
     if returning:
         registry.text(ax, 0.50, 0.075, r"$n\;\rightarrow\;n+1$", ha="center", va="center",
@@ -148,7 +148,7 @@ def draw_info(ax, registry: LayoutRegistry, *, video: bool, active: int | None, 
 def draw_composition(fig, t: float, registry: LayoutRegistry, data: dict[str, np.ndarray], scenes: dict[str, object], *, video: bool) -> list[dict]:
     del data
     stage, progress, returning = timeline_stage(t, 9.0, n_stages=3, return_seconds=1.5)
-    rail, main, info = story_axes(fig)
+    rail, main, info = story_axes(fig, video=video)
     active = None if returning else stage
     stage_rail(
         rail, registry, active=active, video=video,
@@ -156,26 +156,26 @@ def draw_composition(fig, t: float, registry: LayoutRegistry, data: dict[str, np
         return_phase=returning,
     )
     main_titles = ("update position", "evaluate acceleration", "update velocity")
-    panel_box(main, registry, "next step" if returning else f"VELOCITY–VERLET · H₂O · {main_titles[stage]}", video=video)
+    panel_box(main, registry, "next step" if returning else f"VELOCITY–VERLET · H$_2$O · {main_titles[stage]}", video=video)
     if returning:
-        registry.text(main, 0.035, 0.035, "pause · then repeat", ha="left", va="bottom",
+        registry.text(main, 0.035, 0.135 if video else 0.035, "pause · then repeat", ha="left", va="bottom",
                       fontsize=11 if video else 10, color=DARK_GRAY)
         place_main(main, scenes["plain"][-1], alpha=0.18)
         place_main(main, scenes["acceleration"], alpha=0.92)
         place_main(main, scenes["velocity"])
     elif stage == 0:
-        registry.text(main, 0.035, 0.035, "old → new geometry", ha="left", va="bottom",
+        registry.text(main, 0.035, 0.135 if video else 0.035, "old → new geometry", ha="left", va="bottom",
                       fontsize=11 if video else 10, color=DARK_GRAY)
         place_main(main, scenes["plain"][0], alpha=0.20)
         index = int(round(smoothstep(progress) * (len(scenes["position"]) - 1)))
         place_main(main, scenes["position"][index])
     elif stage == 1:
-        registry.text(main, 0.035, 0.035, "force / mass", ha="left", va="bottom",
+        registry.text(main, 0.035, 0.135 if video else 0.035, "force / mass", ha="left", va="bottom",
                       fontsize=11 if video else 10, color=DARK_GRAY)
         place_main(main, scenes["plain"][0], alpha=0.16)
         place_main(main, scenes["acceleration"])
     else:
-        registry.text(main, 0.035, 0.035, "new acceleration closes loop", ha="left", va="bottom",
+        registry.text(main, 0.035, 0.135 if video else 0.035, "new acceleration closes loop", ha="left", va="bottom",
                       fontsize=11 if video else 10, color=DARK_GRAY)
         place_main(main, scenes["plain"][0], alpha=0.16)
         place_main(main, scenes["velocity"])

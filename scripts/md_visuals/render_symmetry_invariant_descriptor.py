@@ -11,7 +11,7 @@ from matplotlib.patches import Rectangle
 
 from common import DARK_GRAY, INK, LINE_GRAY, NAVY, LayoutRegistry, new_static_figure, render_video, save_static
 from mattervis_story import camera_for_source, render_structure
-from responsive_story import EMERALD, story_axes, panel_box, place_main
+from responsive_story import EMERALD, panel_box, place_main, story_axes
 
 ROOT = Path(__file__).resolve().parents[2] / "product"
 STEM = "06_rigid_water_descriptor_invariance"
@@ -143,19 +143,24 @@ def _table(ax: plt.Axes, registry: LayoutRegistry, x0: float, y0: float, width: 
 
 
 def _compose(fig: plt.Figure, t: float, registry: LayoutRegistry, frames: np.ndarray, asset: dict[str, object], *, video: bool) -> list[dict]:
-    _rail,left,right=story_axes(fig); panel_box(left,registry,"RIGID WATER IN A BOX",video=video); panel_box(right,registry,"CARTESIAN + Rᵢ",video=video)
+    if video:
+        left = fig.add_axes([0.02, 0.025, 0.47, 0.95]); left.set_xlim(0, 1); left.set_ylim(0, 1); left.axis("off")
+        right = fig.add_axes([0.51, 0.025, 0.47, 0.95]); right.set_xlim(0, 1); right.set_ylim(0, 1); right.axis("off")
+    else:
+        _rail, left, right = story_axes(fig)
+    panel_box(left,registry,"RIGID WATER IN A BOX",video=video); panel_box(right,registry,r"CARTESIAN + $R_i$",video=video)
     frame=min(int(round(t*FPS)),N_FRAMES-1); place_main(left,asset["mattervis"]/f"frame_{frame:04d}.png",rect=(0.07,0.13,0.93,0.86))
     cart=frames[frame]; matrix=_environment_matrix(cart); registry.text(left,0.05,0.055,f"frame {frame:03d} · rigid translation + rotation",ha="left",va="bottom",fontsize=11 if video else 10,color=DARK_GRAY)
-    _table(right,registry,0.08,0.54,0.84,0.22,cart,["O","H₁","H₂"],["x","y","z"],"r (Å)",NAVY)
-    _table(right,registry,0.08,0.20,0.84,0.20,matrix,["H₁","H₂"],["s","x","y","z"],"Rᵢ (DeepMD)",EMERALD,precision=2)
-    delta=float(np.max(np.abs(matrix-np.asarray(asset["matrix"])))); registry.text(right,0.50,0.125,"global Cartesian coordinates change",ha="center",va="center",fontsize=10,color=DARK_GRAY); registry.text(right,0.50,0.080,"Rᵢ = [s, sx/r, sy/r, sz/r]",ha="center",va="center",fontsize=10,color=DARK_GRAY); registry.text(right,0.50,0.040,"max |ΔRᵢ| = %.2e · rigid body"%delta,ha="center",va="center",fontsize=10,color=EMERALD,weight="bold")
+    _table(right,registry,0.08,0.54,0.84,0.22,cart,["O",r"H$_1$",r"H$_2$"],["x","y","z"],"r (Å)",NAVY)
+    _table(right,registry,0.08,0.20,0.84,0.20,matrix,[r"H$_1$",r"H$_2$"],["s","x","y","z"],r"$R_i$ (DeepMD)",EMERALD,precision=2)
+    delta=float(np.max(np.abs(matrix-np.asarray(asset["matrix"])))); registry.text(right,0.50,0.125,"global Cartesian coordinates change",ha="center",va="center",fontsize=10,color=DARK_GRAY); registry.text(right,0.50,0.080,r"$R_i=[s,sx/r,sy/r,sz/r]$",ha="center",va="center",fontsize=10,color=DARK_GRAY); registry.text(right,0.50,0.040,rf"max $|\Delta R_i|={delta:.2e}$ · rigid body",ha="center",va="center",fontsize=10,color=EMERALD,weight="bold")
     return [{"id":"descriptor","color":EMERALD,"min_pixels":80},{"id":"box","color":"#8E8E8E","min_pixels":80}]
 
 
 def main() -> None:
     parser=argparse.ArgumentParser(); parser.add_argument("--static-only",action="store_true"); args=parser.parse_args(); frames,symbols,_ids=_make_trajectory(); _write_source(frames,symbols); asset=_render_assets(frames); fig=new_static_figure(); reg=LayoutRegistry(min_font_pt=10,max_font_pt=16,edge_pad_px=18); _compose(fig,0,reg,frames,asset,video=False); save_static(fig,STEM)
     if args.static_only: return
-    audit={"panels":[{"id":"structure","rect":[0.29,0.075,0.755,0.905],"min_clearance_px":0,"allow_touch_edges":["left","right","top","bottom"]},{"id":"descriptor","rect":[0.775,0.105,0.970,0.905],"min_clearance_px":0,"allow_touch_edges":["left","right","top","bottom"]}],"whitespace":{"background_threshold":245,"min_ink_fraction":0.012,"min_panel_bbox_fill":0.16,"grid_rows":12,"grid_columns":24},"bands":[{"id":"gap","rect":[0.755,0.075,0.775,0.905],"max_ink_pixels":5000}]}
+    audit={"panels":[{"id":"structure","rect":[0.02,0.025,0.49,0.975],"min_clearance_px":0,"allow_touch_edges":["left","right","top","bottom"]},{"id":"descriptor","rect":[0.51,0.025,0.98,0.975],"min_clearance_px":0,"allow_touch_edges":["left","right","top","bottom"]}],"whitespace":{"background_threshold":245,"min_ink_fraction":0.012,"min_panel_bbox_fill":0.16,"grid_rows":12,"grid_columns":24},"bands":[{"id":"gap","rect":[0.49,0.025,0.51,0.975],"max_ink_pixels":5000}]}
     render_video(stem=STEM,duration_seconds=10.0,draw_frame=lambda f,t,i,r:_compose(f,t,r,frames,asset,video=True),audit_config=audit,qa_directory=QA_DIR/"_qa",representative_times=[0.5,2.5,5.0,7.5,9.5])
 
 

@@ -132,11 +132,12 @@ def draw_info(ax, registry: LayoutRegistry, data: dict[str, np.ndarray], *, vide
                   fontsize=11 if video else 10, color=DARK_GRAY)
     registry.text(ax, 0.50, 0.12, f"ε = {eps:.4f} eV", ha="center", va="center",
                   fontsize=11 if video else 10, color=DARK_GRAY)
-    registry.text(ax, 0.50, 0.055, "electrostatics omitted", ha="center", va="center",
-                  fontsize=10, color=DARK_GRAY)
     if returning:
-        registry.text(ax, 0.50, 0.015, r"$n\;\rightarrow\;n+1$", ha="center", va="bottom",
+        registry.text(ax, 0.50, 0.055, r"$n\;\rightarrow\;n+1$", ha="center", va="center",
                       fontsize=10, color=NAVY, weight="bold")
+    else:
+        registry.text(ax, 0.50, 0.055, "electrostatics omitted", ha="center", va="center",
+                      fontsize=10, color=DARK_GRAY)
 
 
 def draw_main(ax, registry: LayoutRegistry, data: dict[str, np.ndarray], scenes: dict[str, object], *, camera, stage: int | None, progress: float, returning: bool, video: bool) -> None:
@@ -146,15 +147,16 @@ def draw_main(ax, registry: LayoutRegistry, data: dict[str, np.ndarray], scenes:
     # placement rect intentionally crops only those margins so the two real
     # water molecules occupy the dominant central area.
     fitted_rect = (0.02, 0.18, 0.98, 0.82)
+    caption_y = 0.135 if video else 0.035
     if returning:
-        registry.text(ax, 0.035, 0.035, "next step · pause", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
+        registry.text(ax, 0.035, caption_y, "next step · pause", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
         place_main(ax, scenes["plain"][-1], alpha=0.16, rect=fitted_rect)
         fitted = place_main(ax, scenes["force"], rect=fitted_rect)
         draw_world_segment(ax, data["oxygen_positions"][1][0], data["oxygen_positions"][1][1], camera=camera,
                            rect=fitted, color=NAVY, linewidth=5.0 if video else 3.0, image_aspect=1700.0 / 1180.0)
         return
     if stage == 0:
-        registry.text(ax, 0.035, 0.035, "O···O separation", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
+        registry.text(ax, 0.035, caption_y, "O···O separation", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
         place_main(ax, scenes["plain"][0], alpha=0.18, rect=fitted_rect)
         idx = int(round(smoothstep(progress) * (len(scenes["position"]) - 1)))
         fitted = place_main(ax, scenes["position"][idx], rect=fitted_rect)
@@ -164,13 +166,13 @@ def draw_main(ax, registry: LayoutRegistry, data: dict[str, np.ndarray], scenes:
         registry.text(ax, float(np.mean(xy[:, 0])), float(np.mean(xy[:, 1]) + 0.045), r"$r_{\mathrm{OO}}$",
                       ha="center", va="bottom", fontsize=13 if video else 11, color=NAVY, weight="bold")
     elif stage == 1:
-        registry.text(ax, 0.035, 0.035, "equal + opposite O forces", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
+        registry.text(ax, 0.035, caption_y, "equal + opposite O forces", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
         place_main(ax, scenes["plain"][-1], alpha=0.15, rect=fitted_rect)
         fitted = place_main(ax, scenes["force"], rect=fitted_rect)
         draw_world_segment(ax, data["oxygen_positions"][1][0], data["oxygen_positions"][1][1], camera=camera,
                            rect=fitted, color=NAVY, linewidth=5.0 if video else 3.0, image_aspect=1700.0 / 1180.0)
     else:
-        registry.text(ax, 0.035, 0.035, "force → acceleration → velocity", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
+        registry.text(ax, 0.035, caption_y, "force → acceleration → velocity", ha="left", va="bottom", fontsize=11 if video else 10, color=DARK_GRAY)
         place_main(ax, scenes["plain"][0], alpha=0.15, rect=fitted_rect)
         fitted = place_main(ax, scenes["velocity"], rect=fitted_rect)
         draw_world_segment(ax, data["oxygen_positions"][1][0], data["oxygen_positions"][1][1], camera=camera,
@@ -179,7 +181,7 @@ def draw_main(ax, registry: LayoutRegistry, data: dict[str, np.ndarray], scenes:
 
 def compose(fig, t: float, registry: LayoutRegistry, data: dict[str, np.ndarray], scenes: dict[str, object], *, video: bool) -> list[dict]:
     stage, progress, returning = timeline_stage(t, 9.0, n_stages=3, return_seconds=1.5)
-    rail, main, info = story_axes(fig)
+    rail, main, info = story_axes(fig, video=video)
     stage_rail(rail, registry, active=None if returning else stage, video=video, equation=None, return_phase=returning)
     draw_main(main, registry, data, scenes, camera=scenes["camera"], stage=stage, progress=progress, returning=returning, video=video)
     draw_info(info, registry, data, video=video, active=None if returning else stage, returning=returning)

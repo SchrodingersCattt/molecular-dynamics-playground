@@ -6,11 +6,11 @@
 
 - Integrator Notebook 已修正为 Explicit Euler、Symplectic Euler、Leapfrog/Verlet、Velocity Verlet、RK2 和固定步长 Classical RK4；时间网格、能量误差和二阶收敛结果已保存。
 - 两份 Integrator Notebook 已于 2026-09-05 重新执行，本地脚本无异常，比较图 PNG/PDF 已同步更新。
-- 四套视觉交付物已有独立 A4 静态图和 16:9 视频入口：Velocity Verlet、TIP3P/Lennard–Jones、水二聚体 RHF–SCF、64 水 Deep Potential MD。
+- 视觉交付物已有独立 A4 静态图和 16:5 视频入口；视频统一为 1920×600、Arial 16–18 pt。
 - AIMD 已保存多个离子步、每个离子步的 SCF 密度/残差、固定分子平面网格和位置/速度/力阶段素材；RHF 画面把等值线随真实密度收敛呈现为由粗到清晰。
 - DPMD 已保存 64 水周期盒、O126 中心原子、83 个 6 Å 内最小镜像邻居、同一快照的 DP 能量/力和可复现的冻结力 Velocity–Verlet 步。
 - DP 截断邻域已改为 MatterVis 原生世界坐标球面；球心与 O126 对齐，投影保持正圆，采用固定斜视相机、方向光、前后半球透明度和原生 MIC 向量。对应素材位于 `product/qa/04_dpmd_native/mattervis_v3/`。
-- `visualize-data --strict` 已用于静态图；DP 视频保留 384/384 帧逐帧 QA 报告，尺寸为 1920×1080、24 fps。
+- `visualize-data --strict` 已用于静态图；视频逐帧 QA 同时检查 16:5、Arial、字号下限和上下边缘留白。
 - MatterVis 已增加原生 overlay metadata 传递、CPU 球面方向光/高光、零透明度原子/键隐藏和对应测试；测试文件为 `MatterVis/tests/test_native_overlay_metadata.py`。
 - 中文读书笔记已有 LaTeX 源、参考文献、PDF 和渲染页；历史、Euler/Verlet、SCF、Deep Potential、采样章节已加入具体数字例子。
 - well-tempered metadynamics Demo 已新增为第五套独立静态图和 16 秒视频；一维双阱、Langevin 初期驻留、well-tempered Gaussian hills 和自由能恢复均有素材，静态 strict QA 与 384 帧视频 QA 已通过。

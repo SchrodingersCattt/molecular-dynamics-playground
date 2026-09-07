@@ -8,5 +8,6 @@ ellipse or a paper-space mask. The right rail names the selected atom,
 cutoff, neighbour count, and force-to-Velocity-Verlet path. No chemical-bond
 line is used to represent a neighbour relationship.
 
-The still is A4 landscape at 300 dpi. The video uses 1920×1080 at 24 fps,
-with a 16 s timeline and the same camera and world-space anchors.
+The still is A4 landscape at 300 dpi. The video uses 1920×600 (exact 16:5)
+at 24 fps, with Arial text at 16–18 pt, a 16 s timeline, and the same camera
+and world-space anchors.

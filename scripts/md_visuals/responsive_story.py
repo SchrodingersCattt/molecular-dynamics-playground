@@ -3,7 +3,7 @@
 MatterVis supplies all atom/bond/cell/vector pixels.  This module only lays
 those immutable renders into a small, readable three-rail composition and
 adds short paper-space labels.  The same normalized slots are used for the
-300-dpi A4 still and the 16:9 movie, so a stage has the same visual grammar in
+300-dpi A4 still and the 16:5 movie, so a stage has the same visual grammar in
 both deliverables while the main structure is allowed to grow on video.
 """
 
@@ -48,13 +48,21 @@ PALE_OLIVE_FILL = "#EEEBDD"
 RAIL_SLOT = (0.030, 0.105, 0.270, 0.905)
 MAIN_SLOT = (0.290, 0.075, 0.755, 0.905)
 INFO_SLOT = (0.775, 0.105, 0.970, 0.905)
+VIDEO_RAIL_SLOT = (0.020, 0.025, 0.270, 0.975)
+VIDEO_MAIN_SLOT = (0.285, 0.025, 0.750, 0.975)
+VIDEO_INFO_SLOT = (0.765, 0.025, 0.980, 0.975)
 
 
-def story_axes(fig: plt.Figure) -> tuple[plt.Axes, plt.Axes, plt.Axes]:
+def story_axes(fig: plt.Figure, *, video: bool = False) -> tuple[plt.Axes, plt.Axes, plt.Axes]:
+    slots = (
+        (VIDEO_RAIL_SLOT, VIDEO_MAIN_SLOT, VIDEO_INFO_SLOT)
+        if video
+        else (RAIL_SLOT, MAIN_SLOT, INFO_SLOT)
+    )
     return (
-        axes_from_top_slot(fig, RAIL_SLOT),
-        axes_from_top_slot(fig, MAIN_SLOT),
-        axes_from_top_slot(fig, INFO_SLOT),
+        axes_from_top_slot(fig, slots[0]),
+        axes_from_top_slot(fig, slots[1]),
+        axes_from_top_slot(fig, slots[2]),
     )
 
 
@@ -77,7 +85,7 @@ def panel_box(
     )
     registry.text(
         ax, 0.50, title_y, title,
-        ha="center", va="top", fontsize=15 if video else 14,
+        ha="center", va="top", fontsize=18 if video else 14,
         color=INK, weight="bold", zorder=50,
     )
 
@@ -93,7 +101,7 @@ def stage_rail(
 ) -> None:
     """Draw the abstract position → acceleration → velocity loop."""
     panel_box(ax, registry, "ONE MD STEP", video=video)
-    centre_formula = equation or "rₙ₊₁ = rₙ + vₙΔt + ½aₙΔt²"
+    centre_formula = equation or r"$r_{n+1}=r_n+v_n\Delta t+\frac{1}{2}a_n\Delta t^2$"
     draw_vv_loop(
         ax,
         registry,
@@ -260,7 +268,7 @@ def make_static_and_video(
     duration: float,
     representative_times: Iterable[float],
 ) -> None:
-    """Publish one clean A4 still and one 16:9 MP4 with the same grammar."""
+    """Publish one clean A4 still and one 16:5 MP4 with the same grammar."""
     fig = new_static_figure()
     registry = LayoutRegistry(min_font_pt=10.0, max_font_pt=16.0, edge_pad_px=18)
     draw_static(fig, registry)
@@ -284,9 +292,9 @@ def make_static_and_video(
 
 def simple_audit(panel_ids: tuple[str, str, str]) -> dict:
     panels = [
-        {"id": panel_ids[0], "rect": list(RAIL_SLOT), "min_clearance_px": 0, "allow_touch_edges": ["left", "right", "top", "bottom"]},
-        {"id": panel_ids[1], "rect": list(MAIN_SLOT), "min_clearance_px": 0, "allow_touch_edges": ["left", "right", "top", "bottom"]},
-        {"id": panel_ids[2], "rect": list(INFO_SLOT), "min_clearance_px": 0, "allow_touch_edges": ["left", "right", "top", "bottom"]},
+        {"id": panel_ids[0], "rect": list(VIDEO_RAIL_SLOT), "min_clearance_px": 0, "allow_touch_edges": ["left", "right", "top", "bottom"]},
+        {"id": panel_ids[1], "rect": list(VIDEO_MAIN_SLOT), "min_clearance_px": 0, "allow_touch_edges": ["left", "right", "top", "bottom"]},
+        {"id": panel_ids[2], "rect": list(VIDEO_INFO_SLOT), "min_clearance_px": 0, "allow_touch_edges": ["left", "right", "top", "bottom"]},
     ]
     return {
         "panels": panels,
@@ -298,8 +306,8 @@ def simple_audit(panel_ids: tuple[str, str, str]) -> dict:
             "grid_columns": 24,
         },
         "bands": [
-            {"id": "rail_main_gap", "rect": [0.270, 0.06, 0.290, 0.95], "max_ink_pixels": 5000},
-            {"id": "main_info_gap", "rect": [0.755, 0.06, 0.775, 0.95], "max_ink_pixels": 5000},
+            {"id": "rail_main_gap", "rect": [0.270, 0.025, 0.285, 0.975], "max_ink_pixels": 5000},
+            {"id": "main_info_gap", "rect": [0.750, 0.025, 0.765, 0.975], "max_ink_pixels": 5000},
         ],
     }
 
