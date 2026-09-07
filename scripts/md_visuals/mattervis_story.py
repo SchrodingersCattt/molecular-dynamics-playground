@@ -942,7 +942,7 @@ def draw_vv_loop(
     centre_x = 0.50
     radius_y = radius_x * axes_aspect
     arc_ranges = ((-30, 90), (210, 330), (90, 210))
-    ax.add_patch(Arc((centre_x, centre_y), 2 * radius_x, 2 * radius_y, theta1=0, theta2=360, color=LINE_GRAY, lw=3.0 if video else 2.0, zorder=1))
+    ax.add_patch(Arc((centre_x, centre_y), 2 * radius_x, 2 * radius_y, theta1=0, theta2=360, color="#A9B0B4" if video else LINE_GRAY, lw=3.0 if video else 2.0, zorder=1))
     if active_stage is not None:
         theta1, theta2 = arc_ranges[active_stage]
         ax.add_patch(Arc((centre_x, centre_y), 2 * radius_x, 2 * radius_y, theta1=theta1, theta2=theta2, color=INK, lw=4.0 if video else 2.6, zorder=2))
@@ -958,7 +958,7 @@ def draw_vv_loop(
             arrowstyle="-|>",
             mutation_scale=20 if video else 14,
             lw=3.2 if video else 2.2,
-            color=INK if active_stage == index else LINE_GRAY,
+            color=INK if active_stage == index else "#A9B0B4" if video else LINE_GRAY,
             zorder=3,
         )
     nodes = [
@@ -976,7 +976,7 @@ def draw_vv_loop(
                 width=2.0 * node_half_width,
                 height=2.0 * node_half_height,
                 fc=INK if active else WHITE,
-                ec=INK if active else LINE_GRAY,
+                ec=INK if active else "#A9B0B4" if video else LINE_GRAY,
                 lw=2.8 if video else 2.0,
                 zorder=4,
             )
@@ -1006,7 +1006,7 @@ def draw_vv_loop(
             ha="center",
             va="top",
             fontsize=12 if video else 10,
-            color=INK if active else DARK_GRAY,
+            color=INK if active else "#626B70" if video else DARK_GRAY,
             zorder=5,
         )
     registry.text(

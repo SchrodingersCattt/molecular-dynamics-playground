@@ -626,6 +626,14 @@ def draw_case(
     else:
         raise ValueError(f"Unknown AIMD mode: {mode}")
 
+    stage_colour = {
+        "scf": NAVY,
+        "pause": GREEN,
+        "force": FORCE_OLIVE,
+        "velocity": VELOCITY_EMERALD,
+        "move": POSITION_LAKE,
+    }[mode]
+
     registry.text(
         ax,
         0.50,
@@ -633,9 +641,9 @@ def draw_case(
         stage_text,
         ha="center",
         va="center",
-        fontsize=16 if video else 11,
-        color=INK,
-        weight="normal",
+        fontsize=18 if video else 11,
+        color=stage_colour,
+        weight="bold",
         zorder=21,
     )
     registry.text(
@@ -1119,13 +1127,13 @@ def draw_video_frame(
             # Quiet only the left and middle panels.  Keep the upper-right
             # residual plot visible but held, so the later serial update is
             # easy to read.
-            for panel in (panel_a, panel_b):
+            for panel in (panel_b,):
                 _deemphasize_panel(panel)
         else:
             # Force/velocity/position arrows are the active middle-panel
             # event.  Quiet both sides so the arrow is not lost in competing
             # panel changes.
-            for panel in (panel_a, panel_c, panel_d):
+            for panel in (panel_c, panel_d):
                 _deemphasize_panel(panel)
     if state["mode"] in {"scf", "pause"}:
         return [
