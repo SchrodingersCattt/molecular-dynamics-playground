@@ -94,7 +94,7 @@ DENSITY_COLORS = (
     "#49687F",
 )
 
-VIDEO_DURATION = 15.0
+VIDEO_DURATION = 30.0
 DETAILED_BLOCK_SECONDS = 5.0
 RAPID_BLOCK_SECONDS = 1.25
 SCF_LOOP_FRACTION = 0.60
@@ -975,7 +975,7 @@ def _phase_state(
 
 
 def video_state(time_seconds: float, scf_counts: np.ndarray) -> dict:
-    """Map 15 s to two detailed and four rapid, real ionic updates."""
+    """Map 30 s to two detailed steps followed by a repeating rapid cycle."""
     bounded = float(np.clip(time_seconds, 0.0, VIDEO_DURATION - 1.0e-9))
     if bounded < 2.0 * DETAILED_BLOCK_SECONDS:
         ion_index = int(bounded // DETAILED_BLOCK_SECONDS)
@@ -1021,9 +1021,13 @@ def video_state(time_seconds: float, scf_counts: np.ndarray) -> dict:
         )
 
     rapid_time = bounded - 2.0 * DETAILED_BLOCK_SECONDS
-    rapid_index = min(int(rapid_time // RAPID_BLOCK_SECONDS), 3)
+    # The final saved ionic snapshot has no following force/velocity/move
+    # asset.  The rapid loop therefore cycles only through update-capable
+    # steps, preserving the existing real-assets contract.
+    rapid_count = max(len(scf_counts) - 3, 1)
+    rapid_index = int(rapid_time // RAPID_BLOCK_SECONDS) % rapid_count
     ion_index = 2 + rapid_index
-    local = rapid_time - rapid_index * RAPID_BLOCK_SECONDS
+    local = rapid_time % RAPID_BLOCK_SECONDS
     count = int(scf_counts[ion_index])
     if local < 0.50:
         return _scf_state(
@@ -1202,6 +1206,13 @@ KEYFRAME_TIMES = [
     11.18,
     12.42,
     14.82,
+    15.10,
+    18.80,
+    20.05,
+    23.80,
+    25.05,
+    28.80,
+    29.80,
 ]
 
 
