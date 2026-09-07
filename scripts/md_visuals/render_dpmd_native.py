@@ -94,6 +94,8 @@ FPS = 24
 DETAILED_SECONDS = 8.0
 FAST_STEP_SECONDS = 2.0
 REPRESENTATIVE_TIMES = (0.2, 2.0, 4.0, 6.0, 7.9, 8.1, 10.0, 12.0, 14.0, 15.8)
+FORCE_DISPLAY_SCALE = 55.0
+FORCE_DISPLAY_MAX_ANGSTROM = 6.2
 
 
 def minimum_image_delta(positions: np.ndarray, centre: np.ndarray, box_length: float) -> np.ndarray:
@@ -1073,7 +1075,13 @@ def _trajectory_assets(data: dict[str, object]) -> dict[str, object]:
         move_path = output_dir / f"focus_move_{state:02d}.png"
         focus_pos = np.asarray(data["_focus_positions"][state], dtype=float)
         focus_centre = focus_pos[focus_map[central]]
-        force_vector = make_vector_group("F_DP", focus_centre[None, :], forces[state, central][None, :], scale=55.0, color=PALE_OLIVE, style=style)
+        force_value = np.asarray(forces[state, central], dtype=float)
+        force_norm = float(np.linalg.norm(force_value))
+        force_scale = min(
+            FORCE_DISPLAY_SCALE,
+            FORCE_DISPLAY_MAX_ANGSTROM / max(force_norm, 1.0e-12),
+        )
+        force_vector = make_vector_group("F_DP", focus_centre[None, :], force_value[None, :], scale=force_scale, color=PALE_OLIVE, style=style)
         velocity_vector = make_vector_group("v_half", focus_centre[None, :], velocities[state, central][None, :], scale=150.0, color=EMERALD, style=style)
         neighbour_meshes = []
         ids = np.asarray(data["trajectory_neighbour_ids"][state], dtype=int)
