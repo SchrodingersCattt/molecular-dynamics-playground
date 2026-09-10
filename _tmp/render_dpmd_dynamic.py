@@ -82,8 +82,8 @@ def arrow(ax, start, end, color=GREY, width=1.5):
 def stage_weights(t):
     if t < 20:
         return tuple(smoothstep((t - start) / length) for start, length in
-                     ((1.2, .6), (3.0, .6), (4.2, .6), (5.2, .6),
-                      (6.2, .6), (7.3, .6), (8.4, .6), (9.5, .6)))
+                     ((.35, .25), (1.0, .35), (1.8, .45), (2.8, .45),
+                      (4.0, .55), (5.2, .55), (6.4, .55), (7.4, .55)))
     _, _, _, phase = schedule(t)
     local = (t - 20) % 2
     if phase in ("half_kick", "drift"):
@@ -104,7 +104,7 @@ def scene(ax, reg, data, t, state, phase, weights):
     delta -= box * np.rint(delta / box)
     distance = np.linalg.norm(delta, axis=1)
     neighbors = np.flatnonzero((distance > 1e-10) & (distance < 6.0))
-    bonded = t < 1.2
+    bonded = t < .35
     for kind, rect, scale in (("box", BOX_RECT, BOX_SCALE), ("focus", FOCUS_RECT, FOCUS_SCALE)):
         path = MOTION_DIR / f"{kind}_bonded.png" if bonded else MOTION_DIR / f"{kind}_frames/{frame+1:04d}.png"
         x, y, size = rect
@@ -114,7 +114,7 @@ def scene(ax, reg, data, t, state, phase, weights):
         centre = positions[126] if kind == "box" else TARGET
         centre_xy = project(centre[None], rect, scale)[0]
         if not bonded:
-            growth = smoothstep((t - 1.2) / 1.8) if t < 3 else 1.0
+            growth = smoothstep((t - .35) / .65) if t < 1.0 else 1.0
             radius = 6 * size / (2 * scale) * growth
             ax.add_patch(Circle(centre_xy, radius, fill=False, ec=BLUE,
                                 lw=1.5, linestyle=(0, (3, 3)), zorder=15))
@@ -183,11 +183,11 @@ def matrix(ax, reg, data, t, state, weights):
     text(reg, ax, 1816, 235, r"$100\times12$", active(RED, weights[4]))
     ax.add_patch(Rectangle((1749, 64), 13, 5, fill=False, ec=RED, lw=1.5, zorder=12))
     row = int(np.flatnonzero(trace["nlist"][state] == 127)[0])
-    if t < 6:
+    if t < 2.2:
         label, values, color = r"$R_{" + str(row) + "}$", trace["R"][state, row], BLUE
-    elif t < 8:
+    elif t < 3.2:
         label, values, color = r"$\bar R=(R-\mu)/\sigma$", trace["Rbar"][state, row], BLUE
-    elif t < 10:
+    elif t < 4.2:
         label, values, color = r"$G_{" + str(row) + ",0:4}$", trace["G"][state, row, :4], GREEN
     else:
         label, values, color = r"$D_{0,0}$", trace["A"][state, :, 0], GOLD

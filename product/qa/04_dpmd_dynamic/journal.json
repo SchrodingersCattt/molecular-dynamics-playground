@@ -37,7 +37,7 @@
     "source_frames": 240,
     "frames_with_scene_motion": 96,
     "final_coordinate_error_angstrom": 2.220446049250313e-16,
-    "video_sha256": "710b369cfae936bd2d50f45645a7d2566d9aaeb84ba422cfdb6e27ea367ef16d",
+    "video_sha256": "e00d948bdf931aff287d992932c39610e612dfa83ac87e60d379be914d25a1fe",
     "visual_revision": "darkened active colors; transitions below one second; first-pass explanation compressed; fitting network shown as circles and connections; D_i marked crimson in both panels"
   },
   "push": {

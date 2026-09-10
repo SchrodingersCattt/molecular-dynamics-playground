@@ -18,14 +18,14 @@
   ],
   "final_coordinate_error_angstrom": 2.220446049250313e-16,
   "frames_with_scene_motion": 101,
-  "first_to_final_scene_changed_pixels": 15656,
+  "first_to_final_scene_changed_pixels": 15618,
   "motion_crop": [
     345,
     155,
     1082,
     545
   ],
-  "max_consecutive_scene_changed_pixels": 2523,
-  "video_sha256": "710b369cfae936bd2d50f45645a7d2566d9aaeb84ba422cfdb6e27ea367ef16d",
+  "max_consecutive_scene_changed_pixels": 2538,
+  "video_sha256": "e00d948bdf931aff287d992932c39610e612dfa83ac87e60d379be914d25a1fe",
   "source_identity": "192 unique source IDs and 64 stable molecule IDs across 240 display frames"
 }
