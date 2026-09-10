@@ -1,0 +1,130 @@
+{
+  "schema": "deepmd_frozen_trace/v1",
+  "model": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\scripts\\submit_calculation\\H2O-Phase-Diagram-model_compressed.pb",
+  "model_sha256": "435d8a455edea9908faf07bd7107cca24f28d7ec18e6abd37761324a4dcf7263",
+  "source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\data\\dpmd_water_box_trajectory.npz",
+  "source_sha256": "84f61928972193437b6fbc5ad45ceb8d7137d1b8f2ec825a340f741dcae89a02",
+  "reference_version": "3.1.3",
+  "reference_source": "https://github.com/deepmodeling/deepmd-kit/blob/v3.1.3/source/lib/src/tabulate.cc",
+  "compression": "same fifth-degree table polynomials and O/H typed contractions as TabulateFusionSeA",
+  "derivative_check": "central finite differences of total energy over all 192 atoms; epsilon=1e-5 angstrom",
+  "normalization": "(raw_environment - model_mu) / model_sigma; padded slots included",
+  "source_id_mapping": "original NPZ array indices, before the backend sorts atoms by type",
+  "shape": {
+    "nlist": [
+      6,
+      600
+    ],
+    "R": [
+      6,
+      600,
+      4
+    ],
+    "Rbar": [
+      6,
+      600,
+      4
+    ],
+    "G": [
+      6,
+      600,
+      100
+    ],
+    "A": [
+      6,
+      4,
+      100
+    ],
+    "D": [
+      6,
+      100,
+      12
+    ],
+    "positions": [
+      6,
+      192,
+      3
+    ],
+    "cell": [
+      3,
+      3
+    ],
+    "source_ids": [
+      192
+    ],
+    "molecule_ids": [
+      192
+    ],
+    "elements": [
+      192
+    ],
+    "velocities": [
+      6,
+      192,
+      3
+    ],
+    "half_velocities": [
+      5,
+      192,
+      3
+    ],
+    "displacements": [
+      5,
+      192,
+      3
+    ],
+    "atomic_energy_ev": [
+      6,
+      192
+    ],
+    "total_energy_ev": [
+      6
+    ],
+    "forces_ev_per_angstrom": [
+      6,
+      192,
+      3
+    ],
+    "finite_difference_force": [
+      6,
+      3
+    ],
+    "mu": [
+      2,
+      600,
+      4
+    ],
+    "sigma": [
+      2,
+      600,
+      4
+    ]
+  },
+  "neighbor_counts": [
+    83,
+    83,
+    83,
+    83,
+    83,
+    82
+  ],
+  "D_saved_max_abs_error": 4.440892098500626e-16,
+  "atomic_energy_max_abs_error_ev": [
+    2.353672812205332e-14,
+    2.5757174171303632e-14,
+    2.531308496145357e-14,
+    2.353672812205332e-14,
+    2.6201263381153694e-14,
+    2.6201263381153694e-14
+  ],
+  "force_max_abs_error_ev_per_angstrom": [
+    4.876240293494316e-09,
+    3.087924083100546e-09,
+    3.0599680983511846e-09,
+    7.871761020794565e-09,
+    6.0891058861756164e-09,
+    6.386286943715902e-09
+  ],
+  "atomic_sum_max_abs_error_ev": 1.1368683772161603e-13,
+  "passed": true
+}

@@ -12,6 +12,10 @@ htmlcov/
 # Virtual environments
 .venv/
 .venv*/
+_tmp/.render-runtime/
+_tmp/04_deep_potential_md_dynamic_qa/motion_cli/box_frames/
+_tmp/04_deep_potential_md_dynamic_qa/motion_cli/focus_frames/
+_tmp/04_deep_potential_md_dynamic_qa/candidate/
 venv/
 env/
 ENV/

@@ -1,0 +1,44 @@
+{
+  "schema": "md_visual_revision_journal/v1",
+  "date": "2026-09-10",
+  "branch": "redesign/three-slide-md",
+  "status": "stopped_on_user_request_before_final_render",
+  "request": "04 uses the 03 fixed-stage structure, shows real water-box motion, keeps only necessary visual tokens, and pushes the current progress.",
+  "completed": {
+    "aimd_03_blur_fix": "Position-update frames render one opaque MatterVis geometry; the old/new water-molecule alpha overlay was removed.",
+    "deepmd_trace": {
+      "model": "H2O-Phase-Diagram-model_compressed.pb",
+      "deepmd_reference": "v3.1.3 TabulateFusionSeA polynomial replay",
+      "descriptor_max_abs_error": 4.440892098500626e-16,
+      "max_atomic_energy_abs_error_ev": 2.6201263381153694e-14,
+      "max_o126_force_finite_difference_error_ev_per_angstrom": 7.871761020794565e-09,
+      "neighbor_counts": [83, 83, 83, 83, 83, 82]
+    },
+    "dynamic_geometry": {
+      "saved_states": 6,
+      "vv_updates": 5,
+      "display_frames": 240,
+      "source_ids": 192,
+      "molecule_ids": 64,
+      "mattervis_cli_sources": ["water_box.extxyz", "local_environment.extxyz"]
+    },
+    "video_qa_before_stop": {
+      "03": {"passed": true, "frames": 720, "dimensions": [1920, 600], "fps": 24},
+      "04_previous_export": {"passed": true, "frames": 720, "dimensions": [1920, 600], "fps": 24}
+    }
+  },
+  "stopped": {
+    "reason": "User requested all work stop before final render.",
+    "final_dynamic_cli_render": "not completed and not published",
+    "push": "performed after this journal entry; no further rendering will run"
+  },
+  "artifacts": {
+    "trace_json": "_tmp/04_deep_potential_md_dynamic_qa/deepmd_trace/deepmd_trace.json",
+    "trace_npz": "_tmp/04_deep_potential_md_dynamic_qa/deepmd_trace/deepmd_trace.npz",
+    "calculation_record_json": "_tmp/dpmd_dynamic_calculation_record.json",
+    "calculation_record_npz": "_tmp/dpmd_dynamic_calculation_record.npz",
+    "canonical_renderer": "_tmp/render_dpmd_dynamic.py",
+    "motion_source_generator": "_tmp/dpmd_motion.py",
+    "frozen_model_replay": "_tmp/deepmd_trace.py"
+  }
+}

@@ -604,23 +604,17 @@ def draw_case(
         place_render(ax, velocity_paths[ion_index], scene_rect, zorder=5)
         stage_text = "Update velocity"
     elif mode == "move":
-        fade = smoothstep(np.clip(phase_progress / 0.35, 0.0, 1.0))
-        old_fade = 1.0 - smoothstep(
-            np.clip((phase_progress - 0.42) / 0.42, 0.0, 1.0)
-        )
+        # Render one interpolated, fully opaque MatterVis geometry.  The old
+        # and new structures were previously composited together, which made
+        # a few water molecules look blurred or doubled during the position
+        # update.  Density remains its own SCF asset; the molecular layer must
+        # stay a single sharp geometry at every frame.
         place_render(
             ax,
             movement_paths[ion_index],
             scene_rect,
-            alpha=0.72 + 0.28 * fade,
+            alpha=1.0,
             zorder=5,
-        )
-        place_render(
-            ax,
-            structure_paths[ion_index],
-            scene_rect,
-            alpha=0.44 * old_fade,
-            zorder=6,
         )
         stage_text = "Update position"
     else:
