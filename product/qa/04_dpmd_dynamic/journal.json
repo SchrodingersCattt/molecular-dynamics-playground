@@ -2,7 +2,7 @@
   "schema": "md_visual_revision_journal/v1",
   "date": "2026-09-10",
   "branch": "redesign/three-slide-md",
-  "status": "stopped_on_user_request_before_final_render",
+  "status": "complete",
   "request": "04 uses the 03 fixed-stage structure, shows real water-box motion, keeps only necessary visual tokens, and pushes the current progress.",
   "completed": {
     "aimd_03_blur_fix": "Position-update frames render one opaque MatterVis geometry; the old/new water-molecule alpha overlay was removed.",
@@ -27,10 +27,21 @@
       "04_previous_export": {"passed": true, "frames": 720, "dimensions": [1920, 600], "fps": 24}
     }
   },
-  "stopped": {
-    "reason": "User requested all work stop before final render.",
-    "final_dynamic_cli_render": "not completed and not published",
-    "push": "performed after this journal entry; no further rendering will run"
+  "final_render": {
+    "video": "_tmp/04_deep_potential_md_dynamic.mp4",
+    "qa": "_tmp/04_deep_potential_md_dynamic_qa/acceptance.json",
+    "frames": 720,
+    "dimensions": [1920, 600],
+    "fps": 24,
+    "duration_seconds": 30,
+    "source_frames": 240,
+    "frames_with_scene_motion": 96,
+    "final_coordinate_error_angstrom": 2.220446049250313e-16,
+    "video_sha256": "bbf43e98d21a0db19f9fb3d7cf399a795cd96637646e952275815886c6821acc"
+  },
+  "push": {
+    "previous_progress_commit": "be5be5b",
+    "final_commit_pending": true
   },
   "artifacts": {
     "trace_json": "_tmp/04_deep_potential_md_dynamic_qa/deepmd_trace/deepmd_trace.json",

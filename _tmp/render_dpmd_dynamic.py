@@ -235,7 +235,7 @@ def draw_frame(fig, time, index, reg, data):
     ax.axis("off")
     ring = common.axes_from_top_slot(fig, (.015, .025, .17, .97))
     active_stage = 0 if time < 1.2 or phase == "drift" else 2 if phase in ("half_kick", "final_kick") else 1
-    equation = (r"$r_{n+1}=r_n$" + "\n" + r"$+v_{n+1/2}\Delta t$") if active_stage == 0 else (r"$v_{n+1}=v_{n+1/2}$" + "\n" + r"$+\frac12 a_{n+1}\Delta t$") if active_stage == 2 else r"$a_i=F_i/m_i$"
+    equation = (r"$r_{n+1}=r_n$" + "\n" + r"$+v_{n+1/2}\Delta t$") if active_stage == 0 else (r"$v_{n+1}=v_{n+1/2}$" + "\n" + r"$+\frac{1}{2}a_{n+1}\Delta t$") if active_stage == 2 else r"$a_i=F_i/m_i$"
     draw_vv_loop(ring, reg, video=True, active_stage=active_stage, centre_text=equation, centre_y=.53, radius_x=.38)
     if time >= 20:
         text(reg, ax, 165, 547, f"VV {step+1}/5", GOLD)
