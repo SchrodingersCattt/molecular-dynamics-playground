@@ -26,8 +26,8 @@ OUTPUT = HERE / "04_deep_potential_md_dynamic.mp4"
 QA = HERE / "04_deep_potential_md_dynamic_qa"
 TRACE = QA / "deepmd_trace"
 PREVIEWS = QA / "preview_current"
-INK, GREY, FAINT = "#183153", "#BDC5C8", "#EEF1F2"
-GREEN, BLUE, GOLD, RED = "#2F7662", "#2E89A7", "#8A8F4D", "#A32035"
+INK, GREY, FAINT = "#12243C", "#7A868A", "#EEF1F2"
+GREEN, BLUE, GOLD, RED = "#246249", "#205A74", "#766D29", "#941B32"
 BOX_RECT = (343, 142, 425)
 FOCUS_RECT = (784, 200, 298)
 KEY_TIMES = (0.1, 1.7, 3.5, 6.5, 8.8, 11.8, 16.5, 19.4, 20.6, 21.4, 29.4)
@@ -82,8 +82,8 @@ def arrow(ax, start, end, color=GREY, width=1.5):
 def stage_weights(t):
     if t < 20:
         return tuple(smoothstep((t - start) / length) for start, length in
-                     ((1.2, 1.4), (3.0, 2.0), (6.0, 1.2), (8.0, 1.2),
-                      (10.0, 2.0), (13.0, 2.0), (16.0, 1.2), (18.0, 1.0)))
+                     ((1.2, .6), (3.0, .6), (4.2, .6), (5.2, .6),
+                      (6.2, .6), (7.3, .6), (8.4, .6), (9.5, .6)))
     _, _, _, phase = schedule(t)
     local = (t - 20) % 2
     if phase in ("half_kick", "drift"):
@@ -170,7 +170,7 @@ def matrix(ax, reg, data, t, state, weights):
         text(reg, ax, x, 262, dimensions, active(BLUE, weight))
     arrow(ax, (1216, 228), (1246, 228), active(BLUE, weights[3]))
     arrow(ax, (1358, 228), (1395, 228), active(BLUE, weights[4]))
-    arrow(ax, (1504, 228), (1730, 194), active(GREEN, weights[4]))
+    arrow(ax, (1504, 228), (1730, 194), active(RED, weights[4]))
     d = trace["D"][state]
     vmax = max(float(np.percentile(np.abs(trace["D"]), 97)), 1e-12)
     rgba = np.empty((100, 12, 4))
@@ -179,9 +179,9 @@ def matrix(ax, reg, data, t, state, weights):
         rgba[mask, :3] = plt.matplotlib.colors.to_rgb(color)
     rgba[:, :, 3] = (.08 + .85*np.clip(np.abs(d)/vmax, 0, 1)) * (.16 + .84*weights[4])
     ax.imshow(rgba, extent=(1750, 1882, 205, 65), origin="upper", aspect="auto", zorder=8, interpolation="nearest")
-    text(reg, ax, 1816, 38, r"$D_i$", active(GREEN, weights[4]), size=18)
-    text(reg, ax, 1816, 235, r"$100\times12$", active(GREEN, weights[4]))
-    ax.add_patch(Rectangle((1749, 64), 13, 5, fill=False, ec=GOLD, lw=1.5, zorder=12))
+    text(reg, ax, 1816, 38, r"$D_i$", active(RED, weights[4]), size=18)
+    text(reg, ax, 1816, 235, r"$100\times12$", active(RED, weights[4]))
+    ax.add_patch(Rectangle((1749, 64), 13, 5, fill=False, ec=RED, lw=1.5, zorder=12))
     row = int(np.flatnonzero(trace["nlist"][state] == 127)[0])
     if t < 6:
         label, values, color = r"$R_{" + str(row) + "}$", trace["R"][state, row], BLUE
@@ -205,16 +205,36 @@ def matrix(ax, reg, data, t, state, weights):
 
 def fitting(ax, reg, data, state, weights):
     ax.plot((1110, 1890), (344, 344), color="#D6DDDF", lw=.9)
-    x_values = (1152, 1320, 1460, 1600, 1790)
-    labels = (r"$D_i$", "240", "240", "240", r"$\epsilon_i$")
-    for i, (x, label) in enumerate(zip(x_values, labels)):
-        weight = smoothstep(weights[5]*4 - max(0, i-1))
-        if i in (1, 2, 3):
-            ax.add_patch(Rectangle((x-39, 367), 78, 37, fc=FAINT, ec=active(GREEN, weight), lw=1.2))
-        text(reg, ax, x, 386, label, active(GREEN, weight), size=18 if i in (0, 4) else 16)
-        if i < 4:
-            arrow(ax, (x+46, 386), (x_values[i+1]-46, 386), active(GREEN, weight))
-    text(reg, ax, 1152, 416, "1200", active(GREEN, weights[5]))
+    # Three compact hidden layers make the fitting network immediately
+    # recognizable; each column is a small visual sample of the real dense
+    # layer, while the trace records retain the full 240-neuron widths.
+    columns = (1152, 1320, 1460, 1600, 1790)
+    node_rows = (371, 386, 401)
+    active_weight = smoothstep(weights[5] * 3.0)
+    for left, right in zip(columns[:-1], columns[1:]):
+        for y1 in node_rows:
+            for y2 in node_rows:
+                level = active(GREEN, active_weight)
+                ax.plot((left + 15, right - 15), (y1, y2), color=level, lw=1.0, alpha=.22 + .60 * active_weight, zorder=1)
+    for index, x in enumerate(columns):
+        if index == 0:
+            ys = (386,)
+            color = RED
+            labels = (r"$D_i$",)
+        elif index == len(columns) - 1:
+            ys = (386,)
+            color = GREEN
+            labels = (r"$\epsilon_i$",)
+        else:
+            ys = node_rows
+            color = GREEN
+            labels = ("", "", "")
+        for y, label in zip(ys, labels):
+            ax.add_patch(Circle((x, y), 11 if index in (0, len(columns)-1) else 7,
+                                fc=active(color, active_weight), ec=color, lw=1.3, zorder=3))
+            if label:
+                text(reg, ax, x, y, label, "#FFFFFF" if active_weight > .5 else color, size=13, weight="bold")
+    text(reg, ax, 1152, 420, "D", active(RED, weights[5]), size=14)
     trace = data["trace"]
     values = (
         (453, r"$\epsilon_{O126}$", f"{trace['atomic_energy_ev'][state,126]:+.6f} eV", GREEN, weights[5]),

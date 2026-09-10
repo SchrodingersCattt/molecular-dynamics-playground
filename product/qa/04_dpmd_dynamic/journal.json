@@ -37,11 +37,13 @@
     "source_frames": 240,
     "frames_with_scene_motion": 96,
     "final_coordinate_error_angstrom": 2.220446049250313e-16,
-    "video_sha256": "bbf43e98d21a0db19f9fb3d7cf399a795cd96637646e952275815886c6821acc"
+    "video_sha256": "710b369cfae936bd2d50f45645a7d2566d9aaeb84ba422cfdb6e27ea367ef16d",
+    "visual_revision": "darkened active colors; transitions below one second; first-pass explanation compressed; fitting network shown as circles and connections; D_i marked crimson in both panels"
   },
   "push": {
     "previous_progress_commit": "be5be5b",
-    "final_commit_pending": true
+    "final_commit_pending": true,
+    "target_branch": "main"
   },
   "artifacts": {
     "trace_json": "_tmp/04_deep_potential_md_dynamic_qa/deepmd_trace/deepmd_trace.json",
