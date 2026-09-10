@@ -1,7 +1,7 @@
 {
   "schema": "md_visual_revision_journal/v1",
   "date": "2026-09-10",
-  "branch": "redesign/three-slide-md",
+  "branch": "main",
   "status": "complete",
   "request": "04 uses the 03 fixed-stage structure, shows real water-box motion, keeps only necessary visual tokens, and pushes the current progress.",
   "completed": {
@@ -42,7 +42,7 @@
   },
   "push": {
     "previous_progress_commit": "be5be5b",
-    "final_commit_pending": true,
+    "final_commit_pending": false,
     "target_branch": "main"
   },
   "artifacts": {
