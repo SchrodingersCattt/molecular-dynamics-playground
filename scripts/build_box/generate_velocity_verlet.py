@@ -76,6 +76,28 @@ def main() -> None:
     if max(residuals.values()) > 1.0e-12:
         raise RuntimeError(f"Velocity Verlet residual check failed: {residuals}")
 
+    # Keep a short, real trajectory for the teaching animation.  The first
+    # stored state is exactly the historical one-step input/output pair.
+    trajectory_positions = [r0.copy()]
+    trajectory_velocities = [v0.copy()]
+    trajectory_forces = []
+    trajectory_accelerations = []
+    position, velocity = r0.copy(), v0.copy()
+    for _ in range(6):
+        force = forces(position)
+        acceleration = force * CONV_ACCEL / MASS[:, None]
+        position, velocity, next_force = velocity_verlet_step(
+            position, velocity, forces, MASS, DT_FS
+        )
+        trajectory_forces.append(force)
+        trajectory_accelerations.append(acceleration)
+        trajectory_positions.append(position.copy())
+        trajectory_velocities.append(velocity.copy())
+    trajectory_forces.append(forces(position))
+    trajectory_accelerations.append(
+        trajectory_forces[-1] * CONV_ACCEL / MASS[:, None]
+    )
+
     energy0 = potential_energy(r0) + 0.5 * np.sum(MASS[:, None] * v0**2) / CONV_ACCEL
     energy1 = potential_energy(r1) + 0.5 * np.sum(MASS[:, None] * v1**2) / CONV_ACCEL
     np.savez(
@@ -94,6 +116,11 @@ def main() -> None:
         display_displacement_scale=DISPLAY_SCALES["displacement"],
         display_acceleration_scale=DISPLAY_SCALES["acceleration"],
         display_velocity_scale=DISPLAY_SCALES["velocity"],
+        trajectory_positions=np.asarray(trajectory_positions),
+        trajectory_velocities=np.asarray(trajectory_velocities),
+        trajectory_forces=np.asarray(trajectory_forces),
+        trajectory_accelerations=np.asarray(trajectory_accelerations),
+        trajectory_times_fs=np.arange(7, dtype=float) * DT_FS,
     )
     metadata = {
         "case": "one deterministic H2O Velocity Verlet step",
@@ -111,6 +138,7 @@ def main() -> None:
     (output_dir / "vv_h2o_step.json").write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")
     write_extxyz(output_dir / "vv_h2o_step.extxyz", np.stack((r0, r1)))
     write_extxyz(output_dir / "vv_h2o_motion.extxyz", motion_positions)
+    write_extxyz(output_dir / "vv_h2o_trajectory.extxyz", np.asarray(trajectory_positions))
     print(json.dumps(metadata, indent=2))
 
 

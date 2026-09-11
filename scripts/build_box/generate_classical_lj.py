@@ -19,7 +19,7 @@ ROOT = REPO_ROOT / "product"
 sys.path.insert(0, str(REPO_ROOT / "scripts" / "run_md"))
 sys.path.insert(0, str(REPO_ROOT / "scripts" / "build_box"))
 
-from engine_md import CONV_ACCEL  # noqa: E402
+from engine_md import CONV_ACCEL, velocity_verlet_step  # noqa: E402
 from compute_h2o_dimer_scf import dimer_geometry  # noqa: E402
 
 
@@ -163,6 +163,41 @@ def main() -> None:
             f"TIP3P LJ analytic-force validation failed: {derivative_error}"
         )
 
+    # Six reproducible generalized-coordinate steps for the detailed/rapid
+    # animation.  Step zero is the existing saved state.
+    trajectory_oxygen_positions = [q0.copy()]
+    trajectory_velocities = [v0.copy()]
+    trajectory_forces = []
+    trajectory_accelerations = []
+    position, velocity = q0.copy(), v0.copy()
+    for _ in range(6):
+        force = generalized_forces(position)
+        acceleration = force * CONV_ACCEL / MOLECULE_MASSES[:, None]
+        delta = position[1] - position[0]
+        separation = float(np.linalg.norm(delta))
+        axis = delta / separation
+        magnitude = float(radial_force_on_right(separation))
+        def force_fn(q):
+            d = q[1] - q[0]
+            r = float(np.linalg.norm(d))
+            f = float(radial_force_on_right(r)) * d / r
+            return np.vstack((-f, f))
+        position, velocity, _ = velocity_verlet_step(
+            position, velocity, force_fn, MOLECULE_MASSES, DT_FS
+        )
+        trajectory_forces.append(force)
+        trajectory_accelerations.append(acceleration)
+        trajectory_oxygen_positions.append(position.copy())
+        trajectory_velocities.append(velocity.copy())
+    trajectory_forces.append(generalized_forces(position))
+    trajectory_accelerations.append(
+        trajectory_forces[-1] * CONV_ACCEL / MOLECULE_MASSES[:, None]
+    )
+    trajectory_atomic_positions = np.asarray([
+        apply_rigid_translations(atomic_reference, q0, coordinates)
+        for coordinates in trajectory_oxygen_positions
+    ])
+
     kinetic0 = 0.5 * np.sum(MOLECULE_MASSES[:, None] * v0**2) / CONV_ACCEL
     kinetic1 = 0.5 * np.sum(MOLECULE_MASSES[:, None] * v1**2) / CONV_ACCEL
     total_energies = np.array([energies[0] + kinetic0, energies[1] + kinetic1])
@@ -191,6 +226,12 @@ def main() -> None:
         display_displacement_scale=DISPLAY_DISPLACEMENT_SCALE,
         display_force_scale=DISPLAY_FORCE_SCALE,
         display_velocity_scale=DISPLAY_VELOCITY_SCALE,
+        trajectory_oxygen_positions=np.asarray(trajectory_oxygen_positions),
+        trajectory_velocities=np.asarray(trajectory_velocities),
+        trajectory_forces=np.asarray(trajectory_forces),
+        trajectory_accelerations=np.asarray(trajectory_accelerations),
+        trajectory_atomic_positions=trajectory_atomic_positions,
+        trajectory_times_fs=np.arange(7, dtype=float) * DT_FS,
     )
     metadata = {
         "case": "TIP3P oxygen-oxygen Lennard-Jones term on a real H2O dimer",
@@ -235,6 +276,7 @@ def main() -> None:
     )
     write_extxyz(output_dir / "classical_lj.extxyz", atomic_positions)
     write_extxyz(output_dir / "classical_lj_motion.extxyz", atomic_motion)
+    write_extxyz(output_dir / "classical_lj_trajectory.extxyz", trajectory_atomic_positions)
     print(json.dumps(metadata, indent=2))
 
 
