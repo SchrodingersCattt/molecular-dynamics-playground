@@ -1,0 +1,18 @@
+{
+  "schema": "md_end_to_end_story/v1",
+  "model": "deepmd",
+  "trajectory_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\data\\dpmd_water_box_trajectory.npz",
+  "trajectory_source_role": "shared kinematic and energy/force carrier for the teaching composition",
+  "n_states": 6,
+  "n_atoms": 192,
+  "operators": [
+    "local neighbours",
+    "descriptor $D_i$",
+    "shared atomic NN",
+    "atomic energies $\\varepsilon_i$",
+    "sum atomic energies",
+    "differentiate energy",
+    "acceleration",
+    "Velocity\u2013Verlet update"
+  ]
+}

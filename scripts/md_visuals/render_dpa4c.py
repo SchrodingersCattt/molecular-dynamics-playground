@@ -122,12 +122,12 @@ def frame(z, i, path, *, static=False):
     # The descriptor is deliberately expanded into the eight operations that
     # are otherwise easy to compress into one vague “descriptor” box.
     nodes=[
-        ("1  edge\n$r_{ij},u_{ij},\chi$",.14,.87,BLUE),
+        ("1  edge\n$r_{ij},u_{ij},\\chi$",.14,.87,BLUE),
         ("2  radial\n$f_n(r)$",.38,.87,GREEN),
-        ("3  angular\n$B_{\ell m}(u)$",.62,.87,GREEN),
-        ("4  aggregate\n$X_{\ell mc}$",.86,.87,GREEN),
-        ("5  equivariant\n$\ell=0,1,2$",.86,.68,GREEN),
-        ("6  invariants\n$G,J,\Pi$",.62,.68,RED),
+        ("3  angular\n$B_{\\ell m}(u)$",.62,.87,GREEN),
+        ("4  aggregate\n$X_{\\ell mc}$",.86,.87,GREEN),
+        ("5  equivariant\n$\\ell=0,1,2$",.86,.68,GREEN),
+        ("6  invariants\n$G,J,\\Pi$",.62,.68,RED),
         ("7  descriptor\n$D_i$",.38,.68,RED),
         ("8  readout\n$E_i\\rightarrow F_i$",.14,.68,GOLD),
     ]
@@ -158,7 +158,13 @@ def frame(z, i, path, *, static=False):
     return {"neighbors":int(len(r)),"gram":g.tolist(),"rotated_gram":gr.tolist(),"max_rotation_delta":float(np.max(np.abs(g-gr)))}
 
 def main():
-    ap=argparse.ArgumentParser(); ap.add_argument("--preview-only",action="store_true"); args=ap.parse_args(); QA.mkdir(parents=True,exist_ok=True); FIG.mkdir(exist_ok=True); VID.mkdir(exist_ok=True)
+    ap=argparse.ArgumentParser(); ap.add_argument("--preview-only",action="store_true"); ap.add_argument("--static-only",action="store_true"); ap.add_argument("--video-only",action="store_true"); args=ap.parse_args()
+    from end_to_end_story import render_model
+
+    if not args.preview_only:
+        render_model("dpa4c", static_only=args.static_only, video_only=args.video_only)
+        return
+    QA.mkdir(parents=True,exist_ok=True); FIG.mkdir(exist_ok=True); VID.mkdir(exist_ok=True)
     source=DATA/"dpa4c/omat24_neo/dpa4c_water_trajectory.npz"
     if not source.exists():
         raise RuntimeError("No live 0314 DPA4C water trajectory found. Run the Bohrium job first; refusing to use a fallback or another project's structure.")

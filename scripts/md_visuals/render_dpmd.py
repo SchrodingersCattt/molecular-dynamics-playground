@@ -572,11 +572,13 @@ def render_animation(data) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--static-only", action="store_true")
+    parser.add_argument("--video-only", action="store_true")
     args = parser.parse_args()
-    data = load_data()
-    render_static(data)
-    if not args.static_only:
-        render_animation(data)
+    # Keep this historical entry point stable while routing the deliverable
+    # through the shared AIMD-like end-to-end composition.
+    from end_to_end_story import render_model
+
+    render_model("deepmd", static_only=args.static_only, video_only=args.video_only)
 
 
 if __name__ == "__main__":

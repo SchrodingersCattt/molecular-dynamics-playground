@@ -175,15 +175,9 @@ def _draw_right(ax, data: dict[str, object]) -> None:
 
 
 def main() -> None:
-    data = load_data()
-    fig = plt.figure(figsize=(14, 10), dpi=250, facecolor="white")
-    left = fig.add_axes([0.035, 0.09, 0.25, 0.83])
-    middle = fig.add_axes([0.30, 0.09, 0.46, 0.83])
-    right = fig.add_axes([0.78, 0.09, 0.20, 0.83])
-    _draw_vv(left); _panel(middle, "DEEP POTENTIAL · local neighbourhood"); _draw_central_neighbour(middle, data); _draw_right(right, data)
-    fig.savefig(OUT_SVG, format="svg", facecolor="white", bbox_inches="tight", pad_inches=0.04)
-    fig.savefig(OUT_PNG, format="png", dpi=300, facecolor="white", bbox_inches="tight", pad_inches=0.04)
-    plt.close(fig)
+    from end_to_end_story import render_model
+
+    render_model("deepmd", static_only=True)
 
 
 if __name__ == "__main__":

@@ -1341,44 +1341,11 @@ def _draw_trajectory_frame(fig, time_seconds, frame_index, registry, data, asset
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--static-only", action="store_true")
+    parser.add_argument("--video-only", action="store_true")
     args = parser.parse_args()
-    data = load_data()
-    data["trajectory_positions"] = np.asarray(data["trajectory_positions"], dtype=float)
-    data["trajectory_elements"] = np.asarray(data["trajectory_elements"]).astype(str)
-    data["trajectory_box_length"] = float(np.asarray(data["trajectory_box_length"]).reshape(-1)[0])
-    data["trajectory_central_index"] = int(np.asarray(data["trajectory_central_index"]).reshape(-1)[0])
-    data["trajectory_dt_fs"] = float(np.asarray(data["trajectory_dt_fs"]).reshape(-1)[0])
-    data["trajectory_cutoff_angstrom"] = float(data.get("trajectory_metadata", {}).get("model_cutoff_angstrom", 6.0))
-    data["trajectory_neighbour_ids"] = np.asarray(data["trajectory_neighbour_ids"], dtype=int)
-    data["trajectory_neighbour_counts"] = np.asarray(data["trajectory_neighbour_counts"], dtype=int)
-    data["trajectory_atomic_energy_ev"] = np.asarray(data["trajectory_atomic_energy_ev"], dtype=float)
-    data["trajectory_total_energy_ev"] = np.asarray(data["trajectory_total_energy_ev"], dtype=float)
-    data["trajectory_forces_ev_per_angstrom"] = np.asarray(data["trajectory_forces_ev_per_angstrom"], dtype=float)
-    data["trajectory_velocities"] = np.asarray(data["trajectory_velocities"], dtype=float)
-    data["trajectory_cutoff_angstrom"] = float(
-        np.asarray(data.get("trajectory_cutoff_angstrom", data["trajectory_metadata"].get("model_cutoff_angstrom", 6.0))).reshape(-1)[0]
-    )
-    assets = _trajectory_assets(data)
-    fig = new_static_figure()
-    registry = LayoutRegistry(min_font_pt=10, max_font_pt=16, edge_pad_px=18)
-    state = _state_for_time(7.0, len(data["trajectory_positions"]))
-    data["_state"] = state
-    data["_descriptor"] = _trajectory_descriptor(data, int(state["state"]))
-    data["_descriptor"]["count"] = int(data["trajectory_neighbour_counts"][int(state["state"])])
-    data["_descriptor"]["rows"] = []
-    elements = np.asarray(data["trajectory_elements"]).astype(str)
-    for index, distance, vector in zip(data["_descriptor"]["sample_ids"], data["_descriptor"]["distance"][:5], data["_descriptor"]["delta"][:5]):
-        data["_descriptor"]["rows"].append({"id": int(index), "element": str(elements[int(index)]), "r": float(distance), "dx": float(vector[0]), "dy": float(vector[1]), "dz": float(vector[2])})
-    _draw_dp_vv(axes_from_top_slot(fig, STORY_STATIC_A), registry, video=False, mode="reevaluate")
-    _draw_water_panel(axes_from_top_slot(fig, STORY_STATIC_B), registry, assets, data, 0, video=False)
-    _draw_environment_matrix(axes_from_top_slot(fig, STORY_STATIC_C), registry, data, video=False, weight=1.0)
-    _draw_energy_force(axes_from_top_slot(fig, STORY_STATIC_D), registry, data, video=False, mode="evaluate", weight=1.0)
-    errors = registry.validate(fig)
-    if errors:
-        raise RuntimeError("static trajectory DP layout failed:\n" + "\n".join(errors))
-    save_static(fig, STEM)
-    if not args.static_only:
-        render_video(stem=STEM, duration_seconds=VIDEO_DURATION, draw_frame=lambda f, t, i, r: _draw_trajectory_frame(f, t, i, r, data, assets), audit_config={"panels": [{"id": "integrator", "rect": list(STORY_VIDEO_A), "min_clearance_px": 0, "allow_touch_edges": ["left", "right", "top", "bottom"]}, {"id": "water", "rect": list(STORY_VIDEO_B), "min_clearance_px": 0, "allow_touch_edges": ["left", "right", "top", "bottom"]}, {"id": "environment", "rect": list(STORY_VIDEO_C), "min_clearance_px": 0, "allow_touch_edges": ["left", "right", "top", "bottom"]}, {"id": "outputs", "rect": list(STORY_VIDEO_D), "min_clearance_px": 0, "allow_touch_edges": ["left", "right", "top", "bottom"]}], "whitespace": {"background_threshold": 245, "min_ink_fraction": 0.02, "min_panel_bbox_fill": 0.22, "grid_rows": 12, "grid_columns": 24}, "bands": [{"id": "gap_a_b", "rect": [0.215, 0.025, 0.230, 0.975], "max_ink_pixels": 5000}, {"id": "gap_b_right", "rect": [0.680, 0.025, 0.695, 0.975], "max_ink_pixels": 5000}, {"id": "gap_c_d", "rect": [0.695, 0.470, 0.985, 0.500], "max_ink_pixels": 5000}]}, qa_directory=QA_DIR / "_qa", representative_times=[0.2, 2.0, 4.0, 6.0, 7.9, 8.1, 10.0, 12.0, 14.0, 15.8])
+    from end_to_end_story import render_model
+
+    render_model("deepmd", static_only=args.static_only, video_only=args.video_only)
 
 
 if __name__ == "__main__": main()
