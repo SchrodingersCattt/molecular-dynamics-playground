@@ -1,0 +1,22 @@
+{
+  "DPA4C-Neo-OMat24-v20260819.json": {
+    "sha256": "94ad0ae9b3e56d87ddae53a22e771dabec52625d790abbce1d901b8b72c01635",
+    "bytes": 3892
+  },
+  "DPA4C-Neo-OMat24-v20260819.pt": {
+    "sha256": "db433ef9d9297543708eb5daf49538b46c019027f4de1846f910680550b55899",
+    "bytes": 1451877
+  },
+  "source": "AIS Square resource 433",
+  "resource_name": "DPA4C-OMat24",
+  "version": "v20260819",
+  "variant": "Neo",
+  "explorer_repository": "https://github.com/SchrodingersCattt/aissq-explorer",
+  "license": "CC BY-NC 4.0",
+  "descriptor_type": "dpa4c",
+  "rcut_angstrom": 6.0,
+  "channels": 64,
+  "lmax": 2,
+  "radial_modes": 0,
+  "type_map": "H-Og full periodic table"
+}\n

@@ -987,7 +987,7 @@ def compose(fig, t: float, registry: LayoutRegistry, data: dict[str, object], vv
 
 
 def _write_trajectory_sources(data: dict[str, object]) -> tuple[Path, Path, set[int]]:
-    """Write stable multi-frame whole-box and local-focus sources for MatterVis."""
+    """Write stable whole-box and fixed sparse local-environment sources."""
     from ase import Atoms
     from ase.io import write
 
@@ -996,43 +996,27 @@ def _write_trajectory_sources(data: dict[str, object]) -> tuple[Path, Path, set[
     box = float(np.asarray(data["trajectory_box_length"]).reshape(-1)[0])
     central = int(np.asarray(data["trajectory_central_index"]).reshape(-1)[0])
     base_elements = np.asarray(data["elements"]).astype(str)
-    molecule_ids = np.asarray(data["molecule_ids"], dtype=int)
     initial = positions[0]
     delta = initial - initial[central]
     delta -= box * np.rint(delta / box)
     distances = np.linalg.norm(delta, axis=1)
-    oxygen = np.flatnonzero(base_elements == "O")
-    ordered_oxygen = oxygen[np.argsort(distances[oxygen])]
-    chosen_oxygen = [central] + [int(item) for item in ordered_oxygen if int(item) != central][:7]
-    focus: set[int] = set()
-    hydrogen = np.flatnonzero(base_elements == "H")
-    for oxygen_index in chosen_oxygen:
-        focus.add(int(oxygen_index))
-        local_h = minimum_image_delta(initial[hydrogen], initial[oxygen_index], box)
-        nearest = hydrogen[np.argsort(np.linalg.norm(local_h, axis=1))[:2]]
-        focus.update(int(item) for item in nearest)
-    focus_sorted = sorted(focus)
+    # The local panel is a neighbour graph, not a molecular depiction.  Keep
+    # the centre and a small, deterministic set of real MIC neighbours; every
+    # displayed line consequently has an atom at both ends.
+    neighbour_ids = np.asarray(data["trajectory_neighbour_ids"], dtype=int)[0]
+    neighbour_ids = neighbour_ids[neighbour_ids >= 0]
+    neighbour_ids = neighbour_ids[neighbour_ids != central]
+    neighbour_ids = neighbour_ids[np.argsort(distances[neighbour_ids])]
+    focus_sorted = [central] + [int(index) for index in neighbour_ids[:16]]
+    focus = set(focus_sorted)
+    fixed_focus_positions = initial[central] + delta[focus_sorted]
     focus_frames: list[Atoms] = []
     focus_positions_by_state: list[np.ndarray] = []
     box_frames: list[Atoms] = []
     for frame in positions:
         box_frames.append(Atoms(symbols=elements.tolist(), positions=frame, cell=np.eye(3) * box, pbc=True))
-        focus_pos = np.zeros((len(focus_sorted), 3), dtype=float)
-        frame_delta = frame - frame[central]
-        frame_delta -= box * np.rint(frame_delta / box)
-        for molecule_id in sorted(set(int(molecule_ids[index]) for index in focus_sorted)):
-            members = [index for index in focus_sorted if int(molecule_ids[index]) == molecule_id]
-            oxygens = [index for index in members if base_elements[index] == "O"]
-            if not oxygens:
-                continue
-            oxygen_index = central if molecule_id == int(molecule_ids[central]) else oxygens[0]
-            oxygen_position = frame[central] + frame_delta[oxygen_index]
-            for index in members:
-                local = frame[index] - frame[oxygen_index]
-                local -= box * np.rint(local / box)
-                focus_pos[focus_sorted.index(index)] = oxygen_position + local
-        focus_frames.append(Atoms(symbols=base_elements[focus_sorted].tolist(), positions=focus_pos))
-        focus_positions_by_state.append(focus_pos)
+        focus_frames.append(Atoms(symbols=base_elements[focus_sorted].tolist(), positions=fixed_focus_positions))
+        focus_positions_by_state.append(np.asarray(fixed_focus_positions, dtype=float).copy())
     source_dir = QA_DIR / "trajectory_sources"
     source_dir.mkdir(parents=True, exist_ok=True)
     box_source = source_dir / "water_box_trajectory.extxyz"
@@ -1064,16 +1048,46 @@ def _trajectory_assets(data: dict[str, object]) -> dict[str, object]:
     force_paths: list[Path] = []
     velocity_paths: list[Path] = []
     move_paths: list[Path] = []
-    focus_list = sorted(focus_indices)
+    # _write_trajectory_sources stores the centre first, followed by the
+    # selected neighbours.  Preserve that order; sorting the set here would
+    # decouple focus_map from the coordinate rows and move the rendered shell
+    # and edge origin away from O126.
+    focus_list = [int(index) for index in data["_focus_indices"]]
     focus_map = {old: new for new, old in enumerate(focus_list)}
     style = {"shaft_radius": 0.024, "head_length": 0.10, "head_radius": 0.060, "sides": 16}
+    focus_centre = np.asarray(data["_focus_positions"][0][focus_map[central]], dtype=float)
+    cutoff = float(data["trajectory_cutoff_angstrom"])
+    shell = make_sphere_mesh(
+        focus_centre, cutoff, color="#397F99", opacity=0.10,
+        lat_steps=18, lon_steps=36, mesh_id="trajectory_r_c_sphere",
+    )
+    shell_equator = make_torus_mesh(
+        focus_centre, cutoff * 0.998, 0.035, normal=camera.direction,
+        color="#1F536B", opacity=0.62, major_steps=72, tube_steps=6,
+        mesh_id="trajectory_r_c_equator",
+    )
+    shell_meridian = make_torus_mesh(
+        focus_centre, cutoff * 0.998, 0.024, normal=np.asarray(camera.up),
+        color="#2E89A7", opacity=0.48, major_steps=72, tube_steps=6,
+        mesh_id="trajectory_r_c_meridian",
+    )
+    centre_marker = make_torus_mesh(
+        focus_centre, 0.48, 0.075, normal=camera.direction,
+        color="#183153", opacity=0.98, major_steps=48, tube_steps=6,
+        mesh_id="trajectory_O126_selection_ring",
+    )
+    local_shell = [shell, shell_equator, shell_meridian]
+    fixed_neighbour_ids = [int(index) for index in focus_list if int(index) != central]
     for state in range(n_states):
         box_path = output_dir / f"box_{state:02d}.png"
         focus_path = output_dir / f"focus_{state:02d}.png"
         force_path = output_dir / f"focus_force_{state:02d}.png"
         velocity_path = output_dir / f"focus_velocity_{state:02d}.png"
         move_path = output_dir / f"focus_move_{state:02d}.png"
-        focus_pos = np.asarray(data["_focus_positions"][state], dtype=float)
+        centre_path = output_dir / f"focus_centre_{state:02d}.png"
+        # _write_trajectory_sources deliberately keeps this sparse local
+        # graph fixed in screen space across all MD states.
+        focus_pos = np.asarray(data["_focus_positions"][0], dtype=float)
         focus_centre = focus_pos[focus_map[central]]
         force_value = np.asarray(forces[state, central], dtype=float)
         force_norm = float(np.linalg.norm(force_value))
@@ -1084,24 +1098,46 @@ def _trajectory_assets(data: dict[str, object]) -> dict[str, object]:
         force_vector = make_vector_group("F_DP", focus_centre[None, :], force_value[None, :], scale=force_scale, color=PALE_OLIVE, style=style)
         velocity_vector = make_vector_group("v_half", focus_centre[None, :], velocities[state, central][None, :], scale=150.0, color=EMERALD, style=style)
         neighbour_meshes = []
-        ids = np.asarray(data["trajectory_neighbour_ids"][state], dtype=int)
-        ids = ids[ids >= 0]
-        for index in ids:
+        for index in fixed_neighbour_ids:
             if int(index) not in focus_map or int(index) == central:
                 continue
             endpoint = focus_pos[focus_map[int(index)]]
             neighbour_meshes.extend(_neighbor_edge_meshes(np.asarray([focus_centre]), np.asarray([endpoint - focus_centre]), color=NAVY, opacity=0.72, radius=0.016))
         common_box = dict(camera=camera, frame=state, view="unit_cell", width=1700, height=1180, atom_scale=0.72, bond_radius=0.075, show_cell=True, cell_color="#9AA5AA", cell_width_px=1.15)
         common_focus = dict(camera=camera, frame=state, view="cluster", width=1700, height=1180, atom_scale=1.02, bond_radius=0.095, show_cell=False, include_boundary_replicas=False)
+        foreground_path = output_dir / f"focus_foreground_{state:02d}.png"
+        hidden_focus_atoms = {index: 0.0 for index in range(len(focus_list))}
+        hidden_focus_atoms[focus_map[central]] = 1.0
+        focus_atom_colours = {index: "#FFFFFF" for index in range(len(focus_list))}
+        focus_atom_colours[focus_map[central]] = "#183153"
         render_structure(box_source, box_path, **common_box)
-        render_structure(focus_source, focus_path, **common_focus, mesh_overlays=neighbour_meshes, show_bonds=False)
-        render_structure(focus_source, force_path, **common_focus, mesh_overlays=neighbour_meshes, show_bonds=False, vector_overlays=force_vector)
-        render_structure(focus_source, velocity_path, **common_focus, mesh_overlays=neighbour_meshes, show_bonds=False, vector_overlays=velocity_vector)
+        render_structure(focus_source, focus_path, **common_focus, mesh_overlays=local_shell, show_bonds=False)
+        render_structure(focus_source, foreground_path, **common_focus, mesh_overlays=neighbour_meshes, show_bonds=False)
+        render_structure(
+            focus_source,
+            centre_path,
+            frame=0,
+            **{key: value for key, value in common_focus.items() if key not in {"frame", "atom_scale"}},
+            atom_scale=1.65,
+            mesh_overlays=[centre_marker],
+            show_bonds=False,
+            atom_opacity_scales=hidden_focus_atoms,
+            atom_color_overrides=focus_atom_colours,
+        )
+        render_structure(focus_source, force_path, **common_focus, mesh_overlays=local_shell, show_bonds=False, vector_overlays=force_vector)
+        render_structure(focus_source, velocity_path, **common_focus, mesh_overlays=local_shell, show_bonds=False, vector_overlays=velocity_vector)
+        for target_path in (focus_path, force_path, velocity_path):
+            with Image.open(target_path).convert("RGBA") as base, Image.open(foreground_path).convert("RGBA") as foreground, Image.open(centre_path).convert("RGBA") as centre:
+                composed = Image.alpha_composite(base, foreground)
+                Image.alpha_composite(composed, centre).save(target_path)
         if state < n_states - 1:
             displacement = positions[state + 1, central] - positions[state, central]
             displacement -= box * np.rint(displacement / box)
             move_vector = make_vector_group("dr", focus_centre[None, :], displacement[None, :], scale=80.0, color=LAKE_BLUE, style=style)
-            render_structure(focus_source, move_path, frame=state, **{key: value for key, value in common_focus.items() if key != "frame"}, mesh_overlays=neighbour_meshes, show_bonds=False, vector_overlays=move_vector)
+            render_structure(focus_source, move_path, frame=0, **{key: value for key, value in common_focus.items() if key != "frame"}, mesh_overlays=local_shell, show_bonds=False, vector_overlays=move_vector)
+            with Image.open(move_path).convert("RGBA") as base, Image.open(foreground_path).convert("RGBA") as foreground, Image.open(centre_path).convert("RGBA") as centre:
+                composed = Image.alpha_composite(base, foreground)
+                Image.alpha_composite(composed, centre).save(move_path)
         box_paths.append(box_path)
         focus_paths.append(focus_path)
         force_paths.append(force_path)
@@ -1158,29 +1194,47 @@ def _draw_water_panel(ax, registry, assets, data, state, *, video):
     ax.add_patch(Rectangle((0.025, 0.04), 0.95, 0.92, fill=False, ec=LINE_GRAY, lw=2.0 if video else 1.1))
     registry.text(ax, 0.25, 0.925, "periodic water box", ha="center", va="center", fontsize=15 if video else 11, color=INK, weight="bold")
     registry.text(ax, 0.735, 0.925, "O126 local environment", ha="center", va="center", fontsize=15 if video else 11, color=INK, weight="bold")
-    place_main(ax, assets["box"][state], rect=(0.04, 0.15, 0.46, 0.87))
+    box_rect = (0.04, 0.15, 0.49, 0.87)
+    place_main(ax, assets["box"][state], rect=box_rect, alpha=0.62)
+    # Keep the locator relationship visible, but let the sparse local graph
+    # sit above the box so the fixed centre/neighbour geometry is dominant.
+    locator_x, locator_y = 0.28, 0.53
+    ax.scatter([locator_x], [locator_y], s=38 if video else 22, color=NAVY,
+           edgecolors="white", linewidths=0.8, zorder=24)
+    local_rect = (0.34, 0.12, 0.97, 0.90)
+    ax.plot([locator_x + 0.02, local_rect[0] + 0.02],
+        [locator_y + 0.025, local_rect[3] - 0.08],
+        color=PALE_OLIVE, lw=1.8 if video else 1.2, zorder=23)
+    ax.plot([locator_x + 0.02, local_rect[0] + 0.02],
+        [locator_y - 0.025, local_rect[1] + 0.08],
+        color=PALE_OLIVE, lw=1.8 if video else 1.2, zorder=23)
     focus_key = "focus"
     mode = data["_state"]["mode"]
     if mode in {"evaluate", "reevaluate", "half_kick", "drift", "final_kick", "commit"}:
         focus_key = "force" if mode in {"evaluate", "reevaluate"} else "velocity" if mode in {"half_kick", "final_kick"} else "move" if mode == "drift" else "focus"
     focus_path = assets[focus_key][state]
-    place_main(ax, focus_path, rect=(0.52, 0.15, 0.96, 0.87))
+    place_main(ax, focus_path, rect=local_rect, alpha=1.0)
     registry.text(ax, 0.06, 0.075, f"MD step {state:02d} · Δt = {float(data['trajectory_dt_fs']):g} fs", ha="left", va="center", fontsize=11 if video else 10, color=INK)
     registry.text(ax, 0.94, 0.075, f"{int(data['_descriptor']['count'])} MIC neighbours · " + rf"$r_c={float(data['trajectory_cutoff_angstrom']):g}$ Å", ha="right", va="center", fontsize=11 if video else 10, color=NAVY, weight="bold")
 
 
 def _draw_environment_matrix(ax, registry, data, *, video, weight):
     values = data["_descriptor"]
-    registry.text(ax, 0.50, 0.92, r"MIC rows → $R_i$", ha="center", va="center", fontsize=14 if video else 10, color=INK, weight="bold")
+    title_y = 0.95 if video else 0.92
+    subtitle_y = 0.81 if video else 0.84
+    registry.text(ax, 0.50, title_y, r"MIC rows → $R_i$", ha="center", va="center", fontsize=14 if video else 10, color=INK, weight="bold")
     rows = values["rows"][:2]
-    registry.text(ax, 0.50, 0.84, "j / type / r(Å) / Δr(Å)", ha="center", va="center", fontsize=10, color=NAVY, weight="bold")
+    registry.text(ax, 0.50, subtitle_y, "j / type / r(Å) / Δr(Å)", ha="center", va="center", fontsize=10, color=NAVY, weight="bold")
     for row_index, row in enumerate(rows):
-        y = 0.76 - row_index * 0.095
+        y = (0.71 if video else 0.76) - row_index * (0.095 if not video else 0.10)
         value = f"j{int(row['id'])} / {row['element']} / {row['r']:.2f} / ({row['dx']:+.2f}, {row['dy']:+.2f}, {row['dz']:+.2f})"
         ax.add_patch(Rectangle((0.08, y - 0.035), 0.84, 0.07, fc=to_rgba(NAVY if weight > 0.45 else "#EEF1F1", alpha=0.92), ec="white", lw=0.6))
         registry.text(ax, 0.50, y, value, ha="center", va="center", fontsize=10, color="white" if weight > 0.45 else INK)
-    registry.arrow(ax, (0.50, 0.59), (0.50, 0.52), arrowstyle="-|>", mutation_scale=12, lw=1.5, color=NAVY if weight > 0.45 else LINE_GRAY)
-    registry.text(ax, 0.50, 0.475, r"$R_{ij}=[s(r_{ij}),s\Delta x/r,s\Delta y/r,s\Delta z/r]$", ha="center", va="center", fontsize=11, color=INK if weight > 0.45 else DARK_GRAY, weight="bold")
+    arrow_top = 0.55 if video else 0.59
+    arrow_bottom = 0.49 if video else 0.52
+    formula_y = 0.445 if video else 0.475
+    registry.arrow(ax, (0.50, arrow_top), (0.50, arrow_bottom), arrowstyle="-|>", mutation_scale=12, lw=1.5, color=NAVY if weight > 0.45 else LINE_GRAY)
+    registry.text(ax, 0.50, formula_y, r"$R_{ij}=[s(r_{ij}),s\Delta x/r,s\Delta y/r,s\Delta z/r]$", ha="center", va="center", fontsize=11, color=INK if weight > 0.45 else DARK_GRAY, weight="bold")
     env = np.asarray(values["environment"], dtype=float)[:1]
     left, bottom, width, height = 0.18, 0.20, 0.64, 0.12
     for row_index in range(env.shape[0]):
