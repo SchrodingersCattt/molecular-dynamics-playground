@@ -1,0 +1,128 @@
+name
+Tesla V100-SXM2-16GB
+--- locating a python with deepmd ---
+/opt/mamba/bin/python
+/opt/mamba/bin/python3
+mamba
+# conda environments:
+#
+base                     /opt/mamba
+dpmd                     /opt/mamba/envs/dpmd
+
+using /opt/mamba/envs/dpmd/bin/python
+deepmd 3.2.0b1.dev87+g0f19772c9 torch 2.12.1+cu126 cuda True
+numpy 2.5.0
+--- dpa4c descriptor missing; installing deepmd-kit 3.2.0 from bundled wheels ---
+Installing collected packages: mpich, deepmd-kit
+  Attempting uninstall: deepmd-kit
+    Found existing installation: deepmd-kit 3.2.0b1.dev87+g0f19772c9
+    Uninstalling deepmd-kit-3.2.0b1.dev87+g0f19772c9:
+      Successfully uninstalled deepmd-kit-3.2.0b1.dev87+g0f19772c9
+
+Successfully installed deepmd-kit-3.2.0 mpich-5.0.2
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+__init__.py
+__pycache__
+libdeepmd.so
+libdeepmd_dyn_cudart.so
+libdeepmd_op_cuda.so
+libdeepmd_op_pt.so
+run_config.ini
+deepmd 3.2.0 torch 2.12.1+cu126 cuda True
+dpa4c descriptor available
+To get the best performance, it is recommended to adjust the number of threads by setting the environment variables OMP_NUM_THREADS, DP_INTRA_OP_PARALLELISM_THREADS, and DP_INTER_OP_PARALLELISM_THREADS. See https://deepmd.rtfd.io/parallelism/ for more information.
+To get the best performance, it is recommended to adjust the number of threads by setting the environment variables OMP_NUM_THREADS, DP_INTRA_OP_PARALLELISM_THREADS, and DP_INTER_OP_PARALLELISM_THREADS. See https://deepmd.rtfd.io/parallelism/ for more information.
+nvalchemi-toolkit-ops is unavailable; falling back from neighbor_graph_method='auto' to the dense graph builder. Install it with `pip install nvalchemi-toolkit-ops` to enable the NV graph builder.
+[dpa4c] state 1/5: E=-906.056518 eV
+[dpa4c] state 2/5: E=-905.850978 eV
+[dpa4c] state 3/5: E=-905.564453 eV
+[dpa4c] state 4/5: E=-905.363509 eV
+[dpa4c] state 5/5: E=-905.323056 eV
+{
+  "schema": "nnmd_periodic_trajectory/v2",
+  "label": "dpa4c",
+  "model": "DPA4C-Neo-OMat24-v20260819.pt",
+  "model_sha256": "db433ef9d9297543708eb5daf49538b46c019027f4de1846f910680550b55899",
+  "input": "water_box_64.npz",
+  "input_sha256": "bc350dd210575b2cea5d689075dcf62f15284faa3b91c36d48a19a307541689a",
+  "deepmd_version": "3.2.0",
+  "python": "3.12.13",
+  "n_atoms": 192,
+  "n_states": 6,
+  "n_updates": 5,
+  "box_length_angstrom": 12.429633119082435,
+  "central_index": 126,
+  "visualization_cutoff_angstrom": 6.0,
+  "model_cutoff_angstrom": 6.0,
+  "dt_fs": 0.5,
+  "temperature_k": 300.0,
+  "velocity_seed": 260906,
+  "integrator": "full velocity Verlet with a fresh model force call at every new position",
+  "ensemble_claim": "short NVE demonstration from a prepared box; not equilibrated",
+  "atomic_energy_status": "model output",
+  "atomic_energy_sums_to_total": true,
+  "neighbour_counts": [
+    83,
+    83,
+    83,
+    83,
+    83,
+    82
+  ],
+  "net_force_ev_per_angstrom": [
+    [
+      -2.220446049250313e-16,
+      1.1102230246251565e-16,
+      3.3306690738754696e-16
+    ],
+    [
+      0.0,
+      2.220446049250313e-16,
+      -1.1102230246251565e-16
+    ],
+    [
+      0.0,
+      2.220446049250313e-16,
+      -4.440892098500626e-16
+    ],
+    [
+      3.3306690738754696e-16,
+      1.1102230246251565e-16,
+      -4.440892098500626e-16
+    ],
+    [
+      -4.440892098500626e-16,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      2.220446049250313e-16
+    ]
+  ],
+  "max_force_ev_per_angstrom": [
+    1.5625054359509556,
+    1.9001677235651062,
+    2.4525547413850095,
+    2.921861445212919,
+    3.006331635207776,
+    3.2481435621259585
+  ],
+  "max_displacement_angstrom": [
+    0.027183999330541386,
+    0.026768376858192746,
+    0.026150270054900747,
+    0.025451247861072033,
+    0.026604462071676854
+  ],
+  "total_energy_ev": [
+    -906.0187486399659,
+    -906.0565182556161,
+    -905.8509775687703,
+    -905.5644529451379,
+    -905.363508670474,
+    -905.3230564285764
+  ],
+  "output": "dpa4c_water_box_trajectory.npz"
+}

@@ -1,0 +1,83 @@
+name
+Tesla V100-SXM2-32GB
+--- locating a python with deepmd ---
+/opt/mamba/bin/python
+/opt/mamba/bin/python3
+mamba
+# conda environments:
+#
+base                     /opt/mamba
+dpmd                     /opt/mamba/envs/dpmd
+
+using /opt/mamba/envs/dpmd/bin/python
+deepmd 3.2.0b1.dev87+g0f19772c9 torch 2.12.1+cu126 cuda True
+numpy 2.5.0
+--- dpa4c descriptor missing; upgrading deepmd-kit from PyPI ---
+Looking in indexes: https://pypi.tuna.tsinghua.edu.cn/simple
+ERROR: Could not find a version that satisfies the requirement deepmd-kit>=3.2.0 (from versions: none)
+ERROR: No matching distribution found for deepmd-kit>=3.2.0
+Looking in indexes: https://pypi.tuna.tsinghua.edu.cn/simple
+Collecting deepmd-kit>=3.2.0
+  ERROR: HTTP error 403 while getting https://pypi.tuna.tsinghua.edu.cn/packages/ca/69/33129fde3dfa8f95755e64f37b326587b68d9bec65d00f0a1a66db2dace2/deepmd_kit-3.2.0-py37-none-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (from https://pypi.tuna.tsinghua.edu.cn/simple/deepmd-kit/) (requires-python:>=3.10)
+ERROR: Could not install requirement deepmd-kit>=3.2.0 from https://pypi.tuna.tsinghua.edu.cn/packages/ca/69/33129fde3dfa8f95755e64f37b326587b68d9bec65d00f0a1a66db2dace2/deepmd_kit-3.2.0-py37-none-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl because of HTTP error 403 Client Error: Forbidden for url: https://pypi.tuna.tsinghua.edu.cn/packages/ca/69/33129fde3dfa8f95755e64f37b326587b68d9bec65d00f0a1a66db2dace2/deepmd_kit-3.2.0-py37-none-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl for URL https://pypi.tuna.tsinghua.edu.cn/packages/ca/69/33129fde3dfa8f95755e64f37b326587b68d9bec65d00f0a1a66db2dace2/deepmd_kit-3.2.0-py37-none-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (from https://pypi.tuna.tsinghua.edu.cn/simple/deepmd-kit/) (requires-python:>=3.10)
+deepmd 3.2.0b1.dev87+g0f19772c9 torch 2.12.1+cu126 cuda True
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ImportError: cannot import name 'BaseDescriptor' from 'deepmd.dpmodel.descriptor' (/opt/mamba/envs/dpmd/lib/python3.12/site-packages/deepmd/dpmodel/descriptor/__init__.py). Did you mean: 'base_descriptor'?
+To get the best performance, it is recommended to adjust the number of threads by setting the environment variables OMP_NUM_THREADS, DP_INTRA_OP_PARALLELISM_THREADS, and DP_INTER_OP_PARALLELISM_THREADS. See https://deepmd.rtfd.io/parallelism/ for more information.
+To get the best performance, it is recommended to adjust the number of threads by setting the environment variables OMP_NUM_THREADS, DP_INTRA_OP_PARALLELISM_THREADS, and DP_INTER_OP_PARALLELISM_THREADS. See https://deepmd.rtfd.io/parallelism/ for more information.
+Traceback (most recent call last):
+  File "/home/input_lbg-19853-23455040/run_water_box_nnmd.py", line 349, in <module>
+    main()
+  File "/home/input_lbg-19853-23455040/run_water_box_nnmd.py", line 335, in main
+    run(
+  File "/home/input_lbg-19853-23455040/run_water_box_nnmd.py", line 205, in run
+    evaluator = ModelEvaluator(model_path, elements)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/input_lbg-19853-23455040/run_water_box_nnmd.py", line 90, in __init__
+    self.potential = DeepPot(str(model_path))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/deepmd/infer/deep_eval.py", line 531, in __init__
+    self.deep_eval = DeepEvalBackend(
+                     ^^^^^^^^^^^^^^^^
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/deepmd/pt_expt/infer/deep_eval.py", line 138, in __init__
+    self._load_pt(model_file, head=kwargs.get("head"))
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/deepmd/pt_expt/infer/deep_eval.py", line 384, in _load_pt
+    state_dict = torch.load(model_file, map_location=DEVICE, weights_only=True)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/torch/serialization.py", line 1570, in load
+    return _load(
+           ^^^^^^
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/torch/serialization.py", line 2190, in _load
+    result = unpickler.load()
+             ^^^^^^^^^^^^^^^^
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/torch/_weights_only_unpickler.py", line 541, in load
+    self.append(self.persistent_load(pid))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/torch/serialization.py", line 2154, in persistent_load
+    typed_storage = load_tensor(
+                    ^^^^^^^^^^^^
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/torch/serialization.py", line 2116, in load_tensor
+    wrap_storage = restore_location(storage, location)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/torch/serialization.py", line 1920, in restore_location
+    return default_restore_location(storage, str(map_location))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/torch/serialization.py", line 734, in default_restore_location
+    result = fn(storage, location)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/torch/serialization.py", line 668, in _deserialize
+    return obj.to(device=device)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/torch/storage.py", line 289, in to
+    return _to(self, device, non_blocking)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/torch/_utils.py", line 106, in _to
+    untyped_storage = torch.UntypedStorage(self.size(), device=device)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+torch.AcceleratorError: CUDA error: CUDA-capable device(s) is/are busy or unavailable
+Search for `cudaErrorDevicesUnavailable' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+

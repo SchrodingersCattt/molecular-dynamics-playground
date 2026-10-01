@@ -1,0 +1,18 @@
+{
+  "job_name": "0314-04-4c-live-water-md",
+  "command": "bash run.sh",
+  "log_file": "run.log",
+  "backward_files": [
+    "dpa4c_water_trajectory.npz",
+    "dpa4c_water_trajectory.json",
+    "run.log",
+    "ase_install.log"
+  ],
+  "project_id": 27666,
+  "machine_type": "c8_m32_1 * NVIDIA V100",
+  "job_type": "container",
+  "image_address": "registry.dp.tech/dptech/dp/native/prod-4392433/dpmd-cu126-pt:v20260701-pt",
+  "max_reschedule_times": 2,
+  "max_run_time": 30,
+  "nnode": 1
+}

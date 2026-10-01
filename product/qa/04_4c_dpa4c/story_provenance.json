@@ -1,0 +1,661 @@
+{
+  "schema": "nnmd_end_to_end_story/v2",
+  "model": "dpa4c",
+  "stem": "04_4c_dpa4c",
+  "trajectory": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\data\\dpa4c_water_box_trajectory.npz",
+  "trajectory_sha256": "97ab48599454c76d7c7df2f7edc15f9267590046a245097c0aeb594a384de78a",
+  "trajectory_metadata": {
+    "schema": "nnmd_periodic_trajectory/v2",
+    "label": "dpa4c",
+    "model": "DPA4C-Neo-OMat24-v20260819.pt",
+    "model_sha256": "db433ef9d9297543708eb5daf49538b46c019027f4de1846f910680550b55899",
+    "input": "water_box_64.npz",
+    "input_sha256": "bc350dd210575b2cea5d689075dcf62f15284faa3b91c36d48a19a307541689a",
+    "deepmd_version": "3.2.0",
+    "python": "3.12.13",
+    "n_atoms": 192,
+    "n_states": 6,
+    "n_updates": 5,
+    "box_length_angstrom": 12.429633119082435,
+    "central_index": 126,
+    "visualization_cutoff_angstrom": 6.0,
+    "model_cutoff_angstrom": 6.0,
+    "dt_fs": 0.5,
+    "temperature_k": 300.0,
+    "velocity_seed": 260906,
+    "integrator": "full velocity Verlet with a fresh model force call at every new position",
+    "ensemble_claim": "short NVE demonstration from a prepared box; not equilibrated",
+    "atomic_energy_status": "model output",
+    "atomic_energy_sums_to_total": true,
+    "neighbour_counts": [
+      83,
+      83,
+      83,
+      83,
+      83,
+      82
+    ],
+    "net_force_ev_per_angstrom": [
+      [
+        -2.220446049250313e-16,
+        1.1102230246251565e-16,
+        3.3306690738754696e-16
+      ],
+      [
+        0.0,
+        2.220446049250313e-16,
+        -1.1102230246251565e-16
+      ],
+      [
+        0.0,
+        2.220446049250313e-16,
+        -4.440892098500626e-16
+      ],
+      [
+        3.3306690738754696e-16,
+        1.1102230246251565e-16,
+        -4.440892098500626e-16
+      ],
+      [
+        -4.440892098500626e-16,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        2.220446049250313e-16
+      ]
+    ],
+    "max_force_ev_per_angstrom": [
+      1.5625054359509556,
+      1.9001677235651062,
+      2.4525547413850095,
+      2.921861445212919,
+      3.006331635207776,
+      3.2481435621259585
+    ],
+    "max_displacement_angstrom": [
+      0.027183999330541386,
+      0.026768376858192746,
+      0.026150270054900747,
+      0.025451247861072033,
+      0.026604462071676854
+    ],
+    "total_energy_ev": [
+      -906.0187486399659,
+      -906.0565182556161,
+      -905.8509775687703,
+      -905.5644529451379,
+      -905.363508670474,
+      -905.3230564285764
+    ],
+    "model_probe": {
+      "type_map": [
+        "H",
+        "He",
+        "Li",
+        "Be",
+        "B",
+        "C",
+        "N",
+        "O",
+        "F",
+        "Ne",
+        "Na",
+        "Mg",
+        "Al",
+        "Si",
+        "P",
+        "S",
+        "Cl",
+        "Ar",
+        "K",
+        "Ca",
+        "Sc",
+        "Ti",
+        "V",
+        "Cr",
+        "Mn",
+        "Fe",
+        "Co",
+        "Ni",
+        "Cu",
+        "Zn",
+        "Ga",
+        "Ge",
+        "As",
+        "Se",
+        "Br",
+        "Kr",
+        "Rb",
+        "Sr",
+        "Y",
+        "Zr",
+        "Nb",
+        "Mo",
+        "Tc",
+        "Ru",
+        "Rh",
+        "Pd",
+        "Ag",
+        "Cd",
+        "In",
+        "Sn",
+        "Sb",
+        "Te",
+        "I",
+        "Xe",
+        "Cs",
+        "Ba",
+        "La",
+        "Ce",
+        "Pr",
+        "Nd",
+        "Pm",
+        "Sm",
+        "Eu",
+        "Gd",
+        "Tb",
+        "Dy",
+        "Ho",
+        "Er",
+        "Tm",
+        "Yb",
+        "Lu",
+        "Hf",
+        "Ta",
+        "W",
+        "Re",
+        "Os",
+        "Ir",
+        "Pt",
+        "Au",
+        "Hg",
+        "Tl",
+        "Pb",
+        "Bi",
+        "Po",
+        "At",
+        "Rn",
+        "Fr",
+        "Ra",
+        "Ac",
+        "Th",
+        "Pa",
+        "U",
+        "Np",
+        "Pu",
+        "Am",
+        "Cm",
+        "Bk",
+        "Cf",
+        "Es",
+        "Fm",
+        "Md",
+        "No",
+        "Lr",
+        "Rf",
+        "Db",
+        "Sg",
+        "Bh",
+        "Hs",
+        "Mt",
+        "Ds",
+        "Rg",
+        "Cn",
+        "Nh",
+        "Fl",
+        "Mc",
+        "Lv",
+        "Ts",
+        "Og"
+      ],
+      "atom_types_used": [
+        0,
+        7
+      ],
+      "fparam": null,
+      "api": {
+        "get_rcut": 6.0,
+        "get_ntypes": 118,
+        "get_dim_fparam": 0,
+        "get_dim_aparam": 0,
+        "get_model_size": {
+          "error": "NotImplementedError: Not implemented in this backend."
+        }
+      },
+      "descriptor": {
+        "status": "unavailable",
+        "error": "OutOfMemoryError: CUDA out of memory. Tried to allocate 2.15 GiB. GPU 0 has a total capacity of 15.77 GiB of which 1.71 GiB is free. Process 1919 has 14.05 GiB memory in use. Of the allocated memory 12.36 GiB is allocated by PyTorch, and 1.28 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)"
+      },
+      "model_definition": {
+        "status": "available",
+        "data": {
+          "type_map": [
+            "H",
+            "He",
+            "Li",
+            "Be",
+            "B",
+            "C",
+            "N",
+            "O",
+            "F",
+            "Ne",
+            "Na",
+            "Mg",
+            "Al",
+            "Si",
+            "P",
+            "S",
+            "Cl",
+            "Ar",
+            "K",
+            "Ca",
+            "Sc",
+            "Ti",
+            "V",
+            "Cr",
+            "Mn",
+            "Fe",
+            "Co",
+            "Ni",
+            "Cu",
+            "Zn",
+            "Ga",
+            "Ge",
+            "As",
+            "Se",
+            "Br",
+            "Kr",
+            "Rb",
+            "Sr",
+            "Y",
+            "Zr",
+            "Nb",
+            "Mo",
+            "Tc",
+            "Ru",
+            "Rh",
+            "Pd",
+            "Ag",
+            "Cd",
+            "In",
+            "Sn",
+            "Sb",
+            "Te",
+            "I",
+            "Xe",
+            "Cs",
+            "Ba",
+            "La",
+            "Ce",
+            "Pr",
+            "Nd",
+            "Pm",
+            "Sm",
+            "Eu",
+            "Gd",
+            "Tb",
+            "Dy",
+            "Ho",
+            "Er",
+            "Tm",
+            "Yb",
+            "Lu",
+            "Hf",
+            "Ta",
+            "W",
+            "Re",
+            "Os",
+            "Ir",
+            "Pt",
+            "Au",
+            "Hg",
+            "Tl",
+            "Pb",
+            "Bi",
+            "Po",
+            "At",
+            "Rn",
+            "Fr",
+            "Ra",
+            "Ac",
+            "Th",
+            "Pa",
+            "U",
+            "Np",
+            "Pu",
+            "Am",
+            "Cm",
+            "Bk",
+            "Cf",
+            "Es",
+            "Fm",
+            "Md",
+            "No",
+            "Lr",
+            "Rf",
+            "Db",
+            "Sg",
+            "Bh",
+            "Hs",
+            "Mt",
+            "Ds",
+            "Rg",
+            "Cn",
+            "Nh",
+            "Fl",
+            "Mc",
+            "Lv",
+            "Ts",
+            "Og"
+          ],
+          "descriptor": {
+            "type": "dpa4c",
+            "rcut": 6.0,
+            "channels": 64,
+            "lmax": 2,
+            "radial_modes": 0,
+            "use_amp": false,
+            "precision": "float32",
+            "seed": 42,
+            "basis_type": "bessel",
+            "n_radial": 16,
+            "exclude_types": [],
+            "trainable": true,
+            "add_chg_spin_ebd": false,
+            "default_chg_spin": null
+          },
+          "fitting_net": {
+            "neuron": [
+              256,
+              256,
+              256
+            ],
+            "resnet_dt": false,
+            "activation_function": "silu",
+            "precision": "float32",
+            "seed": 42,
+            "type": "ener",
+            "numb_fparam": 0,
+            "numb_aparam": 0,
+            "default_fparam": null,
+            "dim_case_embd": 0,
+            "trainable": true,
+            "rcond": null,
+            "atom_ener": [],
+            "use_aparam_as_mask": false
+          },
+          "data_stat_nbatch": 10,
+          "data_stat_protect": 0.01,
+          "data_bias_nsample": 10,
+          "pair_exclude_types": [],
+          "atom_exclude_types": [],
+          "preset_out_bias": null,
+          "srtab_add_bias": true,
+          "type": "standard",
+          "model_branch_alias": [],
+          "info": {}
+        }
+      }
+    },
+    "output": "dpa4c_water_box_trajectory.npz"
+  },
+  "n_states": 6,
+  "centre_atom": "O126",
+  "cutoff_angstrom": 6.0,
+  "neighbour_counts": [
+    83,
+    83,
+    83,
+    83,
+    83,
+    82
+  ],
+  "labelled_neighbours_state0": [
+    {
+      "j": 127,
+      "element": "H",
+      "r_angstrom": 0.9571999999999998,
+      "s": 1.0394360859046043,
+      "unit": [
+        -0.2414101176591858,
+        0.7278488355028274,
+        0.6418389422191177
+      ],
+      "deep_r_row": [
+        1.0394360859046043,
+        -0.2509303877974341,
+        0.7565523447052832,
+        0.6671505578813912
+      ]
+    },
+    {
+      "j": 128,
+      "element": "H",
+      "r_angstrom": 0.9571999999999999,
+      "s": 1.0394360859046043,
+      "unit": [
+        0.6054896288045226,
+        -0.6023363128686027,
+        0.5201665844804125
+      ],
+      "deep_r_row": [
+        1.0394360859046043,
+        0.6293677698204048,
+        -0.6260900994463515,
+        0.5406799185906868
+      ]
+    },
+    {
+      "j": 124,
+      "element": "H",
+      "r_angstrom": 2.137061775700274,
+      "s": 0.3930715816183889,
+      "unit": [
+        0.07047831442653384,
+        -0.012486913133803032,
+        -0.9974351528776112
+      ],
+      "deep_r_row": [
+        0.3930715816183889,
+        0.02770302252143577,
+        -0.004908250695035391,
+        -0.39206341310338216
+      ]
+    }
+  ],
+  "total_energy_ev": [
+    -906.0187486399659,
+    -906.0565182556161,
+    -905.8509775687703,
+    -905.5644529451379,
+    -905.363508670474,
+    -905.3230564285764
+  ],
+  "centre_atomic_energy_ev": [
+    -7.285555246672658,
+    -7.283589843115834,
+    -7.280692461333302,
+    -7.276864889464406,
+    -7.272210720381764,
+    -7.266934398016957
+  ],
+  "centre_force_ev_per_angstrom": [
+    [
+      -0.05202043603458151,
+      -0.21119985871746394,
+      -0.5758406581553572
+    ],
+    [
+      0.13601929074047803,
+      -0.45417702354097855,
+      -0.5544257897358875
+    ],
+    [
+      0.31983421300083137,
+      -0.6502143382418808,
+      -0.4575051442907352
+    ],
+    [
+      0.46698196940087655,
+      -0.7664692802926538,
+      -0.306851898320474
+    ],
+    [
+      0.5558324397857746,
+      -0.789336908750613,
+      -0.13232943999929603
+    ],
+    [
+      0.5770518787112451,
+      -0.723371277481931,
+      0.0334611877522093
+    ]
+  ],
+  "centre_acceleration_angstrom_fs2": [
+    [
+      -3.137123549972377e-05,
+      -0.00012736533967015317,
+      -0.0003472641575956558
+    ],
+    [
+      8.202724789712079e-05,
+      -0.00027389417410103893,
+      -0.0003343497929421918
+    ],
+    [
+      0.0001928779376291249,
+      -0.0003921156507939137,
+      -0.00027590121725121024
+    ],
+    [
+      0.00028161627339034573,
+      -0.00046222388984552593,
+      -0.0001850488750103827
+    ],
+    [
+      0.0003351980816791676,
+      -0.0004760143501407439,
+      -7.980206130922867e-05
+    ],
+    [
+      0.000347994591405853,
+      -0.00043623338113767595,
+      2.01789696721729e-05
+    ]
+  ],
+  "smooth_switch": {
+    "form": "DeepPot-SE s(r) = 1/r (r < rcs), (1/r)[u^3(-6u^2+15u-10)+1] (rcs <= r < rc), 0 (r >= rc)",
+    "rcs_angstrom": 0.5,
+    "rc_angstrom": 6.0,
+    "note": "shown as a geometry transform for both stories; DPA4C's own radial basis is not reproduced"
+  },
+  "eps_colouring": "atom colour = eps_j minus the mean eps of its species at that state, clipped to +-0.260 eV",
+  "display_scales": {
+    "force": {
+      "max_magnitude": 2.9696501433748415,
+      "scale": 0.6398060068586922,
+      "unit": "eV/\u00c5"
+    },
+    "accel": {
+      "max_magnitude": 0.02689513203202111,
+      "scale": 70.64475451311696,
+      "unit": "\u00c5/fs\u00b2"
+    },
+    "velocity": {
+      "max_magnitude": 0.054367998661083335,
+      "scale": 34.94702852396922,
+      "unit": "\u00c5/fs"
+    },
+    "move": {
+      "max_magnitude": 0.027183999330541386,
+      "scale": 69.89405704793917,
+      "unit": "\u00c5"
+    },
+    "eps": {
+      "max_deviation": 0.2558553647249937,
+      "range": 0.26,
+      "unit": "eV"
+    }
+  },
+  "timeline": {
+    "duration_seconds": 30.0,
+    "detailed_block_seconds": 9.0,
+    "detailed_phases": [
+      [
+        "positions",
+        0.8
+      ],
+      [
+        "neighbours",
+        1.2
+      ],
+      [
+        "descriptor",
+        1.6
+      ],
+      [
+        "network",
+        1.2
+      ],
+      [
+        "energy",
+        0.8
+      ],
+      [
+        "force",
+        1.0
+      ],
+      [
+        "accel",
+        0.8
+      ],
+      [
+        "velocity",
+        0.7
+      ],
+      [
+        "move",
+        0.9
+      ]
+    ],
+    "rapid_block_seconds": 1.5,
+    "rapid_phases": [
+      [
+        "neighbours",
+        0.2
+      ],
+      [
+        "descriptor",
+        0.3
+      ],
+      [
+        "network",
+        0.2
+      ],
+      [
+        "energy",
+        0.15
+      ],
+      [
+        "force",
+        0.2
+      ],
+      [
+        "accel",
+        0.15
+      ],
+      [
+        "velocity",
+        0.15
+      ],
+      [
+        "move",
+        0.15
+      ]
+    ]
+  }
+}

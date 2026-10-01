@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "data": {
+    "bohrJobGroupId": 7457567,
+    "bohrJobId": 20808119,
+    "jobGroupId": 16589838,
+    "jobId": 23455138
+  },
+  "notice": {
+    "billing": {
+      "balance": {
+        "amount": "360.69",
+        "currency": "CNY"
+      },
+      "sufficient": true
+    }
+  },
+  "meta": {
+    "request_id": "f9369806-0925-44c3-8530-ace32d1a999d",
+    "cli_version": "2.7.1",
+    "cli_commit": "7fd4bf1257f64a361fea307217dd9f101825d787",
+    "cli_modified": false,
+    "command": "bohr job submit",
+    "duration_ms": 926,
+    "timestamp": 1790870727
+  }
+}

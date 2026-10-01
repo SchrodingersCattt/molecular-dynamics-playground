@@ -451,6 +451,9 @@ def render_structure(
                 atom["_render_opacity_scale"] = float(
                     np.clip(atom_opacity_scales[source_index], 0.0, 1.0)
                 )
+                # The CPU planner treats the scale as an explicit per-atom
+                # opacity only when an opacity group id is present.
+                atom.setdefault("_render_opacity_group_id", "story_fade")
             if source_index in atom_color_overrides:
                 atom["_render_color"] = str(atom_color_overrides[source_index])
         if atom_opacity_scales:
@@ -477,6 +480,15 @@ def render_structure(
             continue
         record["vertices"] = (np.asarray(vertices, dtype=float) + offset).tolist()
         record["triangles"] = np.asarray(triangles, dtype=np.int64).tolist()
+        metadata = record.get("metadata")
+        if isinstance(metadata, dict) and metadata.get("_raster_center") is not None:
+            # Keep the analytic-sphere centre in the same shifted frame as the
+            # vertices; otherwise the renderer falls back to slow mesh raster.
+            metadata = dict(metadata)
+            metadata["_raster_center"] = tuple(
+                float(v) for v in (np.asarray(metadata["_raster_center"], dtype=float) + offset)
+            )
+            record["metadata"] = metadata
         if record.get("normals") is not None:
             record["normals"] = np.asarray(record["normals"], dtype=float).tolist()
         native_meshes.append(record)

@@ -71,3 +71,9 @@ _archive/legacy/media/
 _archive/legacy/plans/
 
 # Roo Code generated planning files
+
+# Bohrium job staging: wheels, checkpoint copies and zipped outputs are not versioned
+product/qa/04_4c/bohr_live_water_v2/input/wheels/
+product/qa/04_4c/bohr_live_water_v2/input/*.pt
+product/qa/04_4c/bohr_live_water_v2/results_v6/*/out.zip
+product/qa/04_4c/bohr_live_water/*.pt

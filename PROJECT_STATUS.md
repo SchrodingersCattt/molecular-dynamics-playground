@@ -1,6 +1,13 @@
 # Molecular-dynamics project status
 
-更新：2026-09-06
+更新：2026-10-02
+
+## 2026-10-02：DeepMD 与 DPA4C 端到端重做
+
+- 新渲染器 `scripts/md_visuals/render_nnmd_end_to_end.py` 同时产出 `04_deep_potential_md` 与 `04_4c_dpa4c` 的 30 s 视频和 A4 静态图，排版与 AIMD 一致：左侧 VV 循环、中间真实 64 水盒与 O126 局域放大、右上真实 E(step)、右下 E→∂E/∂r→F→a→Δt 信息链，并由底部回到循环的 a 节点。两套视频只有“力的提供者”不同。
+- 所有物理量直接画在真实原子上：83 条 O126 邻居边、三条最近邻的真实 r 与 DeepPot-SE 行 / DPA4C 单位向量、按 ε_j 偏差着色的原子、r_c 内每个原子的力/加速度/半步速度/位移箭头；箭头比例和颜色范围由数据决定并写入 `asset_manifest.json`。
+- DPA4C 轨迹为 Bohrium 作业 20808156 的真实模型输出（`DPA4C-Neo-OMat24-v20260819.pt`，deepmd-kit 3.2.0），与 DeepMD 轨迹使用同一水盒、同一初速度与步长；数据在 `product/data/dpa4c_water_box_trajectory.npz/.json`，作业脚本与日志在 `product/qa/04_4c/bohr_live_water_v2/`。
+- 旧的深色版本 `render_nnmd.py` 及其素材已删除。说明见 `docs/04_nnmd_end_to_end.md`、`docs/04_4c_dpa4c.md`。
 
 ## 已完成并留存
 

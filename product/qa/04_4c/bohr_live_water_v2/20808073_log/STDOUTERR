@@ -1,0 +1,73 @@
+name
+Tesla V100-SXM2-32GB
+--- locating a python with deepmd ---
+/opt/mamba/bin/python
+/opt/mamba/bin/python3
+mamba
+# conda environments:
+#
+base                     /opt/mamba
+dpmd                     /opt/mamba/envs/dpmd
+
+using /opt/mamba/envs/dpmd/bin/python
+deepmd 3.2.0b1.dev87+g0f19772c9 torch 2.12.1+cu126 cuda True
+numpy 2.5.0
+--- dpa4c descriptor missing; installing deepmd-kit 3.2.0 from bundled wheels ---
+Requirement already satisfied: bracex>=2.1.1 in /opt/mamba/envs/dpmd/lib/python3.12/site-packages (from wcmatch->deepmd-kit==3.2.0) (3.0)
+Installing collected packages: deepmd-kit
+  Attempting uninstall: deepmd-kit
+    Found existing installation: deepmd-kit 3.2.0b1.dev87+g0f19772c9
+    Uninstalling deepmd-kit-3.2.0b1.dev87+g0f19772c9:
+      Successfully uninstalled deepmd-kit-3.2.0b1.dev87+g0f19772c9
+Successfully installed deepmd-kit-3.2.0
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+deepmd 3.2.0 torch 2.12.1+cu126 cuda True
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ImportError: cannot import name 'BaseDescriptor' from 'deepmd.dpmodel.descriptor' (/opt/mamba/envs/dpmd/lib/python3.12/site-packages/deepmd/dpmodel/descriptor/__init__.py). Did you mean: 'base_descriptor'?
+CUDA unusable; running on CPU
+Traceback (most recent call last):
+  File "/opt/mamba/envs/dpmd/lib/python3.12/importlib/metadata/__init__.py", line 397, in from_name
+    return next(cls.discover(name=name))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+StopIteration
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/input_lbg-19853-23455088/run_water_box_nnmd.py", line 349, in <module>
+    main()
+  File "/home/input_lbg-19853-23455088/run_water_box_nnmd.py", line 335, in main
+    run(
+  File "/home/input_lbg-19853-23455088/run_water_box_nnmd.py", line 205, in run
+    evaluator = ModelEvaluator(model_path, elements)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/input_lbg-19853-23455088/run_water_box_nnmd.py", line 90, in __init__
+    self.potential = DeepPot(str(model_path))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/deepmd/infer/deep_eval.py", line 590, in __init__
+    self.deep_eval = DeepEvalBackend(
+                     ^^^^^^^^^^^^^^^^
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/deepmd/infer/deep_eval.py", line 113, in __new__
+    return super().__new__(backend().deep_eval)
+                           ^^^^^^^^^^^^^^^^^^^
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/deepmd/backend/pt_expt.py", line 113, in deep_eval
+    from deepmd.pt_expt.infer.deep_eval import (
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/deepmd/pt_expt/infer/deep_eval.py", line 58, in <module>
+    from deepmd.pt.utils.auto_batch_size import (
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/deepmd/pt/__init__.py", line 4, in <module>
+    from deepmd.pt.cxx_op import (
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/deepmd/pt/cxx_op.py", line 128, in <module>
+    load_mpi_library()
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/deepmd/pt/cxx_op.py", line 119, in load_mpi_library
+    MPI_LIB = next(p for p in metadata.files("mpich") if p.match(libname)).locate()
+                              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/mamba/envs/dpmd/lib/python3.12/importlib/metadata/__init__.py", line 922, in files
+    return distribution(distribution_name).files
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/mamba/envs/dpmd/lib/python3.12/importlib/metadata/__init__.py", line 862, in distribution
+    return Distribution.from_name(distribution_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/mamba/envs/dpmd/lib/python3.12/importlib/metadata/__init__.py", line 399, in from_name
+    raise PackageNotFoundError(name)
+importlib.metadata.PackageNotFoundError: No package metadata was found for mpich

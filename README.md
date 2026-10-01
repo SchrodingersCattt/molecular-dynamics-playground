@@ -5,7 +5,8 @@ The canonical deliverables are organized under `product/`: A4 figures, independe
 1. Velocity Verlet: exact position → acceleration → velocity update.
 2. Classical potential: the 12–6 Lennard-Jones potential for a real Ar pair.
 3. Ab initio MD: one H₂O-dimer force query containing a repeated SCF loop.
-4. Deep Potential MD: a real 64-water periodic box, exact 6 Å neighborhood, learned atomic energies, and retained DeepMD forces.
+4. Deep Potential MD: a real 64-water periodic box, exact 6 Å neighborhood, learned atomic energies, DeepMD forces, and the full velocity-Verlet feedback (E → ∇ → F → a → updated v, r) over five real MD steps.
+5. DPA4C MD (`04_4c`): the same box, velocities and time step with the force provider swapped for DPA4C-Neo-OMat24, evaluated live on Bohrium; the layout is identical so the pluggable module is obvious.
 
 The visual grammar uses grey construction lines with sparse crimson, green, and navy accents. Static figures are 3508 × 2480 px at A4 landscape width with a 10 pt minimum font. Videos are 1920 × 600 (exactly 16:5), 24 fps, H.264/yuv420p, with Arial text at 16–18 pt.
 

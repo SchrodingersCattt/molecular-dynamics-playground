@@ -1,0 +1,74 @@
+name
+Tesla V100-SXM2-16GB
+--- locating a python with deepmd ---
+/opt/mamba/bin/python
+/opt/mamba/bin/python3
+mamba
+# conda environments:
+#
+base                     /opt/mamba
+dpmd                     /opt/mamba/envs/dpmd
+
+using /opt/mamba/envs/dpmd/bin/python
+deepmd 3.2.0b1.dev87+g0f19772c9 torch 2.12.1+cu126 cuda True
+numpy 2.5.0
+--- dpa4c descriptor missing; installing deepmd-kit 3.2.0 from bundled wheels ---
+Installing collected packages: mpich, deepmd-kit
+  Attempting uninstall: deepmd-kit
+    Found existing installation: deepmd-kit 3.2.0b1.dev87+g0f19772c9
+    Uninstalling deepmd-kit-3.2.0b1.dev87+g0f19772c9:
+      Successfully uninstalled deepmd-kit-3.2.0b1.dev87+g0f19772c9
+
+Successfully installed deepmd-kit-3.2.0 mpich-5.0.2
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+deepmd 3.2.0 torch 2.12.1+cu126 cuda True
+dpa4c descriptor available
+Traceback (most recent call last):
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/torch/_ops.py", line 1509, in load_library
+    ctypes.CDLL(path)
+  File "/opt/mamba/envs/dpmd/lib/python3.12/ctypes/__init__.py", line 379, in __init__
+    self._handle = _dlopen(self._name, mode)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: /opt/mamba/envs/dpmd/lib/python3.12/site-packages/deepmd/lib/libdeepmd_op_pt.so: undefined symbol: _ZNR5torch7Library4_defEON3c1014FunctionSchemaEPNS1_12OperatorNameERKSt6vectorIN2at3TagESaIS8_EENS_17_RegisterOrVerifyE
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/deepmd/pt/cxx_op.py", line 56, in load_library
+    torch.ops.load_library(module_file)
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/torch/_ops.py", line 1511, in load_library
+    raise OSError(f"Could not load this library: {path}") from e
+OSError: Could not load this library: /opt/mamba/envs/dpmd/lib/python3.12/site-packages/deepmd/lib/libdeepmd_op_pt.so
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/input_lbg-19853-23455138/run_water_box_nnmd.py", line 349, in <module>
+    main()
+  File "/home/input_lbg-19853-23455138/run_water_box_nnmd.py", line 335, in main
+    run(
+  File "/home/input_lbg-19853-23455138/run_water_box_nnmd.py", line 205, in run
+    evaluator = ModelEvaluator(model_path, elements)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/input_lbg-19853-23455138/run_water_box_nnmd.py", line 90, in __init__
+    self.potential = DeepPot(str(model_path))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/deepmd/infer/deep_eval.py", line 590, in __init__
+    self.deep_eval = DeepEvalBackend(
+                     ^^^^^^^^^^^^^^^^
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/deepmd/infer/deep_eval.py", line 113, in __new__
+    return super().__new__(backend().deep_eval)
+                           ^^^^^^^^^^^^^^^^^^^
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/deepmd/backend/pt_expt.py", line 113, in deep_eval
+    from deepmd.pt_expt.infer.deep_eval import (
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/deepmd/pt_expt/infer/deep_eval.py", line 58, in <module>
+    from deepmd.pt.utils.auto_batch_size import (
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/deepmd/pt/__init__.py", line 4, in <module>
+    from deepmd.pt.cxx_op import (
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/deepmd/pt/cxx_op.py", line 130, in <module>
+    ENABLE_CUSTOMIZED_OP = load_library("deepmd_op_pt")
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/mamba/envs/dpmd/lib/python3.12/site-packages/deepmd/pt/cxx_op.py", line 79, in load_library
+    raise RuntimeError(
+RuntimeError: The version of PyTorch used to compile this deepmd-kit package is 2.11.0, but the version of PyTorch runtime you are using is 2.12.1. These two versions are incompatible and thus an error is raised when loading deepmd_op_pt. You need to install PyTorch 2.11.0, or rebuild deepmd-kit against PyTorch 2.12.1.
+If you are using a wheel from PyPI, you may consider rebuilding deepmd-kit with `pip install deepmd-kit --no-binary deepmd-kit` instead.
