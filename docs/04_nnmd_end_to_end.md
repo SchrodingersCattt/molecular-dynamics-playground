@@ -48,10 +48,18 @@ fits. Accelerations are derived as `a = F / m` with eV Å⁻¹ amu⁻¹ → Å f
     Acceleration arrows make the 16× O/H mass ratio visible.
 * **C** is the real total energy against MD step, revealed as the run
   proceeds.
-* **D** is the vertical information chain `E → ∂E/∂r → F → a → Δt` with the
-  real total energy, |F_O126| and |a_O126| of the current state. The chain
-  continues as a figure-level line along the bottom back into the loop's
-  `a` node, so the whole figure reads as one closed cycle.
+* **D** animates the operator flow for O126 rather than listing formulas.
+  The top row runs left to right: a heatmap of the first 12 real `R_i` rows
+  (DPA4C: columns `s, û`) fills in during the descriptor stage, the schematic
+  network lights up layer by layer, and bars for `ε_i − mean ε(species)` of
+  O126 and j₁–j₃ grow. Bar heights are relative to the largest of the four
+  bars, and colours use the magnifier's absolute scale. Σ then feeds the real
+  total energy. The bottom row runs right to left: pulses travel along the
+  dashed `−∂E/∂r` arrow to a force glyph. The glyph's direction is the real
+  O126 force projected into the magnifier camera. The flow then passes
+  through `÷m` to the acceleration glyph and exits along the bottom back into
+  the loop's `a` node.
+* Neighbour edges and the j₁/j₂/j₃ labels appear together in one stage.
 
 ## Timeline (30 s, 24 fps)
 

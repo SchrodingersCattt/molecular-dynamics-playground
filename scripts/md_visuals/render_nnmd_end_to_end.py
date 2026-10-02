@@ -175,17 +175,6 @@ MODE_TO_LOOP_STAGE = {
     "velocity": 2,
     "move": 0,
 }
-CHAIN_ACTIVE = {
-    "positions": None,
-    "neighbours": None,
-    "descriptor": None,
-    "network": None,
-    "energy": 0,
-    "force": 2,
-    "accel": 3,
-    "velocity": 4,
-    "move": 4,
-}
 
 POSITION_EQUATION = r"$\mathbf{r}_{n+1}=\mathbf{r}_n$" "\n" r"$+\mathbf{v}_{n+1/2}\Delta t$"
 ACCELERATION_EQUATION = r"$\mathbf{a}_{n}=\mathbf{F}_{n}/m$" "\n" r"$\mathbf{F}_{n}=-\nabla_R E(\mathbf{r}_n)$"
@@ -610,17 +599,16 @@ def draw_case(
     local_vectors = local["vectors"]
     centre_local = minimum_image(positions[state, centre] - focus_origin, box)
     labelled = min(3, len(local_vectors))
-    if mode == "descriptor":
-        reveal = progress
+    # The labelled j edges appear together with the neighbour edges.
+    label_alpha = {"neighbours": smoothstep(progress), "descriptor": 1.0}.get(mode, 0.0) if video else 0.0
+    if label_alpha > 0.0:
         for k in range(labelled):
-            if reveal < (k + 0.15) / labelled:
-                break
             endpoint = centre_local + local_vectors[k]
             xy = project_world(np.vstack((centre_local, endpoint)), camera=focus_camera, rect=mag_rect, image_aspect=1.0)
-            ax.plot(xy[:, 0], xy[:, 1], color=WHITE, lw=7.0 if video else 3.5, solid_capstyle="round", zorder=11, alpha=0.9)
-            ax.plot(xy[:, 0], xy[:, 1], color=EDGE_NAVY, lw=3.6 if video else 1.8, solid_capstyle="round", zorder=12)
+            ax.plot(xy[:, 0], xy[:, 1], color=WHITE, lw=7.0 if video else 3.5, solid_capstyle="round", zorder=11, alpha=0.9 * label_alpha)
+            ax.plot(xy[:, 0], xy[:, 1], color=EDGE_NAVY, lw=3.6 if video else 1.8, solid_capstyle="round", zorder=12, alpha=label_alpha)
             offset = np.sign(xy[1] - xy[0]) * np.array([0.028, 0.045])
-            registry.text(ax, xy[1, 0] + offset[0], xy[1, 1] + offset[1], f"$j_{k + 1}$", ha="center", va="center", fontsize=14 if video else 10, color=EDGE_NAVY, weight="bold", zorder=13, bbox=dict(boxstyle="round,pad=0.15", fc=WHITE, ec="none", alpha=0.85))
+            registry.text(ax, xy[1, 0] + offset[0], xy[1, 1] + offset[1], f"$j_{k + 1}$", ha="center", va="center", fontsize=14 if video else 10, color=EDGE_NAVY, weight="bold", alpha=label_alpha, zorder=13, bbox=dict(boxstyle="round,pad=0.15", fc=WHITE, ec="none", alpha=0.85 * label_alpha))
 
     # --- stage title and step label ---------------------------------------
     title_colour = {
@@ -653,12 +641,10 @@ def draw_case(
 
     # --- descriptor rows under the box -------------------------------------
     rows_y = (0.225, 0.175, 0.125)
-    if mode in {"descriptor", "network", "energy", "force", "accel", "velocity", "move"} or not video:
-        header_alpha = 1.0 if mode != "descriptor" else min(progress / 0.15, 1.0)
+    if mode != "positions" or not video:
+        header_alpha = smoothstep(progress) if mode == "neighbours" else 1.0
         registry.text(ax, 0.03, 0.275, config["descriptor_header"], ha="left", va="center", fontsize=14 if video else 10, color=EDGE_NAVY if mode == "descriptor" else DARK_GRAY, alpha=header_alpha, zorder=21)
         for k in range(labelled):
-            if mode == "descriptor" and progress < (k + 0.15) / labelled:
-                break
             r = float(local["distances"][k])
             element = data["elements"][int(local["ids"][k])]
             if model == "deepmd":
@@ -667,7 +653,7 @@ def draw_case(
             else:
                 u = local["unit"][k]
                 text = rf"$j_{k + 1}$ {element} {r:.2f} Å → $\hat{{u}}$ ({_fmt(u[0])}, {_fmt(u[1])}, {_fmt(u[2])})"
-            registry.text(ax, 0.03, rows_y[k], text, ha="left", va="center", fontsize=14 if video else 10, color=INK if mode == "descriptor" else DARK_GRAY, zorder=21)
+            registry.text(ax, 0.03, rows_y[k], text, ha="left", va="center", fontsize=14 if video else 10, color=INK if mode in {"neighbours", "descriptor"} else DARK_GRAY, alpha=header_alpha, zorder=21)
 
     # --- legends under the magnifier ---------------------------------------
     legend_y = 0.070
@@ -739,57 +725,147 @@ def draw_energy(ax: plt.Axes, registry: LayoutRegistry, data: dict[str, object],
 
 
 # --------------------------------------------------------------------------
-# panel D: from energy to motion
+# panel D: operator flow (forward to E, backward to a)
 # --------------------------------------------------------------------------
-CHAIN_ROWS_Y = (0.88, 0.70, 0.52, 0.34, 0.16)
-CHAIN_NODE_X = 0.085
-CHAIN_NODE_RX = 0.028
-CHAIN_NODE_RX_STATIC = 0.030
+CHAIN_NODE_X = 0.085  # where the flow leaves panel D towards the integrator
+FLOW_TOP_Y = 0.76
+FLOW_BOTTOM_Y = 0.26
+HEAT_ROWS = 12
+NET_LAYERS = (4, 5, 3)
+FLOW_ORDER = ("positions", "neighbours", "descriptor", "network", "energy", "force", "accel", "velocity", "move")
 
 
-def draw_chain(ax: plt.Axes, registry: LayoutRegistry, data: dict[str, object], *, video: bool, mode: str, state: int) -> None:
+def _flow_reached(mode: str, stage: str) -> bool:
+    return FLOW_ORDER.index(mode) >= FLOW_ORDER.index(stage)
+
+
+def _flow_arrow(ax: plt.Axes, start, end, *, on: bool, colour: str, video: bool, dashed: bool = False, pulse: float | None = None) -> None:
+    ink = colour if on else LINE_GRAY
+    ax.add_patch(FancyArrowPatch(start, end, arrowstyle="-|>", mutation_scale=16 if video else 10, lw=2.2 if video else 1.3, color=ink, linestyle=(0, (4, 3)) if dashed else "-", shrinkA=0, shrinkB=0, zorder=4))
+    if pulse is not None and on:
+        # Travelling dots make the direction of the computation visible.
+        for offset in (0.0, 0.33, 0.66):
+            t = (pulse * 2.0 + offset) % 1.0
+            x = start[0] + (end[0] - start[0]) * t
+            y = start[1] + (end[1] - start[1]) * t
+            ax.scatter([x], [y], s=46 if video else 10, color=colour, edgecolors=WHITE, linewidths=0.8, zorder=6)
+
+
+def _glyph(ax: plt.Axes, centre, vector_xy, *, colour: str, on: bool, grow: float, video: bool, aspect: float) -> None:
+    rx = 0.022
+    ax.add_patch(Ellipse(centre, 2 * rx, 2 * rx * aspect, fc=CENTRE_NAVY if on else WHITE, ec=CENTRE_NAVY if on else LINE_GRAY, lw=1.6 if video else 1.0, zorder=5))
+    if on and grow > 0.0:
+        length = 0.06 * grow
+        tip = (centre[0] + vector_xy[0] * length, centre[1] + vector_xy[1] * length * aspect)
+        ax.add_patch(FancyArrowPatch(centre, tip, arrowstyle="-|>", mutation_scale=18 if video else 11, lw=3.0 if video else 1.6, color=colour, shrinkA=0, shrinkB=0, zorder=6))
+
+
+def draw_flow(ax: plt.Axes, registry: LayoutRegistry, data: dict[str, object], scene: dict[str, object], *, model: str, video: bool, mode: str, state: int, progress: float) -> None:
+    """Operator flow drawn with the real tensors of O126 for the current state.
+
+    Top row (forward): environment matrix -> network -> atomic energies -> E.
+    Bottom row (backward): -dE/dr -> F -> /m -> a, which leaves the panel
+    towards the integrator loop.  The network nodes are schematic; every
+    number, matrix entry, bar height and arrow direction is model output.
+    """
     if not video:
         ax.add_patch(Rectangle((0.02, 0.02), 0.96, 0.96, fill=False, ec=LINE_GRAY, lw=1.1, zorder=2))
+    fs = 16 if video else 10
+    aspect = _axes_aspect(ax)
     centre = data["central_index"]
+    local = local_environment(data, state)
+    p = progress if video else 1.0
+
+    def stage_progress(stage: str) -> float:
+        if mode == stage:
+            return p
+        return 1.0 if _flow_reached(mode, stage) else 0.0
+
+    # --- environment matrix as a real heatmap ------------------------------
+    n_rows = min(HEAT_ROWS, len(local["ids"]))
+    if model == "deepmd":
+        matrix = np.asarray(local["deep_r"][:n_rows], dtype=float)
+        heat_label = r"$R_i$"
+    else:
+        matrix = np.column_stack((local["s"][:n_rows], local["unit"][:n_rows]))
+        heat_label = r"$s,\hat{u}$"
+    desc_p = max(stage_progress("descriptor"), 0.0)
+    shown = int(np.ceil(desc_p * n_rows))
+    vmax = float(np.abs(matrix).max()) or 1.0
+    rgba = EPS_CMAP(0.5 + 0.5 * np.clip(matrix / vmax, -1.0, 1.0))
+    rgba[shown:, :, :3] = 1.0
+    heat = (0.03, 0.17, FLOW_TOP_Y - 0.17, FLOW_TOP_Y + 0.17)
+    ax.imshow(rgba, extent=heat, origin="upper", aspect="auto", interpolation="nearest", zorder=3)
+    ax.add_patch(Rectangle((heat[0], heat[2]), heat[1] - heat[0], heat[3] - heat[2], fill=False, ec=EDGE_NAVY if shown else LINE_GRAY, lw=1.4 if video else 0.8, zorder=4))
+    registry.text(ax, 0.10, FLOW_TOP_Y - 0.24, heat_label, ha="center", va="center", fontsize=fs, color=EDGE_NAVY if shown else DARK_GRAY, zorder=5)
+
+    # --- network: a pulse travels through the shared layers ---------------
+    net_p = stage_progress("network")
+    xs = np.linspace(0.27, 0.45, len(NET_LAYERS))
+    layers = [(x, np.linspace(FLOW_TOP_Y - 0.15, FLOW_TOP_Y + 0.15, n)) for x, n in zip(xs, NET_LAYERS)]
+    for (x0, ys0), (x1, ys1) in zip(layers[:-1], layers[1:]):
+        for y0 in ys0:
+            for y1 in ys1:
+                ax.add_line(Line2D([x0, x1], [y0, y1], color=LINE_GRAY, lw=0.6 if video else 0.4, alpha=0.8, zorder=3))
+    for index, (x, ys) in enumerate(layers):
+        lit = smoothstep(float(np.clip(net_p * len(layers) - index, 0.0, 1.0)))
+        for y in ys:
+            ax.add_patch(Ellipse((x, y), 0.026, 0.026 * aspect, fc=mix_hex(WHITE, CRIMSON, lit), ec=CRIMSON if lit > 0 else LINE_GRAY, lw=1.0, zorder=4))
+    registry.text(ax, 0.36, FLOW_TOP_Y - 0.24, "NN", ha="center", va="center", fontsize=fs, color=CRIMSON if net_p > 0 else DARK_GRAY, zorder=5)
+    _flow_arrow(ax, (0.175, FLOW_TOP_Y), (0.245, FLOW_TOP_Y), on=net_p > 0, colour=EDGE_NAVY, video=video, pulse=net_p if mode == "network" else None)
+
+    # --- atomic energies of O126 and j1..j3 as real bars ------------------
+    deviation = species_mean_deviation(data, state)
+    ids = [centre] + [int(j) for j in local["ids"][:3]]
+    eps_range = scene["scales"]["eps"]["range"]
+    bar_grow = smoothstep(float(np.clip((net_p - 0.55) / 0.45, 0.0, 1.0)))
+    bar_x = np.linspace(0.55, 0.67, len(ids))
+    ax.add_line(Line2D([0.53, 0.69], [FLOW_TOP_Y, FLOW_TOP_Y], color=LINE_GRAY, lw=1.0, zorder=3))
+    # Heights are relative to the largest of the four bars; colours keep the
+    # absolute scale shared with the magnifier.
+    bar_ref = max(float(np.abs(deviation[ids]).max()), 1.0e-6)
+    for x, atom in zip(bar_x, ids):
+        value = float(np.clip(deviation[atom] / eps_range, -1.0, 1.0))
+        height = 0.16 * float(deviation[atom]) / bar_ref * bar_grow
+        ax.add_patch(Rectangle((x - 0.016, FLOW_TOP_Y), 0.032, height, fc=to_hex(EPS_CMAP(0.5 + 0.5 * value)), ec="none", zorder=4))
+    registry.text(ax, 0.61, FLOW_TOP_Y - 0.24, r"$\varepsilon_i$", ha="center", va="center", fontsize=fs, color=CRIMSON if bar_grow > 0 else DARK_GRAY, zorder=5)
+    _flow_arrow(ax, (0.47, FLOW_TOP_Y), (0.525, FLOW_TOP_Y), on=bar_grow > 0, colour=CRIMSON, video=video)
+
+    # --- sum to E ------------------------------------------------------------
+    e_on = _flow_reached(mode, "energy")
+    _flow_arrow(ax, (0.70, FLOW_TOP_Y), (0.765, FLOW_TOP_Y), on=e_on, colour=GREEN, video=video)
+    registry.text(ax, 0.732, FLOW_TOP_Y + 0.13, r"$\Sigma$", ha="center", va="center", fontsize=fs, color=GREEN if e_on else DARK_GRAY, zorder=5)
+    ax.add_patch(Rectangle((0.775, FLOW_TOP_Y - 0.13), 0.205, 0.26, fc=mix_hex(WHITE, GREEN, 0.14) if e_on else WHITE, ec=GREEN if e_on else LINE_GRAY, lw=1.6 if video else 1.0, zorder=3))
     energy = float(data["total_energy_ev"][state])
+    registry.text(ax, 0.8775, FLOW_TOP_Y + 0.065, r"$E$", ha="center", va="center", fontsize=fs, color=GREEN if e_on else DARK_GRAY, weight="bold", zorder=5)
+    registry.text(ax, 0.8775, FLOW_TOP_Y - 0.065, f"{_neg(energy, 1)} eV" if e_on else "…", ha="center", va="center", fontsize=fs, color=INK if e_on else DARK_GRAY, zorder=5)
+
+    # --- backward: -dE/dr down and back to the left -----------------------
+    f_p = stage_progress("force")
+    a_p = stage_progress("accel")
     force = data["forces_ev_per_angstrom"][state, centre]
     accel = data["accelerations"][state, centre]
-    dt = data["dt_fs"]
-    active = CHAIN_ACTIVE[mode]
-    reached = -1 if active is None else active
-    if mode == "move":
-        reached = 4
+    projected = project_world(np.vstack((np.zeros(3), force / (np.linalg.norm(force) or 1.0))), camera=scene["focus_camera"], rect=(0.0, 0.0, 1.0, 1.0), image_aspect=1.0)
+    direction = projected[1] - projected[0]
+    direction = direction / (np.linalg.norm(direction) or 1.0)
+    _flow_arrow(ax, (0.8775, FLOW_TOP_Y - 0.14), (0.8775, FLOW_BOTTOM_Y + 0.05), on=f_p > 0, colour=FORCE_OLIVE, video=video, dashed=True, pulse=f_p if mode == "force" else None)
+    registry.text(ax, 0.855, (FLOW_TOP_Y + FLOW_BOTTOM_Y) / 2 - 0.02, r"$-\partial E/\partial \mathbf{r}$", ha="right", va="center", fontsize=fs, color=FORCE_OLIVE if f_p > 0 else DARK_GRAY, zorder=5)
+    _flow_arrow(ax, (0.86, FLOW_BOTTOM_Y), (0.715, FLOW_BOTTOM_Y), on=f_p > 0, colour=FORCE_OLIVE, video=video, dashed=True, pulse=f_p if mode == "force" else None)
+    f_centre = (0.62, FLOW_BOTTOM_Y)
+    _glyph(ax, f_centre, direction, colour=FORCE_OLIVE, on=f_p > 0, grow=smoothstep(f_p), video=video, aspect=aspect)
+    registry.text(ax, 0.62, 0.07, f"F = {np.linalg.norm(force):.2f} eV/Å" if f_p > 0 else "F", ha="center", va="center", fontsize=fs, color=FORCE_OLIVE if f_p > 0 else DARK_GRAY, zorder=5)
+
+    _flow_arrow(ax, (0.53, FLOW_BOTTOM_Y), (0.385, FLOW_BOTTOM_Y), on=a_p > 0, colour=ACCEL_PLUM, video=video, pulse=a_p if mode == "accel" else None)
+    registry.text(ax, 0.455, FLOW_BOTTOM_Y + 0.11, r"$\div m$", ha="center", va="center", fontsize=fs, color=ACCEL_PLUM if a_p > 0 else DARK_GRAY, zorder=5)
+    a_centre = (0.29, FLOW_BOTTOM_Y)
+    _glyph(ax, a_centre, direction, colour=ACCEL_PLUM, on=a_p > 0, grow=smoothstep(a_p), video=video, aspect=aspect)
     a_norm = float(np.linalg.norm(accel))
     exponent = int(np.floor(np.log10(a_norm))) if a_norm > 0 else 0
-    mantissa = a_norm / 10**exponent if a_norm > 0 else 0.0
-    rows = (
-        (r"$E$", r"$E = \sum_i \varepsilon_i$", f"{_neg(energy)} eV", GREEN),
-        (r"$\nabla$", r"$\partial E/\partial \mathbf{r}_i$ (autodiff)", "every atom at once", INK),
-        (r"$\mathbf{F}$", r"$\mathbf{F}_i = -\partial E/\partial \mathbf{r}_i$", rf"$|\mathbf{{F}}_{{\mathrm{{O126}}}}|$ = {np.linalg.norm(force):.3f} eV/Å", FORCE_OLIVE),
-        (r"$\mathbf{a}$", r"$\mathbf{a}_i = \mathbf{F}_i / m_i$", rf"$|\mathbf{{a}}_{{\mathrm{{O126}}}}|$ = {mantissa:.1f}×10$^{{{exponent}}}$ Å/fs$^2$", ACCEL_PLUM),
-        (r"$\Delta t$", r"$\mathbf{v}$ += ½$\mathbf{a}\Delta t$,  $\mathbf{r}$ += $\mathbf{v}\Delta t$", f"Δt = {dt:.1f} fs → step {min(state + 2, len(data['total_energy_ev'])):02d}", POSITION_LAKE),
-    )
-    aspect = _axes_aspect(ax)
-    node_rx = CHAIN_NODE_RX if video else CHAIN_NODE_RX_STATIC
-    node_ry = node_rx * aspect
-    # One vertical spine carries the information downward; the part already
-    # computed at this instant is drawn in ink, the rest in construction grey.
-    ax.add_line(Line2D([CHAIN_NODE_X, CHAIN_NODE_X], [CHAIN_ROWS_Y[0], 0.0], color=LINE_GRAY, lw=2.4 if video else 1.5, zorder=2))
-    if reached >= 0:
-        ax.add_line(Line2D([CHAIN_NODE_X, CHAIN_NODE_X], [CHAIN_ROWS_Y[0], CHAIN_ROWS_Y[reached] if reached < 4 else 0.0], color=INK, lw=2.8 if video else 1.7, zorder=3))
-    for index, (symbol, label, value, colour) in enumerate(rows):
-        y = CHAIN_ROWS_Y[index]
-        weight = 1.0 if (active is not None and index == active) else 0.0
-        done = index <= reached
-        fill = mix_hex(WHITE, INK, weight)
-        edge = INK if done else LINE_GRAY
-        ax.add_patch(Ellipse((CHAIN_NODE_X, y), 2.0 * node_rx, 2.0 * node_ry, fc=fill, ec=edge, lw=2.2 if video else 1.4, zorder=4))
-        registry.text(ax, CHAIN_NODE_X, y, symbol, ha="center", va="center", fontsize=14 if video else 10, color=WHITE if weight > 0.48 else (INK if done else DARK_GRAY), weight="bold", zorder=5)
-        # The A4 column is too narrow for label and value on one line, so the
-        # still stacks the value under its label.
-        label_y, value_xy, value_ha = (y, (0.985, y), "right") if video else (y + 0.030, (0.16, y - 0.035), "left")
-        registry.text(ax, 0.16, label_y, label, ha="left", va="center", fontsize=14 if video else 10, color=INK if done else DARK_GRAY, weight="bold" if weight > 0.48 else "normal", zorder=5)
-        registry.text(ax, *value_xy, value, ha=value_ha, va="center", fontsize=14 if video else 10, color=colour if done else DARK_GRAY, zorder=5)
+    registry.text(ax, 0.29, 0.07, rf"a = {a_norm / 10**exponent:.1f}×10$^{{{exponent}}}$ Å/fs²" if a_p > 0 else "a", ha="center", va="center", fontsize=fs, color=ACCEL_PLUM if a_p > 0 else DARK_GRAY, zorder=5)
+
+    # --- a leaves the panel towards the integrator -------------------------
+    out_on = _flow_reached(mode, "velocity")
+    ax.add_line(Line2D([a_centre[0] - 0.03, CHAIN_NODE_X, CHAIN_NODE_X], [FLOW_BOTTOM_Y, FLOW_BOTTOM_Y, 0.0], color=INK if out_on else LINE_GRAY, lw=2.6 if video else 1.6, zorder=4))
 
 
 def draw_return_path(fig: plt.Figure, registry: LayoutRegistry, panel_a: plt.Axes, panel_d: plt.Axes, *, video: bool, mode: str, provider: str) -> None:
@@ -869,9 +945,9 @@ def draw_frame(fig: plt.Figure, time_seconds: float, registry: LayoutRegistry, d
     draw_left(panel_a, registry, video=True, mode=mode, provider=provider)
     draw_case(panel_b, registry, data, scene, model=model, video=True, mode=mode, state=state, progress=progress, rapid=rapid)
     draw_energy(panel_c, registry, data, model=model, video=True, mode=mode, state=state, progress=progress)
-    draw_chain(panel_d, registry, data, video=True, mode=mode, state=state)
+    draw_flow(panel_d, registry, data, scene, model=model, video=True, mode=mode, state=state, progress=progress)
     draw_return_path(fig, registry, panel_a, panel_d, video=True, mode=mode, provider=provider)
-    if not rapid and mode in {"positions", "neighbours", "descriptor", "network"}:
+    if not rapid and mode == "positions":
         _deemphasize(panel_d)
     return semantics_for(mode)
 
@@ -890,7 +966,7 @@ def render_static(model: str, data: dict[str, object], scene: dict[str, object])
     draw_left(panel_a, registry, video=False, mode="force", provider=provider)
     draw_case(panel_b, registry, data, scene, model=model, video=False, mode="force", state=1, progress=1.0, rapid=False)
     draw_energy(panel_c, registry, data, model=model, video=False, mode="force", state=1, progress=1.0)
-    draw_chain(panel_d, registry, data, video=False, mode="force", state=1)
+    draw_flow(panel_d, registry, data, scene, model=model, video=False, mode="force", state=1, progress=1.0)
     draw_return_path(fig, registry, panel_a, panel_d, video=False, mode="force", provider=provider)
     errors = registry.validate(fig)
     if errors:
