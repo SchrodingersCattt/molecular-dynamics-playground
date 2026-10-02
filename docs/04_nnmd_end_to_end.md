@@ -2,70 +2,116 @@
 
 Two independent 30 s videos and two A4 stills share one renderer,
 `scripts/md_visuals/render_nnmd_end_to_end.py`, and one layout. Only the
-force-provider box changes between them:
+force provider changes between them:
 
-| Stem | Force provider | Trajectory | Video | Still |
+| Stem | Force provider | Trajectory | Forward-pass dump | Video |
 |---|---|---|---|---|
-| `04_deep_potential_md` | DeepMD · DeepPot-SE (`H2O-Phase-Diagram-model_compressed.pb`) | `product/data/dpmd_water_box_trajectory.npz` | `product/videos/04_deep_potential_md.mp4` | `product/figures/04_deep_potential_md.png/.svg` |
-| `04_4c_dpa4c` | DPA4C · equivariant descriptor (`DPA4C-Neo-OMat24-v20260819.pt`) | `product/data/dpa4c_water_box_trajectory.npz` | `product/videos/04_4c_dpa4c.mp4` | `product/figures/04_4c_dpa4c.png/.svg` |
+| `04_deep_potential_md` | DeepMD · DeepPot-SE, retrained uncompressed (`dpse_h2o_phase_diagram_retrain.pb`) | `product/data/dpmd_water_box_trajectory.npz` | `product/data/dpmd_internals.npz` | `product/videos/04_deep_potential_md.mp4` |
+| `04_4c_dpa4c` | DPA4C · equivariant descriptor (`DPA4C-Neo-OMat24-v20260819.pt`) | `product/data/dpa4c_water_box_trajectory.npz` | `product/data/dpa4c_internals.npz` | `product/videos/04_4c_dpa4c.mp4` |
 
 Both trajectories start from the same prepared 64-water box
 (`product/data/water_box_64.npz`, 192 atoms, L = 12.4296 Å), the same Maxwell
 velocities (300 K, seed 260906) and the same 0.5 fs step. Each trajectory holds
 six states and five velocity-Verlet updates with a fresh model call at every new
-position; energies, atomic energies, forces and virials are model outputs, not
-fits. Accelerations are derived as `a = F / m` with eV Å⁻¹ amu⁻¹ → Å fs⁻².
+position; energies, atomic energies, forces and virials are model outputs.
 
-## Layout (mirrors 03 AIMD)
+## Layout
 
 ```
-┌──────────┬─────────────────────────────────────┬────────────────────┐
-│ A        │ B  stage title                       │ C  E(step) plot    │
-│ VV loop  │    64-H2O box ──guide── magnified    ├────────────────────┤
-│ r → a → v│    with r_c      O126 environment    │ D  E → ∇ → F → a → Δt │
-│          │    descriptor rows   legend          │    (real O126 numbers) │
-├──────────┴─────────────────────────────────────┴────────────────────┤
-│ ◄──────── updated v and r return to the integrator ─────────────────┘
-└─────────────────────────────────────────────────────────────────────┘
+┌──────────┬──────────────────────────────┬──────────────────────────────────┐
+│ A        │ B  stage title               │ D  rows of O126's neighbours  │ Σ_j │
+│ VV loop  │    box ── magnifier (O126)   │    matrix → embedding layers  │ D_i │
+│ r → a → v│    j1..j3 labels   legend    │    (one row per neighbour)    │ fit │
+│          │         ●●● fly into rows ──►│                               │ ε, E│
+│          │                              │ ◄──── F = −∂E/∂r back through │     │
+├──────────┴──────────────────────────────┴──────────────────────────────────┤
+│ ◄──────── F enters the integrator: a = F/m ───────────────────────────────┘
+└────────────────────────────────────────────────────────────────────────────┘
 ```
 
-* **A** is the shared velocity-Verlet loop (`draw_vv_loop`). The active node
-  follows the stage; the `a` node is where the pluggable force provider sits.
-* **B** shows the real system twice: the whole periodic box with the 6 Å
-  cutoff circle drawn in place around O126, and a magnifier of the same
-  snapshot. Every quantity is drawn on the atoms themselves:
-  * neighbours: navy edges from O126 to its 83 minimum-image neighbours,
-    atoms outside `r_c` faded;
-  * descriptor: for the three nearest neighbours the real `r`, and either the
-    DeepPot-SE row `[s(r), s·x/r, s·y/r, s·z/r]` (DeepMD) or the unit vector
-    `û` that feeds the l ≤ 2 equivariant channels (DPA4C);
-  * network → energy: atom colour = `ε_j − mean ε(species)`, navy–grey–crimson,
-    saturating at the largest deviation seen inside `r_c` (0.96 eV for DeepMD,
-    0.26 eV for DPA4C);
-  * force, acceleration, half-step velocity, displacement: world-space arrows
-    on every atom inside `r_c`, scaled so the longest arrow of the whole
-    story is 1.9 Å; the legend quotes the real magnitude of that arrow.
-    Acceleration arrows make the 16× O/H mass ratio visible.
-* **C** is the real total energy against MD step, revealed as the run
-  proceeds.
-* **D** animates the operator flow for O126 rather than listing formulas.
-  The top row runs left to right: a heatmap of the first 12 real `R_i` rows
-  (DPA4C: columns `s, û`) fills in during the descriptor stage, the schematic
-  network lights up layer by layer, and bars for `ε_i − mean ε(species)` of
-  O126 and j₁–j₃ grow. Bar heights are relative to the largest of the four
-  bars, and colours use the magnifier's absolute scale. Σ then feeds the real
-  total energy. The bottom row runs right to left: pulses travel along the
-  dashed `−∂E/∂r` arrow to a force glyph. The glyph's direction is the real
-  O126 force projected into the magnifier camera. The flow then passes
-  through `÷m` to the acceleration glyph and exits along the bottom back into
-  the loop's `a` node.
-* Neighbour edges and the j₁/j₂/j₃ labels appear together in one stage.
+* **A** is the shared velocity-Verlet loop. The `a` node is where the
+  pluggable force provider plugs in.
+* **B** shows the real system: the periodic box with the 6 Å cutoff circle
+  around O126, and a magnifier of the same snapshot with neighbour edges, ε
+  colours, and force/acceleration/velocity/displacement arrows on every atom
+  inside `r_c`.
+* **D** is the operator pipeline of O126, drawn from the model's own forward
+  pass for the current state:
+  * **gather** — all neighbours in the magnifier fly into their rows at the
+    same time, so the matrix is assembled in one step. Rows follow the
+    model's order: DeepMD sorts by species, then distance (O block, H block;
+    the 517 padded slots up to `sel = 200 O + 400 H` are drawn as a hatched
+    stub). DPA4C rows are sorted by distance. The rows of j₁–j₃ are outlined
+    across every block.
+  * **embed** — every following block is the model's activation for the same
+    rows. DeepMD: `R̃` (4) → `G¹` (25) → `G²` (50) → `G` (100), with
+    separate O←O / O←H nets for the two blocks. DPA4C: `Y_lm` (9) and
+    `e(r)` (16) → radial MLP hidden `h` (176) → `g` (64) → pair FiLM and
+    envelope → amplitude `φ` (64).
+  * **contract** — a green line sweeps down the rows and the neighbour sum
+    builds up in real partial sums: DeepMD `T = R̃ᵀG/N` (4 × 100; the
+    padded slots close the sum), then `D = TᵀT<` (100 × 12). DPA4C moments
+    `X⁽⁰⁾` (64), `X⁽¹⁾` (3 × 8), `X⁽²⁾` (5 × 4), then the 208 invariants.
+  * **fit** — the three hidden layers of the fitting net light up, then the
+    real `ε_O126`, then `E = Σ ε_i`.
+  * **force** — every block turns olive while pulses run back along the
+    bottom: `F = −∂E/∂r` is the gradient through the same blocks. F then
+    leaves the panel and enters the loop's `a` node (`a = F/m` is not
+    repeated in panel D).
+* Heatmaps are signed (navy negative, crimson positive). Each block saturates
+  at its own 98th-percentile |value|; the partial-sum blocks use the largest
+  |value| of their final sum.
 
 ## Timeline (30 s, 24 fps)
 
-* Steps 1 and 2: 9 s detailed blocks — positions, neighbours, descriptor,
-  network, energy, force, acceleration, velocity, move.
-* Steps 3–5: 1.5 s rapid cycles through the same stages.
+* Step 1: 12.9 s — positions, neighbours, gather, embed, contract, fit,
+  energy, force, acceleration, velocity, move.
+* Step 2: the same stages at 0.55× duration.
+* Steps 3–5: one fast cycle each in the remaining time.
+
+## Model data
+
+### DeepMD: retrained uncompressed DeepPot-SE
+
+The published `H2O-Phase-Diagram-model_compressed.pb` (AIS Square, Zhang et
+al., PRL 126, 236001) is only available compressed. Compression replaces the
+embedding net with a polynomial table, so its 25- and 50-wide hidden layers do
+not exist in the file. For this story the model was retrained **uncompressed**
+with the same architecture and the same data:
+
+* input: the training script stored in the published graph, unchanged
+  (`se_e2_a`, `sel = [200, 400]`, `rcut = 6.0`, `rcut_smth = 0.5`,
+  embedding `[25, 50, 100]`, `axis_neuron = 12`, fitting `[240, 240, 240]`
+  with ResNet, tanh, float64, same seeds and loss prefactors), except
+  `numb_steps = 600 000` (published: 16 000 000) and `decay_steps = 3000`
+  (keeps the published 200 learning-rate decays);
+* data: the full AIS Square `H2O-Phase-Diagram` dataset (324 systems);
+* trained on one A800 with DeePMD-kit 2.2.8 (TensorFlow);
+  600k steps, 8082 s wall time;
+* `dp test` on 41 systems (every 8th, 20 frames each, list in
+  `product/data/dpse_retrain/test_systems.txt`):
+  retrained model energy RMSE 2.65 meV/atom, force RMSE 0.130 eV/Å;
+  published compressed model on the same frames 2.17 meV/atom, 0.128 eV/Å.
+
+The trajectory was then rerun with this model.
+
+### Forward-pass dumps
+
+* `scripts/run_md/dump_dpse_internals.py` (DeePMD-kit 2.x) reads the
+  embedding and fitting weights from the frozen graph and recomputes O126's
+  forward pass layer by layer in NumPy. It is accepted only if it reproduces
+  the model's own descriptor and atomic energy; the errors are about 1e-15
+  (`dpmd_internals.json`).
+* `scripts/run_md/dump_dpa4c_internals.py` (DeePMD-kit 3.2, `pt_expt`)
+  wraps the `DescrptDPA4C` stages and records the tensors the model itself
+  produced (radial basis, radial MLP, pair FiLM, amplitudes, harmonics,
+  moments, readout, descriptor), then runs the fitting layers on the recorded
+  descriptor. Checks: amplitudes and moments recomputed from the recorded
+  edges agree to ≤ 2e-6 (float32), and `ε` agrees with the model to ≤ 1e-6 eV
+  (`dpa4c_internals.json`).
+
+The renderer checks that every state's neighbour set and `ε_O126` agree with
+the trajectory before it draws anything.
 
 ## Reproduce
 
@@ -76,34 +122,27 @@ $PY scripts/md_visuals/render_nnmd_end_to_end.py --model dpa4c --preview-only
 $PY scripts/md_visuals/render_nnmd_end_to_end.py            # both models, stills + videos
 ```
 
-MatterVis renders are cached under `product/qa/<stem>/source/mattervis_v1/`
-with JSON sidecars; `asset_manifest.json` records the camera, the data-driven
-arrow scales and the colour range; `story_provenance.json` records the labelled
-neighbours, the energies and the central-atom force/acceleration per state.
-
-### Regenerating the trajectories
-
-`scripts/run_md/run_water_box_nnmd.py` is the shared runner (numpy + deepmd):
+Model-side runs (on the A800 node, `/aisi-nas/guomingyu/personal/mlip-playground/261002_dpse_internals`):
 
 ```bash
-python scripts/run_md/run_water_box_nnmd.py --model <model.pb|model.pt> \
-  --input product/data/water_box_64.npz \
-  --output product/data/<label>_water_box_trajectory.npz \
-  --metadata product/data/<label>_water_box_trajectory.json \
-  --label <label> --steps 5 --dt 0.5 --temperature 300 --seed 260906
+TF=/aisi-nas/guomingyu/conda_env/deepmd-v2.2.9/bin     # DeePMD-kit 2.2.8 (TF)
+PT=/aisi-nas/guomingyu/conda_env/deepmd-dpa4-t211/bin  # DeePMD-kit 3.2.0 (dpa4c)
+cd train && $TF/dp train input.json && $TF/dp freeze -o ../dpse_h2o_phase_diagram_retrain.pb && cd ..
+$TF/python run_water_box_nnmd.py --model dpse_h2o_phase_diagram_retrain.pb --input water_box_64.npz \
+  --output dpmd_water_box_trajectory.npz --metadata dpmd_water_box_trajectory.json --label dpmd
+$TF/python dump_dpse_internals.py --model dpse_h2o_phase_diagram_retrain.pb \
+  --trajectory dpmd_water_box_trajectory.npz --output dpmd_internals.npz
+$PT/python dump_dpa4c_internals.py --model DPA4C-Neo-OMat24-v20260819.pt \
+  --trajectory dpa4c_water_box_trajectory.npz --output dpa4c_internals.npz
 ```
 
-The DPA4C run needs a deepmd-kit that ships the `dpa4c` descriptor
-(3.2.0 release). The Bohrium job that produced the retained trajectory, its
-`run.sh` (wheel-based upgrade inside the `dpmd-cu126-pt:v20260701-pt` image)
-and the full stdout are kept under `product/qa/04_4c/bohr_live_water_v2/`
-(job 20808156). See `docs/04_4c_dpa4c.md` for the details and the pitfalls hit
-along the way.
+The training input is kept as `product/data/dpse_retrain/input.json` (with
+`lcurve.out`). The DPA4C trajectory itself comes from Bohrium job 20808156;
+see `docs/04_4c_dpa4c.md`.
 
 ## QA
 
-`render_nnmd_end_to_end.py` validates every keyframe and every video frame
-with the house `LayoutRegistry` (Arial 16–18 pt in video, ≥ 10 pt in stills,
-edge pads, text overlaps) and with the `visualize_data` pixel checks
-(whitespace bands, clipping, semantic colours). Reports live in
+Every keyframe and every video frame is validated with the house
+`LayoutRegistry` (Arial 16–18 pt in video, ≥ 10 pt in stills, edge pads, text
+overlaps) and with the `visualize_data` pixel checks. Reports live in
 `product/qa/<stem>/_qa/`.

@@ -4,10 +4,10 @@
   "format": "png",
   "width": 1100,
   "height": 1100,
-  "plan_sha256": "0367c68aaeb17a413c170fafc6fbc94aa690d5fb2c51dfaf4777fe3a84bfec94",
-  "output_sha256": "e0a277df91507ec00f021eda48d7abb8de331223c89cbd5d781ed3ed633aa53c",
+  "plan_sha256": "c0a9a9121c25c122d0e6113ec948e3b83a41e76eccce47a1affe774518e47b58",
+  "output_sha256": "65ce4e31a0f2ad44e8e986cc8452555c114b4424504aca42b41ffe8d25eaa12d",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04_deep_potential_md\\source\\mattervis_v1\\plain_05.png",
-  "source_sha256": "244df7169ba3af53aa4ce5703eaf0caee333f55a7fc0e4618f4a6883132c1dbb",
+  "source_sha256": "b1329e17cc8b2abd9925f4bfca5e602b90bf30a7f116a95ed973e4a231f4327f",
   "frame": 5,
   "view": "cluster",
   "camera": {
@@ -28,9 +28,9 @@
       1.0
     ],
     "scene_offset": [
-      11.21113919,
-      11.17823706,
-      11.1776015
+      11.21162025,
+      11.1781832,
+      11.177611670000001
     ]
   },
   "render_settings": {
@@ -58,14 +58,14 @@
     "actual_backend": "cpu",
     "camera": {
       "position": [
-        30.32731523656927,
-        -1.1547797442382368,
-        18.82407191862771
+        30.327796296569268,
+        -1.154833604238238,
+        18.82408208862771
       ],
       "target": [
-        11.21113919,
-        11.17823706,
-        11.1776015
+        11.21162025,
+        11.1781832,
+        11.177611670000001
       ],
       "up": [
         0.0,

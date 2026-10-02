@@ -2,7 +2,7 @@
   "schema": "nnmd_end_to_end_assets/v1",
   "model": "deepmd",
   "trajectory": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\data\\dpmd_water_box_trajectory.npz",
-  "trajectory_sha256": "84f61928972193437b6fbc5ad45ceb8d7137d1b8f2ec825a340f741dcae89a02",
+  "trajectory_sha256": "a8ac70ecfdbb8baea0be47c92ab634f4f115a0aee1e71a133090469eaebc89a9",
   "box_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04_deep_potential_md\\source\\trajectory_sources\\water_box_trajectory.extxyz",
   "focus_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04_deep_potential_md\\source\\trajectory_sources\\local_environment_trajectory.extxyz",
   "focus_atoms": [
@@ -203,28 +203,28 @@
   },
   "display_scales": {
     "force": {
-      "max_magnitude": 2.880020548577963,
-      "scale": 0.659717515188613,
+      "max_magnitude": 2.82405335237235,
+      "scale": 0.6727918218697612,
       "unit": "eV/\u00c5"
     },
     "accel": {
-      "max_magnitude": 0.027067739245076564,
-      "scale": 70.19426272719089,
+      "max_magnitude": 0.02702995832577344,
+      "scale": 70.29237622569043,
       "unit": "\u00c5/fs\u00b2"
     },
     "velocity": {
-      "max_magnitude": 0.05437844544862306,
-      "scale": 34.94031475752882,
+      "max_magnitude": 0.05440685137463058,
+      "scale": 34.922072349254755,
       "unit": "\u00c5/fs"
     },
     "move": {
-      "max_magnitude": 0.027189222724311585,
-      "scale": 69.88062951505749,
+      "max_magnitude": 0.027203425687315045,
+      "scale": 69.84414469851015,
       "unit": "\u00c5"
     },
     "eps": {
-      "max_deviation": 0.9578407203033716,
-      "range": 0.96,
+      "max_deviation": 1.228994775653864,
+      "range": 1.3,
       "unit": "eV"
     },
     "longest_arrow_angstrom": 1.9,

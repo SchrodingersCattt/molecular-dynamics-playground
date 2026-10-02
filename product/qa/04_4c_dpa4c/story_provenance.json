@@ -583,7 +583,8 @@
   },
   "timeline": {
     "duration_seconds": 30.0,
-    "detailed_block_seconds": 9.0,
+    "detailed_block_seconds": 12.9,
+    "second_block_scale": 0.55,
     "detailed_phases": [
       [
         "positions",
@@ -591,71 +592,177 @@
       ],
       [
         "neighbours",
-        1.2
-      ],
-      [
-        "descriptor",
-        1.6
-      ],
-      [
-        "network",
-        1.2
-      ],
-      [
-        "energy",
-        0.8
-      ],
-      [
-        "force",
         1.0
       ],
       [
-        "accel",
-        0.8
+        "gather",
+        1.7
       ],
       [
-        "velocity",
-        0.7
+        "embed",
+        2.1
       ],
       [
-        "move",
-        0.9
-      ]
-    ],
-    "rapid_block_seconds": 1.5,
-    "rapid_phases": [
-      [
-        "neighbours",
-        0.2
+        "contract",
+        1.7
       ],
       [
-        "descriptor",
-        0.3
-      ],
-      [
-        "network",
-        0.2
+        "fit",
+        1.4
       ],
       [
         "energy",
-        0.15
+        0.7
       ],
       [
         "force",
-        0.2
+        1.5
       ],
       [
         "accel",
-        0.15
+        0.7
       ],
       [
         "velocity",
-        0.15
+        0.6
       ],
       [
         "move",
-        0.15
+        0.7
+      ]
+    ],
+    "rapid_phases": [
+      [
+        "neighbours",
+        1.0
+      ],
+      [
+        "gather",
+        1.7
+      ],
+      [
+        "embed",
+        2.1
+      ],
+      [
+        "contract",
+        1.7
+      ],
+      [
+        "fit",
+        1.4
+      ],
+      [
+        "energy",
+        0.7
+      ],
+      [
+        "force",
+        1.5
+      ],
+      [
+        "accel",
+        0.7
+      ],
+      [
+        "velocity",
+        0.6
+      ],
+      [
+        "move",
+        0.7
       ]
     ]
+  },
+  "internals": {
+    "file": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\data\\dpa4c_internals.npz",
+    "sha256": "0ab582116be13d1c2a37747b2c386b56585b4a542c75a6e7444af969079e8208",
+    "checks": [
+      {
+        "state": 0,
+        "amplitude_max_abs_err": 2.516323998058567e-07,
+        "moments_max_abs_err": 9.486664138691481e-07,
+        "n_neighbours": 83,
+        "fit_layer_sizes": [
+          256,
+          256,
+          256,
+          1
+        ],
+        "epsilon_recomputed": -7.285555485091237,
+        "epsilon_abs_err_ev": 3.5762786865234375e-07
+      },
+      {
+        "state": 1,
+        "amplitude_max_abs_err": 3.6576957729295145e-07,
+        "moments_max_abs_err": 1.3503127340719345e-06,
+        "n_neighbours": 83,
+        "fit_layer_sizes": [
+          256,
+          256,
+          256,
+          1
+        ],
+        "epsilon_recomputed": -7.283589127860097,
+        "epsilon_abs_err_ev": 1.1920928955078125e-07
+      },
+      {
+        "state": 2,
+        "amplitude_max_abs_err": 3.608838818891513e-07,
+        "moments_max_abs_err": 1.8696961654462996e-06,
+        "n_neighbours": 83,
+        "fit_layer_sizes": [
+          256,
+          256,
+          256,
+          1
+        ],
+        "epsilon_recomputed": -7.280692342124013,
+        "epsilon_abs_err_ev": 7.152557373046875e-07
+      },
+      {
+        "state": 3,
+        "amplitude_max_abs_err": 4.2054371540700686e-07,
+        "moments_max_abs_err": 1.091016173848658e-06,
+        "n_neighbours": 83,
+        "fit_layer_sizes": [
+          256,
+          256,
+          256,
+          1
+        ],
+        "epsilon_recomputed": -7.276865247092275,
+        "epsilon_abs_err_ev": 2.384185791015625e-07
+      },
+      {
+        "state": 4,
+        "amplitude_max_abs_err": 2.2585424286347688e-07,
+        "moments_max_abs_err": 2.1375633116882398e-06,
+        "n_neighbours": 83,
+        "fit_layer_sizes": [
+          256,
+          256,
+          256,
+          1
+        ],
+        "epsilon_recomputed": -7.272211554846791,
+        "epsilon_abs_err_ev": 9.5367431640625e-07
+      },
+      {
+        "state": 5,
+        "amplitude_max_abs_err": 3.0629578828822446e-07,
+        "moments_max_abs_err": 1.7848980613521803e-06,
+        "n_neighbours": 82,
+        "fit_layer_sizes": [
+          256,
+          256,
+          256,
+          1
+        ],
+        "epsilon_recomputed": -7.266934755644826,
+        "epsilon_abs_err_ev": 1.1920928955078125e-07
+      }
+    ],
+    "heatmap_normalisation": "each block saturates at its own 98th-percentile |value| (navy negative, crimson positive); the neighbour-sum blocks use the largest |value| of their final sum"
   }
 }

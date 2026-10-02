@@ -4,17 +4,19 @@ Both stories share the outer Velocity-Verlet loop of the AIMD movie and the
 same retained 64-water periodic box.  What differs is the pluggable module
 that turns positions into accelerations:
 
-* DeepMD: minimum-image neighbours -> DeepPot-SE environment matrix R_i ->
-  embedding + fitting network -> atomic energies eps_i -> E
-* DPA4C: minimum-image neighbours -> relative unit vectors and radial
-  envelopes -> equivariant features (l <= 2) -> fitting network -> eps_i -> E
+* DeepMD: neighbours -> DeepPot-SE environment matrix R~_i -> embedding net
+  (25-50-100) per row -> T = R~^T G / N -> D = T^T T< -> fitting net -> eps_i
+* DPA4C: neighbours -> radial basis e(r) and harmonics Y_lm(u) per row ->
+  radial MLP and pair FiLM -> amplitude phi -> sum_j moments X^(l) ->
+  invariants -> fitting net -> eps_i
 
-After E the two movies are identical: F = -dE/dr, a = F/m, velocity and
-position updates, and a return arrow back into the integrator loop.  Every
-number shown is read from the retained trajectory (energies, atomic energies,
-forces, velocities) or computed exactly from the retained geometry (r_ij,
-s(r_ij), unit vectors).  Atoms, cutoff spheres, neighbour edges and vectors
-are rendered by MatterVis in world space; matplotlib only composes panels.
+The right-hand panel draws every one of these tensors for the centre atom
+O126 from the dumped forward pass of the model (``*_internals.npz``), so the
+matrix that the neighbours fly into, each embedding layer, the contraction,
+the descriptor and the fitting activations are model output.  After E the two
+movies are identical: F = -dE/dr is sent back through the same blocks, a =
+F/m enters the integrator loop.  Atoms, cutoff spheres, neighbour edges and
+vectors are rendered by MatterVis in world space; matplotlib only composes.
 """
 
 from __future__ import annotations
@@ -73,35 +75,38 @@ MODELS = {
         "stem": "04_deep_potential_md",
         "data": DATA_DIR / "dpmd_water_box_trajectory.npz",
         "metadata": DATA_DIR / "dpmd_water_box_trajectory.json",
+        "internals": DATA_DIR / "dpmd_internals.npz",
         "provider": "DeepMD · DeepPot-SE",
-        "descriptor_title": r"Relative positions $\rightarrow$ environment matrix $R_i$",
-        "descriptor_header": r"$R_i$ rows: $s(r)$, $s\,x/r$, $s\,y/r$, $s\,z/r$",
-        "network_title": r"Embedding + fitting network $\rightarrow$ atomic energies $\varepsilon_i$",
-        "network_note": "two networks: embedding (25-50-100) and fitting (240-240-240)",
+        "titles": {
+            "gather": "{n} neighbour rows → environment matrix " r"$\tilde{{R}}_i$",
+            "embed": r"Embedding net on every row: $s(r)\rightarrow$ 25 → 50 → 100",
+            "contract": r"$\Sigma_j$ over neighbours: $T=\tilde{R}^{\top}G/N$, $D=T^{\top}T_{<}$",
+            "fit": r"Fitting net 240 × 3 → atomic energy $\varepsilon_i$",
+        },
     },
     "dpa4c": {
         "stem": "04_4c_dpa4c",
         "data": DATA_DIR / "dpa4c_water_box_trajectory.npz",
         "metadata": DATA_DIR / "dpa4c_water_box_trajectory.json",
+        "internals": DATA_DIR / "dpa4c_internals.npz",
         "provider": "DPA4C · equivariant descriptor",
-        "descriptor_title": r"Relative positions $\rightarrow$ equivariant features ($l \leq 2$)",
-        "descriptor_header": r"$\hat{u}_{ij} = r_{ij}/r$ feeds radial $\times$ $Y_{lm}(\hat{u})$ channels",
-        "network_title": r"Equivariant layers + fitting network $\rightarrow$ $\varepsilon_i$",
-        "network_note": "64 channels, l = 0, 1, 2; fitting network 256-256-256 (SiLU)",
+        "titles": {
+            "gather": "{n} neighbour rows → " r"$Y_{{lm}}(\hat{{u}})$ and radial basis $e(r)$",
+            "embed": r"Radial MLP $e\rightarrow h\rightarrow g$, pair FiLM → amplitude $\phi$",
+            "contract": r"$\Sigma_j$ over neighbours: moments $X^{(0)}, X^{(1)}, X^{(2)}$",
+            "fit": r"208 invariants → fitting net 256 × 3 → $\varepsilon_i$",
+        },
     },
 }
 
-# Layout: identical slot grammar to the AIMD story.  The bottom 7 % of the
-# canvas is reserved for the return arrow from the force provider back into
-# the integrator loop.
-VIDEO_A = (0.015, 0.025, 0.215, 0.925)
-VIDEO_B = (0.230, 0.025, 0.680, 0.925)
-VIDEO_C = (0.695, 0.025, 0.985, 0.455)
-VIDEO_D = (0.695, 0.480, 0.985, 0.925)
-STATIC_A = (0.035, 0.055, 0.235, 0.905)
-STATIC_B = (0.250, 0.045, 0.705, 0.905)
-STATIC_C = (0.720, 0.045, 0.965, 0.400)
-STATIC_D = (0.720, 0.430, 0.965, 0.905)
+# Layout: integrator loop (A), real system (B), operator pipeline (D).  The
+# bottom strip of the canvas carries the return arrow into the 'a' node.
+VIDEO_A = (0.015, 0.025, 0.200, 0.925)
+VIDEO_B = (0.210, 0.025, 0.590, 0.925)
+VIDEO_D = (0.600, 0.025, 0.985, 0.925)
+STATIC_A = (0.035, 0.055, 0.215, 0.905)
+STATIC_B = (0.225, 0.045, 0.595, 0.905)
+STATIC_D = (0.605, 0.045, 0.965, 0.905)
 RETURN_Y_VIDEO = 0.045
 RETURN_Y_STATIC = 0.030
 
@@ -141,40 +146,24 @@ FOCUS_ORTHO = 6.75
 RENDER_PX = 1100
 
 VIDEO_DURATION = 30.0
-DETAILED_BLOCK = 9.0
-RAPID_BLOCK = 1.5
 DETAILED_PHASES = (
     ("positions", 0.8),
-    ("neighbours", 1.2),
-    ("descriptor", 1.6),
-    ("network", 1.2),
-    ("energy", 0.8),
-    ("force", 1.0),
-    ("accel", 0.8),
-    ("velocity", 0.7),
-    ("move", 0.9),
+    ("neighbours", 1.0),
+    ("gather", 1.7),
+    ("embed", 2.1),
+    ("contract", 1.7),
+    ("fit", 1.4),
+    ("energy", 0.7),
+    ("force", 1.5),
+    ("accel", 0.7),
+    ("velocity", 0.6),
+    ("move", 0.7),
 )
-RAPID_PHASES = (
-    ("neighbours", 0.20),
-    ("descriptor", 0.30),
-    ("network", 0.20),
-    ("energy", 0.15),
-    ("force", 0.20),
-    ("accel", 0.15),
-    ("velocity", 0.15),
-    ("move", 0.15),
-)
-MODE_TO_LOOP_STAGE = {
-    "positions": 1,
-    "neighbours": 1,
-    "descriptor": 1,
-    "network": 1,
-    "energy": 1,
-    "force": 1,
-    "accel": 1,
-    "velocity": 2,
-    "move": 0,
-}
+DETAILED_BLOCK = sum(length for _, length in DETAILED_PHASES)
+SECOND_BLOCK_SCALE = 0.55  # step 2 replays the same stages faster
+RAPID_PHASES = tuple(item for item in DETAILED_PHASES if item[0] != "positions")
+FLOW_ORDER = tuple(name for name, _ in DETAILED_PHASES)
+MODE_TO_LOOP_STAGE = {name: 1 for name in FLOW_ORDER} | {"velocity": 2, "move": 0}
 
 POSITION_EQUATION = r"$\mathbf{r}_{n+1}=\mathbf{r}_n$" "\n" r"$+\mathbf{v}_{n+1/2}\Delta t$"
 ACCELERATION_EQUATION = r"$\mathbf{a}_{n}=\mathbf{F}_{n}/m$" "\n" r"$\mathbf{F}_{n}=-\nabla_R E(\mathbf{r}_n)$"
@@ -530,7 +519,7 @@ def draw_case(
     state: int,
     progress: float,
     rapid: bool,
-) -> None:
+) -> dict[str, object]:
     config = MODELS[model]
     assets = scene["assets"]
     box_camera: SceneCamera = scene["box_camera"]
@@ -544,7 +533,7 @@ def draw_case(
         ax.add_patch(Rectangle((0.02, 0.02), 0.96, 0.96, fill=False, ec=LINE_GRAY, lw=1.1, zorder=20))
 
     # --- periodic box (left) with the in-situ cutoff circle -----------------
-    box_x, box_y, box_r = (0.165, 0.515, 0.135) if video else (0.175, 0.560, 0.150)
+    box_x, box_y, box_r = (0.140, 0.560, 0.120) if video else (0.150, 0.580, 0.130)
     box_rect = _square_rect(ax, (box_x, box_y), box_r)
     _place_image(ax, _composition_rgba(assets["box"][min(state, n_states - 1)]), box_rect, zorder=4)
     sphere_alpha = 1.0 if mode not in {"positions", "neighbours"} else (smoothstep(progress) if mode == "neighbours" else 0.0)
@@ -557,8 +546,8 @@ def draw_case(
     registry.text(ax, box_x, box_rect[3] + (0.035 if video else 0.015), "64 H$_2$O periodic box", ha="center", va="bottom", fontsize=12 if video else 10, color=DARK_GRAY, zorder=21)
 
     # --- magnifier (right) --------------------------------------------------
-    mag_centre = (0.665, 0.515) if video else (0.655, 0.560)
-    mag_rx = 0.262 if video else 0.305
+    mag_centre = (0.640, 0.515) if video else (0.640, 0.540)
+    mag_rx = 0.330 if video else 0.335
     mag_rect = _square_rect(ax, mag_centre, mag_rx)
     mag_ry = mag_rx * aspect
     clip = Ellipse(mag_centre, 2.0 * mag_rx, 2.0 * mag_ry, transform=ax.transData, fc="none", ec="none")
@@ -576,10 +565,10 @@ def draw_case(
         image = _composition_rgba(assets["plain"][state])
     elif mode == "neighbours":
         image = _blend(assets["plain"][state], assets["cut"][state], smoothstep(progress))
-    elif mode == "descriptor":
+    elif mode in {"gather", "embed", "contract"}:
         image = _composition_rgba(assets["cut"][state])
-    elif mode == "network":
-        image = _blend(assets["cut"][state], assets["eps"][state], smoothstep(min(progress / 0.45, 1.0)))
+    elif mode == "fit":
+        image = _blend(assets["cut"][state], assets["eps"][state], smoothstep(min(progress / 0.6, 1.0)))
     elif mode == "energy":
         image = _composition_rgba(assets["eps"][state])
     elif mode == "force":
@@ -600,7 +589,7 @@ def draw_case(
     centre_local = minimum_image(positions[state, centre] - focus_origin, box)
     labelled = min(3, len(local_vectors))
     # The labelled j edges appear together with the neighbour edges.
-    label_alpha = {"neighbours": smoothstep(progress), "descriptor": 1.0}.get(mode, 0.0) if video else 0.0
+    label_alpha = {"neighbours": smoothstep(progress), "gather": 1.0, "embed": 1.0, "contract": 1.0}.get(mode, 0.0) if video else 0.0
     if label_alpha > 0.0:
         for k in range(labelled):
             endpoint = centre_local + local_vectors[k]
@@ -614,8 +603,10 @@ def draw_case(
     title_colour = {
         "positions": INK,
         "neighbours": SPHERE_TEAL,
-        "descriptor": EDGE_NAVY,
-        "network": CRIMSON,
+        "gather": EDGE_NAVY,
+        "embed": EDGE_NAVY,
+        "contract": EDGE_NAVY,
+        "fit": CRIMSON,
         "energy": GREEN,
         "force": FORCE_OLIVE,
         "accel": ACCEL_PLUM,
@@ -626,38 +617,32 @@ def draw_case(
     cutoff = data["cutoff"]
     title = {
         "positions": r"Current positions $\mathbf{r}_n$ of all 192 atoms",
-        "neighbours": rf"Collect neighbours of O126 within $r_c$ = {cutoff:.0f} Å: {n_neigh} atoms",
-        "descriptor": config["descriptor_title"],
-        "network": config["network_title"],
+        "neighbours": rf"Neighbours of O126 within $r_c$ = {cutoff:.0f} Å: {n_neigh} atoms",
+        "gather": config["titles"]["gather"].format(n=n_neigh),
+        "embed": config["titles"]["embed"],
+        "contract": config["titles"]["contract"],
+        "fit": config["titles"]["fit"],
         "energy": r"$E = \sum_i \varepsilon_i$ over all 192 atoms",
-        "force": r"$\mathbf{F}_i = -\partial E/\partial \mathbf{r}_i$ by automatic differentiation",
-        "accel": r"$\mathbf{a}_i = \mathbf{F}_i / m_i$: light H atoms respond 16× more than O",
+        "force": r"$\mathbf{F}_i = -\partial E/\partial \mathbf{r}_i$ back through every block",
+        "accel": r"$\mathbf{a}_i = \mathbf{F}_i / m_i$: H responds 16× more than O",
         "velocity": r"Update velocity $\mathbf{v}_{n+1/2}$",
         "move": r"Update position $\mathbf{r}_{n+1}$",
     }[mode]
     registry.text(ax, 0.50, 0.945, title, ha="center", va="center", fontsize=18 if video else 11, color=title_colour, weight="bold", zorder=21)
-    step_xy = (0.03, 0.055) if video else (0.05, 0.875)
+    step_xy = (0.03, 0.835) if video else (0.05, 0.875)
     registry.text(ax, *step_xy, f"MD step {state + 1:02d} · Δt = {data['dt_fs']:.1f} fs", ha="left", va="bottom", fontsize=12 if video else 10, color=INK, zorder=21)
 
-    # --- descriptor rows under the box -------------------------------------
-    rows_y = (0.225, 0.175, 0.125)
+    # --- the three labelled neighbours, under the box ---------------------
     if mode != "positions" or not video:
         header_alpha = smoothstep(progress) if mode == "neighbours" else 1.0
-        registry.text(ax, 0.03, 0.275, config["descriptor_header"], ha="left", va="center", fontsize=14 if video else 10, color=EDGE_NAVY if mode == "descriptor" else DARK_GRAY, alpha=header_alpha, zorder=21)
         for k in range(labelled):
             r = float(local["distances"][k])
             element = data["elements"][int(local["ids"][k])]
-            if model == "deepmd":
-                row = local["deep_r"][k]
-                text = rf"$j_{k + 1}$ {element} {r:.2f} Å → [{_fmt(row[0])}, {_fmt(row[1])}, {_fmt(row[2])}, {_fmt(row[3])}]"
-            else:
-                u = local["unit"][k]
-                text = rf"$j_{k + 1}$ {element} {r:.2f} Å → $\hat{{u}}$ ({_fmt(u[0])}, {_fmt(u[1])}, {_fmt(u[2])})"
-            registry.text(ax, 0.03, rows_y[k], text, ha="left", va="center", fontsize=14 if video else 10, color=INK if mode in {"neighbours", "descriptor"} else DARK_GRAY, alpha=header_alpha, zorder=21)
+            registry.text(ax, 0.03, 0.33 - 0.055 * k, rf"$j_{k + 1}$  {element}{int(local['ids'][k])}  {r:.2f} Å", ha="left", va="center", fontsize=14 if video else 10, color=INK if mode in {"neighbours", "gather"} else DARK_GRAY, alpha=header_alpha, zorder=21)
 
     # --- legends under the magnifier ---------------------------------------
     legend_y = 0.070
-    if mode in {"network", "energy"}:
+    if mode in {"fit", "energy"}:
         gradient = np.linspace(0.0, 1.0, 256)[None, :]
         ax.imshow(gradient, cmap=EPS_CMAP, extent=(0.55, 0.78, legend_y - 0.012, legend_y + 0.012), origin="lower", aspect="auto", zorder=8)
         eps_range = scene["scales"]["eps"]["range"]
@@ -676,202 +661,300 @@ def draw_case(
     elif mode == "move":
         peak = scene["scales"]["move"]["max_magnitude"]
         registry.text(ax, 0.975, legend_y, rf"$\mathbf{{r}}_{{n+1}} - \mathbf{{r}}_n$ (atoms at $\mathbf{{r}}_{{n+1}}$) · longest = {peak * 1.0e2:.1f}×10$^{{-2}}$ Å", ha="right", va="center", fontsize=12 if video else 10, color=POSITION_LAKE, zorder=21)
-    elif mode in {"neighbours", "descriptor"}:
-        registry.text(ax, 0.975, legend_y, f"faded: outside $r_c$ · navy edges: O126 → {n_neigh} neighbours", ha="right", va="center", fontsize=12 if video else 10, color=DARK_GRAY, alpha=sphere_alpha if mode == "neighbours" else 1.0, zorder=21)
+    elif mode in {"neighbours", "gather", "embed", "contract"}:
+        registry.text(ax, 0.975, legend_y, f"faded: outside $r_c$ · edges: O126 → {n_neigh} neighbours", ha="right", va="center", fontsize=12 if video else 10, color=DARK_GRAY, alpha=sphere_alpha if mode == "neighbours" else 1.0, zorder=21)
     elif mode == "positions":
         registry.text(ax, 0.975, legend_y, "magnified view around O126 (navy)", ha="right", va="center", fontsize=12 if video else 10, color=DARK_GRAY, zorder=21)
 
-
-# --------------------------------------------------------------------------
-# panel C: model energy
-# --------------------------------------------------------------------------
-def draw_energy(ax: plt.Axes, registry: LayoutRegistry, data: dict[str, object], *, model: str, video: bool, mode: str, state: int, progress: float) -> None:
-    config = MODELS[model]
-    if not video:
-        ax.add_patch(Rectangle((0.02, 0.02), 0.96, 0.96, fill=False, ec=LINE_GRAY, lw=1.1, zorder=2))
-    energies = data["total_energy_ev"]
-    eps_centre = float(data["atomic_energy_ev"][state, data["central_index"]])
-    pre_energy = mode in {"positions", "neighbours", "descriptor", "network"}
-    if pre_energy:
-        status = config["provider"] + r": building $\varepsilon_i$ for step " + f"{state + 1:02d}"
-    else:
-        status = rf"$\varepsilon_{{\mathrm{{O126}}}}$ = {_neg(eps_centre)} eV · $E$ = {_neg(float(energies[state]))} eV"
-    registry.text(ax, 0.50, 0.90, status, ha="center", va="center", fontsize=14 if video else 10, color=INK, zorder=4)
-
-    steps = np.arange(1, len(energies) + 1, dtype=float)
-    visible = state if pre_energy else state + 1
-    plot_ax = ax.inset_axes((0.27, 0.24, 0.66, 0.52))
-    plot_ax.plot(steps, energies, color="#D5D8DC", lw=2.0 if video else 1.1, marker="o", markersize=3.5 if video else 2.0, zorder=1)
-    if visible > 0:
-        plot_ax.plot(steps[:visible], energies[:visible], color=NAVY, lw=2.8 if video else 1.5, marker="o", markersize=4.0 if video else 2.2, zorder=2)
-        marker_colour = GREEN if mode == "energy" else NAVY
-        plot_ax.scatter([steps[visible - 1]], [energies[visible - 1]], s=70 if video else 20, color=marker_colour, edgecolors=WHITE, linewidths=1.0 if video else 0.5, zorder=3)
-    lo, hi = float(energies.min()), float(energies.max())
-    pad = max(0.12 * (hi - lo), 0.05)
-    plot_ax.set_xlim(0.6, len(energies) + 0.4)
-    plot_ax.set_ylim(lo - pad, hi + pad)
-    plot_ax.set_xticks(steps)
-    ticks = np.linspace(lo, hi, 3)
-    plot_ax.set_yticks(ticks)
-    plot_ax.set_yticklabels([f"{tick:.1f}".replace("-", "\u2212") for tick in ticks])
-    font_size = 16 if video else 10
-    plot_ax.tick_params(axis="both", labelsize=font_size, colors=DARK_GRAY, width=1.0)
-    plot_ax.set_xlabel("MD step", fontsize=font_size, color=INK, labelpad=3)
-    plot_ax.set_ylabel(r"$E$ (eV)", fontsize=font_size, color=INK, labelpad=3)
-    plot_ax.grid(axis="y", color="#E6E8EA", lw=0.8, zorder=0)
-    for spine in plot_ax.spines.values():
-        spine.set_color(LINE_GRAY)
-        spine.set_linewidth(1.2 if video else 0.8)
+    neighbour_world = np.vstack([centre_local + vector for vector in local_vectors])
+    neighbour_xy = project_world(neighbour_world, camera=focus_camera, rect=mag_rect, image_aspect=1.0)
+    return {
+        "neighbour_xy": {int(atom): tuple(xy) for atom, xy in zip(local["ids"], neighbour_xy)},
+        "mag_centre": mag_centre,
+        "mag_radius": (mag_rx, mag_ry),
+    }
 
 
 # --------------------------------------------------------------------------
-# panel D: operator flow (forward to E, backward to a)
+# panel D: operator pipeline built from the dumped forward pass of O126
 # --------------------------------------------------------------------------
-CHAIN_NODE_X = 0.085  # where the flow leaves panel D towards the integrator
-FLOW_TOP_Y = 0.76
-FLOW_BOTTOM_Y = 0.26
-HEAT_ROWS = 12
-NET_LAYERS = (4, 5, 3)
-FLOW_ORDER = ("positions", "neighbours", "descriptor", "network", "energy", "force", "accel", "velocity", "move")
+CHAIN_NODE_X = 0.02  # where F leaves panel D towards the integrator
+ROW_TOP = 0.84
+ROW_BOTTOM = 0.16
+RIGHT_X = (0.60, 0.975)
+OP_CMAP = LinearSegmentedColormap.from_list("op", [NAVY, "#F4F5F6", CRIMSON])
+SPECIES_DOT = {"O": "#D2453A", "H": "#C9CED3"}
+# DPA4C moment layout (model constants of the checkpoint): degree zero is the
+# 64-channel amplitude, X^(1) uses harmonics 1-3 x channels 0-7 and X^(2)
+# harmonics 4-8 x channels 0-3.
+DPA4C_CHANNEL_INDEX = np.array(list(range(8)) * 3 + list(range(4)) * 5)
+DPA4C_HARMONIC_INDEX = np.array([1] * 8 + [2] * 8 + [3] * 8 + [4] * 4 + [5] * 4 + [6] * 4 + [7] * 4 + [8] * 4)
+DPA4C_DEGREE_NORM_FLOOR = 0.25
+DPMD_N_SEL = 600.0  # sel = 200 O + 400 H
 
 
-def _flow_reached(mode: str, stage: str) -> bool:
+def _reached(mode: str, stage: str) -> bool:
     return FLOW_ORDER.index(mode) >= FLOW_ORDER.index(stage)
 
 
-def _flow_arrow(ax: plt.Axes, start, end, *, on: bool, colour: str, video: bool, dashed: bool = False, pulse: float | None = None) -> None:
-    ink = colour if on else LINE_GRAY
-    ax.add_patch(FancyArrowPatch(start, end, arrowstyle="-|>", mutation_scale=16 if video else 10, lw=2.2 if video else 1.3, color=ink, linestyle=(0, (4, 3)) if dashed else "-", shrinkA=0, shrinkB=0, zorder=4))
-    if pulse is not None and on:
-        # Travelling dots make the direction of the computation visible.
-        for offset in (0.0, 0.33, 0.66):
-            t = (pulse * 2.0 + offset) % 1.0
-            x = start[0] + (end[0] - start[0]) * t
-            y = start[1] + (end[1] - start[1]) * t
-            ax.scatter([x], [y], s=46 if video else 10, color=colour, edgecolors=WHITE, linewidths=0.8, zorder=6)
+def _stage_p(mode: str, stage: str, progress: float) -> float:
+    if mode == stage:
+        return progress
+    return 1.0 if _reached(mode, stage) else 0.0
 
 
-def _glyph(ax: plt.Axes, centre, vector_xy, *, colour: str, on: bool, grow: float, video: bool, aspect: float) -> None:
-    rx = 0.022
-    ax.add_patch(Ellipse(centre, 2 * rx, 2 * rx * aspect, fc=CENTRE_NAVY if on else WHITE, ec=CENTRE_NAVY if on else LINE_GRAY, lw=1.6 if video else 1.0, zorder=5))
-    if on and grow > 0.0:
-        length = 0.06 * grow
-        tip = (centre[0] + vector_xy[0] * length, centre[1] + vector_xy[1] * length * aspect)
-        ax.add_patch(FancyArrowPatch(centre, tip, arrowstyle="-|>", mutation_scale=18 if video else 11, lw=3.0 if video else 1.6, color=colour, shrinkA=0, shrinkB=0, zorder=6))
+def load_internals(model: str, data: dict[str, object]) -> dict[str, object]:
+    """Per-state tensors of the centre atom, arranged as display blocks."""
+    path = MODELS[model]["internals"]
+    with np.load(path, allow_pickle=False) as archive:
+        raw = {key: np.asarray(archive[key]) for key in archive.files}
+    states = []
+    for state in range(data["positions"].shape[0]):
+        if model == "deepmd":
+            count = int(raw["neighbour_count"][state])
+            ids = raw["order"][state, :count].astype(int)
+            rmat = raw["rmat"][state, :count]
+            g = raw["embed_3"][state, :count]
+            rows = [
+                ("R", r"$\tilde{R}$", "4", rmat, "gather"),
+                ("G1", r"$G^{1}$", "25", raw["embed_1"][state, :count], "embed"),
+                ("G2", r"$G^{2}$", "50", raw["embed_2"][state, :count], "embed"),
+                ("G3", r"$G$", "100", g, "embed"),
+            ]
+            T = raw["T"][state]
+            # Real-row contributions of the neighbour sum; the padded slots
+            # close it, so the last partial sum equals the dumped T.
+            real = np.einsum("jk,jc->jkc", rmat, g) / DPMD_N_SEL
+            partial = [("T", "", real, T - real.sum(axis=0))]
+            invariant = (r"$D=T^{\top}T_{<}$: 100 × 12", raw["D"][state].T)
+            fits = [raw["fit_1"][state], raw["fit_2"][state], raw["fit_3"][state]]
+            fit_label = "fitting 240 · 240 · 240"
+            epsilon = float(raw["epsilon"][state])
+            pad_rows = int(raw["n_pad"][state])
+        else:
+            count = int(np.sum(np.isfinite(raw["distance"][state])))
+            ids = raw["neighbour_ids"][state, :count].astype(int)
+            rows = [
+                ("Y", r"$Y_{lm}$", "9", raw["harmonics"][state, :count], "gather"),
+                ("e", r"$e(r)$", "16", raw["radial_basis"][state, :count], "gather"),
+                ("h", r"$h$", "176", raw["radial_hidden"][state, :count], "embed"),
+                ("g", r"$g$", "64", raw["radial"][state, :count], "embed"),
+                ("phi", r"$\phi$", "64", raw["amplitude"][state, :count], "embed"),
+            ]
+            amp = raw["amplitude"][state, :count]
+            basis = raw["harmonics"][state, :count]
+            env = raw["envelope"][state, :count]
+            div = np.sqrt(np.array([np.sum(env**2), np.sum(env**4)]) + DPA4C_DEGREE_NORM_FLOOR)
+            c0 = amp / div[0]
+            c_hi = amp[:, DPA4C_CHANNEL_INDEX] * basis[:, DPA4C_HARMONIC_INDEX] * env[:, None] / div[1]
+            if np.abs(np.concatenate([c0.sum(0), c_hi.sum(0)]) - raw["moments"][state]).max() > 1.0e-5:
+                raise ValueError("DPA4C moment partial sums do not close to the dumped moments")
+            partial = [
+                ("X0", "", c0[:, None, :], np.zeros((1, 64))),
+                ("X1", r"$X^{(1)}$", c_hi[:, :24].reshape(count, 3, 8), np.zeros((3, 8))),
+                ("X2", r"$X^{(2)}$", c_hi[:, 24:].reshape(count, 5, 4), np.zeros((5, 4))),
+            ]
+            invariant = (r"$D_i$: 208 invariants", raw["descriptor"][state][None, :])
+            sizes = raw["fit_layer_sizes"][state].astype(int)
+            fits = np.split(raw["fit_layers"][state], np.cumsum(sizes)[:-1])[:-1]
+            fit_label = "fitting 256 · 256 · 256"
+            epsilon = float(raw["epsilon_model"][state])
+            pad_rows = 0
+        expected = set(int(j) for j in local_environment(data, state)["ids"])
+        if set(ids.tolist()) != expected:
+            raise ValueError(f"{model} internals state {state}: neighbour set differs from the trajectory")
+        if abs(epsilon - float(data["atomic_energy_ev"][state, data["central_index"]])) > 1.0e-3:
+            raise ValueError(f"{model} internals state {state}: epsilon differs from the trajectory")
+        states.append({"ids": ids, "species": data["elements"][ids], "rows": rows, "partial": partial, "invariant": invariant, "fits": fits, "fit_label": fit_label, "epsilon": epsilon, "pad_rows": pad_rows})
+    return {"states": states, "path": path}
 
 
-def draw_flow(ax: plt.Axes, registry: LayoutRegistry, data: dict[str, object], scene: dict[str, object], *, model: str, video: bool, mode: str, state: int, progress: float) -> None:
-    """Operator flow drawn with the real tensors of O126 for the current state.
+def _heat(ax, matrix, rect, *, alpha=1.0, zorder=3.0, vmax=None):
+    """Signed heatmap; colour saturates at the block's 98th-percentile |value| unless vmax is given."""
+    matrix = np.atleast_2d(np.asarray(matrix, dtype=float))
+    vmax = vmax or float(np.nanpercentile(np.abs(matrix), 98.0)) or float(np.nanmax(np.abs(matrix))) or 1.0
+    rgba = OP_CMAP(0.5 + 0.5 * np.clip(matrix / vmax, -1.0, 1.0))
+    rgba[..., 3] = alpha
+    x0, y0, x1, y1 = rect
+    ax.imshow(rgba, extent=(x0, x1, y0, y1), origin="upper", aspect="auto", interpolation="nearest", zorder=zorder)
 
-    Top row (forward): environment matrix -> network -> atomic energies -> E.
-    Bottom row (backward): -dE/dr -> F -> /m -> a, which leaves the panel
-    towards the integrator loop.  The network nodes are schematic; every
-    number, matrix entry, bar height and arrow direction is model output.
+
+def _frame(ax, rect, *, colour, lw=1.1, zorder=4.0):
+    x0, y0, x1, y1 = rect
+    ax.add_patch(Rectangle((x0, y0), x1 - x0, y1 - y0, fill=False, ec=colour, lw=lw, zorder=zorder))
+
+
+def _arrow(ax, start, end, *, colour, video, on=True, dashed=False, zorder=6.0):
+    ax.add_patch(FancyArrowPatch(start, end, arrowstyle="-|>", mutation_scale=14 if video else 9, lw=2.0 if video else 1.2, color=colour if on else LINE_GRAY, linestyle=(0, (4, 3)) if dashed else "-", shrinkA=0, shrinkB=0, zorder=zorder))
+
+
+def draw_pipeline(
+    fig: plt.Figure,
+    ax: plt.Axes,
+    registry: LayoutRegistry,
+    data: dict[str, object],
+    internals: dict[str, object],
+    case_geometry: dict[str, object],
+    panel_b: plt.Axes,
+    *,
+    model: str,
+    video: bool,
+    mode: str,
+    state: int,
+    progress: float,
+) -> None:
+    """Row-aligned operator pipeline of O126 for one state.
+
+    Left: one matrix row per neighbour in the model's own order; each block to
+    the right is the model's activation for the same rows.  Right column: the
+    neighbour sum, the invariant descriptor, the fitting layers and eps_i.
+    During the gather stage every neighbour in the magnifier flies into its
+    row at the same time, so the matrix is assembled in one step.
     """
-    if not video:
-        ax.add_patch(Rectangle((0.02, 0.02), 0.96, 0.96, fill=False, ec=LINE_GRAY, lw=1.1, zorder=2))
     fs = 16 if video else 10
-    aspect = _axes_aspect(ax)
-    centre = data["central_index"]
-    local = local_environment(data, state)
+    record = internals["states"][state]
+    rows = record["rows"]
+    n = len(record["ids"])
     p = progress if video else 1.0
+    gather_p = _stage_p(mode, "gather", p)
+    embed_p = _stage_p(mode, "embed", p)
+    contract_p = _stage_p(mode, "contract", p)
+    fit_p = _stage_p(mode, "fit", p)
+    backward = mode == "force"
+    filled = smoothstep(float(np.clip((gather_p - 0.62) / 0.25, 0.0, 1.0)))
 
-    def stage_progress(stage: str) -> float:
-        if mode == stage:
-            return p
-        return 1.0 if _flow_reached(mode, stage) else 0.0
-
-    # --- environment matrix as a real heatmap ------------------------------
-    n_rows = min(HEAT_ROWS, len(local["ids"]))
     if model == "deepmd":
-        matrix = np.asarray(local["deep_r"][:n_rows], dtype=float)
-        heat_label = r"$R_i$"
+        widths = {"R": (0.07, 0.14), "G1": (0.19, 0.26), "G2": (0.30, 0.39), "G3": (0.43, 0.53)}
     else:
-        matrix = np.column_stack((local["s"][:n_rows], local["unit"][:n_rows]))
-        heat_label = r"$s,\hat{u}$"
-    desc_p = max(stage_progress("descriptor"), 0.0)
-    shown = int(np.ceil(desc_p * n_rows))
-    vmax = float(np.abs(matrix).max()) or 1.0
-    rgba = EPS_CMAP(0.5 + 0.5 * np.clip(matrix / vmax, -1.0, 1.0))
-    rgba[shown:, :, :3] = 1.0
-    heat = (0.03, 0.17, FLOW_TOP_Y - 0.17, FLOW_TOP_Y + 0.17)
-    ax.imshow(rgba, extent=heat, origin="upper", aspect="auto", interpolation="nearest", zorder=3)
-    ax.add_patch(Rectangle((heat[0], heat[2]), heat[1] - heat[0], heat[3] - heat[2], fill=False, ec=EDGE_NAVY if shown else LINE_GRAY, lw=1.4 if video else 0.8, zorder=4))
-    registry.text(ax, 0.10, FLOW_TOP_Y - 0.24, heat_label, ha="center", va="center", fontsize=fs, color=EDGE_NAVY if shown else DARK_GRAY, zorder=5)
+        widths = {"Y": (0.07, 0.12), "e": (0.16, 0.22), "h": (0.26, 0.35), "g": (0.39, 0.46), "phi": (0.49, 0.56)}
+    keys = [key for key, *_ in rows]
+    embed_keys = [key for key, *_rest, stage in rows if stage == "embed"]
+    row_h = (ROW_TOP - ROW_BOTTOM) / n
+    mid_y = 0.5 * (ROW_TOP + ROW_BOTTOM)
 
-    # --- network: a pulse travels through the shared layers ---------------
-    net_p = stage_progress("network")
-    xs = np.linspace(0.27, 0.45, len(NET_LAYERS))
-    layers = [(x, np.linspace(FLOW_TOP_Y - 0.15, FLOW_TOP_Y + 0.15, n)) for x, n in zip(xs, NET_LAYERS)]
-    for (x0, ys0), (x1, ys1) in zip(layers[:-1], layers[1:]):
-        for y0 in ys0:
-            for y1 in ys1:
-                ax.add_line(Line2D([x0, x1], [y0, y1], color=LINE_GRAY, lw=0.6 if video else 0.4, alpha=0.8, zorder=3))
-    for index, (x, ys) in enumerate(layers):
-        lit = smoothstep(float(np.clip(net_p * len(layers) - index, 0.0, 1.0)))
-        for y in ys:
-            ax.add_patch(Ellipse((x, y), 0.026, 0.026 * aspect, fc=mix_hex(WHITE, CRIMSON, lit), ec=CRIMSON if lit > 0 else LINE_GRAY, lw=1.0, zorder=4))
-    registry.text(ax, 0.36, FLOW_TOP_Y - 0.24, "NN", ha="center", va="center", fontsize=fs, color=CRIMSON if net_p > 0 else DARK_GRAY, zorder=5)
-    _flow_arrow(ax, (0.175, FLOW_TOP_Y), (0.245, FLOW_TOP_Y), on=net_p > 0, colour=EDGE_NAVY, video=video, pulse=net_p if mode == "network" else None)
+    def row_y(k: int) -> float:
+        return ROW_TOP - (k + 0.5) * row_h
 
-    # --- atomic energies of O126 and j1..j3 as real bars ------------------
-    deviation = species_mean_deviation(data, state)
-    ids = [centre] + [int(j) for j in local["ids"][:3]]
-    eps_range = scene["scales"]["eps"]["range"]
-    bar_grow = smoothstep(float(np.clip((net_p - 0.55) / 0.45, 0.0, 1.0)))
-    bar_x = np.linspace(0.55, 0.67, len(ids))
-    ax.add_line(Line2D([0.53, 0.69], [FLOW_TOP_Y, FLOW_TOP_Y], color=LINE_GRAY, lw=1.0, zorder=3))
-    # Heights are relative to the largest of the four bars; colours keep the
-    # absolute scale shared with the magnifier.
-    bar_ref = max(float(np.abs(deviation[ids]).max()), 1.0e-6)
-    for x, atom in zip(bar_x, ids):
-        value = float(np.clip(deviation[atom] / eps_range, -1.0, 1.0))
-        height = 0.16 * float(deviation[atom]) / bar_ref * bar_grow
-        ax.add_patch(Rectangle((x - 0.016, FLOW_TOP_Y), 0.032, height, fc=to_hex(EPS_CMAP(0.5 + 0.5 * value)), ec="none", zorder=4))
-    registry.text(ax, 0.61, FLOW_TOP_Y - 0.24, r"$\varepsilon_i$", ha="center", va="center", fontsize=fs, color=CRIMSON if bar_grow > 0 else DARK_GRAY, zorder=5)
-    _flow_arrow(ax, (0.47, FLOW_TOP_Y), (0.525, FLOW_TOP_Y), on=bar_grow > 0, colour=CRIMSON, video=video)
+    # --- row-aligned blocks ----------------------------------------------
+    for key, label, size, matrix, stage in rows:
+        rect = (widths[key][0], ROW_BOTTOM, widths[key][1], ROW_TOP)
+        if stage == "gather":
+            alpha = filled
+        else:
+            alpha = smoothstep(float(np.clip(embed_p * len(embed_keys) - embed_keys.index(key), 0.0, 1.0)))
+        if alpha > 0.0:
+            _heat(ax, matrix, rect, alpha=alpha)
+        _frame(ax, rect, colour=FORCE_OLIVE if backward else (EDGE_NAVY if alpha > 0 else LINE_GRAY), lw=1.8 if backward else 1.1)
+        cx = 0.5 * (rect[0] + rect[2])
+        registry.text(ax, cx, 0.935, label, ha="center", va="center", fontsize=fs, color=EDGE_NAVY if alpha > 0 else DARK_GRAY, zorder=8)
+        registry.text(ax, cx, 0.885, size, ha="center", va="center", fontsize=fs, color=DARK_GRAY, zorder=8)
+    for left, right in zip(keys[:-1], keys[1:]):
+        on = embed_p > 0 if right in embed_keys else filled > 0
+        _arrow(ax, (widths[left][1] + 0.004, mid_y), (widths[right][0] - 0.004, mid_y), colour=EDGE_NAVY, video=video, on=on)
 
-    # --- sum to E ------------------------------------------------------------
-    e_on = _flow_reached(mode, "energy")
-    _flow_arrow(ax, (0.70, FLOW_TOP_Y), (0.765, FLOW_TOP_Y), on=e_on, colour=GREEN, video=video)
-    registry.text(ax, 0.732, FLOW_TOP_Y + 0.13, r"$\Sigma$", ha="center", va="center", fontsize=fs, color=GREEN if e_on else DARK_GRAY, zorder=5)
-    ax.add_patch(Rectangle((0.775, FLOW_TOP_Y - 0.13), 0.205, 0.26, fc=mix_hex(WHITE, GREEN, 0.14) if e_on else WHITE, ec=GREEN if e_on else LINE_GRAY, lw=1.6 if video else 1.0, zorder=3))
+    left_x = widths[keys[0]][0]
+    if model == "deepmd":
+        for element in ("O", "H"):
+            members = np.flatnonzero(record["species"] == element)
+            if len(members):
+                top, bottom = ROW_TOP - members[0] * row_h, ROW_TOP - (members[-1] + 1) * row_h
+                ax.add_line(Line2D([left_x - 0.012] * 2, [bottom + 0.004, top - 0.004], color=DARK_GRAY, lw=1.4, zorder=5))
+                registry.text(ax, left_x - 0.035, 0.5 * (top + bottom), element, ha="center", va="center", fontsize=fs, color=DARK_GRAY, zorder=8)
+    if filled > 0:
+        labelled = [int(j) for j in local_environment(data, state)["ids"][:3]]
+        j_rows = [int(np.flatnonzero(record["ids"] == atom)[0]) for atom in labelled]
+        x_end = widths[keys[-1]][1] if embed_p > 0 else widths[keys[0]][1]
+        for k in j_rows:
+            ax.add_patch(Rectangle((left_x - 0.004, row_y(k) - 0.5 * row_h), x_end - left_x + 0.008, row_h, fill=False, ec=CENTRE_NAVY, lw=1.4, zorder=7, alpha=filled))
+        tag_y = float(np.clip(np.mean([row_y(k) for k in j_rows]), ROW_BOTTOM + 0.03, ROW_TOP - 0.03))
+        tag_x = left_x - (0.075 if model == "deepmd" else 0.035)
+        registry.text(ax, tag_x, tag_y, r"$j_{1-3}$", ha="center", va="center", fontsize=fs, color=CENTRE_NAVY, weight="bold", alpha=filled, zorder=8)
+        if record["pad_rows"]:
+            x0, x1 = widths[keys[0]]
+            ax.add_patch(Rectangle((x0, 0.100), x1 - x0, 0.035, fc=WHITE, ec=DARK_GRAY, hatch="////", lw=0.8, zorder=4, alpha=filled))
+            registry.text(ax, widths[keys[1]][0], 0.118, f"+{record['pad_rows']} padded slots", ha="left", va="center", fontsize=fs, color=DARK_GRAY, alpha=filled, zorder=8)
+
+    # --- neighbours fly from the magnifier into their rows -----------------
+    if video and mode == "gather" and p < 0.75:
+        t = smoothstep(float(np.clip(p / 0.62, 0.0, 1.0)))
+        to_fig = fig.transFigure.inverted().transform
+        groups: dict[str, tuple[list[float], list[float]]] = {}
+        for k, atom in enumerate(record["ids"]):
+            start_b = case_geometry["neighbour_xy"].get(int(atom))
+            if start_b is None:
+                continue
+            start = to_fig(panel_b.transData.transform(start_b))
+            end = to_fig(ax.transData.transform((left_x, row_y(k))))
+            lift = 0.06 * np.sin(np.pi * t)
+            xs, ys = groups.setdefault(str(record["species"][k]), ([], []))
+            xs.append(start[0] + (end[0] - start[0]) * t)
+            ys.append(start[1] + (end[1] - start[1]) * t + lift)
+        for element, (xs, ys) in groups.items():
+            fig.add_artist(Line2D(xs, ys, transform=fig.transFigure, ls="none", marker="o", markersize=6.5, markerfacecolor=SPECIES_DOT[element], markeredgecolor=DARK_GRAY, markeredgewidth=0.6, zorder=60))
+
+    # --- right column: neighbour sum ---------------------------------------
+    rx0, rx1 = RIGHT_X
+    sum_colour = GREEN if contract_p > 0 else DARK_GRAY
+    sweep = int(round(contract_p * n))
+    if mode == "contract" and video:
+        y = ROW_TOP - sweep * row_h
+        ax.add_line(Line2D([left_x - 0.006, widths[keys[-1]][1] + 0.006], [y, y], color=GREEN, lw=2.2, zorder=9))
+    _arrow(ax, (widths[keys[-1]][1] + 0.006, 0.79), (rx0 - 0.008, 0.79), colour=GREEN, video=video, on=contract_p > 0)
+    registry.text(ax, 0.5 * (rx0 + rx1), 0.935, r"$\Sigma_j$ over all rows", ha="center", va="center", fontsize=fs, color=sum_colour, zorder=8)
+    if model == "deepmd":
+        layout = [(rx0, 0.74, rx1, 0.84)]
+        registry.text(ax, 0.5 * (rx0 + rx1), 0.885, r"$T=\tilde{R}^{\top}G/N$: 4 × 100", ha="center", va="center", fontsize=fs, color=sum_colour, zorder=8)
+    else:
+        layout = [(rx0, 0.80, rx1, 0.84), (rx0, 0.69, rx0 + 0.15, 0.765), (rx0 + 0.215, 0.67, rx0 + 0.29, 0.765)]
+        registry.text(ax, 0.5 * (rx0 + rx1), 0.885, r"$X^{(0)}$: 64 channels", ha="center", va="center", fontsize=fs, color=sum_colour, zorder=8)
+    for (key, label, contributions, closing), rect in zip(record["partial"], layout):
+        if contract_p > 0:
+            value = contributions[:sweep].sum(axis=0) + (closing if sweep >= n else 0.0)
+            vmax = float(np.abs(contributions.sum(axis=0) + closing).max()) or 1.0
+            _heat(ax, value, rect, vmax=vmax)
+        _frame(ax, rect, colour=FORCE_OLIVE if backward else (GREEN if contract_p > 0 else LINE_GRAY), lw=1.8 if backward else 1.1)
+        if label:
+            registry.text(ax, rect[2] + 0.012, 0.5 * (rect[1] + rect[3]), label, ha="left", va="center", fontsize=fs, color=sum_colour, zorder=8)
+
+    # --- invariant descriptor ------------------------------------------------
+    inv_label, inv_matrix = record["invariant"]
+    inv_rect = (rx0, 0.53, rx1, 0.62) if model == "deepmd" else (rx0, 0.545, rx1, 0.59)
+    inv_alpha = smoothstep(float(np.clip((contract_p - 0.8) / 0.2, 0.0, 1.0)))
+    if inv_alpha > 0:
+        _heat(ax, inv_matrix, inv_rect, alpha=inv_alpha)
+    _frame(ax, inv_rect, colour=FORCE_OLIVE if backward else (EDGE_NAVY if inv_alpha > 0 else LINE_GRAY), lw=1.8 if backward else 1.1)
+    registry.text(ax, rx0, inv_rect[3] + 0.045, inv_label, ha="left", va="center", fontsize=fs, color=EDGE_NAVY if inv_alpha > 0 else DARK_GRAY, zorder=8)
+
+    # --- fitting layers and eps ---------------------------------------------
+    registry.text(ax, rx0, 0.465, record["fit_label"], ha="left", va="center", fontsize=fs, color=CRIMSON if fit_p > 0 else DARK_GRAY, zorder=8)
+    for index, (activation, y0) in enumerate(zip(record["fits"], (0.38, 0.325, 0.27))):
+        rect = (rx0, y0, rx1, y0 + 0.04)
+        alpha = smoothstep(float(np.clip(fit_p * 4.0 - index, 0.0, 1.0)))
+        if alpha > 0:
+            _heat(ax, activation[None, :], rect, alpha=alpha)
+        _frame(ax, rect, colour=FORCE_OLIVE if backward else (CRIMSON if alpha > 0 else LINE_GRAY), lw=1.8 if backward else 1.1)
+    eps_on = fit_p >= 0.75
+    registry.text(ax, rx0, 0.205, rf"$\varepsilon_{{\mathrm{{O126}}}}$ = {_neg(record['epsilon'])} eV" if eps_on else r"$\varepsilon_{\mathrm{O126}}$ = …", ha="left", va="center", fontsize=fs, color=CRIMSON if eps_on else DARK_GRAY, zorder=8)
+    e_on = _reached(mode, "energy")
     energy = float(data["total_energy_ev"][state])
-    registry.text(ax, 0.8775, FLOW_TOP_Y + 0.065, r"$E$", ha="center", va="center", fontsize=fs, color=GREEN if e_on else DARK_GRAY, weight="bold", zorder=5)
-    registry.text(ax, 0.8775, FLOW_TOP_Y - 0.065, f"{_neg(energy, 1)} eV" if e_on else "…", ha="center", va="center", fontsize=fs, color=INK if e_on else DARK_GRAY, zorder=5)
+    registry.text(ax, rx0, 0.135, rf"$E=\sum_i\varepsilon_i$ = {_neg(energy, 1)} eV" if e_on else r"$E=\sum_i\varepsilon_i$ = …", ha="left", va="center", fontsize=fs, color=GREEN if e_on else DARK_GRAY, weight="bold" if mode == "energy" else "normal", zorder=8)
 
-    # --- backward: -dE/dr down and back to the left -----------------------
-    f_p = stage_progress("force")
-    a_p = stage_progress("accel")
-    force = data["forces_ev_per_angstrom"][state, centre]
-    accel = data["accelerations"][state, centre]
-    projected = project_world(np.vstack((np.zeros(3), force / (np.linalg.norm(force) or 1.0))), camera=scene["focus_camera"], rect=(0.0, 0.0, 1.0, 1.0), image_aspect=1.0)
-    direction = projected[1] - projected[0]
-    direction = direction / (np.linalg.norm(direction) or 1.0)
-    _flow_arrow(ax, (0.8775, FLOW_TOP_Y - 0.14), (0.8775, FLOW_BOTTOM_Y + 0.05), on=f_p > 0, colour=FORCE_OLIVE, video=video, dashed=True, pulse=f_p if mode == "force" else None)
-    registry.text(ax, 0.855, (FLOW_TOP_Y + FLOW_BOTTOM_Y) / 2 - 0.02, r"$-\partial E/\partial \mathbf{r}$", ha="right", va="center", fontsize=fs, color=FORCE_OLIVE if f_p > 0 else DARK_GRAY, zorder=5)
-    _flow_arrow(ax, (0.86, FLOW_BOTTOM_Y), (0.715, FLOW_BOTTOM_Y), on=f_p > 0, colour=FORCE_OLIVE, video=video, dashed=True, pulse=f_p if mode == "force" else None)
-    f_centre = (0.62, FLOW_BOTTOM_Y)
-    _glyph(ax, f_centre, direction, colour=FORCE_OLIVE, on=f_p > 0, grow=smoothstep(f_p), video=video, aspect=aspect)
-    registry.text(ax, 0.62, 0.07, f"F = {np.linalg.norm(force):.2f} eV/Å" if f_p > 0 else "F", ha="center", va="center", fontsize=fs, color=FORCE_OLIVE if f_p > 0 else DARK_GRAY, zorder=5)
-
-    _flow_arrow(ax, (0.53, FLOW_BOTTOM_Y), (0.385, FLOW_BOTTOM_Y), on=a_p > 0, colour=ACCEL_PLUM, video=video, pulse=a_p if mode == "accel" else None)
-    registry.text(ax, 0.455, FLOW_BOTTOM_Y + 0.11, r"$\div m$", ha="center", va="center", fontsize=fs, color=ACCEL_PLUM if a_p > 0 else DARK_GRAY, zorder=5)
-    a_centre = (0.29, FLOW_BOTTOM_Y)
-    _glyph(ax, a_centre, direction, colour=ACCEL_PLUM, on=a_p > 0, grow=smoothstep(a_p), video=video, aspect=aspect)
-    a_norm = float(np.linalg.norm(accel))
-    exponent = int(np.floor(np.log10(a_norm))) if a_norm > 0 else 0
-    registry.text(ax, 0.29, 0.07, rf"a = {a_norm / 10**exponent:.1f}×10$^{{{exponent}}}$ Å/fs²" if a_p > 0 else "a", ha="center", va="center", fontsize=fs, color=ACCEL_PLUM if a_p > 0 else DARK_GRAY, zorder=5)
-
-    # --- a leaves the panel towards the integrator -------------------------
-    out_on = _flow_reached(mode, "velocity")
-    ax.add_line(Line2D([a_centre[0] - 0.03, CHAIN_NODE_X, CHAIN_NODE_X], [FLOW_BOTTOM_Y, FLOW_BOTTOM_Y, 0.0], color=INK if out_on else LINE_GRAY, lw=2.6 if video else 1.6, zorder=4))
+    # --- backward: -dE/dr runs back through every block ----------------------
+    f_on = _reached(mode, "force")
+    _arrow(ax, (rx1, 0.05), (CHAIN_NODE_X + 0.01, 0.05), colour=FORCE_OLIVE, video=video, on=f_on, dashed=True)
+    if backward and video:
+        for offset in (0.0, 0.25, 0.5, 0.75):
+            t = (p * 1.5 + offset) % 1.0
+            ax.scatter([rx1 + (CHAIN_NODE_X - rx1) * t], [0.05], s=40, color=FORCE_OLIVE, edgecolors=WHITE, linewidths=0.8, zorder=9)
+    registry.text(ax, 0.40, 0.05, r"$\mathbf{F}=-\partial E/\partial\mathbf{r}$ through every block", ha="center", va="center", fontsize=fs, color=FORCE_OLIVE if f_on else DARK_GRAY, zorder=10, bbox=dict(boxstyle="round,pad=0.2", fc=WHITE, ec="none"))
+    ax.add_line(Line2D([CHAIN_NODE_X, CHAIN_NODE_X], [0.05, 0.0], color=FORCE_OLIVE if f_on else LINE_GRAY, lw=2.0 if video else 1.2, zorder=6))
 
 
 def draw_return_path(fig: plt.Figure, registry: LayoutRegistry, panel_a: plt.Axes, panel_d: plt.Axes, *, video: bool, mode: str, provider: str) -> None:
-    """Arrow from the bottom chain node back into the integrator 'a' node."""
-    active = mode in {"velocity", "move"}
-    colour = INK if active else "#A9B0B4" if video else LINE_GRAY
+    """F leaves the pipeline and enters the integrator's 'a' node."""
+    force_stage = mode in {"force", "accel"}
+    active = force_stage or mode in {"velocity", "move"}
+    colour = FORCE_OLIVE if force_stage else INK if active else "#A9B0B4" if video else LINE_GRAY
     y_return = RETURN_Y_VIDEO if video else RETURN_Y_STATIC
     to_fig = fig.transFigure.inverted().transform
     node_fig = to_fig(panel_d.transAxes.transform((CHAIN_NODE_X, 0.0)))
@@ -887,7 +970,12 @@ def draw_return_path(fig: plt.Figure, registry: LayoutRegistry, panel_a: plt.Axe
     arrow = FancyArrowPatch((a_fig[0], y_return), (a_fig[0], a_fig[1]), transform=fig.transFigure, arrowstyle="-|>", mutation_scale=20 if video else 14, lw=lw, color=colour, zorder=50)
     fig.add_artist(arrow)
     registry.arrows.append(arrow)
-    label = fig.text(0.50, y_return, f"updated velocities and positions return to the integrator; only the {provider.split(' ·')[0]} module computed $\\mathbf{{a}}$", ha="center", va="center", fontsize=16 if video else 10, fontfamily=registry.font_family, color=INK if active else DARK_GRAY, bbox=dict(boxstyle="round,pad=0.25", fc=WHITE, ec="none"), zorder=51)
+    name = provider.split(" ·")[0]
+    if force_stage:
+        text = rf"$\mathbf{{F}}_i$ from {name} enters the integrator: $\mathbf{{a}}_i=\mathbf{{F}}_i/m_i$"
+    else:
+        text = f"only {name} is swapped in; the integrator loop is the same as in AIMD"
+    label = fig.text(0.40, y_return, text, ha="center", va="center", fontsize=16 if video else 10, fontfamily=registry.font_family, color=colour if active else DARK_GRAY, bbox=dict(boxstyle="round,pad=0.25", fc=WHITE, ec="none"), zorder=51)
     registry.texts.append(label)
 
 
@@ -907,16 +995,20 @@ def _phase_at(local: float, phases: tuple[tuple[str, float], ...]) -> tuple[str,
 def video_state(time_seconds: float, n_states: int) -> dict[str, object]:
     bounded = float(np.clip(time_seconds, 0.0, VIDEO_DURATION - 1.0e-9))
     n_updates = n_states - 1
-    if bounded < 2.0 * DETAILED_BLOCK:
-        state = int(bounded // DETAILED_BLOCK)
-        mode, progress = _phase_at(bounded - state * DETAILED_BLOCK, DETAILED_PHASES)
-        return {"mode": mode, "state": state, "progress": float(np.clip(progress, 0.0, 1.0)), "rapid": False}
-    rapid_time = bounded - 2.0 * DETAILED_BLOCK
-    rapid_states = list(range(2, n_updates))
-    if not rapid_states:
-        rapid_states = [n_updates - 1]
-    index = int(rapid_time // RAPID_BLOCK) % len(rapid_states)
-    mode, progress = _phase_at(rapid_time % RAPID_BLOCK, RAPID_PHASES)
+    if bounded < DETAILED_BLOCK:
+        mode, progress = _phase_at(bounded, DETAILED_PHASES)
+        return {"mode": mode, "state": 0, "progress": float(np.clip(progress, 0.0, 1.0)), "rapid": False}
+    second = DETAILED_BLOCK * SECOND_BLOCK_SCALE
+    if bounded < DETAILED_BLOCK + second:
+        mode, progress = _phase_at((bounded - DETAILED_BLOCK) / SECOND_BLOCK_SCALE, DETAILED_PHASES)
+        return {"mode": mode, "state": 1, "progress": float(np.clip(progress, 0.0, 1.0)), "rapid": False}
+    rapid_states = list(range(2, n_updates)) or [n_updates - 1]
+    rapid_block = (VIDEO_DURATION - DETAILED_BLOCK - second) / len(rapid_states)
+    rapid_time = bounded - DETAILED_BLOCK - second
+    index = min(int(rapid_time // rapid_block), len(rapid_states) - 1)
+    rapid_length = sum(length for _, length in RAPID_PHASES)
+    local = (rapid_time - index * rapid_block) / rapid_block * rapid_length
+    mode, progress = _phase_at(local, RAPID_PHASES)
     return {"mode": mode, "state": rapid_states[index], "progress": float(np.clip(progress, 0.0, 1.0)), "rapid": True}
 
 
@@ -924,9 +1016,11 @@ def semantics_for(mode: str) -> list[dict]:
     return {
         "positions": [{"id": "centre_atom", "color": CENTRE_NAVY, "min_pixels": 30, "tolerance": 60}],
         "neighbours": [{"id": "centre_atom", "color": CENTRE_NAVY, "min_pixels": 30, "tolerance": 60}],
-        "descriptor": [{"id": "neighbour_edges", "color": EDGE_NAVY, "min_pixels": 60, "tolerance": 60}],
-        "network": [{"id": "centre_atom_or_eps", "color": CENTRE_NAVY, "min_pixels": 30, "tolerance": 60}],
-        "energy": [{"id": "energy_marker", "color": GREEN, "min_pixels": 40}],
+        "gather": [{"id": "neighbour_edges", "color": EDGE_NAVY, "min_pixels": 60, "tolerance": 60}],
+        "embed": [{"id": "neighbour_edges", "color": EDGE_NAVY, "min_pixels": 60, "tolerance": 60}],
+        "contract": [{"id": "neighbour_sum", "color": GREEN, "min_pixels": 40}],
+        "fit": [{"id": "centre_atom_or_eps", "color": CENTRE_NAVY, "min_pixels": 30, "tolerance": 60}],
+        "energy": [{"id": "energy_text", "color": GREEN, "min_pixels": 40}],
         "force": [{"id": "model_force", "color": FORCE_OLIVE, "min_pixels": 120}],
         "accel": [{"id": "acceleration", "color": ACCEL_PLUM, "min_pixels": 120}],
         "velocity": [{"id": "half_step_velocity", "color": VELOCITY_EMERALD, "min_pixels": 120}],
@@ -940,12 +1034,10 @@ def draw_frame(fig: plt.Figure, time_seconds: float, registry: LayoutRegistry, d
     provider = MODELS[model]["provider"]
     panel_a = axes_from_top_slot(fig, VIDEO_A)
     panel_b = axes_from_top_slot(fig, VIDEO_B)
-    panel_c = axes_from_top_slot(fig, VIDEO_C)
     panel_d = axes_from_top_slot(fig, VIDEO_D)
     draw_left(panel_a, registry, video=True, mode=mode, provider=provider)
-    draw_case(panel_b, registry, data, scene, model=model, video=True, mode=mode, state=state, progress=progress, rapid=rapid)
-    draw_energy(panel_c, registry, data, model=model, video=True, mode=mode, state=state, progress=progress)
-    draw_flow(panel_d, registry, data, scene, model=model, video=True, mode=mode, state=state, progress=progress)
+    geometry = draw_case(panel_b, registry, data, scene, model=model, video=True, mode=mode, state=state, progress=progress, rapid=rapid)
+    draw_pipeline(fig, panel_d, registry, data, scene["internals"], geometry, panel_b, model=model, video=True, mode=mode, state=state, progress=progress)
     draw_return_path(fig, registry, panel_a, panel_d, video=True, mode=mode, provider=provider)
     if not rapid and mode == "positions":
         _deemphasize(panel_d)
@@ -961,12 +1053,10 @@ def render_static(model: str, data: dict[str, object], scene: dict[str, object])
     provider = MODELS[model]["provider"]
     panel_a = axes_from_top_slot(fig, STATIC_A)
     panel_b = axes_from_top_slot(fig, STATIC_B)
-    panel_c = axes_from_top_slot(fig, STATIC_C)
     panel_d = axes_from_top_slot(fig, STATIC_D)
     draw_left(panel_a, registry, video=False, mode="force", provider=provider)
-    draw_case(panel_b, registry, data, scene, model=model, video=False, mode="force", state=1, progress=1.0, rapid=False)
-    draw_energy(panel_c, registry, data, model=model, video=False, mode="force", state=1, progress=1.0)
-    draw_flow(panel_d, registry, data, scene, model=model, video=False, mode="force", state=1, progress=1.0)
+    geometry = draw_case(panel_b, registry, data, scene, model=model, video=False, mode="force", state=1, progress=1.0, rapid=False)
+    draw_pipeline(fig, panel_d, registry, data, scene["internals"], geometry, panel_b, model=model, video=False, mode="force", state=1, progress=1.0)
     draw_return_path(fig, registry, panel_a, panel_d, video=False, mode="force", provider=provider)
     errors = registry.validate(fig)
     if errors:
@@ -978,7 +1068,7 @@ def render_static(model: str, data: dict[str, object], scene: dict[str, object])
     save_static(fig, MODELS[model]["stem"])
 
 
-KEYFRAME_TIMES = (0.30, 1.20, 1.85, 2.60, 3.40, 4.30, 4.90, 5.60, 6.40, 7.10, 7.90, 8.70, 9.30, 11.00, 12.60, 14.10, 15.80, 17.60, 18.10, 18.60, 19.10, 19.40, 20.90, 24.20, 27.70, 29.80)
+KEYFRAME_TIMES = (0.40, 1.40, 2.20, 2.70, 3.30, 4.20, 5.20, 6.20, 7.00, 7.80, 8.50, 9.00, 10.00, 11.20, 11.90, 12.50, 14.50, 16.00, 17.50, 21.00, 24.50, 28.00, 29.80)
 
 
 def render_keyframes(model: str, data: dict[str, object], scene: dict[str, object], qa_dir: Path) -> Path:
@@ -1017,13 +1107,11 @@ def render_animation(model: str, data: dict[str, object], scene: dict[str, objec
         "panels": [
             {"id": "integrator", "rect": list(VIDEO_A), "min_clearance_px": 0, "allow_touch_edges": ["left", "right", "top", "bottom"]},
             {"id": "system", "rect": list(VIDEO_B), "min_clearance_px": 0, "allow_touch_edges": ["left", "right", "top", "bottom"]},
-            {"id": "energy", "rect": list(VIDEO_C), "min_clearance_px": 0, "allow_touch_edges": ["left", "right", "top", "bottom"]},
-            {"id": "chain", "rect": list(VIDEO_D), "min_clearance_px": 0, "allow_touch_edges": ["left", "right", "top", "bottom"]},
+            {"id": "pipeline", "rect": list(VIDEO_D), "min_clearance_px": 0, "allow_touch_edges": ["left", "right", "top", "bottom"]},
         ],
         "whitespace": {"background_threshold": 245, "min_ink_fraction": 0.020, "min_panel_bbox_fill": 0.22, "grid_rows": 12, "grid_columns": 20},
         "bands": [
-            {"id": "gap_a_b", "rect": [0.215, 0.025, 0.230, 0.900], "max_ink_pixels": 5000},
-            {"id": "gap_b_right", "rect": [0.680, 0.025, 0.695, 0.900], "max_ink_pixels": 5000},
+            {"id": "gap_a_b", "rect": [0.200, 0.025, 0.210, 0.900], "max_ink_pixels": 5000},
         ],
     }
     render_video(
@@ -1061,7 +1149,13 @@ def write_provenance(model: str, data: dict[str, object], scene: dict[str, objec
         "smooth_switch": {"form": "DeepPot-SE s(r) = 1/r (r < rcs), (1/r)[u^3(-6u^2+15u-10)+1] (rcs <= r < rc), 0 (r >= rc)", "rcs_angstrom": R_CUT_SMOOTH, "rc_angstrom": data["cutoff"], "note": "shown as a geometry transform for both stories; DPA4C's own radial basis is not reproduced"},
         "eps_colouring": "atom colour = eps_j minus the mean eps of its species at that state, clipped to +-%.3f eV" % scene["scales"]["eps"]["range"],
         "display_scales": scene["scales"],
-        "timeline": {"duration_seconds": VIDEO_DURATION, "detailed_block_seconds": DETAILED_BLOCK, "detailed_phases": DETAILED_PHASES, "rapid_block_seconds": RAPID_BLOCK, "rapid_phases": RAPID_PHASES},
+        "timeline": {"duration_seconds": VIDEO_DURATION, "detailed_block_seconds": DETAILED_BLOCK, "second_block_scale": SECOND_BLOCK_SCALE, "detailed_phases": DETAILED_PHASES, "rapid_phases": RAPID_PHASES},
+        "internals": {
+            "file": str(MODELS[model]["internals"]),
+            "sha256": sha256_file(MODELS[model]["internals"]),
+            "checks": json.loads(MODELS[model]["internals"].with_suffix(".json").read_text(encoding="utf-8")).get("checks"),
+            "heatmap_normalisation": "each block saturates at its own 98th-percentile |value| (navy negative, crimson positive); the neighbour-sum blocks use the largest |value| of their final sum",
+        },
     }
     json_dump(qa_dir / "story_provenance.json", payload)
 
@@ -1078,6 +1172,7 @@ def main() -> None:
         data = load_data(model)
         qa_dir = ROOT / "qa" / MODELS[model]["stem"]
         scene = prepare_assets(model, data, qa_dir)
+        scene["internals"] = load_internals(model, data)
         write_provenance(model, data, scene, qa_dir)
         if args.assets_only:
             continue

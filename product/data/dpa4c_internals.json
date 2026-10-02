@@ -1,0 +1,104 @@
+{
+  "model": "DPA4C-Neo-OMat24-v20260819.pt",
+  "centre_index": 126,
+  "readout_layout": {
+    "degree_channels": [
+      64,
+      8,
+      4
+    ],
+    "gram_offsets": [
+      0,
+      36,
+      46
+    ],
+    "dim_out": 142
+  },
+  "checks": [
+    {
+      "state": 0,
+      "amplitude_max_abs_err": 2.516323998058567e-07,
+      "moments_max_abs_err": 9.486664138691481e-07,
+      "n_neighbours": 83,
+      "fit_layer_sizes": [
+        256,
+        256,
+        256,
+        1
+      ],
+      "epsilon_recomputed": -7.285555485091237,
+      "epsilon_abs_err_ev": 3.5762786865234375e-07
+    },
+    {
+      "state": 1,
+      "amplitude_max_abs_err": 3.6576957729295145e-07,
+      "moments_max_abs_err": 1.3503127340719345e-06,
+      "n_neighbours": 83,
+      "fit_layer_sizes": [
+        256,
+        256,
+        256,
+        1
+      ],
+      "epsilon_recomputed": -7.283589127860097,
+      "epsilon_abs_err_ev": 1.1920928955078125e-07
+    },
+    {
+      "state": 2,
+      "amplitude_max_abs_err": 3.608838818891513e-07,
+      "moments_max_abs_err": 1.8696961654462996e-06,
+      "n_neighbours": 83,
+      "fit_layer_sizes": [
+        256,
+        256,
+        256,
+        1
+      ],
+      "epsilon_recomputed": -7.280692342124013,
+      "epsilon_abs_err_ev": 7.152557373046875e-07
+    },
+    {
+      "state": 3,
+      "amplitude_max_abs_err": 4.2054371540700686e-07,
+      "moments_max_abs_err": 1.091016173848658e-06,
+      "n_neighbours": 83,
+      "fit_layer_sizes": [
+        256,
+        256,
+        256,
+        1
+      ],
+      "epsilon_recomputed": -7.276865247092275,
+      "epsilon_abs_err_ev": 2.384185791015625e-07
+    },
+    {
+      "state": 4,
+      "amplitude_max_abs_err": 2.2585424286347688e-07,
+      "moments_max_abs_err": 2.1375633116882398e-06,
+      "n_neighbours": 83,
+      "fit_layer_sizes": [
+        256,
+        256,
+        256,
+        1
+      ],
+      "epsilon_recomputed": -7.272211554846791,
+      "epsilon_abs_err_ev": 9.5367431640625e-07
+    },
+    {
+      "state": 5,
+      "amplitude_max_abs_err": 3.0629578828822446e-07,
+      "moments_max_abs_err": 1.7848980613521803e-06,
+      "n_neighbours": 82,
+      "fit_layer_sizes": [
+        256,
+        256,
+        256,
+        1
+      ],
+      "epsilon_recomputed": -7.266934755644826,
+      "epsilon_abs_err_ev": 1.1920928955078125e-07
+    }
+  ],
+  "reproduces_model": true
+}

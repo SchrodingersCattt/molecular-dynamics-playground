@@ -4,10 +4,10 @@
   "format": "png",
   "width": 1100,
   "height": 1100,
-  "plan_sha256": "80f7ce75bd5da7624e5518141ad23f582fd579491984a8d3d14588ef53cb2d44",
-  "output_sha256": "6ca8009fd7461e3967dc2244ffe63bd44a573e7ef6399ed999e3f3c460003f99",
+  "plan_sha256": "4710164096cfb0727b1c147d384920f3b7a75bdbb3f643adedde16af24fae935",
+  "output_sha256": "76f94b013b3c6af588a43dd63594fcbe49748fa9c160ee48f6d315a3ab1df689",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04_deep_potential_md\\source\\mattervis_v1\\box_04.png",
-  "source_sha256": "29213953ce00a6c29c5b269381caea1344111c37bbd438dd6929adf6705375cf",
+  "source_sha256": "1964a37d1418aeabad9ddd121d9017d97834ceaf40795f222231be8206134d93",
   "frame": 4,
   "view": "unit_cell",
   "camera": {

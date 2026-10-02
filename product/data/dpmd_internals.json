@@ -1,0 +1,95 @@
+{
+  "model": "dpse_h2o_phase_diagram_retrain.pb",
+  "centre_index": 126,
+  "config": {
+    "type_map": [
+      "O",
+      "H"
+    ],
+    "descriptor": {
+      "type": "se_e2_a",
+      "sel": [
+        200,
+        400
+      ],
+      "rcut_smth": 0.5,
+      "rcut": 6.0,
+      "neuron": [
+        25,
+        50,
+        100
+      ],
+      "axis_neuron": 12,
+      "seed": 38291751,
+      "activation_function": "tanh",
+      "resnet_dt": false,
+      "type_one_side": false,
+      "precision": "float64",
+      "trainable": true,
+      "exclude_types": [],
+      "set_davg_zero": false
+    },
+    "fitting_net": {
+      "neuron": [
+        240,
+        240,
+        240
+      ],
+      "resnet_dt": true,
+      "seed": 3218943636,
+      "type": "ener",
+      "numb_fparam": 0,
+      "numb_aparam": 0,
+      "activation_function": "tanh",
+      "precision": "float64",
+      "trainable": true,
+      "rcond": 0.001,
+      "atom_ener": [],
+      "use_aparam_as_mask": false
+    },
+    "data_stat_nbatch": 10,
+    "data_stat_protect": 0.01,
+    "data_bias_nsample": 10,
+    "srtab_add_bias": true,
+    "type": "standard"
+  },
+  "checks": [
+    {
+      "state": 0,
+      "descriptor_max_abs_err": 2.2620794126737565e-15,
+      "epsilon_abs_err_ev": 3.4638958368304884e-14,
+      "epsilon_model_ev": -4.973429325496792
+    },
+    {
+      "state": 1,
+      "descriptor_max_abs_err": 2.3037127760972e-15,
+      "epsilon_abs_err_ev": 3.9968028886505635e-14,
+      "epsilon_model_ev": -4.942174591256134
+    },
+    {
+      "state": 2,
+      "descriptor_max_abs_err": 2.2620794126737565e-15,
+      "epsilon_abs_err_ev": 4.440892098500626e-14,
+      "epsilon_model_ev": -4.909053848458882
+    },
+    {
+      "state": 3,
+      "descriptor_max_abs_err": 2.275957200481571e-15,
+      "epsilon_abs_err_ev": 3.4638958368304884e-14,
+      "epsilon_model_ev": -4.875690224151616
+    },
+    {
+      "state": 4,
+      "descriptor_max_abs_err": 2.248201624865942e-15,
+      "epsilon_abs_err_ev": 4.440892098500626e-14,
+      "epsilon_model_ev": -4.843819100711129
+    },
+    {
+      "state": 5,
+      "descriptor_max_abs_err": 2.275957200481571e-15,
+      "epsilon_abs_err_ev": 4.263256414560601e-14,
+      "epsilon_model_ev": -4.81474411640299
+    }
+  ],
+  "reproduces_model": true
+}
