@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+export OMP_NUM_THREADS="${OMP_NUM_THREADS:-32}"
+export OPENBLAS_NUM_THREADS="${OPENBLAS_NUM_THREADS:-32}"
+export MKL_NUM_THREADS="${MKL_NUM_THREADS:-32}"
+
 python -m pip install --disable-pip-version-check --no-input \
   "numpy==1.26.4" "scipy==1.13.1" "ase==3.29.0" \
   "pyscf==2.6.2" "geometric==1.1.1" "rdkit==2024.3.5"

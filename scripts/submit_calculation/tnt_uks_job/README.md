@@ -8,8 +8,8 @@ Submit from the 0314 project root with the Bohrium CLI, for example:
 
 ```bash
 bohr job submit \
-  -m registry.dp.tech/dptech/ubuntu:20.04-py3.10 \
-  -t c16_m32_cpu \
+  -m registry.dp.tech/dptech/ubuntu:22.04-py3.10 \
+  -t c32_m64_cpu \
   -c "bash run_tnt_uks.sh" \
   -p scripts/submit_calculation/tnt_uks_job \
   --project_id "$BOHRIUM_PROJECT_ID" \

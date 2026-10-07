@@ -66,6 +66,8 @@ RELATIVE_SPEED = 0.05
 
 # A moderate fixed grid: axes are Angstrom, values are electron/Angstrom^3.
 GRID_SPACING = 0.22
+ANG_TO_BOHR = 1.0 / 0.529177210903
+ATOMIC_NUMBERS = {"H": 1, "C": 6, "N": 7, "O": 8}
 
 
 def initial_geometry() -> np.ndarray:
@@ -166,6 +168,43 @@ def write_xyz(path: Path, positions: np.ndarray, *, comment: str) -> None:
         f"{element} {coord[0]:.10f} {coord[1]:.10f} {coord[2]:.10f}"
         for element, coord in zip(ELEMENTS, np.asarray(positions, dtype=float))
     )
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def write_cube(
+    path: Path,
+    positions: np.ndarray,
+    grid: tuple[np.ndarray, np.ndarray, np.ndarray],
+    values: np.ndarray,
+    *,
+    title: str,
+) -> None:
+    """Write one scalar field in Gaussian Cube convention."""
+
+    x, y, z = (np.asarray(axis, dtype=float) for axis in grid)
+    field = np.asarray(values, dtype=float) / (0.529177210903**3)
+    if field.shape != (len(x), len(y), len(z)):
+        raise ValueError(f"Cube field shape {field.shape} does not match grid {(len(x), len(y), len(z))}")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    origin = np.asarray([x[0], y[0], z[0]], dtype=float) * ANG_TO_BOHR
+    axes = np.asarray(
+        [
+            [x[1] - x[0], 0.0, 0.0],
+            [0.0, y[1] - y[0], 0.0],
+            [0.0, 0.0, z[1] - z[0]],
+        ],
+        dtype=float,
+    ) * ANG_TO_BOHR
+    lines = [title, "TNT UKS density; coordinates and grid are in the same frame"]
+    lines.append(f"{len(ELEMENTS):5d} {origin[0]: .8f} {origin[1]: .8f} {origin[2]: .8f}")
+    for count, axis in zip(field.shape, axes):
+        lines.append(f"{count:5d} {axis[0]: .8f} {axis[1]: .8f} {axis[2]: .8f}")
+    for element, coord in zip(ELEMENTS, np.asarray(positions, dtype=float)):
+        xyz = np.asarray(coord) * ANG_TO_BOHR
+        lines.append(f"{ATOMIC_NUMBERS[str(element)]:5d} 0.00000000 {xyz[0]: .8f} {xyz[1]: .8f} {xyz[2]: .8f}")
+    flat = field.ravel(order="C")
+    for start in range(0, len(flat), 6):
+        lines.append(" ".join(f"{value: .8E}" for value in flat[start : start + 6]))
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
@@ -326,6 +365,8 @@ def save_dataset(frames: list[dict[str, object]], *, backend: str, geometry: np.
     forces = np.asarray([frame["forces"] for frame in frames], dtype=float)
     rho_alpha_3d = np.asarray([frame["rho_alpha_3d"] for frame in frames], dtype=np.float32)
     rho_beta_3d = np.asarray([frame["rho_beta_3d"] for frame in frames], dtype=np.float32)
+    dm_alpha = np.asarray([frame["dm_alpha"] for frame in frames], dtype=np.float32)
+    dm_beta = np.asarray([frame["dm_beta"] for frame in frames], dtype=np.float32)
     output = DATA_DIR / f"{DATA_STEM}.npz"
     np.savez_compressed(
         output,
@@ -353,6 +394,8 @@ def save_dataset(frames: list[dict[str, object]], *, backend: str, geometry: np.
         density_output,
         rho_alpha_3d=rho_alpha_3d,
         rho_beta_3d=rho_beta_3d,
+        dm_alpha=dm_alpha,
+        dm_beta=dm_beta,
         grid_x_ang=np.asarray(grid[0]),
         grid_y_ang=np.asarray(grid[1]),
         grid_z_ang=np.asarray(grid[2]),
@@ -360,6 +403,15 @@ def save_dataset(frames: list[dict[str, object]], *, backend: str, geometry: np.
         elements=ELEMENTS,
         frame=np.arange(len(frames), dtype=int),
     )
+    cube_dir = REPO_ROOT / "product" / "qa" / "03b_uks_reaction" / "source" / "density3d"
+    cube_indices = sorted(set((0, len(frames) // 2, len(frames) - 1)))
+    cube_outputs = []
+    for frame_index in cube_indices:
+        alpha_path = cube_dir / f"frame_{frame_index:04d}_alpha.cube"
+        beta_path = cube_dir / f"frame_{frame_index:04d}_beta.cube"
+        write_cube(alpha_path, positions[frame_index], grid, rho_alpha_3d[frame_index], title=f"TNT alpha density frame {frame_index}")
+        write_cube(beta_path, positions[frame_index], grid, rho_beta_3d[frame_index], title=f"TNT beta density frame {frame_index}")
+        cube_outputs.extend([str(alpha_path), str(beta_path)])
     manifest = {
         "schema_version": 1,
         "stem": STEM,
@@ -368,6 +420,15 @@ def save_dataset(frames: list[dict[str, object]], *, backend: str, geometry: np.
         "method": "UKS/PBE0/def2-SVP" if backend == "pyscf_uks" else "analytic surrogate for visual QA",
         "elements": ELEMENTS.tolist(),
         "formula": "C7H5N3O6",
+        "smiles": "Cc1c([N+](=O)[O-])cc([N+](=O)[O-])cc1[N+](=O)[O-]",
+        "atom_map": {
+            "ring_c1_c6": RING_ATOMS.tolist(),
+            "methyl_c": int(METHYL_C),
+            "ring_h": RING_H.tolist(),
+            "methyl_h": METHYL_H.tolist(),
+            "nitro_n": NITRO_N.tolist(),
+            "nitro_o": NITRO_O.tolist(),
+        },
         "charge": CHARGE,
         "spin": SPIN,
         "electron_count": electron_count(ELEMENTS, CHARGE),
@@ -381,6 +442,7 @@ def save_dataset(frames: list[dict[str, object]], *, backend: str, geometry: np.
         "relative_speed_ang_fs": RELATIVE_SPEED,
         "density3d": {
             "npz": str(density_output),
+            "representative_cubes": cube_outputs,
             "units": "electron/angstrom^3",
             "grid_order": "x,y,z",
             "shape": [len(grid[0]), len(grid[1]), len(grid[2])],
