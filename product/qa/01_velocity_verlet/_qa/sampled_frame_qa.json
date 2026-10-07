@@ -1,0 +1,222 @@
+{
+  "video": "product/videos/01_velocity_verlet.mp4",
+  "probe": {
+    "width": 1920,
+    "height": 600,
+    "r_frame_rate": "24/1",
+    "duration": "21.000000",
+    "nb_read_frames": "504"
+  },
+  "samples": [
+    {
+      "t": 0.5,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.053,
+      "B_ink_fraction": 0.0694,
+      "R/C+D_ink_fraction": 0.1386,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    },
+    {
+      "t": 2.4,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.0533,
+      "B_ink_fraction": 0.0689,
+      "R/C+D_ink_fraction": 0.1461,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    },
+    {
+      "t": 4.0,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.0533,
+      "B_ink_fraction": 0.0762,
+      "R/C+D_ink_fraction": 0.1457,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    },
+    {
+      "t": 4.9,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.0533,
+      "B_ink_fraction": 0.069,
+      "R/C+D_ink_fraction": 0.1457,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    },
+    {
+      "t": 6.3,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.0533,
+      "B_ink_fraction": 0.0728,
+      "R/C+D_ink_fraction": 0.1456,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    },
+    {
+      "t": 7.7,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.0533,
+      "B_ink_fraction": 0.0728,
+      "R/C+D_ink_fraction": 0.1456,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    },
+    {
+      "t": 8.9,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.0533,
+      "B_ink_fraction": 0.0712,
+      "R/C+D_ink_fraction": 0.1457,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    },
+    {
+      "t": 10.2,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.0547,
+      "B_ink_fraction": 0.07,
+      "R/C+D_ink_fraction": 0.137,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    },
+    {
+      "t": 11.0,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.0545,
+      "B_ink_fraction": 0.0703,
+      "R/C+D_ink_fraction": 0.1367,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    },
+    {
+      "t": 12.1,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.0533,
+      "B_ink_fraction": 0.0715,
+      "R/C+D_ink_fraction": 0.1456,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    },
+    {
+      "t": 13.0,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.0533,
+      "B_ink_fraction": 0.0723,
+      "R/C+D_ink_fraction": 0.1464,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    },
+    {
+      "t": 14.6,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.053,
+      "B_ink_fraction": 0.0732,
+      "R/C+D_ink_fraction": 0.1373,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    },
+    {
+      "t": 15.4,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.053,
+      "B_ink_fraction": 0.0722,
+      "R/C+D_ink_fraction": 0.1372,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    },
+    {
+      "t": 17.0,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.0559,
+      "B_ink_fraction": 0.0727,
+      "R/C+D_ink_fraction": 0.1471,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    },
+    {
+      "t": 18.5,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.0558,
+      "B_ink_fraction": 0.0749,
+      "R/C+D_ink_fraction": 0.1459,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    },
+    {
+      "t": 20.4,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.056,
+      "B_ink_fraction": 0.076,
+      "R/C+D_ink_fraction": 0.1462,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    }
+  ],
+  "all_pass": true,
+  "note": "sampled decoded-frame QA; keyframes also pass LayoutRegistry validation"
+}

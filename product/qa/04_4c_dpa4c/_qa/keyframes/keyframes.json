@@ -138,7 +138,7 @@
       "semantics": [
         {
           "id": "neighbour_sum",
-          "color": "#2F6B4F",
+          "color": "#183153",
           "min_pixels": 40
         }
       ]
@@ -155,7 +155,7 @@
       "semantics": [
         {
           "id": "neighbour_sum",
-          "color": "#2F6B4F",
+          "color": "#183153",
           "min_pixels": 40
         }
       ]
@@ -208,7 +208,7 @@
       "semantics": [
         {
           "id": "energy_text",
-          "color": "#2F6B4F",
+          "color": "#1F7A7A",
           "min_pixels": 40
         }
       ]
@@ -225,7 +225,7 @@
       "semantics": [
         {
           "id": "model_force",
-          "color": "#A99C50",
+          "color": "#E07A1F",
           "min_pixels": 120
         }
       ]
@@ -242,31 +242,14 @@
       "semantics": [
         {
           "id": "acceleration",
-          "color": "#7B5EA7",
-          "min_pixels": 120
-        }
-      ]
-    },
-    {
-      "time_seconds": 11.9,
-      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04_4c_dpa4c\\_qa\\keyframes\\frame_14_11.90s.png",
-      "state": {
-        "mode": "velocity",
-        "state": 0,
-        "progress": 0.5000000000000042,
-        "rapid": false
-      },
-      "semantics": [
-        {
-          "id": "half_step_velocity",
-          "color": "#2F8562",
+          "color": "#E07A1F",
           "min_pixels": 120
         }
       ]
     },
     {
       "time_seconds": 12.5,
-      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04_4c_dpa4c\\_qa\\keyframes\\frame_15_12.50s.png",
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04_4c_dpa4c\\_qa\\keyframes\\frame_14_12.50s.png",
       "state": {
         "mode": "move",
         "state": 0,
@@ -276,7 +259,24 @@
       "semantics": [
         {
           "id": "displacement",
-          "color": "#4E9BB5",
+          "color": "#2F6FB3",
+          "min_pixels": 120
+        }
+      ]
+    },
+    {
+      "time_seconds": 13.1,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04_4c_dpa4c\\_qa\\keyframes\\frame_15_13.10s.png",
+      "state": {
+        "mode": "move",
+        "state": 0,
+        "progress": 1.0,
+        "rapid": false
+      },
+      "semantics": [
+        {
+          "id": "displacement",
+          "color": "#2F6FB3",
           "min_pixels": 120
         }
       ]
@@ -285,10 +285,31 @@
       "time_seconds": 14.5,
       "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04_4c_dpa4c\\_qa\\keyframes\\frame_16_14.50s.png",
       "state": {
-        "mode": "gather",
-        "state": 1,
-        "progress": 0.652406417112299,
+        "mode": "move",
+        "state": 0,
+        "progress": 1.0,
         "rapid": false
+      },
+      "semantics": [
+        {
+          "id": "displacement",
+          "color": "#2F6FB3",
+          "min_pixels": 120
+        }
+      ]
+    },
+    {
+      "time_seconds": 16.4,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04_4c_dpa4c\\_qa\\keyframes\\frame_17_16.40s.png",
+      "state": {
+        "mode": "embed",
+        "state": 1,
+        "progress": 0.4999999999999959,
+        "rapid": true,
+        "sweeps": [
+          0.4999999999999939,
+          0.0
+        ]
       },
       "semantics": [
         {
@@ -300,48 +321,59 @@
       ]
     },
     {
-      "time_seconds": 16.0,
-      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04_4c_dpa4c\\_qa\\keyframes\\frame_17_16.00s.png",
+      "time_seconds": 16.8,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04_4c_dpa4c\\_qa\\keyframes\\frame_18_16.80s.png",
       "state": {
         "mode": "contract",
         "state": 1,
-        "progress": 0.021390374331550156,
-        "rapid": false
+        "progress": 0.7500000000000017,
+        "rapid": true,
+        "sweeps": [
+          1.0,
+          0.36513899323816773
+        ]
       },
       "semantics": [
         {
           "id": "neighbour_sum",
-          "color": "#2F6B4F",
+          "color": "#183153",
           "min_pixels": 40
         }
       ]
     },
     {
-      "time_seconds": 17.5,
-      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04_4c_dpa4c\\_qa\\keyframes\\frame_18_17.50s.png",
+      "time_seconds": 17.6,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04_4c_dpa4c\\_qa\\keyframes\\frame_19_17.60s.png",
       "state": {
-        "mode": "fit",
+        "mode": "velocity",
         "state": 1,
-        "progress": 0.7597402597402584,
-        "rapid": false
+        "progress": 0.8750000000000063,
+        "rapid": true,
+        "sweeps": [
+          1.0,
+          1.0
+        ]
       },
       "semantics": [
         {
-          "id": "centre_atom_or_eps",
-          "color": "#183153",
-          "min_pixels": 30,
-          "tolerance": 60
+          "id": "half_step_velocity",
+          "color": "#7A4FB8",
+          "min_pixels": 120
         }
       ]
     },
     {
-      "time_seconds": 21.0,
-      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04_4c_dpa4c\\_qa\\keyframes\\frame_19_21.00s.png",
+      "time_seconds": 18.5,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04_4c_dpa4c\\_qa\\keyframes\\frame_20_18.50s.png",
       "state": {
         "mode": "embed",
         "state": 2,
-        "progress": 0.45063182694366893,
-        "rapid": true
+        "progress": 0.7272727272727264,
+        "rapid": true,
+        "sweeps": [
+          0.8174305033809157,
+          0.0
+        ]
       },
       "semantics": [
         {
@@ -349,58 +381,131 @@
           "color": "#183153",
           "min_pixels": 60,
           "tolerance": 60
+        }
+      ]
+    },
+    {
+      "time_seconds": 19.3,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04_4c_dpa4c\\_qa\\keyframes\\frame_21_19.30s.png",
+      "state": {
+        "mode": "accel",
+        "state": 2,
+        "progress": 1.3877787807814457e-15,
+        "rapid": true,
+        "sweeps": [
+          1.0,
+          1.0
+        ]
+      },
+      "semantics": [
+        {
+          "id": "acceleration",
+          "color": "#E07A1F",
+          "min_pixels": 120
+        }
+      ]
+    },
+    {
+      "time_seconds": 20.3,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04_4c_dpa4c\\_qa\\keyframes\\frame_22_20.30s.png",
+      "state": {
+        "mode": "embed",
+        "state": 3,
+        "progress": 0.2727272727272735,
+        "rapid": true,
+        "sweeps": [
+          0.18256949661908434,
+          0.0
+        ]
+      },
+      "semantics": [
+        {
+          "id": "neighbour_edges",
+          "color": "#183153",
+          "min_pixels": 60,
+          "tolerance": 60
+        }
+      ]
+    },
+    {
+      "time_seconds": 21.4,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04_4c_dpa4c\\_qa\\keyframes\\frame_23_21.40s.png",
+      "state": {
+        "mode": "accel",
+        "state": 3,
+        "progress": 0.624999999999988,
+        "rapid": true,
+        "sweeps": [
+          1.0,
+          1.0
+        ]
+      },
+      "semantics": [
+        {
+          "id": "acceleration",
+          "color": "#E07A1F",
+          "min_pixels": 120
+        }
+      ]
+    },
+    {
+      "time_seconds": 22.5,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04_4c_dpa4c\\_qa\\keyframes\\frame_24_22.50s.png",
+      "state": {
+        "mode": "embed",
+        "state": 4,
+        "progress": 0.7272727272727264,
+        "rapid": true,
+        "sweeps": [
+          0.8174305033809157,
+          0.0
+        ]
+      },
+      "semantics": [
+        {
+          "id": "neighbour_edges",
+          "color": "#183153",
+          "min_pixels": 60,
+          "tolerance": 60
+        }
+      ]
+    },
+    {
+      "time_seconds": 23.6,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04_4c_dpa4c\\_qa\\keyframes\\frame_25_23.60s.png",
+      "state": {
+        "mode": "velocity",
+        "state": 4,
+        "progress": 0.8750000000000063,
+        "rapid": true,
+        "sweeps": [
+          1.0,
+          1.0
+        ]
+      },
+      "semantics": [
+        {
+          "id": "half_step_velocity",
+          "color": "#7A4FB8",
+          "min_pixels": 120
         }
       ]
     },
     {
       "time_seconds": 24.5,
-      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04_4c_dpa4c\\_qa\\keyframes\\frame_20_24.50s.png",
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04_4c_dpa4c\\_qa\\keyframes\\frame_26_24.50s.png",
       "state": {
-        "mode": "embed",
-        "state": 3,
-        "progress": 0.735703576783034,
+        "mode": "positions",
+        "state": 5,
+        "progress": 1.0,
         "rapid": true
       },
       "semantics": [
         {
-          "id": "neighbour_edges",
+          "id": "centre_atom",
           "color": "#183153",
-          "min_pixels": 60,
+          "min_pixels": 30,
           "tolerance": 60
-        }
-      ]
-    },
-    {
-      "time_seconds": 28.0,
-      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04_4c_dpa4c\\_qa\\keyframes\\frame_21_28.00s.png",
-      "state": {
-        "mode": "contract",
-        "state": 4,
-        "progress": 0.025663638768846007,
-        "rapid": true
-      },
-      "semantics": [
-        {
-          "id": "neighbour_sum",
-          "color": "#2F6B4F",
-          "min_pixels": 40
-        }
-      ]
-    },
-    {
-      "time_seconds": 29.8,
-      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04_4c_dpa4c\\_qa\\keyframes\\frame_22_29.80s.png",
-      "state": {
-        "mode": "velocity",
-        "state": 4,
-        "progress": 0.9572713643178214,
-        "rapid": true
-      },
-      "semantics": [
-        {
-          "id": "half_step_velocity",
-          "color": "#2F8562",
-          "min_pixels": 120
         }
       ]
     }

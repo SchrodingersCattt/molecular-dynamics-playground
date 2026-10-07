@@ -1,0 +1,22 @@
+{
+  "stem": "03b_uks_reaction",
+  "mode": "fast_export_sampled",
+  "video_duration_seconds": 30.0,
+  "sample_times_seconds": [
+    0.0,
+    4.5,
+    9.25,
+    18.8,
+    21.0,
+    26.0,
+    29.0
+  ],
+  "checked": {
+    "geometry": "19 real ionic snapshots from the saved trajectory",
+    "rapid_progression": "ion 10 at 21 s; ion 14 at 26 s; ion 17 at 29 s",
+    "no_backward_replay": true,
+    "alpha_beta_contours": true,
+    "native_mattervis_assets": true
+  },
+  "passed": true
+}

@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "stem": "03b_uks_reaction",
+  "backend": "analytic_demo",
+  "method": "analytic surrogate for visual QA",
+  "elements": [
+    "Cl",
+    "O",
+    "H",
+    "O",
+    "O",
+    "O"
+  ],
+  "charge": 0,
+  "spin": 0,
+  "electron_count": 50,
+  "reaction": "HClO4 -> OH radical + ClO3 radical (Cl-O(H) homolytic dissociation)",
+  "trajectory": "kick-started, non-equilibrium, qualitative BOMD",
+  "geometry_source": "fixed hand-tuned tetrahedral reference geometry; no geometry optimizer invoked",
+  "dt_fs": 0.1,
+  "n_steps": 500,
+  "relative_speed_ang_fs": 0.05,
+  "mass_weighted_com_velocity_initial_ang_fs": [
+    -5.526026960724096e-19,
+    -6.90753370090512e-20,
+    0.0
+  ],
+  "mass_weighted_com_velocity_max_ang_fs": 1.9341587751505538e-17,
+  "oh_atoms": [
+    1,
+    2
+  ],
+  "clo3_atoms": [
+    0,
+    3,
+    4,
+    5
+  ],
+  "npz": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\data\\uks_hclo4_reaction.npz",
+  "source_sha256": "5c8c4925d743cad6b512c4ae8dc3609656b7b1f592376350fafc348f3fb44f4c",
+  "notes": [
+    "The analytic backend is for layout and renderer QA only; it is not UKS data.",
+    "A real run requires a platform-supported PySCF installation."
+  ]
+}

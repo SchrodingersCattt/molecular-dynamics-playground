@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+python -m pip install --disable-pip-version-check --no-input \
+  "numpy==1.26.4" "scipy==1.13.1" "ase==3.29.0" \
+  "pyscf==2.6.2" "geometric==1.1.1" "rdkit==2024.3.5"
+
+python - <<'PY'
+import pyscf
+print("PySCF import OK", pyscf.__version__)
+PY
+
+mkdir -p results
+PYTHONPATH="$PWD/scripts/run_md:$PWD/scripts/build_box" \
+  python scripts/build_box/generate_uks_tnt.py --steps 100 --force
+
+cp product/data/uks_tnt_reaction.npz results/
+cp product/data/uks_tnt_reaction.json results/
+cp product/data/uks_tnt_reaction_density3d.npz results/
+cp product/qa/03b_uks_reaction/source/tnt_optimized.xyz results/
+python - <<'PY'
+import json
+import platform
+import sys
+from pathlib import Path
+
+payload = {
+    "python": sys.version,
+    "platform": platform.platform(),
+    "cwd": str(Path.cwd()),
+}
+Path("results/runtime.json").write_text(json.dumps(payload, indent=2) + "\n")
+PY

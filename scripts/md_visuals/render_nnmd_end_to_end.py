@@ -34,12 +34,16 @@ from matplotlib.patches import Ellipse, FancyArrowPatch, Rectangle
 from PIL import Image
 
 from common import (
+    A_ORANGE,
     CRIMSON,
     DARK_GRAY,
-    GREEN,
+    ENERGY_TEAL,
+    FONT_SIZES,
     INK,
     LINE_GRAY,
     NAVY,
+    R_BLUE,
+    V_PURPLE,
     WHITE,
     LayoutRegistry,
     axes_from_top_slot,
@@ -51,11 +55,13 @@ from common import (
     save_static,
     sha256_file,
     smoothstep,
+    text_scale_of,
 )
 from mattervis_story import (
     SceneCamera,
     _composition_rgba,
     camera_for_source,
+    draw_arrow_legend,
     draw_vv_loop,
     make_sphere_mesh,
     make_torus_mesh,
@@ -78,10 +84,8 @@ MODELS = {
         "internals": DATA_DIR / "dpmd_internals.npz",
         "provider": "DeepMD · DeepPot-SE",
         "titles": {
-            "gather": "{n} neighbour rows → environment matrix " r"$\tilde{{R}}_i$",
-            "embed": r"Embedding net on every row: $s(r)\rightarrow$ 25 → 50 → 100",
-            "contract": r"$\Sigma_j$ over neighbours: $T=\tilde{R}^{\top}G/N$, $D=T^{\top}T_{<}$",
-            "fit": r"Fitting net 240 × 3 → atomic energy $\varepsilon_i$",
+            "gather": r"Neighbour rows → environment matrix $\tilde{R}_i$",
+            "embed": "Embedding net on every row",
         },
     },
     "dpa4c": {
@@ -91,10 +95,8 @@ MODELS = {
         "internals": DATA_DIR / "dpa4c_internals.npz",
         "provider": "DPA4C · equivariant descriptor",
         "titles": {
-            "gather": "{n} neighbour rows → " r"$Y_{{lm}}(\hat{{u}})$ and radial basis $e(r)$",
-            "embed": r"Radial MLP $e\rightarrow h\rightarrow g$, pair FiLM → amplitude $\phi$",
-            "contract": r"$\Sigma_j$ over neighbours: moments $X^{(0)}, X^{(1)}, X^{(2)}$",
-            "fit": r"208 invariants → fitting net 256 × 3 → $\varepsilon_i$",
+            "gather": r"Neighbour rows → $Y_{lm}(\hat{u})$ and $e(r)$",
+            "embed": r"Radial MLP → amplitude $\phi$ on every row",
         },
     },
 }
@@ -110,14 +112,15 @@ STATIC_D = (0.605, 0.045, 0.965, 0.905)
 RETURN_Y_VIDEO = 0.045
 RETURN_Y_STATIC = 0.030
 
-# Shared colour semantics with the AIMD movie.
-POSITION_LAKE = "#4E9BB5"
-FORCE_OLIVE = "#A99C50"
-VELOCITY_EMERALD = "#2F8562"
-ACCEL_PLUM = "#7B5EA7"
+# Shared r/v/a palette of every movie: structure and descriptor in navy,
+# energy in teal, force and acceleration in orange.
+POSITION_LAKE = R_BLUE
+VELOCITY_EMERALD = V_PURPLE
+ACCEL_PLUM = A_ORANGE
 EDGE_NAVY = NAVY
-SPHERE_TEAL = "#397F99"
+SPHERE_TEAL = "#5B7A99"
 CENTRE_NAVY = "#183153"
+INACTIVE_PATH = "#B4BABE"
 FADE_OUTSIDE = 0.15
 
 # Display scales (declared in provenance; identical for both models).
@@ -145,7 +148,17 @@ BOX_ORTHO = 10.0
 FOCUS_ORTHO = 6.75
 RENDER_PX = 1100
 
-VIDEO_DURATION = 30.0
+FORCE_OLIVE = A_ORANGE
+LOOP_CENTRE_Y = 0.58
+LOOP_RADIUS_X = 0.36
+LEGEND = {
+    "force": (r"force $\mathbf{F}$", FORCE_OLIVE),
+    "accel": (r"acceleration $\mathbf{a}$", ACCEL_PLUM),
+    "velocity": (r"velocity $\mathbf{v}$", VELOCITY_EMERALD),
+    "move": (r"displacement $\mathbf{v}\Delta t$", POSITION_LAKE),
+}
+
+VIDEO_DURATION = 25.0
 DETAILED_PHASES = (
     ("positions", 0.8),
     ("neighbours", 1.0),
@@ -160,8 +173,34 @@ DETAILED_PHASES = (
     ("move", 0.7),
 )
 DETAILED_BLOCK = sum(length for _, length in DETAILED_PHASES)
-SECOND_BLOCK_SCALE = 0.55  # step 2 replays the same stages faster
-RAPID_PHASES = tuple(item for item in DETAILED_PHASES if item[0] != "positions")
+# The rapid pass is a separate storyboard.  Each state is a direct visual
+# checkpoint; neighbouring stages are intentionally short and never blend into
+# one another as the slow pass does.
+SLOW_HOLD_SECONDS = 3.0
+RAPID_CYCLE_SECONDS = 2.0
+RAPID_STATES = (1, 2, 3, 4)
+RAPID_PHASES = (
+    ("positions", 0.04),
+    ("neighbours", 0.04),
+    ("gather", 0.06),
+    ("embed", 0.22),
+    ("contract", 0.12),
+    ("fit", 0.07),
+    ("energy", 0.03),
+    ("force", 0.12),
+    ("accel", 0.08),
+    ("velocity", 0.08),
+    ("move", 0.14),
+)
+# Fractions of one rapid cycle: the horizontal wipe spans "embed", the
+# vertical wipe spans "contract" + "fit" + "energy".
+_RAPID_EDGES = np.cumsum([0.0] + [length for _, length in RAPID_PHASES])
+_RAPID_INDEX = {name: index for index, (name, _) in enumerate(RAPID_PHASES)}
+SWEEP_H = (_RAPID_EDGES[_RAPID_INDEX["embed"]], _RAPID_EDGES[_RAPID_INDEX["embed"] + 1])
+SWEEP_V = (_RAPID_EDGES[_RAPID_INDEX["contract"]], _RAPID_EDGES[_RAPID_INDEX["energy"] + 1])
+SWEEP_TOP = 0.815
+SWEEP_BOTTOM = 0.10
+FINAL_STATE_HOLD_SECONDS = 1.0
 FLOW_ORDER = tuple(name for name, _ in DETAILED_PHASES)
 MODE_TO_LOOP_STAGE = {name: 1 for name in FLOW_ORDER} | {"velocity": 2, "move": 0}
 
@@ -215,6 +254,7 @@ def load_data(model: str) -> dict[str, object]:
     # position-update arrows never inherit a wrapped jump.
     disp = positions[1:] - positions[:-1]
     data["mic_displacements"] = minimum_image(disp, data["box_length"])
+    data["owner"] = water_owner(data)
     return data
 
 
@@ -285,8 +325,39 @@ def _edge_meshes(origin: np.ndarray, endpoints: np.ndarray, *, color: str, opaci
     return meshes
 
 
+def water_owner(data: dict[str, object]) -> np.ndarray:
+    """Index of the O that owns each atom (an O owns itself), from state 0."""
+    positions = data["positions"][0]
+    elements = data["elements"]
+    box = data["box_length"]
+    oxygens = np.flatnonzero(elements == "O")
+    owner = np.arange(len(elements))
+    for atom in np.flatnonzero(elements == "H"):
+        distances = np.linalg.norm(minimum_image(positions[oxygens] - positions[atom], box), axis=1)
+        owner[atom] = int(oxygens[np.argmin(distances)])
+    return owner
+
+
+def focus_coordinates(data: dict[str, object], state: int, keep: list[int]) -> np.ndarray:
+    """Positions of the kept atoms around O126 with every water left whole."""
+    positions = data["positions"][state]
+    box = data["box_length"]
+    origin = data["positions"][0, data["central_index"]]
+    owner = data["owner"]
+    out = np.empty((len(keep), 3))
+    for row, atom in enumerate(keep):
+        oxygen = int(owner[atom])
+        o_local = minimum_image(positions[oxygen] - origin, box)
+        out[row] = o_local + minimum_image(positions[atom] - positions[oxygen], box)
+    return out
+
+
 def write_sources(data: dict[str, object], source_dir: Path) -> tuple[Path, Path, list[int]]:
-    """Write the periodic box and the O126-centred local source (all states)."""
+    """Write the periodic box and the O126-centred local source (all states).
+
+    The local source keeps whole water molecules, so no H is drawn without
+    its O inside the magnifier.
+    """
     from ase import Atoms
     from ase.io import write
 
@@ -295,15 +366,17 @@ def write_sources(data: dict[str, object], source_dir: Path) -> tuple[Path, Path
     elements = data["elements"]
     box = data["box_length"]
     centre = data["central_index"]
+    owner = data["owner"]
     origin = positions[0, centre]
     delta0 = minimum_image(positions[0] - origin, box)
-    keep = np.flatnonzero(np.linalg.norm(delta0, axis=1) <= FOCUS_RADIUS)
-    keep = [int(centre)] + [int(index) for index in keep if int(index) != centre]
+    near_oxygens = set(int(owner[index]) for index in np.flatnonzero(np.linalg.norm(delta0, axis=1) <= FOCUS_RADIUS))
+    keep = [int(index) for index in range(len(elements)) if int(owner[index]) in near_oxygens]
+    keep = [int(centre)] + [index for index in keep if index != centre]
     box_frames = []
     focus_frames = []
     for state in range(positions.shape[0]):
         box_frames.append(Atoms(symbols=elements.tolist(), positions=positions[state], cell=np.eye(3) * box, pbc=True))
-        local = minimum_image(positions[state][keep] - origin, box)
+        local = focus_coordinates(data, state, keep)
         focus_frames.append(Atoms(symbols=elements[keep].tolist(), positions=local))
     box_source = source_dir / "water_box_trajectory.extxyz"
     focus_source = source_dir / "local_environment_trajectory.extxyz"
@@ -366,8 +439,8 @@ def prepare_assets(model: str, data: dict[str, object], qa_dir: Path) -> dict[st
     keep_index = {atom: local for local, atom in enumerate(keep)}
     cutoff = data["cutoff"]
     sphere = make_sphere_mesh(np.zeros(3), cutoff, color=SPHERE_TEAL, opacity=0.07, lat_steps=18, lon_steps=36, mesh_id="r_c_sphere")
-    equator = make_torus_mesh(np.zeros(3), cutoff * 0.998, 0.035, normal=direction, color="#1F536B", opacity=0.62, major_steps=72, tube_steps=6, mesh_id="r_c_equator")
-    meridian = make_torus_mesh(np.zeros(3), cutoff * 0.998, 0.024, normal=up, color="#2E89A7", opacity=0.42, major_steps=72, tube_steps=6, mesh_id="r_c_meridian")
+    equator = make_torus_mesh(np.zeros(3), cutoff * 0.998, 0.035, normal=direction, color="#2B4766", opacity=0.62, major_steps=72, tube_steps=6, mesh_id="r_c_equator")
+    meridian = make_torus_mesh(np.zeros(3), cutoff * 0.998, 0.024, normal=up, color=SPHERE_TEAL, opacity=0.42, major_steps=72, tube_steps=6, mesh_id="r_c_meridian")
     shell = [sphere, equator, meridian]
     arrow_style = {"shaft_radius": 0.055, "head_length_ratio": 0.30, "head_radius_ratio": 2.3, "sides": 16}
     scales = arrow_scales(data)
@@ -385,7 +458,7 @@ def prepare_assets(model: str, data: dict[str, object], qa_dir: Path) -> dict[st
         common_box = dict(camera=box_cameras[state], view="unit_cell", width=RENDER_PX, height=RENDER_PX, atom_scale=0.72, bond_radius=0.075, show_cell=True, cell_color="#9AA5AA", cell_width_px=1.2)
         local = local_environment(data, state)
         inside = set(int(index) for index in local["ids"])
-        focus_positions = minimum_image(positions[state][keep] - origin, box)
+        focus_positions = focus_coordinates(data, state, keep)
         fade = {keep_index[atom]: (1.0 if (atom in inside or atom == centre) else FADE_OUTSIDE) for atom in keep}
         centre_colour = {keep_index[centre]: CENTRE_NAVY}
         edges = _edge_meshes(focus_positions[0], focus_positions[[keep_index[int(j)] for j in local["ids"]]], color=EDGE_NAVY, opacity=0.70, radius=0.020)
@@ -403,19 +476,19 @@ def prepare_assets(model: str, data: dict[str, object], qa_dir: Path) -> dict[st
             return asset_dir / f"{name}_{state:02d}.png"
 
         records.append(render_structure(box_source, path("box"), frame=state, atom_color_overrides={centre: CENTRE_NAVY}, **common_box))
-        records.append(render_structure(focus_source, path("plain"), frame=state, atom_color_overrides=centre_colour, **common_focus))
+        records.append(render_structure(focus_source, path("plain"), frame=state, mesh_overlays=shell, atom_color_overrides=centre_colour, **common_focus))
         records.append(render_structure(focus_source, path("cut"), frame=state, show_bonds=False, mesh_overlays=shell + edges, atom_opacity_scales=fade, atom_color_overrides=centre_colour, **common_focus))
         records.append(render_structure(focus_source, path("eps"), frame=state, show_bonds=False, mesh_overlays=shell, atom_opacity_scales=fade, atom_color_overrides=eps_colours, **common_focus))
         force = data["forces_ev_per_angstrom"][state][inside_list]
-        records.append(render_structure(focus_source, path("force"), frame=state, show_bonds=False, mesh_overlays=shell, atom_opacity_scales=fade, atom_color_overrides=centre_colour, vector_overlays=arrows(f"force-{state}", inside_pos, force, scales["force"]["scale"], FORCE_OLIVE), **common_focus))
+        records.append(render_structure(focus_source, path("force"), frame=state, mesh_overlays=shell, atom_opacity_scales=fade, atom_color_overrides=centre_colour, vector_overlays=arrows(f"force-{state}", inside_pos, force, scales["force"]["scale"], FORCE_OLIVE), **common_focus))
         accel = data["accelerations"][state][inside_list]
-        records.append(render_structure(focus_source, path("accel"), frame=state, show_bonds=False, mesh_overlays=shell, atom_opacity_scales=fade, atom_color_overrides=centre_colour, vector_overlays=arrows(f"accel-{state}", inside_pos, accel, scales["accel"]["scale"], ACCEL_PLUM), **common_focus))
+        records.append(render_structure(focus_source, path("accel"), frame=state, mesh_overlays=shell, atom_opacity_scales=fade, atom_color_overrides=centre_colour, vector_overlays=arrows(f"accel-{state}", inside_pos, accel, scales["accel"]["scale"], ACCEL_PLUM), **common_focus))
         if state < n_states - 1:
             half = data["half_velocities"][state][inside_list]
-            records.append(render_structure(focus_source, path("velocity"), frame=state, show_bonds=False, mesh_overlays=shell, atom_opacity_scales=fade, atom_color_overrides=centre_colour, vector_overlays=arrows(f"velocity-{state}", inside_pos, half, scales["velocity"]["scale"], VELOCITY_EMERALD), **common_focus))
+            records.append(render_structure(focus_source, path("velocity"), frame=state, mesh_overlays=shell, atom_opacity_scales=fade, atom_color_overrides=centre_colour, vector_overlays=arrows(f"velocity-{state}", inside_pos, half, scales["velocity"]["scale"], VELOCITY_EMERALD), **common_focus))
             disp = data["mic_displacements"][state][inside_list]
             next_focus = {**common_focus, "camera": focus_cameras[state + 1]}
-            records.append(render_structure(focus_source, path("move"), frame=state + 1, show_bonds=False, mesh_overlays=shell, atom_opacity_scales=fade, atom_color_overrides=centre_colour, vector_overlays=arrows(f"move-{state}", inside_pos, disp, scales["move"]["scale"], POSITION_LAKE), **next_focus))
+            records.append(render_structure(focus_source, path("move"), frame=state + 1, mesh_overlays=shell, atom_opacity_scales=fade, atom_color_overrides=centre_colour, vector_overlays=arrows(f"move-{state}", inside_pos, disp, scales["move"]["scale"], POSITION_LAKE), **next_focus))
             assets["velocity"].append(path("velocity"))
             assets["move"].append(path("move"))
         for key in ("box", "plain", "cut", "eps", "force", "accel"):
@@ -494,14 +567,7 @@ def _neg(value: float, digits: int = 3) -> str:
 def draw_left(ax: plt.Axes, registry: LayoutRegistry, *, video: bool, mode: str, provider: str) -> None:
     stage = MODE_TO_LOOP_STAGE[mode]
     equation = (POSITION_EQUATION, ACCELERATION_EQUATION, VELOCITY_EQUATION)[stage]
-    draw_vv_loop(ax, registry, video=video, active_stage=stage, centre_text=equation, centre_y=0.58, radius_x=0.40)
-    # Two short left-aligned lines keep clear of the return arrow entering the
-    # 'a' node from below on the right-hand side of the panel.
-    name, _, detail = provider.partition(" · ")
-    registry.text(ax, 0.03, 0.185, "force provider:", ha="left", va="center", fontsize=12 if video else 10, color=DARK_GRAY, zorder=5)
-    registry.text(ax, 0.03, 0.120, name, ha="left", va="center", fontsize=12 if video else 10, color=INK, weight="bold", zorder=5)
-    if detail:
-        registry.text(ax, 0.03, 0.055, detail, ha="left", va="center", fontsize=12 if video else 10, color=INK, zorder=5)
+    draw_vv_loop(ax, registry, video=video, active_stage=stage, centre_text=equation, centre_y=LOOP_CENTRE_Y, radius_x=LOOP_RADIUS_X)
 
 
 # --------------------------------------------------------------------------
@@ -536,39 +602,36 @@ def draw_case(
     box_x, box_y, box_r = (0.140, 0.560, 0.120) if video else (0.150, 0.580, 0.130)
     box_rect = _square_rect(ax, (box_x, box_y), box_r)
     _place_image(ax, _composition_rgba(assets["box"][min(state, n_states - 1)]), box_rect, zorder=4)
-    sphere_alpha = 1.0 if mode not in {"positions", "neighbours"} else (smoothstep(progress) if mode == "neighbours" else 0.0)
     centre_world = positions[state, centre]
     projected_centre = project_world(centre_world[None, :], camera=box_camera, rect=box_rect, image_aspect=1.0)[0]
     aspect = _axes_aspect(ax)
     radius_axes = data["cutoff"] / (2.0 * BOX_ORTHO) * (box_rect[2] - box_rect[0])
-    if sphere_alpha > 0.0:
-        ax.add_patch(Ellipse(tuple(projected_centre), 2.0 * radius_axes, 2.0 * radius_axes * aspect, fill=False, ec=SPHERE_TEAL, lw=2.4 if video else 1.4, alpha=0.9 * sphere_alpha, zorder=9))
-    registry.text(ax, box_x, box_rect[3] + (0.035 if video else 0.015), "64 H$_2$O periodic box", ha="center", va="bottom", fontsize=12 if video else 10, color=DARK_GRAY, zorder=21)
+    ax.add_patch(Ellipse(tuple(projected_centre), 2.0 * radius_axes, 2.0 * radius_axes * aspect, fill=False, ec=SPHERE_TEAL, lw=2.4 if video else 1.4, alpha=0.9, zorder=9))
+    registry.text(ax, box_x, box_rect[3] + (0.035 if video else 0.015), "64 H$_2$O periodic box", ha="center", va="bottom", fontsize=FONT_SIZES["micro"], color=DARK_GRAY, zorder=21)
 
     # --- magnifier (right) --------------------------------------------------
-    mag_centre = (0.640, 0.515) if video else (0.640, 0.540)
-    mag_rx = 0.330 if video else 0.335
+    mag_centre = (0.640, 0.505) if video else (0.640, 0.540)
+    mag_rx = 0.295 if video else 0.335
     mag_rect = _square_rect(ax, mag_centre, mag_rx)
     mag_ry = mag_rx * aspect
     clip = Ellipse(mag_centre, 2.0 * mag_rx, 2.0 * mag_ry, transform=ax.transData, fc="none", ec="none")
     ax.add_patch(clip)
     ax.add_patch(Ellipse(mag_centre, 2.0 * mag_rx, 2.0 * mag_ry, fc=WHITE, ec=LINE_GRAY, lw=2.0 if video else 1.2, zorder=3))
-    # guide lines from the in-situ circle to the magnifier
-    guide_alpha = 0.55 * (sphere_alpha if mode in {"positions", "neighbours"} else 1.0)
-    if guide_alpha > 0.0:
-        for sign in (1.0, -1.0):
-            start = (projected_centre[0] + radius_axes * 0.35, projected_centre[1] + sign * radius_axes * aspect * 0.94)
-            end = (mag_centre[0] - mag_rx * 0.70, mag_centre[1] + sign * mag_ry * 0.71)
-            ax.add_line(Line2D([start[0], end[0]], [start[1], end[1]], color=LINE_GRAY, lw=1.6 if video else 1.0, alpha=guide_alpha, zorder=2))
+    # The in-situ circle, its guide lines and the magnified cutoff sphere are
+    # one object and are always drawn together.
+    for sign in (1.0, -1.0):
+        start = (projected_centre[0] + radius_axes * 0.35, projected_centre[1] + sign * radius_axes * aspect * 0.94)
+        end = (mag_centre[0] - mag_rx * 0.70, mag_centre[1] + sign * mag_ry * 0.71)
+        ax.add_line(Line2D([start[0], end[0]], [start[1], end[1]], color=SPHERE_TEAL, lw=1.6 if video else 1.0, alpha=0.55, zorder=2))
 
     if mode == "positions":
         image = _composition_rgba(assets["plain"][state])
     elif mode == "neighbours":
-        image = _blend(assets["plain"][state], assets["cut"][state], smoothstep(progress))
+        image = _composition_rgba(assets["cut"][state]) if rapid else _blend(assets["plain"][state], assets["cut"][state], smoothstep(progress))
     elif mode in {"gather", "embed", "contract"}:
         image = _composition_rgba(assets["cut"][state])
     elif mode == "fit":
-        image = _blend(assets["cut"][state], assets["eps"][state], smoothstep(min(progress / 0.6, 1.0)))
+        image = _composition_rgba(assets["eps"][state]) if rapid else _blend(assets["cut"][state], assets["eps"][state], smoothstep(min(progress / 0.6, 1.0)))
     elif mode == "energy":
         image = _composition_rgba(assets["eps"][state])
     elif mode == "force":
@@ -583,88 +646,32 @@ def draw_case(
         raise ValueError(mode)
     _place_image(ax, image, mag_rect, zorder=5, clip=clip)
 
-    # --- in-situ descriptor annotation ------------------------------------
     focus_origin = positions[0, centre]
     local_vectors = local["vectors"]
     centre_local = minimum_image(positions[state, centre] - focus_origin, box)
-    labelled = min(3, len(local_vectors))
-    # The labelled j edges appear together with the neighbour edges.
-    label_alpha = {"neighbours": smoothstep(progress), "gather": 1.0, "embed": 1.0, "contract": 1.0}.get(mode, 0.0) if video else 0.0
-    if label_alpha > 0.0:
-        for k in range(labelled):
-            endpoint = centre_local + local_vectors[k]
-            xy = project_world(np.vstack((centre_local, endpoint)), camera=focus_camera, rect=mag_rect, image_aspect=1.0)
-            ax.plot(xy[:, 0], xy[:, 1], color=WHITE, lw=7.0 if video else 3.5, solid_capstyle="round", zorder=11, alpha=0.9 * label_alpha)
-            ax.plot(xy[:, 0], xy[:, 1], color=EDGE_NAVY, lw=3.6 if video else 1.8, solid_capstyle="round", zorder=12, alpha=label_alpha)
-            offset = np.sign(xy[1] - xy[0]) * np.array([0.028, 0.045])
-            registry.text(ax, xy[1, 0] + offset[0], xy[1, 1] + offset[1], f"$j_{k + 1}$", ha="center", va="center", fontsize=14 if video else 10, color=EDGE_NAVY, weight="bold", alpha=label_alpha, zorder=13, bbox=dict(boxstyle="round,pad=0.15", fc=WHITE, ec="none", alpha=0.85 * label_alpha))
 
     # --- stage title and step label ---------------------------------------
-    title_colour = {
-        "positions": INK,
-        "neighbours": SPHERE_TEAL,
-        "gather": EDGE_NAVY,
-        "embed": EDGE_NAVY,
-        "contract": EDGE_NAVY,
-        "fit": CRIMSON,
-        "energy": GREEN,
-        "force": FORCE_OLIVE,
-        "accel": ACCEL_PLUM,
-        "velocity": VELOCITY_EMERALD,
-        "move": POSITION_LAKE,
-    }[mode]
+    title_colour = INK
     n_neigh = len(local["ids"])
     cutoff = data["cutoff"]
     title = {
-        "positions": r"Current positions $\mathbf{r}_n$ of all 192 atoms",
-        "neighbours": rf"Neighbours of O126 within $r_c$ = {cutoff:.0f} Å: {n_neigh} atoms",
-        "gather": config["titles"]["gather"].format(n=n_neigh),
+        "positions": r"Current positions $\mathbf{r}_n$",
+        "neighbours": rf"Neighbours of O126 within $r_c$ = {cutoff:.0f} Å",
+        "gather": config["titles"]["gather"],
         "embed": config["titles"]["embed"],
-        "contract": config["titles"]["contract"],
-        "fit": config["titles"]["fit"],
-        "energy": r"$E = \sum_i \varepsilon_i$ over all 192 atoms",
-        "force": r"$\mathbf{F}_i = -\partial E/\partial \mathbf{r}_i$ back through every block",
-        "accel": r"$\mathbf{a}_i = \mathbf{F}_i / m_i$: H responds 16× more than O",
+        "contract": "Sum over neighbours → descriptor",
+        "fit": r"Fitting net → atomic energy $\varepsilon_i$",
+        "energy": r"Total energy $E = \Sigma_i\,\varepsilon_i$",
+        "force": r"$\mathbf{F}_i = -\partial E/\partial \mathbf{r}_i$",
+        "accel": r"$\mathbf{a}_i = \mathbf{F}_i / m_i$",
         "velocity": r"Update velocity $\mathbf{v}_{n+1/2}$",
         "move": r"Update position $\mathbf{r}_{n+1}$",
-    }[mode]
-    registry.text(ax, 0.50, 0.945, title, ha="center", va="center", fontsize=18 if video else 11, color=title_colour, weight="bold", zorder=21)
-    step_xy = (0.03, 0.835) if video else (0.05, 0.875)
-    registry.text(ax, *step_xy, f"MD step {state + 1:02d} · Δt = {data['dt_fs']:.1f} fs", ha="left", va="bottom", fontsize=12 if video else 10, color=INK, zorder=21)
-
-    # --- the three labelled neighbours, under the box ---------------------
-    if mode != "positions" or not video:
-        header_alpha = smoothstep(progress) if mode == "neighbours" else 1.0
-        for k in range(labelled):
-            r = float(local["distances"][k])
-            element = data["elements"][int(local["ids"][k])]
-            registry.text(ax, 0.03, 0.33 - 0.055 * k, rf"$j_{k + 1}$  {element}{int(local['ids'][k])}  {r:.2f} Å", ha="left", va="center", fontsize=14 if video else 10, color=INK if mode in {"neighbours", "gather"} else DARK_GRAY, alpha=header_alpha, zorder=21)
-
-    # --- legends under the magnifier ---------------------------------------
-    legend_y = 0.070
-    if mode in {"fit", "energy"}:
-        gradient = np.linspace(0.0, 1.0, 256)[None, :]
-        ax.imshow(gradient, cmap=EPS_CMAP, extent=(0.55, 0.78, legend_y - 0.012, legend_y + 0.012), origin="lower", aspect="auto", zorder=8)
-        eps_range = scene["scales"]["eps"]["range"]
-        registry.text(ax, 0.54, legend_y, f"−{eps_range:.2f}", ha="right", va="center", fontsize=12 if video else 10, color=DARK_GRAY, zorder=21)
-        registry.text(ax, 0.79, legend_y, f"+{eps_range:.2f} eV", ha="left", va="center", fontsize=12 if video else 10, color=DARK_GRAY, zorder=21)
-        registry.text(ax, 0.975, legend_y + 0.055, r"colour: $\varepsilon_j$ − species mean $\varepsilon$", ha="right", va="center", fontsize=12 if video else 10, color=DARK_GRAY, zorder=21)
-    elif mode == "force":
-        peak = scene["scales"]["force"]["max_magnitude"]
-        registry.text(ax, 0.975, legend_y, rf"$\mathbf{{F}}_i$ on all atoms in $r_c$ · longest arrow = {peak:.2f} eV/Å", ha="right", va="center", fontsize=12 if video else 10, color=FORCE_OLIVE, zorder=21)
-    elif mode == "accel":
-        peak = scene["scales"]["accel"]["max_magnitude"]
-        registry.text(ax, 0.975, legend_y, rf"$\mathbf{{a}}_i$ on all atoms in $r_c$ · longest arrow = {peak * 1.0e3:.1f}×10$^{{-3}}$ Å/fs²", ha="right", va="center", fontsize=12 if video else 10, color=ACCEL_PLUM, zorder=21)
-    elif mode == "velocity":
-        peak = scene["scales"]["velocity"]["max_magnitude"]
-        registry.text(ax, 0.975, legend_y, rf"$\mathbf{{v}}_{{n+1/2}}$ on all atoms in $r_c$ · longest arrow = {peak * 1.0e2:.1f}×10$^{{-2}}$ Å/fs", ha="right", va="center", fontsize=12 if video else 10, color=VELOCITY_EMERALD, zorder=21)
-    elif mode == "move":
-        peak = scene["scales"]["move"]["max_magnitude"]
-        registry.text(ax, 0.975, legend_y, rf"$\mathbf{{r}}_{{n+1}} - \mathbf{{r}}_n$ (atoms at $\mathbf{{r}}_{{n+1}}$) · longest = {peak * 1.0e2:.1f}×10$^{{-2}}$ Å", ha="right", va="center", fontsize=12 if video else 10, color=POSITION_LAKE, zorder=21)
-    elif mode in {"neighbours", "gather", "embed", "contract"}:
-        registry.text(ax, 0.975, legend_y, f"faded: outside $r_c$ · edges: O126 → {n_neigh} neighbours", ha="right", va="center", fontsize=12 if video else 10, color=DARK_GRAY, alpha=sphere_alpha if mode == "neighbours" else 1.0, zorder=21)
-    elif mode == "positions":
-        registry.text(ax, 0.975, legend_y, "magnified view around O126 (navy)", ha="right", va="center", fontsize=12 if video else 10, color=DARK_GRAY, zorder=21)
+    }["fit" if rapid and mode == "energy" else mode]
+    registry.text(ax, 0.50, 0.955, title, ha="center", va="center", fontsize=FONT_SIZES["panel_title"], color=title_colour, zorder=21)
+    step_xy = (0.035, 0.03) if video else (0.05, 0.05)
+    registry.text(ax, *step_xy, f"Simulation step {state + 1:02d} ({state * data['dt_fs']:.1f} fs)", ha="left", va="bottom", fontsize=FONT_SIZES["micro"], color=INK, zorder=21)
+    if mode in LEGEND:
+        draw_arrow_legend(ax, registry, [LEGEND[mode]], x_right=0.97 if video else 0.95, y=step_xy[1], video=video)
 
     neighbour_world = np.vstack([centre_local + vector for vector in local_vectors])
     neighbour_xy = project_world(neighbour_world, camera=focus_camera, rect=mag_rect, image_aspect=1.0)
@@ -678,10 +685,12 @@ def draw_case(
 # --------------------------------------------------------------------------
 # panel D: operator pipeline built from the dumped forward pass of O126
 # --------------------------------------------------------------------------
-CHAIN_NODE_X = 0.02  # where F leaves panel D towards the integrator
-ROW_TOP = 0.84
+ROW_TOP = 0.815
 ROW_BOTTOM = 0.16
-RIGHT_X = (0.60, 0.975)
+LABEL_Y = 0.865
+RIGHT_X = (0.54, 0.985)
+EPS_Y = 0.215
+ENERGY_Y = 0.135
 OP_CMAP = LinearSegmentedColormap.from_list("op", [NAVY, "#F4F5F6", CRIMSON])
 SPECIES_DOT = {"O": "#D2453A", "H": "#C9CED3"}
 # DPA4C moment layout (model constants of the checkpoint): degree zero is the
@@ -726,9 +735,9 @@ def load_internals(model: str, data: dict[str, object]) -> dict[str, object]:
             # close it, so the last partial sum equals the dumped T.
             real = np.einsum("jk,jc->jkc", rmat, g) / DPMD_N_SEL
             partial = [("T", "", real, T - real.sum(axis=0))]
-            invariant = (r"$D=T^{\top}T_{<}$: 100 × 12", raw["D"][state].T)
+            invariant = (r"Descriptor $D=T^{\top}T_{<}$", raw["D"][state].T)
             fits = [raw["fit_1"][state], raw["fit_2"][state], raw["fit_3"][state]]
-            fit_label = "fitting 240 · 240 · 240"
+            fit_label = "Fitting net"
             epsilon = float(raw["epsilon"][state])
             pad_rows = int(raw["n_pad"][state])
         else:
@@ -754,10 +763,10 @@ def load_internals(model: str, data: dict[str, object]) -> dict[str, object]:
                 ("X1", r"$X^{(1)}$", c_hi[:, :24].reshape(count, 3, 8), np.zeros((3, 8))),
                 ("X2", r"$X^{(2)}$", c_hi[:, 24:].reshape(count, 5, 4), np.zeros((5, 4))),
             ]
-            invariant = (r"$D_i$: 208 invariants", raw["descriptor"][state][None, :])
+            invariant = (r"Descriptor $D_i$", raw["descriptor"][state][None, :])
             sizes = raw["fit_layer_sizes"][state].astype(int)
             fits = np.split(raw["fit_layers"][state], np.cumsum(sizes)[:-1])[:-1]
-            fit_label = "fitting 256 · 256 · 256"
+            fit_label = "Fitting net"
             epsilon = float(raw["epsilon_model"][state])
             pad_rows = 0
         expected = set(int(j) for j in local_environment(data, state)["ids"])
@@ -769,14 +778,21 @@ def load_internals(model: str, data: dict[str, object]) -> dict[str, object]:
     return {"states": states, "path": path}
 
 
-def _heat(ax, matrix, rect, *, alpha=1.0, zorder=3.0, vmax=None):
-    """Signed heatmap; colour saturates at the block's 98th-percentile |value| unless vmax is given."""
+def _heat(ax, matrix, rect, *, alpha=1.0, zorder=3.0, vmax=None, clip=None):
+    """Signed heatmap; colour saturates at the block's 98th-percentile |value| unless vmax is given.
+
+    ``clip`` (x0, y0, x1, y1) shows only that part of the block (sweep reveal).
+    """
     matrix = np.atleast_2d(np.asarray(matrix, dtype=float))
     vmax = vmax or float(np.nanpercentile(np.abs(matrix), 98.0)) or float(np.nanmax(np.abs(matrix))) or 1.0
     rgba = OP_CMAP(0.5 + 0.5 * np.clip(matrix / vmax, -1.0, 1.0))
     rgba[..., 3] = alpha
     x0, y0, x1, y1 = rect
-    ax.imshow(rgba, extent=(x0, x1, y0, y1), origin="upper", aspect="auto", interpolation="nearest", zorder=zorder)
+    image = ax.imshow(rgba, extent=(x0, x1, y0, y1), origin="upper", aspect="auto", interpolation="nearest", zorder=zorder)
+    if clip is not None:
+        cx0, cy0, cx1, cy1 = clip
+        image.set_clip_path(Rectangle((cx0, cy0), cx1 - cx0, cy1 - cy0, transform=ax.transData))
+    return image
 
 
 def _frame(ax, rect, *, colour, lw=1.1, zorder=4.0):
@@ -802,8 +818,13 @@ def draw_pipeline(
     mode: str,
     state: int,
     progress: float,
-) -> None:
+    rapid: bool = False,
+    sweeps: tuple[float, float] | None = None,
+) -> tuple[float, float]:
     """Row-aligned operator pipeline of O126 for one state.
+
+    Returns the bottom centre of the E label in figure coordinates, where the
+    force path starts.
 
     Left: one matrix row per neighbour in the model's own order; each block to
     the right is the model's activation for the same rows.  Right column: the
@@ -811,22 +832,23 @@ def draw_pipeline(
     During the gather stage every neighbour in the magnifier flies into its
     row at the same time, so the matrix is assembled in one step.
     """
-    fs = 16 if video else 10
+    fs = FONT_SIZES["body"]
     record = internals["states"][state]
     rows = record["rows"]
     n = len(record["ids"])
-    p = progress if video else 1.0
+    p = progress if rapid and mode in {"embed", "contract"} else (1.0 if rapid else (progress if video else 1.0))
     gather_p = _stage_p(mode, "gather", p)
     embed_p = _stage_p(mode, "embed", p)
     contract_p = _stage_p(mode, "contract", p)
     fit_p = _stage_p(mode, "fit", p)
     backward = mode == "force"
-    filled = smoothstep(float(np.clip((gather_p - 0.62) / 0.25, 0.0, 1.0)))
+    filled = 1.0 if rapid and gather_p > 0.0 else smoothstep(float(np.clip((gather_p - 0.62) / 0.25, 0.0, 1.0)))
 
     if model == "deepmd":
-        widths = {"R": (0.07, 0.14), "G1": (0.19, 0.26), "G2": (0.30, 0.39), "G3": (0.43, 0.53)}
+        widths = {"R": (0.07, 0.13), "G1": (0.17, 0.23), "G2": (0.27, 0.34), "G3": (0.38, 0.47)}
     else:
-        widths = {"Y": (0.07, 0.12), "e": (0.16, 0.22), "h": (0.26, 0.35), "g": (0.39, 0.46), "phi": (0.49, 0.56)}
+        widths = {"Y": (0.07, 0.11), "e": (0.15, 0.20), "h": (0.24, 0.31), "g": (0.35, 0.40), "phi": (0.44, 0.49)}
+    registry.text(ax, 0.5, 0.955, MODELS[model]["provider"], ha="center", va="center", fontsize=FONT_SIZES["panel_title"], color=INK, zorder=8)
     keys = [key for key, *_ in rows]
     embed_keys = [key for key, *_rest, stage in rows if stage == "embed"]
     row_h = (ROW_TOP - ROW_BOTTOM) / n
@@ -835,22 +857,52 @@ def draw_pipeline(
     def row_y(k: int) -> float:
         return ROW_TOP - (k + 0.5) * row_h
 
+    # Rapid pass: two continuous wipes instead of staged fades.  The first runs
+    # left -> right across the per-neighbour blocks, the second top -> bottom
+    # down the right column (sum, descriptor, fitting, eps, E).
+    rx0, rx1 = RIGHT_X
+    swept = rapid and sweeps is not None
+    if swept:
+        h_sweep, v_sweep = sweeps
+        x_start = widths[embed_keys[0]][0] - 0.02
+        x_front = x_start + h_sweep * (rx0 - x_start)
+        y_front = SWEEP_TOP - v_sweep * (SWEEP_TOP - SWEEP_BOTTOM)
+
+    def reveal_x(rect) -> tuple[float, tuple[float, float, float, float] | None]:
+        x0, y0, x1, y1 = rect
+        frac = float(np.clip((x_front - x0) / (x1 - x0), 0.0, 1.0))
+        return (1.0 if frac > 0.0 else 0.0), (x0, y0, x0 + frac * (x1 - x0), y1)
+
+    def reveal_y(rect) -> tuple[float, tuple[float, float, float, float] | None]:
+        x0, y0, x1, y1 = rect
+        frac = float(np.clip((y1 - y_front) / (y1 - y0), 0.0, 1.0))
+        return (1.0 if frac > 0.0 else 0.0), (x0, y1 - frac * (y1 - y0), x1, y1)
+
     # --- row-aligned blocks ----------------------------------------------
     for key, label, size, matrix, stage in rows:
         rect = (widths[key][0], ROW_BOTTOM, widths[key][1], ROW_TOP)
+        clip = None
         if stage == "gather":
             alpha = filled
+        elif swept:
+            alpha, clip = reveal_x(rect)
         else:
-            alpha = smoothstep(float(np.clip(embed_p * len(embed_keys) - embed_keys.index(key), 0.0, 1.0)))
+            alpha = 1.0 if rapid and embed_p > 0.0 else smoothstep(float(np.clip(embed_p * len(embed_keys) - embed_keys.index(key), 0.0, 1.0)))
         if alpha > 0.0:
-            _heat(ax, matrix, rect, alpha=alpha)
+            _heat(ax, matrix, rect, alpha=alpha, clip=clip)
         _frame(ax, rect, colour=FORCE_OLIVE if backward else (EDGE_NAVY if alpha > 0 else LINE_GRAY), lw=1.8 if backward else 1.1)
         cx = 0.5 * (rect[0] + rect[2])
-        registry.text(ax, cx, 0.935, label, ha="center", va="center", fontsize=fs, color=EDGE_NAVY if alpha > 0 else DARK_GRAY, zorder=8)
-        registry.text(ax, cx, 0.885, size, ha="center", va="center", fontsize=fs, color=DARK_GRAY, zorder=8)
+        registry.text(ax, cx, LABEL_Y, label, ha="center", va="center", fontsize=fs, color=EDGE_NAVY if alpha > 0 else DARK_GRAY, zorder=8)
     for left, right in zip(keys[:-1], keys[1:]):
-        on = embed_p > 0 if right in embed_keys else filled > 0
+        if right not in embed_keys:
+            on = filled > 0
+        elif swept:
+            on = x_front >= widths[right][0]
+        else:
+            on = embed_p > 0
         _arrow(ax, (widths[left][1] + 0.004, mid_y), (widths[right][0] - 0.004, mid_y), colour=EDGE_NAVY, video=video, on=on)
+    if swept and 0.0 < h_sweep < 1.0:
+        ax.add_line(Line2D([x_front, x_front], [ROW_BOTTOM - 0.015, ROW_TOP + 0.015], color=EDGE_NAVY, lw=3.0, alpha=0.55, solid_capstyle="round", zorder=9))
 
     left_x = widths[keys[0]][0]
     if model == "deepmd":
@@ -860,19 +912,6 @@ def draw_pipeline(
                 top, bottom = ROW_TOP - members[0] * row_h, ROW_TOP - (members[-1] + 1) * row_h
                 ax.add_line(Line2D([left_x - 0.012] * 2, [bottom + 0.004, top - 0.004], color=DARK_GRAY, lw=1.4, zorder=5))
                 registry.text(ax, left_x - 0.035, 0.5 * (top + bottom), element, ha="center", va="center", fontsize=fs, color=DARK_GRAY, zorder=8)
-    if filled > 0:
-        labelled = [int(j) for j in local_environment(data, state)["ids"][:3]]
-        j_rows = [int(np.flatnonzero(record["ids"] == atom)[0]) for atom in labelled]
-        x_end = widths[keys[-1]][1] if embed_p > 0 else widths[keys[0]][1]
-        for k in j_rows:
-            ax.add_patch(Rectangle((left_x - 0.004, row_y(k) - 0.5 * row_h), x_end - left_x + 0.008, row_h, fill=False, ec=CENTRE_NAVY, lw=1.4, zorder=7, alpha=filled))
-        tag_y = float(np.clip(np.mean([row_y(k) for k in j_rows]), ROW_BOTTOM + 0.03, ROW_TOP - 0.03))
-        tag_x = left_x - (0.075 if model == "deepmd" else 0.035)
-        registry.text(ax, tag_x, tag_y, r"$j_{1-3}$", ha="center", va="center", fontsize=fs, color=CENTRE_NAVY, weight="bold", alpha=filled, zorder=8)
-        if record["pad_rows"]:
-            x0, x1 = widths[keys[0]]
-            ax.add_patch(Rectangle((x0, 0.100), x1 - x0, 0.035, fc=WHITE, ec=DARK_GRAY, hatch="////", lw=0.8, zorder=4, alpha=filled))
-            registry.text(ax, widths[keys[1]][0], 0.118, f"+{record['pad_rows']} padded slots", ha="left", va="center", fontsize=fs, color=DARK_GRAY, alpha=filled, zorder=8)
 
     # --- neighbours fly from the magnifier into their rows -----------------
     if video and mode == "gather" and p < 0.75:
@@ -893,90 +932,147 @@ def draw_pipeline(
             fig.add_artist(Line2D(xs, ys, transform=fig.transFigure, ls="none", marker="o", markersize=6.5, markerfacecolor=SPECIES_DOT[element], markeredgecolor=DARK_GRAY, markeredgewidth=0.6, zorder=60))
 
     # --- right column: neighbour sum ---------------------------------------
-    rx0, rx1 = RIGHT_X
-    sum_colour = GREEN if contract_p > 0 else DARK_GRAY
-    sweep = int(round(contract_p * n))
-    if mode == "contract" and video:
-        y = ROW_TOP - sweep * row_h
-        ax.add_line(Line2D([left_x - 0.006, widths[keys[-1]][1] + 0.006], [y, y], color=GREEN, lw=2.2, zorder=9))
-    _arrow(ax, (widths[keys[-1]][1] + 0.006, 0.79), (rx0 - 0.008, 0.79), colour=GREEN, video=video, on=contract_p > 0)
-    registry.text(ax, 0.5 * (rx0 + rx1), 0.935, r"$\Sigma_j$ over all rows", ha="center", va="center", fontsize=fs, color=sum_colour, zorder=8)
-    if model == "deepmd":
-        layout = [(rx0, 0.74, rx1, 0.84)]
-        registry.text(ax, 0.5 * (rx0 + rx1), 0.885, r"$T=\tilde{R}^{\top}G/N$: 4 × 100", ha="center", va="center", fontsize=fs, color=sum_colour, zorder=8)
+    if swept:
+        sum_on = y_front < SWEEP_TOP
+        sweep = n
     else:
-        layout = [(rx0, 0.80, rx1, 0.84), (rx0, 0.69, rx0 + 0.15, 0.765), (rx0 + 0.215, 0.67, rx0 + 0.29, 0.765)]
-        registry.text(ax, 0.5 * (rx0 + rx1), 0.885, r"$X^{(0)}$: 64 channels", ha="center", va="center", fontsize=fs, color=sum_colour, zorder=8)
+        sum_on = contract_p > 0
+        sweep = int(round(contract_p * n))
+    sum_colour = EDGE_NAVY if sum_on else DARK_GRAY
+    if model == "deepmd":
+        layout = [(rx0, 0.715, rx1, ROW_TOP)]
+    else:
+        layout = [(rx0, 0.775, rx1, ROW_TOP), (rx0, 0.67, rx0 + 0.15, 0.745), (rx0 + 0.25, 0.655, rx0 + 0.325, 0.745)]
+    _arrow(ax, (widths[keys[-1]][1] + 0.006, 0.5 * (layout[0][1] + layout[0][3])), (rx0 - 0.008, 0.5 * (layout[0][1] + layout[0][3])), colour=EDGE_NAVY, video=video, on=(x_front >= rx0 - 0.01) if swept else contract_p > 0)
+    registry.text(ax, rx0, LABEL_Y, r"$\Sigma_j$ over all rows", ha="left", va="center", fontsize=fs, color=sum_colour, zorder=8)
     for (key, label, contributions, closing), rect in zip(record["partial"], layout):
-        if contract_p > 0:
+        alpha, clip = reveal_y(rect) if swept else (1.0 if contract_p > 0 else 0.0, None)
+        if alpha > 0:
             value = contributions[:sweep].sum(axis=0) + (closing if sweep >= n else 0.0)
             vmax = float(np.abs(contributions.sum(axis=0) + closing).max()) or 1.0
-            _heat(ax, value, rect, vmax=vmax)
-        _frame(ax, rect, colour=FORCE_OLIVE if backward else (GREEN if contract_p > 0 else LINE_GRAY), lw=1.8 if backward else 1.1)
+            _heat(ax, value, rect, vmax=vmax, clip=clip)
+        _frame(ax, rect, colour=FORCE_OLIVE if backward else (EDGE_NAVY if alpha > 0 else LINE_GRAY), lw=1.8 if backward else 1.1)
         if label:
             registry.text(ax, rect[2] + 0.012, 0.5 * (rect[1] + rect[3]), label, ha="left", va="center", fontsize=fs, color=sum_colour, zorder=8)
 
     # --- invariant descriptor ------------------------------------------------
     inv_label, inv_matrix = record["invariant"]
-    inv_rect = (rx0, 0.53, rx1, 0.62) if model == "deepmd" else (rx0, 0.545, rx1, 0.59)
-    inv_alpha = smoothstep(float(np.clip((contract_p - 0.8) / 0.2, 0.0, 1.0)))
+    inv_rect = (rx0, 0.535, rx1, 0.60) if model == "deepmd" else (rx0, 0.535, rx1, 0.575)
+    if swept:
+        inv_alpha, inv_clip = reveal_y(inv_rect)
+    else:
+        inv_alpha, inv_clip = (1.0 if rapid and contract_p > 0.0 else smoothstep(float(np.clip((contract_p - 0.8) / 0.2, 0.0, 1.0)))), None
     if inv_alpha > 0:
-        _heat(ax, inv_matrix, inv_rect, alpha=inv_alpha)
+        _heat(ax, inv_matrix, inv_rect, alpha=inv_alpha, clip=inv_clip)
     _frame(ax, inv_rect, colour=FORCE_OLIVE if backward else (EDGE_NAVY if inv_alpha > 0 else LINE_GRAY), lw=1.8 if backward else 1.1)
-    registry.text(ax, rx0, inv_rect[3] + 0.045, inv_label, ha="left", va="center", fontsize=fs, color=EDGE_NAVY if inv_alpha > 0 else DARK_GRAY, zorder=8)
+    registry.text(ax, rx0, inv_rect[3] + 0.04, inv_label, ha="left", va="center", fontsize=fs, color=EDGE_NAVY if inv_alpha > 0 else DARK_GRAY, zorder=8)
 
-    # --- fitting layers and eps ---------------------------------------------
-    registry.text(ax, rx0, 0.465, record["fit_label"], ha="left", va="center", fontsize=fs, color=CRIMSON if fit_p > 0 else DARK_GRAY, zorder=8)
-    for index, (activation, y0) in enumerate(zip(record["fits"], (0.38, 0.325, 0.27))):
-        rect = (rx0, y0, rx1, y0 + 0.04)
-        alpha = smoothstep(float(np.clip(fit_p * 4.0 - index, 0.0, 1.0)))
+    # --- fitting layers, eps_i and E ----------------------------------------
+    fit_on = y_front < 0.42 if swept else fit_p > 0
+    registry.text(ax, rx0, 0.465, record["fit_label"], ha="left", va="center", fontsize=fs, color=ENERGY_TEAL if fit_on else DARK_GRAY, zorder=8)
+    for index, (activation, y0) in enumerate(zip(record["fits"], (0.38, 0.33, 0.28))):
+        rect = (rx0, y0, rx1, y0 + 0.035)
+        if swept:
+            alpha, clip = reveal_y(rect)
+        else:
+            alpha, clip = (1.0 if rapid and fit_p > 0.0 else smoothstep(float(np.clip(fit_p * 4.0 - index, 0.0, 1.0)))), None
         if alpha > 0:
-            _heat(ax, activation[None, :], rect, alpha=alpha)
-        _frame(ax, rect, colour=FORCE_OLIVE if backward else (CRIMSON if alpha > 0 else LINE_GRAY), lw=1.8 if backward else 1.1)
-    eps_on = fit_p >= 0.75
-    registry.text(ax, rx0, 0.205, rf"$\varepsilon_{{\mathrm{{O126}}}}$ = {_neg(record['epsilon'])} eV" if eps_on else r"$\varepsilon_{\mathrm{O126}}$ = …", ha="left", va="center", fontsize=fs, color=CRIMSON if eps_on else DARK_GRAY, zorder=8)
-    e_on = _reached(mode, "energy")
+            _heat(ax, activation[None, :], rect, alpha=alpha, clip=clip)
+        _frame(ax, rect, colour=FORCE_OLIVE if backward else (ENERGY_TEAL if alpha > 0 else LINE_GRAY), lw=1.8 if backward else 1.1)
+    eps_on = y_front <= EPS_Y + 0.015 if swept else fit_p >= 0.75
+    registry.text(ax, rx0, EPS_Y, rf"$\varepsilon_{{\mathrm{{O126}}}}$ = {_neg(record['epsilon'])} eV" if eps_on else r"$\varepsilon_{\mathrm{O126}}$ = …", ha="left", va="center", fontsize=fs, color=ENERGY_TEAL if eps_on else DARK_GRAY, zorder=8)
+    if swept and 0.0 < v_sweep < 1.0:
+        ax.add_line(Line2D([rx0 - 0.015, rx1 + 0.005], [y_front, y_front], color=EDGE_NAVY, lw=3.0, alpha=0.55, solid_capstyle="round", zorder=9))
+    e_on = (y_front <= SWEEP_BOTTOM + 0.005) if swept else _reached(mode, "energy")
     energy = float(data["total_energy_ev"][state])
-    registry.text(ax, rx0, 0.135, rf"$E=\sum_i\varepsilon_i$ = {_neg(energy, 1)} eV" if e_on else r"$E=\sum_i\varepsilon_i$ = …", ha="left", va="center", fontsize=fs, color=GREEN if e_on else DARK_GRAY, weight="bold" if mode == "energy" else "normal", zorder=8)
+    energy_label = rf"$E=\Sigma_i\,\varepsilon_i$ = {_neg(energy, 1)} eV"
+    # The force path leaves the middle of the finished E label, so its anchor
+    # does not move when the value is revealed.
+    probe = ax.text(rx0, ENERGY_Y, energy_label, ha="left", va="center", fontsize=fs, fontfamily=registry.font_family or plt.rcParams["font.family"])
+    box = probe.get_window_extent(fig.canvas.get_renderer())
+    probe.remove()
+    scale = text_scale_of(fig)
+    left, middle = ax.transData.transform((rx0, ENERGY_Y))
+    centre_x = left + 0.5 * box.width * scale
+    bottom_y = middle - 0.5 * box.height * scale - (6.0 if video else 4.0)
+    registry.text(ax, rx0, ENERGY_Y, energy_label if e_on else r"$E=\Sigma_i\,\varepsilon_i$ = …", ha="left", va="center", fontsize=fs, color=ENERGY_TEAL if e_on else DARK_GRAY, zorder=8)
+    return tuple(fig.transFigure.inverted().transform((centre_x, bottom_y)))
 
-    # --- backward: -dE/dr runs back through every block ----------------------
-    f_on = _reached(mode, "force")
-    _arrow(ax, (rx1, 0.05), (CHAIN_NODE_X + 0.01, 0.05), colour=FORCE_OLIVE, video=video, on=f_on, dashed=True)
-    if backward and video:
-        for offset in (0.0, 0.25, 0.5, 0.75):
-            t = (p * 1.5 + offset) % 1.0
-            ax.scatter([rx1 + (CHAIN_NODE_X - rx1) * t], [0.05], s=40, color=FORCE_OLIVE, edgecolors=WHITE, linewidths=0.8, zorder=9)
-    registry.text(ax, 0.40, 0.05, r"$\mathbf{F}=-\partial E/\partial\mathbf{r}$ through every block", ha="center", va="center", fontsize=fs, color=FORCE_OLIVE if f_on else DARK_GRAY, zorder=10, bbox=dict(boxstyle="round,pad=0.2", fc=WHITE, ec="none"))
-    ax.add_line(Line2D([CHAIN_NODE_X, CHAIN_NODE_X], [0.05, 0.0], color=FORCE_OLIVE if f_on else LINE_GRAY, lw=2.0 if video else 1.2, zorder=6))
+
+def _polyline_prefix(points: np.ndarray, fraction: float) -> np.ndarray:
+    """Leading part of a polyline covering ``fraction`` of its length."""
+    lengths = np.linalg.norm(np.diff(points, axis=0), axis=1)
+    target = float(np.clip(fraction, 0.0, 1.0)) * lengths.sum()
+    out = [points[0]]
+    for start, end, length in zip(points[:-1], points[1:], lengths):
+        if target >= length:
+            out.append(end)
+            target -= length
+            continue
+        out.append(start + (end - start) * (target / max(length, 1.0e-12)))
+        break
+    return np.array(out)
 
 
-def draw_return_path(fig: plt.Figure, registry: LayoutRegistry, panel_a: plt.Axes, panel_d: plt.Axes, *, video: bool, mode: str, provider: str) -> None:
-    """F leaves the pipeline and enters the integrator's 'a' node."""
-    force_stage = mode in {"force", "accel"}
-    active = force_stage or mode in {"velocity", "move"}
-    colour = FORCE_OLIVE if force_stage else INK if active else "#A9B0B4" if video else LINE_GRAY
+def draw_return_path(
+    fig: plt.Figure,
+    registry: LayoutRegistry,
+    panel_a: plt.Axes,
+    panel_b: plt.Axes,
+    panel_d: plt.Axes,
+    energy_anchor: tuple[float, float],
+    *,
+    video: bool,
+    mode: str,
+    progress: float,
+) -> None:
+    """F = -dE/dr leaves the middle of E and enters the integrator's 'a' node.
+
+    One solid path in figure coordinates: down from E, left along the bottom
+    strip, up the A|B gutter and into the right side of the 'a' node.  It is
+    grey until the force stage, grows in orange during it and stays orange
+    while the acceleration is formed.
+    """
     y_return = RETURN_Y_VIDEO if video else RETURN_Y_STATIC
     to_fig = fig.transFigure.inverted().transform
-    node_fig = to_fig(panel_d.transAxes.transform((CHAIN_NODE_X, 0.0)))
-    # The 'a' node of the shared loop sits at angle -30 deg on the ellipse.
     a_aspect = _axes_aspect(panel_a)
-    a_x = 0.50 + 0.40 * np.cos(np.deg2rad(-30.0))
-    a_y = 0.58 + 0.40 * a_aspect * np.sin(np.deg2rad(-30.0))
-    label_bottom = a_y - 0.075 * a_aspect - 0.035 - (0.075 if video else 0.055)
-    a_fig = to_fig(panel_a.transAxes.transform((a_x, label_bottom)))
+    node_half_width = 0.092 if video else 0.070
+    a_x = 0.50 + LOOP_RADIUS_X * np.cos(np.deg2rad(-30.0)) + node_half_width
+    a_y = LOOP_CENTRE_Y + LOOP_RADIUS_X * a_aspect * np.sin(np.deg2rad(-30.0))
+    node_fig = to_fig(panel_a.transAxes.transform((a_x, a_y)))
+    gutter_x = panel_b.get_position().x0 - (0.001 if video else 0.002)
+    points = np.array([
+        energy_anchor,
+        (energy_anchor[0], y_return),
+        (gutter_x, y_return),
+        (gutter_x, node_fig[1]),
+        (node_fig[0] + 0.003, node_fig[1]),
+    ])
     lw = 2.6 if video else 1.6
-    fig.add_artist(Line2D([node_fig[0], node_fig[0]], [node_fig[1], y_return], transform=fig.transFigure, color=colour, lw=lw, zorder=50))
-    fig.add_artist(Line2D([node_fig[0], a_fig[0]], [y_return, y_return], transform=fig.transFigure, color=colour, lw=lw, zorder=50))
-    arrow = FancyArrowPatch((a_fig[0], y_return), (a_fig[0], a_fig[1]), transform=fig.transFigure, arrowstyle="-|>", mutation_scale=20 if video else 14, lw=lw, color=colour, zorder=50)
-    fig.add_artist(arrow)
-    registry.arrows.append(arrow)
-    name = provider.split(" ·")[0]
-    if force_stage:
-        text = rf"$\mathbf{{F}}_i$ from {name} enters the integrator: $\mathbf{{a}}_i=\mathbf{{F}}_i/m_i$"
+    head = 18 if video else 12
+    if mode == "force":
+        fraction = smoothstep(progress)
+    elif mode == "accel":
+        fraction = 1.0
     else:
-        text = f"only {name} is swapped in; the integrator loop is the same as in AIMD"
-    label = fig.text(0.40, y_return, text, ha="center", va="center", fontsize=16 if video else 10, fontfamily=registry.font_family, color=colour if active else DARK_GRAY, bbox=dict(boxstyle="round,pad=0.25", fc=WHITE, ec="none"), zorder=51)
-    registry.texts.append(label)
+        fraction = 0.0
+
+    def polyline(path: np.ndarray, colour: str, zorder: float) -> None:
+        if len(path) < 2:
+            return
+        fig.add_artist(Line2D(path[:, 0], path[:, 1], transform=fig.transFigure, color=colour, lw=lw, solid_joinstyle="miter", zorder=zorder))
+        tail = path[-1] - path[-2]
+        if np.linalg.norm(tail) > 1.0e-6:
+            start = path[-1] - tail / np.linalg.norm(tail) * 1.0e-3
+            arrow = FancyArrowPatch(tuple(start), tuple(path[-1]), transform=fig.transFigure, arrowstyle="-|>", mutation_scale=head, lw=lw, color=colour, shrinkA=0, shrinkB=0, zorder=zorder)
+            fig.add_artist(arrow)
+            registry.arrows.append(arrow)
+
+    polyline(points, INACTIVE_PATH, 49)
+    if fraction > 0.0:
+        polyline(_polyline_prefix(points, fraction), FORCE_OLIVE, 50)
+    label_xy = panel_d.transAxes.inverted().transform(fig.transFigure.transform((energy_anchor[0] + (0.006 if video else 0.004), 0.5 * (energy_anchor[1] + y_return))))
+    registry.text(panel_d, *label_xy, r"$\mathbf{F}=-\partial E/\partial\mathbf{r}$", ha="left", va="center", fontsize=FONT_SIZES["micro"], color=FORCE_OLIVE if fraction > 0.0 else DARK_GRAY, transform=panel_d.transAxes, zorder=50)
 
 
 # --------------------------------------------------------------------------
@@ -994,22 +1090,25 @@ def _phase_at(local: float, phases: tuple[tuple[str, float], ...]) -> tuple[str,
 
 def video_state(time_seconds: float, n_states: int) -> dict[str, object]:
     bounded = float(np.clip(time_seconds, 0.0, VIDEO_DURATION - 1.0e-9))
-    n_updates = n_states - 1
     if bounded < DETAILED_BLOCK:
         mode, progress = _phase_at(bounded, DETAILED_PHASES)
         return {"mode": mode, "state": 0, "progress": float(np.clip(progress, 0.0, 1.0)), "rapid": False}
-    second = DETAILED_BLOCK * SECOND_BLOCK_SCALE
-    if bounded < DETAILED_BLOCK + second:
-        mode, progress = _phase_at((bounded - DETAILED_BLOCK) / SECOND_BLOCK_SCALE, DETAILED_PHASES)
-        return {"mode": mode, "state": 1, "progress": float(np.clip(progress, 0.0, 1.0)), "rapid": False}
-    rapid_states = list(range(2, n_updates)) or [n_updates - 1]
-    rapid_block = (VIDEO_DURATION - DETAILED_BLOCK - second) / len(rapid_states)
-    rapid_time = bounded - DETAILED_BLOCK - second
-    index = min(int(rapid_time // rapid_block), len(rapid_states) - 1)
-    rapid_length = sum(length for _, length in RAPID_PHASES)
-    local = (rapid_time - index * rapid_block) / rapid_block * rapid_length
-    mode, progress = _phase_at(local, RAPID_PHASES)
-    return {"mode": mode, "state": rapid_states[index], "progress": float(np.clip(progress, 0.0, 1.0)), "rapid": True}
+    slow_hold_end = DETAILED_BLOCK + SLOW_HOLD_SECONDS
+    if bounded < slow_hold_end:
+        return {"mode": "move", "state": 0, "progress": 1.0, "rapid": False}
+
+    rapid_time = bounded - slow_hold_end
+    rapid_total = len(RAPID_STATES) * RAPID_CYCLE_SECONDS
+    if rapid_time < rapid_total:
+        index = min(int(rapid_time // RAPID_CYCLE_SECONDS), len(RAPID_STATES) - 1)
+        local = (rapid_time - index * RAPID_CYCLE_SECONDS) / RAPID_CYCLE_SECONDS
+        mode, stage_progress = _phase_at(local, RAPID_PHASES)
+        sweeps = tuple(smoothstep(float(np.clip((local - a) / (b - a), 0.0, 1.0))) for a, b in (SWEEP_H, SWEEP_V))
+        return {"mode": mode, "state": RAPID_STATES[index], "progress": float(np.clip(stage_progress, 0.0, 1.0)), "rapid": True, "sweeps": sweeps}
+
+    # The final saved snapshot has no following force/velocity/move asset.
+    # Hold its positions directly so the fast scan ends on a clean state.
+    return {"mode": "positions", "state": n_states - 1, "progress": 1.0, "rapid": True}
 
 
 def semantics_for(mode: str) -> list[dict]:
@@ -1018,9 +1117,9 @@ def semantics_for(mode: str) -> list[dict]:
         "neighbours": [{"id": "centre_atom", "color": CENTRE_NAVY, "min_pixels": 30, "tolerance": 60}],
         "gather": [{"id": "neighbour_edges", "color": EDGE_NAVY, "min_pixels": 60, "tolerance": 60}],
         "embed": [{"id": "neighbour_edges", "color": EDGE_NAVY, "min_pixels": 60, "tolerance": 60}],
-        "contract": [{"id": "neighbour_sum", "color": GREEN, "min_pixels": 40}],
+        "contract": [{"id": "neighbour_sum", "color": EDGE_NAVY, "min_pixels": 40}],
         "fit": [{"id": "centre_atom_or_eps", "color": CENTRE_NAVY, "min_pixels": 30, "tolerance": 60}],
-        "energy": [{"id": "energy_text", "color": GREEN, "min_pixels": 40}],
+        "energy": [{"id": "energy_text", "color": ENERGY_TEAL, "min_pixels": 40}],
         "force": [{"id": "model_force", "color": FORCE_OLIVE, "min_pixels": 120}],
         "accel": [{"id": "acceleration", "color": ACCEL_PLUM, "min_pixels": 120}],
         "velocity": [{"id": "half_step_velocity", "color": VELOCITY_EMERALD, "min_pixels": 120}],
@@ -1037,8 +1136,8 @@ def draw_frame(fig: plt.Figure, time_seconds: float, registry: LayoutRegistry, d
     panel_d = axes_from_top_slot(fig, VIDEO_D)
     draw_left(panel_a, registry, video=True, mode=mode, provider=provider)
     geometry = draw_case(panel_b, registry, data, scene, model=model, video=True, mode=mode, state=state, progress=progress, rapid=rapid)
-    draw_pipeline(fig, panel_d, registry, data, scene["internals"], geometry, panel_b, model=model, video=True, mode=mode, state=state, progress=progress)
-    draw_return_path(fig, registry, panel_a, panel_d, video=True, mode=mode, provider=provider)
+    energy_anchor = draw_pipeline(fig, panel_d, registry, data, scene["internals"], geometry, panel_b, model=model, video=True, mode=mode, state=state, progress=progress, rapid=rapid, sweeps=state_info.get("sweeps"))
+    draw_return_path(fig, registry, panel_a, panel_b, panel_d, energy_anchor, video=True, mode=mode, progress=progress)
     if not rapid and mode == "positions":
         _deemphasize(panel_d)
     return semantics_for(mode)
@@ -1049,15 +1148,15 @@ def draw_frame(fig: plt.Figure, time_seconds: float, registry: LayoutRegistry, d
 # --------------------------------------------------------------------------
 def render_static(model: str, data: dict[str, object], scene: dict[str, object]) -> None:
     fig = new_static_figure()
-    registry = LayoutRegistry(min_font_pt=10, edge_pad_px=18)
+    registry = LayoutRegistry(min_font_pt=FONT_SIZES["micro"], max_font_pt=FONT_SIZES["page_title"], edge_pad_px=18)
     provider = MODELS[model]["provider"]
     panel_a = axes_from_top_slot(fig, STATIC_A)
     panel_b = axes_from_top_slot(fig, STATIC_B)
     panel_d = axes_from_top_slot(fig, STATIC_D)
     draw_left(panel_a, registry, video=False, mode="force", provider=provider)
     geometry = draw_case(panel_b, registry, data, scene, model=model, video=False, mode="force", state=1, progress=1.0, rapid=False)
-    draw_pipeline(fig, panel_d, registry, data, scene["internals"], geometry, panel_b, model=model, video=False, mode="force", state=1, progress=1.0)
-    draw_return_path(fig, registry, panel_a, panel_d, video=False, mode="force", provider=provider)
+    energy_anchor = draw_pipeline(fig, panel_d, registry, data, scene["internals"], geometry, panel_b, model=model, video=False, mode="force", state=1, progress=1.0)
+    draw_return_path(fig, registry, panel_a, panel_b, panel_d, energy_anchor, video=False, mode="force", progress=1.0)
     errors = registry.validate(fig)
     if errors:
         debug = ROOT / "qa" / MODELS[model]["stem"] / "_qa" / "static_failed.png"
@@ -1068,7 +1167,7 @@ def render_static(model: str, data: dict[str, object], scene: dict[str, object])
     save_static(fig, MODELS[model]["stem"])
 
 
-KEYFRAME_TIMES = (0.40, 1.40, 2.20, 2.70, 3.30, 4.20, 5.20, 6.20, 7.00, 7.80, 8.50, 9.00, 10.00, 11.20, 11.90, 12.50, 14.50, 16.00, 17.50, 21.00, 24.50, 28.00, 29.80)
+KEYFRAME_TIMES = (0.40, 1.40, 2.20, 2.70, 3.30, 4.20, 5.20, 6.20, 7.00, 7.80, 8.50, 9.00, 10.00, 11.20, 12.50, 13.10, 14.50, 16.40, 16.80, 17.60, 18.50, 19.30, 20.30, 21.40, 22.50, 23.60, 24.50)
 
 
 def render_keyframes(model: str, data: dict[str, object], scene: dict[str, object], qa_dir: Path) -> Path:
@@ -1079,7 +1178,7 @@ def render_keyframes(model: str, data: dict[str, object], scene: dict[str, objec
     failures: list[str] = []
     for index, time_seconds in enumerate(KEYFRAME_TIMES):
         fig = new_video_figure()
-        registry = LayoutRegistry(min_font_pt=16, max_font_pt=18, edge_pad_px=12, font_family="Arial", coerce_min_font=True)
+        registry = LayoutRegistry(min_font_pt=FONT_SIZES["micro"], max_font_pt=FONT_SIZES["page_title"], edge_pad_px=12, font_family="Arial", coerce_min_font=True)
         semantics = draw_frame(fig, time_seconds, registry, data, scene, model=model)
         errors = registry.validate(fig)
         path = output_dir / f"frame_{index:02d}_{time_seconds:05.2f}s.png"
@@ -1121,6 +1220,7 @@ def render_animation(model: str, data: dict[str, object], scene: dict[str, objec
         audit_config=audit_config,
         qa_directory=qa_dir / "_qa",
         representative_times=KEYFRAME_TIMES,
+        image_sequence=True,
     )
 
 
@@ -1149,7 +1249,7 @@ def write_provenance(model: str, data: dict[str, object], scene: dict[str, objec
         "smooth_switch": {"form": "DeepPot-SE s(r) = 1/r (r < rcs), (1/r)[u^3(-6u^2+15u-10)+1] (rcs <= r < rc), 0 (r >= rc)", "rcs_angstrom": R_CUT_SMOOTH, "rc_angstrom": data["cutoff"], "note": "shown as a geometry transform for both stories; DPA4C's own radial basis is not reproduced"},
         "eps_colouring": "atom colour = eps_j minus the mean eps of its species at that state, clipped to +-%.3f eV" % scene["scales"]["eps"]["range"],
         "display_scales": scene["scales"],
-        "timeline": {"duration_seconds": VIDEO_DURATION, "detailed_block_seconds": DETAILED_BLOCK, "second_block_scale": SECOND_BLOCK_SCALE, "detailed_phases": DETAILED_PHASES, "rapid_phases": RAPID_PHASES},
+        "timeline": {"duration_seconds": VIDEO_DURATION, "detailed_block_seconds": DETAILED_BLOCK, "slow_hold_seconds": SLOW_HOLD_SECONDS, "rapid_cycle_seconds": RAPID_CYCLE_SECONDS, "rapid_states": RAPID_STATES, "final_state_hold_seconds": FINAL_STATE_HOLD_SECONDS, "detailed_phases": DETAILED_PHASES, "rapid_phases": RAPID_PHASES},
         "internals": {
             "file": str(MODELS[model]["internals"]),
             "sha256": sha256_file(MODELS[model]["internals"]),

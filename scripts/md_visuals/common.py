@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import hashlib
+import gc
 import json
 import math
 import subprocess
+import shutil
 import os
 import time
 import sys
@@ -17,6 +19,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import font_manager
+from matplotlib.figure import Figure
 from matplotlib.font_manager import FontProperties
 from matplotlib.patches import Circle, FancyArrowPatch
 from matplotlib.text import Text
@@ -39,6 +42,26 @@ LIGHT_GRAY = "#EEEEEE"
 NAVY = "#183153"
 CRIMSON = "#A32035"
 GREEN = "#2F6B4F"
+# Velocity-Verlet stage colours, shared by every story: the loop node, its
+# label and every arrow of that quantity use the same hue.
+R_BLUE = "#2F6FB3"
+V_PURPLE = "#7A4FB8"
+A_ORANGE = "#E07A1F"
+STAGE_COLORS = (R_BLUE, A_ORANGE, V_PURPLE)  # loop stage index: r, a, v
+FORCE_OLIVE = A_ORANGE
+# Energy and the geometric quantities that enter it share one hue.
+ENERGY_TEAL = "#1F7A7A"
+
+# Four type sizes, in points as they appear on a 16:9 slide (33.87 cm wide):
+# 14 annotations/legends/ticks, 16 labels and equations, 18 panel titles,
+# 24 the r/v/a loop symbols.
+FONT_SIZES = {
+    "micro": 14.0,
+    "body": 16.0,
+    "emphasis": 16.0,
+    "panel_title": 18.0,
+    "page_title": 24.0,
+}
 
 STATIC_DPI = 300
 STATIC_WIDTH_PX = 3508
@@ -47,8 +70,12 @@ VIDEO_DPI = 100
 VIDEO_WIDTH_PX = 1920
 VIDEO_HEIGHT_PX = 600
 FPS = 24
-FONT_MIN_PT = 16.0
-FONT_MAX_PT = 18.0
+FONT_MIN_PT = FONT_SIZES["micro"]
+FONT_MAX_PT = FONT_SIZES["page_title"]
+# A 1920 px movie spanning a 13.33 in slide is 144 px/in; the canvas is drawn
+# at 100 dpi, so video text is enlarged at draw time to keep slide points.
+SLIDE_DPI = VIDEO_WIDTH_PX / 13.333
+PPT_TEXT_SCALE = SLIDE_DPI / VIDEO_DPI
 VIDEO_FONT_FAMILY = "Arial"
 MAX_VERTICAL_BORDER_WHITESPACE_PX = 48
 
@@ -119,11 +146,32 @@ def new_static_figure() -> plt.Figure:
     )
 
 
+class VideoFigure(Figure):
+    """Figure whose text sizes are slide points (see ``PPT_TEXT_SCALE``)."""
+
+    text_scale = PPT_TEXT_SCALE
+
+    def draw(self, renderer):
+        for ax in self.axes:
+            ax.xaxis.get_major_ticks()
+            ax.yaxis.get_major_ticks()
+        for artist in self.findobj(match=Text):
+            if not getattr(artist, "_slide_scaled", False):
+                artist.set_fontsize(float(artist.get_fontsize()) * self.text_scale)
+                artist._slide_scaled = True
+        return super().draw(renderer)
+
+
+def text_scale_of(fig: plt.Figure) -> float:
+    return float(getattr(fig, "text_scale", 1.0))
+
+
 def new_video_figure() -> plt.Figure:
     return plt.figure(
         figsize=(VIDEO_WIDTH_PX / VIDEO_DPI, VIDEO_HEIGHT_PX / VIDEO_DPI),
         dpi=VIDEO_DPI,
         facecolor=WHITE,
+        FigureClass=VideoFigure,
     )
 
 
@@ -136,9 +184,9 @@ def add_page_title(
     video: bool,
     registry: "LayoutRegistry | None" = None,
 ) -> None:
-    number_size = 12 if video else 11
-    title_size = 16
-    subtitle_size = 12
+    number_size = FONT_SIZES["micro"]
+    title_size = FONT_SIZES["page_title"]
+    subtitle_size = FONT_SIZES["body"]
     artists = [
         fig.text(0.048, 0.942, number, ha="left", va="top", fontsize=number_size, color=DARK_GRAY, weight="bold"),
         fig.text(0.048, 0.902, title, ha="left", va="top", fontsize=title_size, color=INK, weight="bold"),
@@ -161,7 +209,7 @@ def add_footer(
         text,
         ha="center",
         va="bottom",
-        fontsize=12 if video else 10,
+        fontsize=FONT_SIZES["micro"],
         color=DARK_GRAY,
     )
     if registry is not None:
@@ -212,10 +260,11 @@ class LayoutRegistry:
                 if id(artist) not in seen and artist.get_visible() and artist.get_text():
                     text_artists.append(artist)
                     seen.add(id(artist))
+        scale = text_scale_of(fig)
         for index, artist in enumerate(text_artists):
-            if float(artist.get_fontsize()) < self.min_font_pt:
+            if float(artist.get_fontsize()) / scale < self.min_font_pt - 1.0e-6:
                 errors.append(f"text[{index}] font below minimum")
-            if float(artist.get_fontsize()) > self.max_font_pt:
+            if float(artist.get_fontsize()) / scale > self.max_font_pt + 1.0e-6:
                 errors.append(f"text[{index}] font above maximum")
             if self.font_family is not None:
                 try:
@@ -288,11 +337,11 @@ def draw_three_step_loop(
         fill = mix_hex(LIGHT_GRAY, INK, weight)
         text_color = WHITE if weight > 0.48 else DARK_GRAY
         ax.add_patch(Circle((x, y), node_radius, fc=fill, ec=LINE_GRAY, lw=2.6 if video else 1.8, zorder=5))
-        registry.text(ax, x, y + 0.018, label, ha="center", va="center", fontsize=14 if video else 11, color=text_color, weight="bold", zorder=6)
-        registry.text(ax, x, y - 0.040, symbol, ha="center", va="center", fontsize=14 if video else 10, color=text_color, zorder=6)
+        registry.text(ax, x, y + 0.018, label, ha="center", va="center", fontsize=FONT_SIZES["body"], color=text_color, weight="bold", zorder=6)
+        registry.text(ax, x, y - 0.040, symbol, ha="center", va="center", fontsize=FONT_SIZES["body"], color=text_color, zorder=6)
 
-    registry.text(ax, 0.50, 0.60, centre_lines[0], ha="center", va="center", fontsize=14 if video else 11, color=DARK_GRAY)
-    registry.text(ax, 0.50, 0.53, centre_lines[1], ha="center", va="center", fontsize=16 if video else 14, color=INK, weight="bold")
+    registry.text(ax, 0.50, 0.60, centre_lines[0], ha="center", va="center", fontsize=FONT_SIZES["body"], color=DARK_GRAY)
+    registry.text(ax, 0.50, 0.53, centre_lines[1], ha="center", va="center", fontsize=FONT_SIZES["emphasis"], color=INK, weight="bold")
 
 
 def camera_basis(direction=CAMERA_DIRECTION, up=CAMERA_UP) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
@@ -463,6 +512,7 @@ def render_video(
     audit_config: dict,
     qa_directory: Path,
     representative_times: Iterable[float],
+    image_sequence: bool = False,
 ) -> Path:
     if VIDEO_WIDTH_PX * 5 != VIDEO_HEIGHT_PX * 16:
         raise RuntimeError("Video canvas must use an exact 16:5 aspect ratio")
@@ -472,20 +522,30 @@ def render_video(
     representative_dir.mkdir(parents=True, exist_ok=True)
     output = VIDEO_DIR / f"{stem}.mp4"
     temporary = VIDEO_DIR / f"_{stem}.{os.getpid()}.{time.time_ns()}.encoding.mp4"
+    frame_directory = qa_directory / f"_encode_frames_{stem}" if image_sequence else None
+    if frame_directory is not None:
+        if frame_directory.exists():
+            shutil.rmtree(frame_directory)
+        frame_directory.mkdir(parents=True, exist_ok=True)
     frames = int(round(duration_seconds * FPS))
     representative_indices = {int(round(value * FPS)): value for value in representative_times}
     command = [
         "ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24",
         "-s", f"{VIDEO_WIDTH_PX}x{VIDEO_HEIGHT_PX}", "-r", str(FPS), "-i", "-",
-        "-an", "-c:v", "libx264", "-pix_fmt", "yuv420p", "-movflags", "+faststart", str(temporary),
+        "-an", "-c:v", "libx264", "-preset", "ultrafast", "-threads", "2",
+        "-pix_fmt", "yuv420p", "-movflags", "+faststart", str(temporary),
     ]
-    process = subprocess.Popen(command, stdin=subprocess.PIPE)
+    process = None if image_sequence else subprocess.Popen(command, stdin=subprocess.PIPE)
     fig = new_video_figure()
     frame_records = []
     failures = []
     contact_thumbnails: list[Image.Image] = []
     try:
         for frame_index in range(frames):
+            if image_sequence and frame_index and frame_index % 48 == 0:
+                plt.close(fig)
+                gc.collect()
+                fig = new_video_figure()
             fig.clear()
             time_seconds = frame_index / FPS
             registry = LayoutRegistry(
@@ -499,8 +559,9 @@ def render_video(
             layout_errors = registry.validate(fig)
             rgba = np.asarray(fig.canvas.buffer_rgba())
             rgb = np.ascontiguousarray(rgba[:, :, :3])
-            thumbnail = Image.fromarray(rgb).resize((320, 100), Image.Resampling.LANCZOS)
-            contact_thumbnails.append(thumbnail)
+            if not image_sequence or frame_index % 12 == 0:
+                thumbnail = Image.fromarray(rgb).resize((320, 100), Image.Resampling.LANCZOS)
+                contact_thumbnails.append(thumbnail)
             checks = _frame_checks(rgb, audit_config, semantics)
             check_errors = [
                 f"{result.check}: {finding.message}"
@@ -555,13 +616,29 @@ def render_video(
                 raise RuntimeError(f"Frame {frame_index} failed strict frame QA: " + "; ".join(errors))
             if frame_index in representative_indices:
                 fig.savefig(representative_dir / f"frame_{frame_index:04d}.png", dpi=VIDEO_DPI, facecolor=WHITE)
-            assert process.stdin is not None
-            process.stdin.write(rgb.tobytes())
+            if image_sequence:
+                Image.fromarray(rgb).save(frame_directory / f"frame_{frame_index:06d}.png")
+            else:
+                assert process is not None and process.stdin is not None
+                process.stdin.write(rgb.tobytes())
     finally:
         plt.close(fig)
-        if process.stdin is not None:
-            process.stdin.close()
-        return_code = process.wait()
+        ffmpeg_error = ""
+        if image_sequence:
+            sequence_command = [
+                "ffmpeg", "-v", "error", "-y", "-framerate", str(FPS),
+                "-i", str(frame_directory / "frame_%06d.png"), "-an",
+                "-c:v", "libx264", "-preset", "ultrafast", "-threads", "2",
+                "-pix_fmt", "yuv420p", "-movflags", "+faststart", str(temporary),
+            ]
+            encoded = subprocess.run(sequence_command, capture_output=True, text=True)
+            return_code = encoded.returncode
+            ffmpeg_error = encoded.stderr[-2000:]
+        else:
+            assert process is not None
+            if process.stdin is not None:
+                process.stdin.close()
+            return_code = process.wait()
         report = {
             "version": 1,
             "stem": stem,
@@ -595,8 +672,11 @@ def render_video(
             for offset, thumb in enumerate(contact_thumbnails[start : start + per_page]):
                 page.paste(thumb, ((offset % columns) * 320, (offset // columns) * 100))
             page.save(contact_dir / f"contact_{page_index:02d}.jpg", quality=92, subsampling=0)
+        if frame_directory is not None:
+            shutil.rmtree(frame_directory, ignore_errors=True)
     if return_code != 0:
-        raise RuntimeError(f"ffmpeg failed with exit code {return_code}")
+        detail = f": {ffmpeg_error.strip()}" if ffmpeg_error.strip() else ""
+        raise RuntimeError(f"ffmpeg failed with exit code {return_code}{detail}")
     if failures or len(frame_records) != frames:
         raise RuntimeError("Video was not published because one or more frames failed QA")
     temporary.replace(output)

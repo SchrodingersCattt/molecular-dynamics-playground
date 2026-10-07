@@ -4,17 +4,17 @@
   "format": "png",
   "width": 1500,
   "height": 950,
-  "plan_sha256": "f872ad40ad956b86bed0ae492357d807311a3cf9120a4d0018e0e6f8994918a3",
-  "output_sha256": "65f1abc44c4dd81abf7c9063fe53159bdc2cde82a544abd22ae8bc52be211ccc",
+  "plan_sha256": "b8e2286bdaf7f683e7cf0104edb786689fb03f0b0d93c8056c120d4cf13acc30",
+  "output_sha256": "cd72ecb9ac8e86a49b1bc094bed4715667af7a22afd84c403d633af0e0e67a5b",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03_aimd_scf\\source\\mattervis_multistep_v3\\ion_01_structure.png",
-  "source_sha256": "a27908f698f094d862380fb9fa31bf5f33daf9ae920ba302a551d9e9edba2aa0",
+  "source_sha256": "66b54386d29a47128e5fda1789675d47e56e6cb27723716dbd5eda01c7882ef0",
   "frame": 1,
   "view": "cluster",
   "camera": {
     "target": [
-      -0.015000000000000013,
-      0.039999999999999994,
-      0.05
+      -0.036225147784480494,
+      0.21407622401662785,
+      0.0905827713893439
     ],
     "ortho_scale": 1.46,
     "direction": [
@@ -58,14 +58,14 @@
     "actual_backend": "cpu",
     "camera": {
       "position": [
-        -6.416352756796364,
-        -9.134866145602995,
-        18.84908360381802
+        -6.437577904580845,
+        -8.960789921586368,
+        18.889666375207366
       ],
       "target": [
-        6.49942373,
-        5.74860879,
-        5.1499999999999995
+        6.478198582215519,
+        5.922685014016627,
+        5.1905827713893435
       ],
       "up": [
         -0.11791748769155824,
@@ -100,6 +100,7 @@
       ]
     },
     "install": "python -m pip install \"matter-vis\"",
-    "fallback": null
+    "fallback": null,
+    "atom_property_color": null
   }
 }

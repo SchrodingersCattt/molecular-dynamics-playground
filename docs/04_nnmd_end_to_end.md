@@ -1,6 +1,6 @@
 # 04 — Neural-network MD, end to end (DeepMD and DPA4C)
 
-Two independent 30 s videos and two A4 stills share one renderer,
+Two independent 25 s videos and two A4 stills share one renderer,
 `scripts/md_visuals/render_nnmd_end_to_end.py`, and one layout. Only the
 force provider changes between them:
 
@@ -34,40 +34,52 @@ position; energies, atomic energies, forces and virials are model outputs.
 * **B** shows the real system: the periodic box with the 6 Å cutoff circle
   around O126, and a magnifier of the same snapshot with neighbour edges, ε
   colours, and force/acceleration/velocity/displacement arrows on every atom
-  inside `r_c`.
+  inside `r_c`. The circle, its guide lines and the magnified cutoff sphere
+  are visible from the first frame. The magnifier keeps whole water
+  molecules; chemical views draw bonds, atoms outside `r_c` are faded (a bond
+  takes the fainter end), and the neighbour views show bare atoms. The step
+  label reads `Simulation step NN (t fs)` at the bottom left; a colour key for
+  the active arrow sits at the bottom right.
 * **D** is the operator pipeline of O126, drawn from the model's own forward
   pass for the current state:
   * **gather** — all neighbours in the magnifier fly into their rows at the
     same time, so the matrix is assembled in one step. Rows follow the
     model's order: DeepMD sorts by species, then distance (O block, H block;
-    the 517 padded slots up to `sel = 200 O + 400 H` are drawn as a hatched
-    stub). DPA4C rows are sorted by distance. The rows of j₁–j₃ are outlined
-    across every block.
+    the padded slots up to `sel = 200 O + 400 H` are not drawn). DPA4C rows
+    are sorted by distance.
   * **embed** — every following block is the model's activation for the same
     rows. DeepMD: `R̃` (4) → `G¹` (25) → `G²` (50) → `G` (100), with
     separate O←O / O←H nets for the two blocks. DPA4C: `Y_lm` (9) and
     `e(r)` (16) → radial MLP hidden `h` (176) → `g` (64) → pair FiLM and
     envelope → amplitude `φ` (64).
-  * **contract** — a green line sweeps down the rows and the neighbour sum
+  * **contract** — the neighbour sum (navy) and the neighbour sum
     builds up in real partial sums: DeepMD `T = R̃ᵀG/N` (4 × 100; the
     padded slots close the sum), then `D = TᵀT<` (100 × 12). DPA4C moments
     `X⁽⁰⁾` (64), `X⁽¹⁾` (3 × 8), `X⁽²⁾` (5 × 4), then the 208 invariants.
-  * **fit** — the three hidden layers of the fitting net light up, then the
-    real `ε_O126`, then `E = Σ ε_i`.
-  * **force** — every block turns olive while pulses run back along the
-    bottom: `F = −∂E/∂r` is the gradient through the same blocks. F then
-    leaves the panel and enters the loop's `a` node (`a = F/m` is not
-    repeated in panel D).
+  * **fit** — the three hidden layers of the fitting net light up (teal),
+    then the real `ε_O126`, then `E = Σ ε_i`; both lines are left-aligned.
+  * **force** — every block frame turns orange: `F = −∂E/∂r` is the gradient
+    through the same blocks. One solid path leaves the middle of the E line,
+    runs down, left along the bottom strip, up the A|B gutter and into the
+    right side of the loop's `a` node; it grows in orange during the force
+    stage and is grey otherwise (`a = F/m` is not repeated in panel D).
+* Colours: structure and descriptor navy, fitting/ε/E teal, force and
+  acceleration orange, velocity purple, displacement blue — the same r/v/a
+  colours as the loop and the other movies. Panel D carries only block
+  symbols, the model name and the ε/E values (no tensor dimensions).
 * Heatmaps are signed (navy negative, crimson positive). Each block saturates
   at its own 98th-percentile |value|; the partial-sum blocks use the largest
   |value| of their final sum.
 
-## Timeline (30 s, 24 fps)
+## Timeline (25 s, 24 fps)
 
-* Step 1: 12.9 s — positions, neighbours, gather, embed, contract, fit,
-  energy, force, acceleration, velocity, move.
-* Step 2: the same stages at 0.55× duration.
-* Steps 3–5: one fast cycle each in the remaining time.
+* Slow display: 12.9 s — positions, neighbours, gather, embed, contract, fit,
+  energy, force, acceleration, velocity, move, followed by a short completed
+  state hold.
+* Fast scan: four update-capable states use direct stage changes at about half
+  the former rapid-cycle duration; the final saved state is held as a clean
+  positions frame. No slow-pass blending, neighbour-flight animation, or
+  pulse animation is used in this phase.
 
 ## Model data
 
@@ -143,6 +155,6 @@ see `docs/04_4c_dpa4c.md`.
 ## QA
 
 Every keyframe and every video frame is validated with the house
-`LayoutRegistry` (Arial 16–18 pt in video, ≥ 10 pt in stills, edge pads, text
-overlaps) and with the `visualize_data` pixel checks. Reports live in
+`LayoutRegistry` (Arial with the shared 12/14/16/18/24 pt scale, edge pads,
+text overlaps) and with the `visualize_data` pixel checks. Reports live in
 `product/qa/<stem>/_qa/`.

@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "stem": "03b_uks_reaction",
+  "data_stem": "uks_tnt_reaction",
+  "backend": "analytic_demo",
+  "method": "analytic surrogate for visual QA",
+  "elements": [
+    "C",
+    "C",
+    "C",
+    "C",
+    "C",
+    "C",
+    "C",
+    "H",
+    "H",
+    "H",
+    "H",
+    "H",
+    "N",
+    "N",
+    "N",
+    "O",
+    "O",
+    "O",
+    "O",
+    "O",
+    "O"
+  ],
+  "formula": "C7H5N3O6",
+  "smiles": "Cc1c([N+](=O)[O-])cc([N+](=O)[O-])cc1[N+](=O)[O-]",
+  "atom_map": {
+    "ring_c1_c6": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "methyl_c": 6,
+    "ring_h": [
+      7,
+      8
+    ],
+    "methyl_h": [
+      9,
+      10,
+      11
+    ],
+    "nitro_n": [
+      12,
+      13,
+      14
+    ],
+    "nitro_o": [
+      [
+        15,
+        16
+      ],
+      [
+        17,
+        18
+      ],
+      [
+        19,
+        20
+      ]
+    ]
+  },
+  "charge": 0,
+  "spin": 0,
+  "electron_count": 116,
+  "reaction": "TNT -> aryl radical + NO2 radical (C2-NO2 homolytic dissociation)",
+  "breaking_bond": [
+    1,
+    12
+  ],
+  "no2_atoms": [
+    12,
+    15,
+    16
+  ],
+  "aryl_atoms": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    13,
+    14,
+    17,
+    18,
+    19,
+    20
+  ],
+  "geometry_source": "PBE0/def2-SVP RKS optimization from deterministic TNT reference geometry",
+  "dt_fs": 0.1,
+  "n_steps": 100,
+  "relative_speed_ang_fs": 0.05,
+  "density3d": {
+    "npz": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\data\\uks_tnt_reaction_density3d.npz",
+    "representative_cubes": [
+      "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\density3d\\frame_0000_alpha.cube",
+      "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\density3d\\frame_0000_beta.cube",
+      "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\density3d\\frame_0050_alpha.cube",
+      "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\density3d\\frame_0050_beta.cube",
+      "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\density3d\\frame_0100_alpha.cube",
+      "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\density3d\\frame_0100_beta.cube"
+    ],
+    "units": "electron/angstrom^3",
+    "grid_order": "x,y,z",
+    "shape": [
+      81,
+      62,
+      79
+    ],
+    "spacing_ang": 0.22
+  },
+  "npz": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\data\\uks_tnt_reaction.npz",
+  "source_sha256": "30e8a96296d0114e4ea6e36080740b84505202e8d0e98cf4caebdd0bfa556b75",
+  "density3d_sha256": "473f1ce283bee15fedbe87ef8b9fd34c19061b1a428052ddf533c73dccb55125",
+  "notes": [
+    "The analytic backend is for renderer/layout QA only; it is not UKS data."
+  ]
+}

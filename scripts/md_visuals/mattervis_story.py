@@ -27,15 +27,18 @@ from mat_viewer.renderer import resolve_vector_overlays
 from common import (
     CRIMSON,
     DARK_GRAY,
+    FONT_SIZES,
     GREEN,
     INK,
     LIGHT_GRAY,
     LINE_GRAY,
     NAVY,
+    STAGE_COLORS,
     WHITE,
     LayoutRegistry,
     json_dump,
     sha256_file,
+    text_scale_of,
 )
 
 
@@ -330,8 +333,14 @@ def render_structure(
     show_bonds: bool = True,
     cell_color: str = "#333333",
     cell_width_px: float = 2.0,
+    bond_styles: dict[tuple[int, int], dict] | None = None,
 ) -> dict:
-    """Render a complete structure/vector scene through public MatterVis APIs."""
+    """Render a complete structure/vector scene through public MatterVis APIs.
+
+    ``bond_styles`` maps a source-index pair to ``{"opacity", "color",
+    "radius_scale"}`` for that native bond; a pair MatterVis did not bond
+    (e.g. a stretched, breaking bond) is added explicitly.
+    """
     output.parent.mkdir(parents=True, exist_ok=True)
     source_hash = sha256_file(source)
     render_settings = {
@@ -385,14 +394,14 @@ def render_structure(
     # representation rather than a tuple/list mix, otherwise every invocation
     # needlessly rerenders the (expensive) periodic scene.
     camera_signature = json.loads(json.dumps(asdict(camera), sort_keys=True))
-    atom_signature = json.dumps(
-        {
-            "opacity": {str(int(k)): float(v) for k, v in sorted(atom_opacity_scales.items())},
-            "color": {str(int(k)): str(v) for k, v in sorted(atom_color_overrides.items())},
-        },
-        sort_keys=True,
-        separators=(",", ":"),
-    )
+    bond_styles = {tuple(sorted((int(a), int(b)))): dict(style) for (a, b), style in (bond_styles or {}).items()}
+    atom_payload = {
+        "opacity": {str(int(k)): float(v) for k, v in sorted(atom_opacity_scales.items())},
+        "color": {str(int(k)): str(v) for k, v in sorted(atom_color_overrides.items())},
+    }
+    if bond_styles:
+        atom_payload["bonds"] = {f"{a}-{b}": style for (a, b), style in sorted(bond_styles.items())}
+    atom_signature = json.dumps(atom_payload, sort_keys=True, separators=(",", ":"))
     if output.exists() and sidecar.exists():
         previous = json.loads(sidecar.read_text(encoding="utf-8"))
         if (
@@ -470,6 +479,30 @@ def render_structure(
         # Keep the native atoms and world-space edges, but remove the inferred
         # covalent bond layer so the i-j membership can be read directly.
         scene["bonds"] = []
+    elif bond_styles:
+        draw_atoms = scene.get("draw_atoms", [])
+        by_source = {int(atom.get("_source_index", -1)): index for index, atom in enumerate(draw_atoms)}
+        bonds = scene.setdefault("bonds", [])
+        for (a, b), style in bond_styles.items():
+            if a not in by_source or b not in by_source:
+                continue
+            ia, ib = by_source[a], by_source[b]
+            record = next((bond for bond in bonds if {int(bond.get("i", -1)), int(bond.get("j", -1))} == {ia, ib}), None)
+            if record is None:
+                record = {
+                    "i": ia,
+                    "j": ib,
+                    "start": np.asarray(draw_atoms[ia]["cart"], dtype=float),
+                    "end": np.asarray(draw_atoms[ib]["cart"], dtype=float),
+                }
+                bonds.append(record)
+            if "opacity" in style:
+                record["_render_opacity_scale"] = float(np.clip(style["opacity"], 0.0, 1.0))
+                record["_render_visible"] = float(style["opacity"]) > 0.0
+            if style.get("color"):
+                record["_render_color"] = str(style["color"])
+            if "radius_scale" in style:
+                record["_render_radius_scale"] = float(style["radius_scale"])
     offset = np.asarray(camera.scene_offset, dtype=float)
     native_meshes = []
     for mesh in mesh_overlays:
@@ -947,17 +980,23 @@ def draw_vv_loop(
     centre_y: float = 0.64,
     radius_x: float = 0.31,
 ) -> None:
-    """Draw the shared empty three-stage Velocity Verlet loop."""
+    """Draw the shared three-stage Velocity Verlet loop.
+
+    Every stage owns one colour (``STAGE_COLORS``); the same colour is used for
+    that quantity's arrows in the scene, so the loop doubles as the legend.
+    Word labels sit outside the circle so the arc never runs through them.
+    """
     figure_width, figure_height = ax.figure.canvas.get_width_height()
     position = ax.get_position()
     axes_aspect = (position.width * figure_width) / (position.height * figure_height)
     centre_x = 0.50
     radius_y = radius_x * axes_aspect
+    ring_grey = "#B4BABE"
     arc_ranges = ((-30, 90), (210, 330), (90, 210))
-    ax.add_patch(Arc((centre_x, centre_y), 2 * radius_x, 2 * radius_y, theta1=0, theta2=360, color="#A9B0B4" if video else LINE_GRAY, lw=3.0 if video else 2.0, zorder=1))
+    ax.add_patch(Arc((centre_x, centre_y), 2 * radius_x, 2 * radius_y, theta1=0, theta2=360, color=ring_grey, lw=2.6 if video else 2.0, zorder=1))
     if active_stage is not None:
         theta1, theta2 = arc_ranges[active_stage]
-        ax.add_patch(Arc((centre_x, centre_y), 2 * radius_x, 2 * radius_y, theta1=theta1, theta2=theta2, color=INK, lw=4.0 if video else 2.6, zorder=2))
+        ax.add_patch(Arc((centre_x, centre_y), 2 * radius_x, 2 * radius_y, theta1=theta1, theta2=theta2, color=STAGE_COLORS[active_stage], lw=4.2 if video else 2.8, zorder=2))
     tangent_angles = ((38, 24), (-82, -98), (-202, -218))
     for index, (start_angle, end_angle) in enumerate(tangent_angles):
         def point(angle: float) -> tuple[float, float]:
@@ -968,9 +1007,9 @@ def draw_vv_loop(
             point(start_angle),
             point(end_angle),
             arrowstyle="-|>",
-            mutation_scale=20 if video else 14,
-            lw=3.2 if video else 2.2,
-            color=INK if active_stage == index else "#A9B0B4" if video else LINE_GRAY,
+            mutation_scale=22 if video else 14,
+            lw=3.0 if video else 2.2,
+            color=STAGE_COLORS[index] if active_stage == index else ring_grey,
             zorder=3,
         )
     nodes = [
@@ -978,47 +1017,48 @@ def draw_vv_loop(
         (centre_x + radius_x * np.cos(np.deg2rad(-30)), centre_y + radius_y * np.sin(np.deg2rad(-30)), r"$\mathbf{a}$", "acceleration"),
         (centre_x + radius_x * np.cos(np.deg2rad(210)), centre_y + radius_y * np.sin(np.deg2rad(210)), r"$\mathbf{v}$", "velocity"),
     ]
-    node_half_width = 0.075 if video else 0.062
+    node_half_width = 0.092 if video else 0.070
     node_half_height = node_half_width * axes_aspect
+    bottom_label_y = centre_y - radius_y - 0.045
     for index, (x, y, symbol, label) in enumerate(nodes):
         active = active_stage == index
+        colour = STAGE_COLORS[index]
         ax.add_patch(
             Ellipse(
                 (x, y),
                 width=2.0 * node_half_width,
                 height=2.0 * node_half_height,
-                fc=INK if active else WHITE,
-                ec=INK if active else "#A9B0B4" if video else LINE_GRAY,
-                lw=2.8 if video else 2.0,
+                fc=colour if active else WHITE,
+                ec=colour,
+                lw=3.0 if video else 2.0,
                 zorder=4,
             )
         )
-        label_x = x
-        if index == 1:
-            label_x -= 0.018
-        elif index == 2:
-            label_x += 0.018
         registry.text(
             ax,
             x,
             y,
             symbol,
             ha="center",
-            va="center",
-            fontsize=16 if video else 14,
-            color=WHITE if active else DARK_GRAY,
-            weight="bold",
+            va="center_baseline",
+            fontsize=FONT_SIZES["page_title"],
+            color=WHITE if active else colour,
             zorder=5,
         )
+        if index == 0:
+            label_xy, align, valign = (x, y + node_half_height + 0.018), "center", "bottom"
+        elif index == 1:
+            label_xy, align, valign = (1.0, bottom_label_y), "right", "top"
+        else:
+            label_xy, align, valign = (0.0, bottom_label_y), "left", "top"
         registry.text(
             ax,
-            label_x,
-            y - node_half_height - (0.035 if video else 0.025),
+            *label_xy,
             label,
-            ha="center",
-            va="top",
-            fontsize=12 if video else 10,
-            color=INK if active else "#626B70" if video else DARK_GRAY,
+            ha=align,
+            va=valign,
+            fontsize=FONT_SIZES["micro"],
+            color=colour,
             zorder=5,
         )
     registry.text(
@@ -1028,10 +1068,9 @@ def draw_vv_loop(
         centre_text or "Velocity\nVerlet",
         ha="center",
         va="center",
-        fontsize=(14 if video else 10) if centre_text else (16 if video else 15),
+        fontsize=FONT_SIZES["body"],
         color=INK,
-        weight="normal" if centre_text else "bold",
-        linespacing=1.15 if centre_text else 1.0,
+        linespacing=1.25,
     )
     if equation:
         registry.text(
@@ -1041,9 +1080,56 @@ def draw_vv_loop(
             equation,
             ha="center",
             va="center",
-            fontsize=12 if video else 10,
+            fontsize=FONT_SIZES["micro"],
             color=INK,
         )
+
+
+def draw_arrow_legend(
+    ax: plt.Axes,
+    registry: LayoutRegistry,
+    entries: list[tuple[str, str]],
+    *,
+    x_right: float,
+    y: float,
+    video: bool,
+    align: str = "right",
+) -> float:
+    """One row of ``arrow + label`` keys in the label's colour.
+
+    ``align="right"`` grows leftwards from ``x_right``; ``"left"`` grows
+    rightwards from it.  Returns the far x edge in axes coordinates.
+    """
+    if not entries:
+        return x_right
+    fig = ax.figure
+    renderer = fig.canvas.get_renderer()
+    scale = text_scale_of(fig)
+    width_px = ax.bbox.width
+    arrow_len = (40.0 if video else 60.0) / width_px
+    gap = (8.0 if video else 12.0) / width_px
+    between = (30.0 if video else 40.0) / width_px
+    x = x_right
+    ordered = list(reversed(entries)) if align == "right" else list(entries)
+    for label, colour in ordered:
+        if align == "right":
+            artist = registry.text(ax, x, y, label, ha="right", va="bottom", fontsize=FONT_SIZES["micro"], color=colour, zorder=21)
+        else:
+            artist = registry.text(ax, x + arrow_len + gap, y, label, ha="left", va="bottom", fontsize=FONT_SIZES["micro"], color=colour, zorder=21)
+        box = artist.get_window_extent(renderer)
+        text_w = box.width * scale / width_px
+        mid_y = y + 0.42 * box.height * scale / ax.bbox.height
+        if align == "right":
+            start, end = x - text_w - gap - arrow_len, x - text_w - gap
+            x = start - between
+        else:
+            start, end = x, x + arrow_len
+            x = end + gap + text_w + between
+        registry.arrow(
+            ax, (start, mid_y), (end, mid_y), arrowstyle="-|>", mutation_scale=16 if video else 12,
+            lw=3.2 if video else 2.0, color=colour, shrinkA=0.0, shrinkB=0.0, zorder=21,
+        )
+    return x + (between if align == "right" else -between)
 
 
 def add_story_title(
@@ -1060,7 +1146,7 @@ def add_story_title(
         title,
         ha="left",
         va="top",
-        fontsize=16,
+        fontsize=FONT_SIZES["emphasis"],
         color=INK,
         weight="bold",
     )
@@ -1070,7 +1156,7 @@ def add_story_title(
         subtitle,
         ha="left",
         va="top",
-        fontsize=12 if video else 11,
+        fontsize=FONT_SIZES["body"],
         color=DARK_GRAY,
     )
     registry.texts.extend((title_artist, subtitle_artist))

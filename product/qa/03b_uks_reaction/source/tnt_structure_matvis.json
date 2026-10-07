@@ -1,0 +1,41 @@
+{
+  "structure": "product\\qa\\03b_uks_reaction\\source\\tnt_optimized.xyz",
+  "formula": "C7H5N3O6",
+  "atom_count": 21,
+  "breaking_bond": [
+    1,
+    12
+  ],
+  "breaking_bond_distance_angstrom": 1.4583245097690225,
+  "minimum_oxygen_oxygen_distance_angstrom": 2.1954244486105936,
+  "mat_vis_inspect": {
+    "ok": true,
+    "schema": "mattervis.inspect/v1",
+    "source": {
+      "frame": 0,
+      "input_format": "xyz",
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\tnt_optimized.xyz",
+      "sha256": "a0c5b006ad583d399daddc0f6a5dd0337b6307682154546827812b807052572b",
+      "total_frames": 1
+    },
+    "structure": {
+      "bond_records": 21,
+      "displayed_atoms": 16,
+      "fragments": 1,
+      "has_disorder": false,
+      "has_lattice": false,
+      "parsed_atoms": 21,
+      "pbc": [
+        false,
+        false,
+        false
+      ],
+      "periodic": false,
+      "site_records": 21,
+      "synthetic_cell": true
+    },
+    "warnings": []
+  },
+  "render": "product\\qa\\03b_uks_reaction\\source\\tnt_structure_matvis.png",
+  "passed": true
+}

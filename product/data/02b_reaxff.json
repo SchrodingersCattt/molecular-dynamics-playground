@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "stem": "02b_reaxff",
+  "method": "schematic ReaxFF-style energy (bond order, over-coordination, EEM charges, core repulsion)",
+  "published_parameter_set": false,
+  "lammps_run": false,
+  "reaction": "TNT -> aryl radical + NO2 radical (C2-NO2 bond order fades)",
+  "geometry_source": "generate_uks_tnt.initial_geometry()",
+  "breaking_bond": [
+    1,
+    12
+  ],
+  "kick": {
+    "relative_speed_ang_fs": 0.05,
+    "function": "generate_uks_tnt.kick_velocities"
+  },
+  "dt_fs": 0.1,
+  "n_steps": 500,
+  "integrator": "velocity Verlet with analytic autograd forces",
+  "checks": {
+    "start_max_force_ev_ang": 0.0,
+    "force_finite_difference_max_error": 3.508866530665955e-09,
+    "total_energy_drift_ev": 0.1891806839585115,
+    "r_cn_final_ang": 2.909424323075279,
+    "bo_cn_final": 0.009623768042668523
+  },
+  "npz": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\data\\02b_reaxff.npz",
+  "source_sha256": "024f0ada589e23755926ef34a2d080b584c9267592fa26899ef595c8ab425acd"
+}

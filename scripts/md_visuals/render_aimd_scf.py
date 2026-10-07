@@ -13,7 +13,11 @@ from PIL import Image
 from scipy import ndimage
 
 from common import (
+    R_BLUE,
+    V_PURPLE,
     DARK_GRAY,
+    FONT_SIZES,
+    FORCE_OLIVE,
     GREEN,
     INK,
     LINE_GRAY,
@@ -41,6 +45,7 @@ from mattervis_story import (
     STORY_VIDEO_C,
     STORY_VIDEO_D,
     camera_for_source,
+    draw_arrow_legend,
     draw_vv_loop,
     make_vector_group,
     place_render,
@@ -73,12 +78,13 @@ VIDEO_D = STORY_VIDEO_D
 
 # A tighter fixed view keeps the dimer and its density slice legible inside B.
 CAMERA_SCALE = 1.46
-POSITION_LAKE = "#4E9BB5"
-FORCE_OLIVE = "#A99C50"
-VELOCITY_EMERALD = "#2F8562"
+# Raises the view so the upper H and its arrows stay inside the render.
+CAMERA_LIFT = 0.18
+POSITION_LAKE = R_BLUE
+VELOCITY_EMERALD = V_PURPLE
 FORCE_DISPLAY_SCALE = 42.0
-VELOCITY_DISPLAY_SCALE = 34.0
-DISPLACEMENT_ARROW_SCALE = 75.0
+VELOCITY_DISPLAY_SCALE = 24.0
+DISPLACEMENT_ARROW_SCALE = 53.0
 
 DENSITY_LEVELS = np.asarray(
     [0.003, 0.007, 0.015, 0.035, 0.080, 0.180, 0.400, 0.900]
@@ -265,7 +271,7 @@ def prepare_mattervis(
     view_direction /= np.linalg.norm(view_direction)
     camera = camera_for_source(
         MOTION_SOURCE,
-        target=plane_centre,
+        target=plane_centre + CAMERA_LIFT * plane_v,
         ortho_scale=CAMERA_SCALE,
         frame=0,
         direction=tuple(view_direction),
@@ -436,16 +442,16 @@ def draw_scf_loop(
     symbols = [r"$F$", r"$C$", r"$\rho$", r"$\Delta$"]
     labels = ("build Fock", "solve orbitals", "update density", "test")
     positions = [
-        (0.50, 0.78),
-        (0.78, 0.55),
-        (0.50, 0.32),
-        (0.22, 0.55),
+        (0.50, 0.75),
+        (0.78, 0.52),
+        (0.50, 0.29),
+        (0.22, 0.52),
     ]
     arrows = [
-        ((0.565, 0.725), (0.715, 0.605)),
-        ((0.715, 0.495), (0.565, 0.375)),
-        ((0.435, 0.375), (0.285, 0.495)),
-        ((0.285, 0.605), (0.435, 0.725)),
+        ((0.565, 0.695), (0.715, 0.575)),
+        ((0.715, 0.465), (0.565, 0.345)),
+        ((0.435, 0.345), (0.285, 0.465)),
+        ((0.285, 0.575), (0.435, 0.695)),
     ]
     radius_x = 0.072 if video else 0.064
     centre_x = 0.50
@@ -483,9 +489,9 @@ def draw_scf_loop(
             symbol,
             ha="center",
             va="center",
-            fontsize=14 if video else 10,
+            fontsize=FONT_SIZES["body"],
             color=WHITE if weight > 0.48 else DARK_GRAY,
-            weight="bold",
+            weight="normal",
             zorder=5,
         )
         label_y = y + radius_y + 0.025 if video and index == 0 else y - radius_y - (0.035 if video else 0.028)
@@ -496,20 +502,20 @@ def draw_scf_loop(
             labels[index],
             ha="center",
             va="bottom" if video and index == 0 else "top",
-            fontsize=10,
+            fontsize=FONT_SIZES["micro"],
             color=INK if weight < 0.48 else INK,
             zorder=5,
         )
     registry.text(
         ax,
         centre_x,
-        0.55,
+        0.52,
         "SCF",
         ha="center",
         va="center",
-        fontsize=14 if video else 12,
+        fontsize=FONT_SIZES["body"],
         color=INK,
-        weight="bold",
+        weight="normal",
     )
 
 
@@ -528,8 +534,8 @@ def draw_left(
         video=video,
         active_stage=stage,
         centre_text=equation,
-        centre_y=0.54,
-        radius_x=0.40,
+        centre_y=0.58,
+        radius_x=0.36,
     )
 
 
@@ -635,9 +641,9 @@ def draw_case(
         stage_text,
         ha="center",
         va="center",
-        fontsize=18 if video else 11,
-        color=stage_colour,
-        weight="bold",
+        fontsize=FONT_SIZES["panel_title"],
+        color=INK,
+        weight="normal",
         zorder=21,
     )
     registry.text(
@@ -647,11 +653,18 @@ def draw_case(
         f"Simulation step {ion_index + 1:02d}",
         ha="left",
         va="bottom",
-        fontsize=12 if video else 10,
+        fontsize=FONT_SIZES["micro"],
         color=INK,
         weight="normal",
         zorder=21,
     )
+    legend = {
+        "force": (r"force $\mathbf{F}$", FORCE_OLIVE),
+        "velocity": (r"velocity $\mathbf{v}$", VELOCITY_EMERALD),
+        "move": (r"displacement $\mathbf{v}\Delta t$", POSITION_LAKE),
+    }
+    if mode in legend:
+        draw_arrow_legend(ax, registry, [legend[mode]], x_right=0.925, y=0.070, video=video)
 
 
 def draw_energy_curve(
@@ -683,17 +696,17 @@ def draw_energy_curve(
     count = int(data["scf_counts"][ion_index])
     if mode == "scf":
         if scf_phase == "loop":
-            electronic_status = f"Iteration {iteration_index + 1:02d} / {count:02d} · SCF loop · residual held"
+            electronic_status = f"SCF iteration {iteration_index + 1:02d} / {count:02d}"
         elif scf_phase == "pause":
-            electronic_status = f"Iteration {iteration_index + 1:02d} / {count:02d} · ring complete · pause"
+            electronic_status = f"SCF iteration {iteration_index + 1:02d} / {count:02d}"
         elif scf_phase == "curve":
-            electronic_status = f"Iteration {iteration_index + 1:02d} / {count:02d} · update residual"
+            electronic_status = f"SCF iteration {iteration_index + 1:02d} / {count:02d}"
         else:
-            electronic_status = f"Iteration {iteration_index + 1:02d} / {count:02d} · residual held"
+            electronic_status = f"SCF iteration {iteration_index + 1:02d} / {count:02d}"
     elif mode == "pause":
-        electronic_status = f"Iteration {count:02d} / {count:02d} · converged"
+        electronic_status = f"SCF converged ({count} iterations)"
     else:
-        electronic_status = f"SCF converged · {count:02d} iterations"
+        electronic_status = f"SCF converged ({count} iterations)"
     registry.text(
         ax,
         0.50,
@@ -701,7 +714,7 @@ def draw_energy_curve(
         electronic_status,
         ha="center",
         va="center",
-        fontsize=14 if video else 10,
+        fontsize=FONT_SIZES["body"],
         color=INK,
         weight="normal",
         zorder=4,
@@ -728,7 +741,7 @@ def draw_energy_curve(
         log_y += fraction * np.log(display_error[current + 1])
         visible_y.append(float(np.exp(log_y)))
 
-    plot_ax = ax.inset_axes((0.30, 0.22, 0.61, 0.55))
+    plot_ax = ax.inset_axes((0.30, 0.38, 0.62, 0.42) if video else (0.30, 0.22, 0.61, 0.55))
     plot_ax.set_yscale("log")
     plot_ax.plot(
         iterations,
@@ -759,14 +772,15 @@ def draw_energy_curve(
     plot_ax.set_xlim(0.6, count + 0.4)
     plot_ax.set_ylim(5.0e-11, 2.0)
     plot_ax.set_xticks(sorted(set((1, 4, 8, count))))
-    plot_ax.set_yticks((1.0, 1.0e-3, 1.0e-6, 1.0e-9))
-    font_size = 16 if video else 10
-    plot_ax.tick_params(axis="both", labelsize=font_size, colors=DARK_GRAY, width=1.0)
+    plot_ax.set_yticks((1.0, 1.0e-4, 1.0e-8))
+    font_size = FONT_SIZES["body"]
+    plot_ax.tick_params(axis="both", labelsize=FONT_SIZES["micro"], colors=INK, width=1.0)
     plot_ax.set_xlabel("SCF iteration", fontsize=font_size, color=INK, labelpad=3)
-    plot_ax.set_ylabel(r"density residual", fontsize=font_size, color=INK, labelpad=3)
+    plot_ax.set_ylabel("residual", fontsize=font_size, color=INK, labelpad=3)
     plot_ax.grid(axis="y", color="#E6E8EA", lw=0.8, zorder=0)
+    plot_ax.spines[["top", "right"]].set_visible(False)
     for spine in plot_ax.spines.values():
-        spine.set_color(LINE_GRAY)
+        spine.set_color(INK)
         spine.set_linewidth(1.2 if video else 0.8)
 
 
@@ -829,7 +843,7 @@ def render_static(
         height_px=1000,
     )
     fig = new_static_figure()
-    registry = LayoutRegistry(min_font_pt=10, edge_pad_px=18)
+    registry = LayoutRegistry(min_font_pt=FONT_SIZES["micro"], max_font_pt=FONT_SIZES["page_title"], edge_pad_px=18)
     panel_a = axes_from_top_slot(fig, STATIC_A)
     panel_b = axes_from_top_slot(fig, STATIC_B)
     panel_c = axes_from_top_slot(fig, STATIC_C)
@@ -1222,8 +1236,8 @@ def render_representative_frames(
     for index, time_seconds in enumerate(KEYFRAME_TIMES):
         fig = new_video_figure()
         registry = LayoutRegistry(
-            min_font_pt=16,
-            max_font_pt=18,
+            min_font_pt=FONT_SIZES["micro"],
+            max_font_pt=FONT_SIZES["page_title"],
             edge_pad_px=12,
             font_family="Arial",
             coerce_min_font=True,
@@ -1237,15 +1251,15 @@ def render_representative_frames(
             assets,
         )
         errors = registry.validate(fig)
-        if errors:
-            plt.close(fig)
-            raise RuntimeError(
-                f"Keyframe {time_seconds:.2f} s failed layout:\n"
-                + "\n".join(errors)
-            )
         path = output_dir / f"frame_{index:02d}_{time_seconds:05.2f}s.png"
         fig.savefig(path, dpi=100, facecolor=WHITE)
         plt.close(fig)
+        if errors:
+            texts = [f"text[{i}]={artist.get_text()!r}" for i, artist in enumerate(registry.texts)]
+            raise RuntimeError(
+                f"Keyframe {time_seconds:.2f} s failed layout:\n"
+                + "\n".join(errors + texts)
+            )
         images.append(Image.open(path).convert("RGB").resize((640, 200)))
         state = video_state(time_seconds, data["scf_counts"])
         records.append(

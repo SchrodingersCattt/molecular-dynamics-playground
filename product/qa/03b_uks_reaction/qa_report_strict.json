@@ -1,0 +1,26 @@
+{
+  "stem": "03b_uks_reaction",
+  "backend": "analytic_demo",
+  "static": {
+    "width": 3508,
+    "height": 2480,
+    "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\figures\\03b_uks_reaction.png"
+  },
+  "video": {
+    "width": 1920,
+    "height": 600,
+    "fps": 24,
+    "duration_seconds": 30.0,
+    "frame_count": 720,
+    "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\videos\\03b_uks_reaction.mp4"
+  },
+  "mattervis": true,
+  "mode": "fast_export",
+  "full_frame_qa": false,
+  "arrow_scales": {
+    "force": 150.0,
+    "half_step_velocity": 34.0,
+    "position_drift": 4.0
+  },
+  "passed": true
+}

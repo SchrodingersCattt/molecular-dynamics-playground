@@ -1,0 +1,60 @@
+{
+  "pipeline_version": 5,
+  "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\data\\uks_tnt_aimd.npz",
+  "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\mattervis_multistep_v3\\ion_12_structure.png",
+  "ion_index": 12,
+  "scf_index": 10,
+  "residual": 1e-09,
+  "visual_progress": 1.0,
+  "blur_sigma_pixels": 0.0,
+  "levels": [
+    0.003,
+    0.007,
+    0.015,
+    0.035,
+    0.08,
+    0.18,
+    0.4,
+    0.9
+  ],
+  "density_channels": "alpha_beta",
+  "alpha_colors": [
+    "#F8D9DE",
+    "#F1B5BF",
+    "#E88C9A",
+    "#D96578",
+    "#C6455B",
+    "#B52F47",
+    "#A32035",
+    "#861A2B"
+  ],
+  "beta_colors": [
+    "#D9F0E3",
+    "#B8E0C9",
+    "#91CFAC",
+    "#69BD8E",
+    "#4EA979",
+    "#398C64",
+    "#2F6B4F",
+    "#20533D"
+  ],
+  "camera": {
+    "target": [
+      0.6058562403585148,
+      0.08102030343737009,
+      -0.22527948765112468
+    ],
+    "direction": [
+      -0.03754873875062198,
+      0.9874468261405996,
+      0.15342378486758232
+    ],
+    "up": [
+      0.8105296067797184,
+      0.11989645917525417,
+      -0.5732945103616042
+    ],
+    "ortho_scale": 3.85
+  },
+  "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\mattervis_multistep_v3\\ion_12_scf_10_density.png"
+}

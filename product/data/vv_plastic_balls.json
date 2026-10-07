@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "stem": "01_velocity_verlet",
+  "system": "nine identical spheres, LJ 12-6 pair potential (argon-like sigma and mass, deeper well), free cluster",
+  "n_atoms": 9,
+  "mass_amu": 39.948,
+  "lj_sigma_ang": 3.4,
+  "lj_epsilon_ev": 0.06,
+  "display_ball_radius_ang": 1.65,
+  "dt_fs": 80.0,
+  "dt_note": "80 fs is a visibility choice; omega*dt < 0.5 at every LJ contact so velocity Verlet stays stable",
+  "temperature_k": 100.0,
+  "position_seed": 496,
+  "velocity_seed": 11,
+  "velocity_recipe": "LAMMPS: velocity all create T seed dist gaussian mom yes (per-atom Gaussian triple, remove COM velocity, rescale to T)",
+  "sigma_t_ang_per_fs": 0.0014426760359313334,
+  "com_velocity_removed_in_sigma_t": 0.6246279178948083,
+  "scale_factor": 1.1708410243254372,
+  "temperature_before_rescale_k": 72.94644606770596,
+  "degrees_of_freedom": 24,
+  "checks": {
+    "min_pair_distance_ang": 4.086291862416613,
+    "ball_diameter_ang": 3.3,
+    "max_force_central_difference_error_ev_ang": 5.777683832666053e-12,
+    "net_force_max_ev_ang": 1.9081958235744878e-17,
+    "initial_temperature_k": 99.99999999999999,
+    "initial_com_velocity_max": 0.0,
+    "total_energy_drift_ev": 0.005835048149383015,
+    "kinetic_energy_ev": [
+      0.10340799599999997,
+      0.08883172976905472,
+      0.08774466398295236,
+      0.09749778300624967,
+      0.10420751055777881,
+      0.12326238422503524,
+      0.1641690206018707,
+      0.22548753740039204
+    ]
+  },
+  "npz": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\data\\vv_plastic_balls.npz",
+  "npz_sha256": "903a46d373986d411a1b3ff43d6afea9fcd005b6890a6cc38bc7eca641067c03"
+}

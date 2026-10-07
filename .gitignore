@@ -77,3 +77,6 @@ product/qa/04_4c/bohr_live_water_v2/input/wheels/
 product/qa/04_4c/bohr_live_water_v2/input/*.pt
 product/qa/04_4c/bohr_live_water_v2/results_v6/*/out.zip
 product/qa/04_4c/bohr_live_water/*.pt
+
+# Generated 3-D UKS density fields are retained locally/externally; GitHub has a 100 MB file cap.
+product/data/*_density3d.npz

@@ -1,0 +1,209 @@
+{
+  "video": "product/videos/02b_reaxff.mp4",
+  "probe": {
+    "width": 1920,
+    "height": 600,
+    "r_frame_rate": "24/1",
+    "duration": "21.583333",
+    "nb_read_frames": "518"
+  },
+  "samples": [
+    {
+      "t": 0.6,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.0531,
+      "B_ink_fraction": 0.042,
+      "R/C+D_ink_fraction": 0.0612,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    },
+    {
+      "t": 2.0,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.0547,
+      "B_ink_fraction": 0.0426,
+      "R/C+D_ink_fraction": 0.0674,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    },
+    {
+      "t": 3.6,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.0547,
+      "B_ink_fraction": 0.0446,
+      "R/C+D_ink_fraction": 0.0803,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    },
+    {
+      "t": 4.4,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.0547,
+      "B_ink_fraction": 0.046,
+      "R/C+D_ink_fraction": 0.0874,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    },
+    {
+      "t": 5.2,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.0547,
+      "B_ink_fraction": 0.0498,
+      "R/C+D_ink_fraction": 0.0942,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    },
+    {
+      "t": 6.5,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.0547,
+      "B_ink_fraction": 0.0504,
+      "R/C+D_ink_fraction": 0.1002,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    },
+    {
+      "t": 7.8,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.0533,
+      "B_ink_fraction": 0.0596,
+      "R/C+D_ink_fraction": 0.0994,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    },
+    {
+      "t": 9.0,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.0531,
+      "B_ink_fraction": 0.052,
+      "R/C+D_ink_fraction": 0.0982,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    },
+    {
+      "t": 10.2,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.054,
+      "B_ink_fraction": 0.0563,
+      "R/C+D_ink_fraction": 0.0981,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    },
+    {
+      "t": 11.6,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.0547,
+      "B_ink_fraction": 0.0533,
+      "R/C+D_ink_fraction": 0.0982,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    },
+    {
+      "t": 13.0,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.056,
+      "B_ink_fraction": 0.0557,
+      "R/C+D_ink_fraction": 0.0953,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    },
+    {
+      "t": 15.0,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.0541,
+      "B_ink_fraction": 0.0551,
+      "R/C+D_ink_fraction": 0.098,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    },
+    {
+      "t": 17.0,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.0561,
+      "B_ink_fraction": 0.0572,
+      "R/C+D_ink_fraction": 0.0956,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    },
+    {
+      "t": 19.0,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.054,
+      "B_ink_fraction": 0.0526,
+      "R/C+D_ink_fraction": 0.0977,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    },
+    {
+      "t": 21.0,
+      "size": [
+        1920,
+        600
+      ],
+      "A_ink_fraction": 0.0549,
+      "B_ink_fraction": 0.0539,
+      "R/C+D_ink_fraction": 0.0953,
+      "edge_ink": 0,
+      "gutter_ink_px": 0,
+      "pass": true
+    }
+  ],
+  "all_pass": true,
+  "note": "sampled decoded-frame QA; keyframes also pass LayoutRegistry validation"
+}

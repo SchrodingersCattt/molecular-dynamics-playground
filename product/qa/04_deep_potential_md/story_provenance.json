@@ -1502,9 +1502,17 @@
     }
   },
   "timeline": {
-    "duration_seconds": 30.0,
+    "duration_seconds": 25.0,
     "detailed_block_seconds": 12.9,
-    "second_block_scale": 0.55,
+    "slow_hold_seconds": 3.0,
+    "rapid_cycle_seconds": 2.0,
+    "rapid_states": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "final_state_hold_seconds": 1.0,
     "detailed_phases": [
       [
         "positions",
@@ -1553,44 +1561,48 @@
     ],
     "rapid_phases": [
       [
+        "positions",
+        0.04
+      ],
+      [
         "neighbours",
-        1.0
+        0.04
       ],
       [
         "gather",
-        1.7
+        0.06
       ],
       [
         "embed",
-        2.1
+        0.22
       ],
       [
         "contract",
-        1.7
+        0.12
       ],
       [
         "fit",
-        1.4
+        0.07
       ],
       [
         "energy",
-        0.7
+        0.03
       ],
       [
         "force",
-        1.5
+        0.12
       ],
       [
         "accel",
-        0.7
+        0.08
       ],
       [
         "velocity",
-        0.6
+        0.08
       ],
       [
         "move",
-        0.7
+        0.14
       ]
     ]
   },

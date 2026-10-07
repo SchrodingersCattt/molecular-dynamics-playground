@@ -1,0 +1,63 @@
+{
+  "stem": "02b_reaxff",
+  "data": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\data\\02b_reaxff.npz",
+  "labelled": "schematic ReaxFF-style model; not a published parameter set; no LAMMPS run",
+  "snapshots": {
+    "stride_steps": 25,
+    "count": 17
+  },
+  "display_scales": {
+    "force_ang_per_ev_ang": 1.6,
+    "velocity_ang_per_ang_fs": 40.0
+  },
+  "bond_tube": {
+    "radius_ang": "0.020 + 0.040 * min(BO, 1.7)",
+    "opacity": "0.22 + 0.78 * min(BO, 1)",
+    "hidden_below_bo": 0.05
+  },
+  "camera": {
+    "target": [
+      -0.6807790607092139,
+      0.2019734101850858,
+      -1.4665287924145196
+    ],
+    "ortho_scale": 5.692361719563915,
+    "direction": [
+      -0.03754873875062198,
+      0.9874468261405996,
+      0.15342378486758232
+    ]
+  },
+  "image_size": [
+    1500,
+    950
+  ],
+  "duration_seconds": 21.6,
+  "detailed_phases": {
+    "geometry": [
+      0.0,
+      1.4
+    ],
+    "order": [
+      1.4,
+      3.2
+    ],
+    "energy": [
+      3.2,
+      5.6
+    ],
+    "force": [
+      5.6,
+      7.2
+    ],
+    "velocity": [
+      7.2,
+      8.4
+    ],
+    "position": [
+      8.4,
+      9.6
+    ]
+  },
+  "rapid_cell_seconds": 0.8
+}

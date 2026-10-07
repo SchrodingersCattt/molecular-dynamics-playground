@@ -19,6 +19,8 @@ from matplotlib.patches import FancyArrowPatch, FancyBboxPatch, Rectangle
 
 from common import (
     DARK_GRAY,
+    FONT_SIZES,
+    FORCE_OLIVE,
     INK,
     LIGHT_GRAY,
     LINE_GRAY,
@@ -37,7 +39,7 @@ from mattervis_story import _composition_rgba, place_render, place_render_blend,
 
 # A restrained palette shared by all four stories.  Use shape/labels as the
 # primary semantics; colours are only a redundant cue.
-PALE_OLIVE = "#A89B52"       # force / acceleration
+PALE_OLIVE = FORCE_OLIVE      # force / acceleration
 LAKE_BLUE = "#4E9BB5"        # position / displacement
 EMERALD = "#2F8562"          # velocity / model output
 PALE_BLUE = "#B8D7E2"         # density contours
@@ -85,7 +87,7 @@ def panel_box(
     )
     registry.text(
         ax, 0.50, title_y, title,
-        ha="center", va="top", fontsize=18 if video else 14,
+        ha="center", va="top", fontsize=FONT_SIZES["panel_title"],
         color=INK, weight="bold", zorder=50,
     )
 
@@ -122,7 +124,7 @@ def stage_rail(
         )
         registry.text(
             ax, 0.50, 0.062, r"$n\;\rightarrow\;n+1$  next step",
-            ha="center", va="center", fontsize=11 if video else 10,
+            ha="center", va="center", fontsize=FONT_SIZES["micro"],
             color=NAVY, weight="bold", zorder=5,
         )
 
@@ -137,13 +139,13 @@ def stage_title(
 ) -> None:
     registry.text(
         ax, 0.50, 0.965, title,
-        ha="center", va="top", fontsize=16 if video else 14,
+        ha="center", va="top", fontsize=FONT_SIZES["panel_title"],
         color=INK, weight="bold", zorder=50,
     )
     if step:
         registry.text(
             ax, 0.035, 0.035, step,
-            ha="left", va="bottom", fontsize=11 if video else 10,
+            ha="left", va="bottom", fontsize=FONT_SIZES["micro"],
             color=DARK_GRAY, zorder=50,
         )
 
@@ -161,7 +163,7 @@ def draw_legend(
     for index, (label, colour) in enumerate(entries):
         y = y0 - index * step
         ax.plot([0.10, 0.22], [y, y], color=colour, lw=4.5 if video else 3.2, solid_capstyle="round", zorder=8)
-        registry.text(ax, 0.28, y, label, ha="left", va="center", fontsize=11 if video else 10, color=INK, zorder=8)
+        registry.text(ax, 0.28, y, label, ha="left", va="center", fontsize=FONT_SIZES["micro"], color=INK, zorder=8)
 
 
 def draw_horizontal_key(
@@ -186,7 +188,7 @@ def draw_horizontal_key(
         ax.plot([x - 0.065, x - 0.025], [y, y], color=colour,
                 lw=4.0 if video else 3.0, solid_capstyle="round", zorder=30)
         registry.text(ax, x - 0.012, y, label, ha="left", va="center",
-                      fontsize=11 if video else 10, color=INK, zorder=30)
+                      fontsize=FONT_SIZES["micro"], color=INK, zorder=30)
 
 
 def place_main(
@@ -270,7 +272,7 @@ def make_static_and_video(
 ) -> None:
     """Publish one clean A4 still and one 16:5 MP4 with the same grammar."""
     fig = new_static_figure()
-    registry = LayoutRegistry(min_font_pt=10.0, max_font_pt=16.0, edge_pad_px=18)
+    registry = LayoutRegistry(min_font_pt=FONT_SIZES["micro"], max_font_pt=FONT_SIZES["page_title"], edge_pad_px=18)
     draw_static(fig, registry)
     errors = registry.validate(fig)
     if errors:

@@ -1,0 +1,71 @@
+{
+  "stem": "01_velocity_verlet",
+  "data": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\data\\vv_plastic_balls.npz",
+  "n_balls": 9,
+  "ball_radius_ang": 1.3,
+  "ball_material": "MatterVis analytic sphere mesh, hard-plastic highlight",
+  "dt_fs": 80.0,
+  "arrow_scales": {
+    "velocity_ang_per_ang_fs": 641.6325369221312,
+    "acceleration_stage_ang_per_ang_fs2": 128326.50738442624,
+    "acceleration_stage_note": "a-stage arrows show 5x (a dt/2) in velocity display units; the v-stage tip-to-tail arrows use the true velocity scale",
+    "displacement_ang_per_ang": 9.031911877561342
+  },
+  "arrow_colours": {
+    "position": "#2F6FB3",
+    "velocity": "#7A4FB8",
+    "acceleration": "#E07A1F"
+  },
+  "arrow_shaft_radius_ang": 0.06,
+  "camera": {
+    "target": [
+      -0.031341664725488154,
+      0.06204422889674936,
+      0.17842549874396124
+    ],
+    "ortho_scale": 5.1256811195995375
+  },
+  "image_size": [
+    1700,
+    1000
+  ],
+  "timeline_seconds": {
+    "pos": [
+      0.0,
+      1.6
+    ],
+    "sample": [
+      1.6,
+      3.0
+    ],
+    "combine": [
+      3.0,
+      4.4
+    ],
+    "assign": [
+      4.4,
+      5.8
+    ],
+    "ready": [
+      5.8,
+      6.6
+    ],
+    "acc": [
+      6.6,
+      8.8
+    ],
+    "vel": [
+      8.8,
+      11.0
+    ],
+    "move": [
+      11.0,
+      13.2
+    ],
+    "fast": [
+      13.2,
+      19.2
+    ]
+  },
+  "velocity_recipe": "LAMMPS velocity create dist gaussian mom yes (shown values are the final, momentum-free, temperature-scaled velocities)"
+}

@@ -1,0 +1,705 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AIMD / RHF · H₂O dimer</title>
+  <style>
+    :root {
+      --paper: #ffffff;
+      --panel: #ffffff;
+      --ink: #1c252b;
+      --muted: #77828a;
+      --line: #dce2e4;
+      --line-strong: #c9d1d4;
+      --crimson: #bd526d;
+      --crimson-deep: #98425a;
+      --teal: #2d8566;
+      --blue: #5e8ea9;
+      --gold: #ae9753;
+      --navy: #2b4a62;
+      --shadow: 0 18px 48px rgba(31, 48, 55, 0.08), 0 2px 9px rgba(31, 48, 55, 0.05);
+      --radius: 18px;
+      --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      --sans: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input { font: inherit; }
+    button { color: inherit; }
+
+    .app-shell {
+      width: min(1536px, calc(100vw - 38px));
+      min-height: calc(100vh - 48px);
+      margin: 0 auto;
+      padding: 26px 0 22px;
+      display: grid;
+      grid-template-rows: auto minmax(480px, 1fr) auto;
+      gap: 18px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 0 4px;
+    }
+
+    .eyebrow {
+      color: var(--muted);
+      font: 700 10px/1.2 var(--mono);
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+    h1 { font-size: clamp(22px, 2.2vw, 31px); font-weight: 600; letter-spacing: -.035em; }
+    .subtitle { margin-top: 8px; color: var(--muted); font-size: 13px; letter-spacing: .015em; }
+
+    .top-actions { display: flex; align-items: center; gap: 10px; }
+    .run-state {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 32px;
+      padding: 0 12px;
+      color: var(--teal);
+      border: 1px solid #cde1d8;
+      border-radius: 999px;
+      background: #f1f8f4;
+      font: 700 10px/1 var(--mono);
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+    .run-state::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 0 4px rgba(45,133,102,.1);
+    }
+    .run-state.paused { color: var(--gold); background: #fbf8ee; border-color: #e7dec2; }
+
+    .ghost-btn, .primary-btn {
+      border: 1px solid var(--line-strong);
+      border-radius: 10px;
+      background: var(--panel);
+      min-height: 34px;
+      padding: 0 13px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: border-color .18s ease, background .18s ease, transform .18s ease;
+    }
+    .ghost-btn:hover, .primary-btn:hover { border-color: var(--navy); background: #fbfcfc; }
+    .ghost-btn:active, .primary-btn:active { transform: translateY(1px); }
+    .primary-btn { color: #fff; border-color: var(--navy); background: var(--navy); }
+    .primary-btn:hover { background: #213c50; }
+
+    .workspace {
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 194px minmax(0, 1fr) 310px;
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .rail {
+      padding: 21px 17px 19px;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .rail-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 19px;
+      border-bottom: 1px solid var(--line);
+    }
+    .rail-heading strong { font-size: 13px; letter-spacing: .02em; }
+    .rail-heading span { color: var(--muted); font: 10px var(--mono); }
+    .rail-copy { margin: 16px 0 20px; color: var(--muted); font-size: 11px; line-height: 1.55; }
+
+    .stage-list { display: grid; gap: 7px; }
+    .stage-item {
+      position: relative;
+      width: 100%;
+      padding: 12px 9px 12px 12px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      background: transparent;
+      text-align: left;
+      cursor: pointer;
+      transition: background .2s ease, border-color .2s ease;
+    }
+    .stage-item:hover { background: #f7faf9; border-color: var(--line); }
+    .stage-item.active { background: #f1f7f4; border-color: #cee2d7; }
+    .stage-item.done { color: #55636b; }
+    .stage-item .stage-index { display: block; margin-bottom: 6px; color: var(--muted); font: 10px var(--mono); }
+    .stage-item .stage-name { display: block; font-size: 11px; font-weight: 700; letter-spacing: .08em; }
+    .stage-item .stage-equation { display: block; margin-top: 5px; color: var(--muted); font: 10px/1.35 var(--mono); }
+    .stage-item .stage-dot {
+      position: absolute;
+      top: 16px;
+      right: 11px;
+      width: 6px;
+      height: 6px;
+      border: 1px solid var(--line-strong);
+      border-radius: 50%;
+      background: #fff;
+    }
+    .stage-item.active .stage-dot { border-color: var(--teal); background: var(--teal); box-shadow: 0 0 0 4px rgba(45,133,102,.1); }
+    .stage-item.done .stage-dot { border-color: var(--teal); background: #dceee5; }
+
+    .loop-note {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-top: auto;
+      padding-top: 18px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      font: 10px/1.4 var(--mono);
+    }
+    .loop-note b { color: var(--navy); font-size: 15px; font-weight: 500; }
+
+    .stage-card { min-width: 0; min-height: 0; display: grid; grid-template-rows: auto minmax(0, 1fr); overflow: hidden; }
+    .stage-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 20px 23px 17px;
+      border-bottom: 1px solid var(--line);
+    }
+    .stage-head h2 { font-size: 15px; font-weight: 600; letter-spacing: -.01em; }
+    .stage-head p { margin-top: 6px; color: var(--muted); font-size: 11px; }
+    .stage-counter { text-align: right; white-space: nowrap; }
+    .stage-counter strong { display: block; color: var(--navy); font: 700 13px var(--mono); }
+    .stage-counter span { display: block; margin-top: 5px; color: var(--muted); font-size: 10px; }
+
+    .viewport-wrap { position: relative; min-height: 0; background: #ffffff; }
+    #viewport { position: absolute; inset: 0; overflow: hidden; }
+    #viewport canvas { display: block; width: 100%; height: 100%; }
+    .viewport-topline { position: absolute; top: 18px; left: 21px; right: 21px; display: flex; align-items: center; justify-content: space-between; pointer-events: none; }
+    .viewport-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 10px;
+      color: #52616a;
+      background: rgba(255,255,255,.84);
+      border: 1px solid rgba(210,220,222,.92);
+      border-radius: 8px;
+      box-shadow: 0 6px 15px rgba(33,50,58,.05);
+      font: 10px var(--mono);
+      backdrop-filter: blur(8px);
+    }
+    .chip-mark { width: 8px; height: 8px; border-radius: 50%; background: var(--crimson); box-shadow: 0 0 0 4px rgba(189,82,109,.12); }
+    .viewport-bottomline { position: absolute; bottom: 18px; left: 21px; right: 21px; display: flex; justify-content: space-between; align-items: end; pointer-events: none; }
+    .legend { display: flex; gap: 12px; padding: 8px 10px; color: #5b6870; background: rgba(255,255,255,.78); border: 1px solid rgba(210,220,222,.88); border-radius: 8px; font-size: 10px; backdrop-filter: blur(8px); }
+    .legend span { display: inline-flex; align-items: center; gap: 5px; }
+    .legend i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; }
+    .legend .oxygen { background: var(--crimson); }
+    .legend .hydrogen { background: #c7ccd0; border: 1px solid #adb6bc; }
+    .orbit-note { color: #8b969c; font: 10px var(--mono); text-align: right; }
+
+    .inspector { min-width: 0; min-height: 0; padding: 19px 17px 16px; display: flex; flex-direction: column; gap: 15px; overflow: auto; }
+    .panel-label { color: var(--muted); font: 10px/1.2 var(--mono); letter-spacing: .14em; text-transform: uppercase; }
+    .inspector-title { display: flex; align-items: start; justify-content: space-between; gap: 10px; }
+    .inspector-title h2 { margin-top: 8px; font-size: 16px; font-weight: 600; }
+    .inspector-title .mini-state { color: var(--teal); font: 10px var(--mono); }
+
+    .metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .metric {
+      min-height: 66px;
+      padding: 11px 11px 10px;
+      background: #fafcfc;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+    }
+    .metric span { display: block; color: var(--muted); font: 10px var(--mono); }
+    .metric strong { display: block; margin-top: 8px; color: var(--ink); font: 600 14px var(--mono); letter-spacing: -.03em; }
+    .metric strong.teal { color: var(--teal); }
+    .metric strong.blue { color: var(--blue); }
+    .metric strong.gold { color: var(--gold); }
+
+    .chart-card { padding: 13px 12px 11px; border: 1px solid var(--line); border-radius: 12px; }
+    .chart-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .chart-head strong { font-size: 11px; font-weight: 600; }
+    .chart-head span { color: var(--muted); font: 10px var(--mono); }
+    #residual-chart { display: block; width: 100%; height: 126px; overflow: visible; }
+    .chart-caption { display: flex; justify-content: space-between; margin-top: 3px; color: var(--muted); font: 9px var(--mono); }
+
+    .equation-card { padding: 14px 13px; background: #f4f7f8; border: 1px solid #e1e7e9; border-radius: 12px; }
+    .equation-card .eq-label { color: var(--muted); font: 10px var(--mono); }
+    #equation { margin-top: 9px; color: var(--navy); font: 600 19px/1.25 var(--mono); letter-spacing: -.05em; }
+    #equation-note { margin-top: 8px; color: #6e7c84; font-size: 10px; line-height: 1.45; }
+
+    .data-note { margin-top: auto; padding-top: 13px; border-top: 1px solid var(--line); color: var(--muted); font: 10px/1.55 var(--mono); }
+    .data-note b { color: var(--ink); font-weight: 600; }
+
+    .timeline.card { padding: 15px 20px 14px; box-shadow: none; }
+    .timeline-top { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .timeline-title { display: flex; align-items: baseline; gap: 9px; }
+    .timeline-title strong { font-size: 12px; font-weight: 600; }
+    .timeline-title span { color: var(--muted); font: 10px var(--mono); }
+    .timeline-actions { display: flex; align-items: center; gap: 7px; }
+    .play-btn { min-width: 70px; }
+    .speed-group { display: flex; gap: 3px; padding: 3px; background: #f2f5f5; border-radius: 8px; }
+    .speed-btn { border: 0; border-radius: 6px; padding: 5px 8px; color: var(--muted); background: transparent; cursor: pointer; font: 10px var(--mono); }
+    .speed-btn.active { color: var(--navy); background: #fff; box-shadow: 0 1px 5px rgba(31,48,55,.1); }
+    .track-wrap { position: relative; padding: 18px 1px 5px; }
+    .track { position: relative; height: 4px; border-radius: 999px; background: #e4e9ea; }
+    .track-progress { position: absolute; inset: 0 auto 0 0; width: 0; border-radius: inherit; background: linear-gradient(90deg, var(--teal), var(--blue)); }
+    .track-thumb { position: absolute; top: 50%; left: 0; width: 13px; height: 13px; border: 2px solid #fff; border-radius: 50%; background: var(--navy); box-shadow: 0 1px 5px rgba(31,48,55,.25); transform: translate(-50%, -50%); pointer-events: none; }
+    .track-marker { position: absolute; top: -4px; width: 1px; height: 12px; background: #c5ced0; }
+    .track-labels { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 8px; color: var(--muted); font: 9px var(--mono); }
+    .track-labels span:nth-child(2), .track-labels span:nth-child(3) { text-align: center; }
+    .track-labels span:last-child { text-align: right; }
+    #time-scrubber { position: absolute; inset: 8px 0 0; width: 100%; height: 28px; opacity: 0; cursor: pointer; }
+
+    @media (max-width: 1180px) {
+      .workspace { grid-template-columns: 172px minmax(0, 1fr) 278px; gap: 13px; }
+      .rail { padding-left: 13px; padding-right: 13px; }
+      .stage-head { padding-left: 18px; padding-right: 18px; }
+    }
+    @media (max-width: 940px) {
+      .app-shell { width: min(760px, calc(100vw - 24px)); grid-template-rows: auto auto auto; }
+      .workspace { min-height: 0; grid-template-columns: 170px minmax(0, 1fr); grid-template-rows: minmax(570px, 1fr) auto; }
+      .inspector { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1.5fr 1fr; align-items: start; gap: 13px; }
+      .inspector-title, .data-note { grid-column: 1; }
+      .metric-grid { grid-column: 1; }
+      .chart-card { grid-column: 2; grid-row: 1 / span 2; }
+      .equation-card { grid-column: 3; }
+      .data-note { grid-column: 3; grid-row: 2; margin-top: 0; }
+    }
+    @media (max-width: 670px) {
+      .app-shell { width: calc(100vw - 18px); padding-top: 15px; gap: 11px; }
+      .topbar { align-items: start; flex-direction: column; gap: 13px; }
+      .top-actions { width: 100%; justify-content: space-between; }
+      .workspace { display: flex; flex-direction: column; }
+      .rail { order: 2; }
+      .stage-card { order: 1; min-height: 520px; }
+      .inspector { order: 3; display: flex; }
+      .metric-grid { width: 100%; }
+      .chart-card, .equation-card { width: 100%; }
+      .timeline-top { align-items: start; flex-direction: column; gap: 10px; }
+      .timeline-actions { width: 100%; justify-content: space-between; }
+      .stage-head { padding: 15px 15px 13px; }
+      .viewport-topline { left: 13px; right: 13px; top: 12px; }
+      .viewport-bottomline { left: 13px; right: 13px; bottom: 13px; }
+      .legend { gap: 8px; }
+    }
+  </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">0314 · molecular dynamics / 03 AIMD</div>
+        <h1>Ab initio molecular dynamics</h1>
+        <p class="subtitle">RHF force evaluation coupled to a velocity–Verlet ion step · H₂O dimer</p>
+      </div>
+      <div class="top-actions">
+        <span class="run-state" id="run-state">playing</span>
+        <button class="ghost-btn" id="restart-btn" type="button">Restart sequence</button>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <aside class="rail card">
+        <div class="rail-heading"><strong>Cycle logic</strong><span>03 / 04</span></div>
+        <p class="rail-copy">The nuclei move only after the electronic structure has converged. Click a stage to inspect its state.</p>
+        <div class="stage-list">
+          <button class="stage-item active" data-stage="0" type="button">
+            <span class="stage-index">01</span><span class="stage-name">POSITION</span><span class="stage-equation">Rₙ → Rₙ₊₁</span><span class="stage-dot"></span>
+          </button>
+          <button class="stage-item" data-stage="1" type="button">
+            <span class="stage-index">02</span><span class="stage-name">SCF</span><span class="stage-equation">ρᵏ → ρᵏ⁺¹</span><span class="stage-dot"></span>
+          </button>
+          <button class="stage-item" data-stage="2" type="button">
+            <span class="stage-index">03</span><span class="stage-name">FORCE</span><span class="stage-equation">F = −∇ᴿ E</span><span class="stage-dot"></span>
+          </button>
+          <button class="stage-item" data-stage="3" type="button">
+            <span class="stage-index">04</span><span class="stage-name">INTEGRATE</span><span class="stage-equation">v, a → ΔR</span><span class="stage-dot"></span>
+          </button>
+        </div>
+        <div class="loop-note"><b>↻</b><span>repeat for the next ion step</span></div>
+      </aside>
+
+      <section class="stage-card card">
+        <div class="stage-head">
+          <div><h2 id="stage-heading">Position update</h2><p id="stage-description">Move nuclei from Rₙ to Rₙ₊₁ while the previous force is held.</p></div>
+          <div class="stage-counter"><strong id="stage-counter">STEP 01 / 06</strong><span id="stage-progress-label">0% through stage</span></div>
+        </div>
+        <div class="viewport-wrap">
+          <div id="viewport" aria-label="Interactive three-dimensional H2O dimer"></div>
+          <div class="viewport-topline"><span class="viewport-chip"><i class="chip-mark"></i><span id="viewport-status">nuclei in motion</span></span><span class="viewport-chip">hard-plastic render · drag to orbit</span></div>
+          <div class="viewport-bottomline"><div class="legend"><span><i class="oxygen"></i> O</span><span><i class="hydrogen"></i> H</span><span id="vector-legend">position ΔR</span></div><div class="orbit-note">0.50 fs timestep · real dimer geometry</div></div>
+        </div>
+      </section>
+
+      <aside class="inspector card">
+        <div class="inspector-title"><div><div class="panel-label">Electronic structure</div><h2>RHF / SCF monitor</h2></div><span class="mini-state" id="mini-state">CONVERGING</span></div>
+        <div class="metric-grid">
+          <div class="metric"><span>ion step</span><strong class="teal" id="metric-step">01 / 06</strong></div>
+          <div class="metric"><span>SCF iteration</span><strong class="blue" id="metric-iteration">— / 12</strong></div>
+          <div class="metric"><span>residual</span><strong id="metric-residual">5.02e+0</strong></div>
+          <div class="metric"><span>total energy</span><strong class="gold" id="metric-energy">−149.934954 Eₕ</strong></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-head"><strong>Density residual</strong><span id="chart-stage">fixed R</span></div>
+          <svg id="residual-chart" viewBox="0 0 260 126" role="img" aria-label="SCF residual convergence chart">
+            <g fill="none" stroke="#e0e6e8" stroke-width="1"><path d="M28 15H250M28 47H250M28 79H250M28 111H250"/><path d="M28 15V111M83 15V111M139 15V111M194 15V111M250 15V111"/></g>
+            <g fill="#7d898f" font-family="monospace" font-size="9"><text x="2" y="18">10⁰</text><text x="2" y="50">10⁻³</text><text x="2" y="82">10⁻⁶</text><text x="2" y="114">10⁻⁹</text><text x="26" y="124">1</text><text x="133" y="124">6</text><text x="244" y="124">12</text></g>
+            <path id="residual-line" d="M28 16 L250 108" fill="none" stroke="#2b4a62" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle id="residual-dot" cx="28" cy="16" r="4" fill="#2d8566" stroke="#fff" stroke-width="2"/>
+          </svg>
+          <div class="chart-caption"><span>SCF iteration</span><span>convergence threshold 1e−8</span></div>
+        </div>
+        <div class="equation-card"><div class="eq-label">active relation</div><div id="equation">Rₙ → Rₙ₊₁</div><div id="equation-note">Velocity–Verlet carries the converged force into the next nuclear position.</div></div>
+        <div class="data-note"><b>Source:</b> real six-atom H₂O dimer trajectory<br /><b>dt:</b> 0.50 fs · <b>T₀:</b> 177 K · <b>method:</b> RHF</div>
+      </aside>
+    </main>
+
+    <footer class="timeline card">
+      <div class="timeline-top"><div class="timeline-title"><strong>Simulation timeline</strong><span id="timeline-readout">step 01 · position</span></div><div class="timeline-actions"><button class="primary-btn play-btn" id="play-btn" type="button">Pause</button><div class="speed-group" aria-label="Playback speed"><button class="speed-btn" data-speed="0.5" type="button">0.5×</button><button class="speed-btn active" data-speed="1" type="button">1×</button><button class="speed-btn" data-speed="2" type="button">2×</button></div></div></div>
+      <div class="track-wrap"><div class="track"><div class="track-progress" id="track-progress"></div><div class="track-thumb" id="track-thumb"></div><div class="track-marker" style="left:25%"></div><div class="track-marker" style="left:50%"></div><div class="track-marker" style="left:75%"></div></div><input id="time-scrubber" type="range" min="0" max="1" step="0.0001" value="0" aria-label="Simulation timeline" /></div>
+      <div class="track-labels"><span>Rₙ → Rₙ₊₁</span><span>SCF loop</span><span>F = −∇E</span><span>velocity–Verlet</span></div>
+    </footer>
+  </div>
+
+  <script type="module">
+    import * as THREE from "three";
+    import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+    const POSITIONS = [
+      [[-1.45,-0.10,-0.10],[-0.5568,-0.4474,0.1481],[-1.5144,0.7289,0.4374],[1.42,0.18,0.20],[2.0338,0.7962,0.6728],[1.7966,-0.7086,0.4205]],
+      [[-1.4508,-0.0978,-0.0996],[-0.5503,-0.4556,0.1462],[-1.5191,0.7307,0.4396],[1.421,0.1778,0.199],[2.0314,0.7966,0.6705],[1.7941,-0.7022,0.432]],
+      [[-1.4515,-0.0957,-0.0991],[-0.5454,-0.4617,0.1442],[-1.5227,0.7318,0.4419],[1.4219,0.1756,0.1979],[2.029,0.7963,0.6682],[1.7926,-0.696,0.4439]],
+      [[-1.4522,-0.0937,-0.0987],[-0.5428,-0.465,0.142],[-1.5249,0.7324,0.4442],[1.4227,0.1735,0.1968],[2.0268,0.7957,0.6661],[1.7922,-0.6909,0.4564]],
+      [[-1.4528,-0.0918,-0.0983],[-0.5432,-0.4654,0.1395],[-1.5256,0.7323,0.4467],[1.4234,0.1715,0.1957],[2.0248,0.795,0.6641],[1.7931,-0.6873,0.4695]],
+      [[-1.4533,-0.0901,-0.0979],[-0.5465,-0.4627,0.1368],[-1.5249,0.7316,0.4495],[1.4241,0.1695,0.1945],[2.023,0.7944,0.6624],[1.7952,-0.6855,0.4832]],
+      [[-1.4538,-0.0885,-0.0975],[-0.5523,-0.4571,0.134],[-1.5228,0.7304,0.4525],[1.4247,0.1676,0.1933],[2.0215,0.7943,0.661],[1.7983,-0.6854,0.4975]]
+    ];
+    const FORCES = [
+      [[-0.00624,-0.0058,-0.00237],[-0.00149,0.01169,0.00112],[0.00744,-0.00364,0.00015],[-0.00534,-0.00165,-0.00117],[0.0005,-0.00626,0.00035],[0.00513,0.00565,0.00192]],
+      [[0.00203,-0.01055,-0.00114],[-0.01185,0.0175,-0.00049],[0.00938,-0.00467,0.0005],[-0.00787,0.00417,-0.00287],[0.00077,-0.00482,0.00071],[0.00754,-0.00162,0.00328]],
+      [[0.0082,-0.01442,-0.00046],[-0.01954,0.02191,-0.0016],[0.0108,-0.00518,0.00093],[-0.01005,0.00885,-0.00453],[0.00118,-0.00296,0.00115],[0.00942,-0.00819,0.00452]],
+      [[0.01149,-0.01694,-0.00045],[-0.02376,0.02445,-0.00208],[0.01166,-0.0052,0.00138],[-0.01138,0.01139,-0.00575],[0.00164,-0.00083,0.00161],[0.01035,-0.01288,0.00529]],
+      [[0.01158,-0.01779,-0.00107],[-0.02411,0.02492,-0.00188],[0.01194,-0.00481,0.00179],[-0.01148,0.01118,-0.00611],[0.00206,0.00134,0.00199],[0.01002,-0.01483,0.00528]],
+      [[0.00839,-0.01686,-0.00225],[-0.02057,0.02325,-0.00103],[0.01164,-0.00409,0.00211],[-0.01014,0.00815,-0.00532],[0.0023,0.0033,0.00219],[0.00836,-0.01375,0.0043]],
+      [[0.00219,-0.01421,-0.00386],[-0.01339,0.01959,0.00037],[0.01079,-0.00312,0.00231],[-0.0074,0.00294,-0.00328],[0.00222,0.00483,0.0021],[0.00559,-0.01003,0.00235]]
+    ];
+    const RESIDUALS = [
+      [5.0233567052,.4536685237,.058211942,.0115063255,.0003334095,8.9542e-5,1.84158e-5,4.7884e-6,7.167e-7,1.019e-7,2.15e-8,9.4e-9],
+      [5.011827484,.4538933756,.0582935148,.0115406344,.0003065427,7.89281e-5,1.73453e-5,4.7264e-6,7.063e-7,8.72e-8,3.62e-8],
+      [5.0093834153,.4541049831,.0583754888,.0115674009,.000292905,.0000676893,1.61784e-5,4.6012e-6,6.985e-7,7.83e-8,3.16e-8],
+      [5.0146401999,.4542726969,.0584237658,.0115800779,.0002886088,.000061854,1.51698e-5,4.4368e-6,6.885e-7,7.26e-8,2.87e-8],
+      [5.0253457023,.4543870054,.0584225755,.0115750739,.0002889855,.000063544,1.53012e-5,4.4704e-6,6.832e-7,7.04e-8,2.76e-8],
+      [5.0395420814,.4544635949,.0583902421,.0115531137,.0002960437,.0000735373,1.6369e-5,4.5917e-6,6.816e-7,7.45e-8,2.96e-8],
+      [5.056093646,.4545405364,.0583778677,.0115192039,.0003184356,.0000872425,1.75959e-5,4.6557e-6,6.836e-7,8.74e-8,3.6e-8]
+    ];
+    const ENERGIES = [-149.93495425,-149.93455353,-149.93401410,-149.93359793,-149.93351541,-149.93381104,-149.93433561];
+    const SCF_COUNTS = [12,11,11,11,11,11,11];
+    const SYMBOLS = ["O","H","H","O","H","H"];
+    const BONDS = [[0,1],[0,2],[3,4],[3,5]];
+    const STAGES = [
+      {name:"Position update", description:"Move nuclei from Rₙ to Rₙ₊₁ while the previous force is held.", equation:"Rₙ → Rₙ₊₁", note:"Velocity–Verlet carries the converged force into the next nuclear position.", label:"position ΔR", viewport:"nuclei in motion"},
+      {name:"SCF electronic loop", description:"At fixed nuclear coordinates, solve the RHF orbitals until the density residual converges.", equation:"ρᵏ → ρᵏ⁺¹", note:"The electronic density is iterated at fixed R before a new force can be trusted.", label:"density ρᵏ", viewport:"electrons at fixed R"},
+      {name:"Force evaluation", description:"Differentiate the converged energy with respect to each nuclear coordinate.", equation:"F = −∇ᴿ E", note:"The gradient of the converged electronic energy becomes the nuclear force.", label:"force F", viewport:"force from −∇E"},
+      {name:"Velocity–Verlet", description:"Update half-step velocities, accelerations, and the next position before the loop returns.", equation:"v, a → ΔR", note:"A half-step velocity and the acceleration close the feedback loop.", label:"velocity v", viewport:"integrating next step"}
+    ];
+    const STAGE_DURATIONS = [2.65, 3.45, 2.05, 2.65];
+    const CYCLE_SECONDS = STAGE_DURATIONS.reduce((a,b) => a+b, 0);
+    const SEQUENCE_SECONDS = CYCLE_SECONDS * (POSITIONS.length - 1);
+
+    const $ = (selector) => document.querySelector(selector);
+    const stageItems = [...document.querySelectorAll(".stage-item")];
+    const stageHeading = $("#stage-heading");
+    const stageDescription = $("#stage-description");
+    const stageCounter = $("#stage-counter");
+    const stageProgressLabel = $("#stage-progress-label");
+    const viewportStatus = $("#viewport-status");
+    const vectorLegend = $("#vector-legend");
+    const miniState = $("#mini-state");
+    const metricStep = $("#metric-step");
+    const metricIteration = $("#metric-iteration");
+    const metricResidual = $("#metric-residual");
+    const metricEnergy = $("#metric-energy");
+    const chartStage = $("#chart-stage");
+    const equation = $("#equation");
+    const equationNote = $("#equation-note");
+    const timelineReadout = $("#timeline-readout");
+    const timeScrubber = $("#time-scrubber");
+    const trackProgress = $("#track-progress");
+    const trackThumb = $("#track-thumb");
+    const playButton = $("#play-btn");
+    const runState = $("#run-state");
+
+    const viewport = $("#viewport");
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xffffff);
+    const camera = new THREE.PerspectiveCamera(31, 1, 0.1, 100);
+    camera.position.set(5.35, 3.55, 7.15);
+    camera.lookAt(0.25, 0.15, 0);
+    const renderer = new THREE.WebGLRenderer({antialias:true, alpha:false, powerPreference:"high-performance"});
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.08;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    viewport.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = .07;
+    controls.enablePan = false;
+    controls.minDistance = 4.3;
+    controls.maxDistance = 12;
+    controls.target.set(.2, .15, 0);
+    controls.update();
+
+    scene.add(new THREE.HemisphereLight(0xffffff, 0xe0e7e9, 2.15));
+    const keyLight = new THREE.DirectionalLight(0xffffff, 4.4);
+    keyLight.position.set(-3.5, 7.5, 6.5);
+    keyLight.castShadow = true;
+    keyLight.shadow.mapSize.set(2048,2048);
+    keyLight.shadow.camera.left = -6; keyLight.shadow.camera.right = 6; keyLight.shadow.camera.top = 6; keyLight.shadow.camera.bottom = -6;
+    scene.add(keyLight);
+    const fillLight = new THREE.DirectionalLight(0xc6e1ed, 1.25);
+    fillLight.position.set(6, 2.2, -4.5);
+    scene.add(fillLight);
+    const rimLight = new THREE.DirectionalLight(0xffe4dd, .75);
+    rimLight.position.set(-5, 1.5, -5);
+    scene.add(rimLight);
+
+    const ground = new THREE.Mesh(new THREE.PlaneGeometry(24, 18), new THREE.MeshStandardMaterial({color:0xf4f7f6, roughness:.98, metalness:0}));
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.y = -1.18;
+    ground.receiveShadow = true;
+    scene.add(ground);
+    const shadowPad = new THREE.Mesh(new THREE.CircleGeometry(3.55, 96), new THREE.MeshBasicMaterial({color:0x9eabb0, transparent:true, opacity:.065, depthWrite:false}));
+    shadowPad.rotation.x = -Math.PI / 2;
+    shadowPad.position.set(.2, -1.165, 0);
+    scene.add(shadowPad);
+
+    const modelRoot = new THREE.Group();
+    modelRoot.position.y = .13;
+    scene.add(modelRoot);
+    const atomGeometry = {O: new THREE.SphereGeometry(.34, 48, 32), H: new THREE.SphereGeometry(.185, 40, 28)};
+    const atomMaterials = {
+      O: new THREE.MeshPhysicalMaterial({color:0xb94f6b, roughness:.25, metalness:.05, clearcoat:.38, clearcoatRoughness:.14}),
+      H: new THREE.MeshPhysicalMaterial({color:0xf1f0eb, roughness:.28, metalness:.02, clearcoat:.5, clearcoatRoughness:.12})
+    };
+    const bondMaterial = new THREE.MeshPhysicalMaterial({color:0xb5bdc1, roughness:.27, metalness:.03, clearcoat:.35, clearcoatRoughness:.16});
+    const atomMeshes = SYMBOLS.map((symbol, index) => {
+      const mesh = new THREE.Mesh(atomGeometry[symbol], atomMaterials[symbol]);
+      mesh.castShadow = true; mesh.receiveShadow = true; mesh.userData.index = index;
+      modelRoot.add(mesh); return mesh;
+    });
+    const bondGeometry = new THREE.CylinderGeometry(.072, .072, 1, 24, 1, false);
+    const bondMeshes = BONDS.map(() => { const mesh = new THREE.Mesh(bondGeometry, bondMaterial); mesh.castShadow = true; mesh.receiveShadow = true; modelRoot.add(mesh); return mesh; });
+
+    const contourGroup = new THREE.Group();
+    const densityLines = [];
+    const densityMaterial = new THREE.LineBasicMaterial({color:0x7fa8bb, transparent:true, opacity:0, depthWrite:false});
+    [0,3].forEach((atomIndex) => {
+      for (let ring = 0; ring < 5; ring += 1) {
+        const points = [];
+        const radius = .47 + ring * .16;
+        for (let k = 0; k < 56; k += 1) {
+          const a = (k / 56) * Math.PI * 2;
+          points.push(new THREE.Vector3(Math.cos(a) * radius, Math.sin(a) * radius * .78, .075 + ring * .005));
+        }
+        const line = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(points), densityMaterial.clone());
+        line.userData.atomIndex = atomIndex; line.userData.ring = ring;
+        contourGroup.add(line); densityLines.push(line);
+      }
+    });
+    modelRoot.add(contourGroup);
+
+    const cloudGroup = new THREE.Group();
+    [0,3].forEach((atomIndex) => {
+      const points = [];
+      for (let i = 0; i < 52; i += 1) {
+        const phi = Math.acos(1 - 2 * ((i + .5) / 52));
+        const theta = Math.PI * (3 - Math.sqrt(5)) * i;
+        const radius = .43 + (i % 7) * .055;
+        points.push(Math.cos(theta) * Math.sin(phi) * radius, Math.cos(phi) * radius * .75, Math.sin(theta) * Math.sin(phi) * radius);
+      }
+      const geometry = new THREE.BufferGeometry();
+      geometry.setAttribute("position", new THREE.Float32BufferAttribute(points, 3));
+      const pointsMesh = new THREE.Points(geometry, new THREE.PointsMaterial({color:0x76a2b6, size:.045, transparent:true, opacity:0, depthWrite:false, sizeAttenuation:true}));
+      pointsMesh.userData.atomIndex = atomIndex;
+      cloudGroup.add(pointsMesh);
+    });
+    modelRoot.add(cloudGroup);
+
+    function makeVectorArrow(color) {
+      const group = new THREE.Group();
+      const material = new THREE.MeshBasicMaterial({color, transparent:true, opacity:0, depthWrite:false});
+      const shaft = new THREE.Mesh(new THREE.CylinderGeometry(.022, .022, 1, 10), material);
+      const head = new THREE.Mesh(new THREE.ConeGeometry(.09, .19, 12), material);
+      group.add(shaft, head); group.userData.shaft = shaft; group.userData.head = head; group.userData.material = material;
+      modelRoot.add(group); return group;
+    }
+    const forceArrows = SYMBOLS.map(() => makeVectorArrow(0xae9753));
+    const moveArrows = SYMBOLS.map(() => makeVectorArrow(0x2d8566));
+    const velocityArrows = SYMBOLS.map(() => makeVectorArrow(0x5e8ea9));
+    const up = new THREE.Vector3(0,1,0);
+    const tempA = new THREE.Vector3();
+    const tempB = new THREE.Vector3();
+
+    const activeRings = [0,3].map((atomIndex) => {
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(.48, .025, 10, 64), new THREE.MeshBasicMaterial({color:0xbd526d, transparent:true, opacity:0, depthWrite:false}));
+      ring.rotation.x = Math.PI / 2; ring.userData.atomIndex = atomIndex; modelRoot.add(ring); return ring;
+    });
+
+    function poseVector(pose, index) { return new THREE.Vector3(pose[index][0], pose[index][1], pose[index][2]); }
+    function smooth(t) { return t * t * (3 - 2 * t); }
+    function setCylinder(mesh, start, end) {
+      tempA.subVectors(end, start); const len = tempA.length();
+      mesh.position.copy(start).add(end).multiplyScalar(.5);
+      mesh.scale.set(1, len, 1);
+      mesh.quaternion.setFromUnitVectors(up, tempA.normalize());
+    }
+    function setArrow(group, origin, vector, multiplier, visible, opacity) {
+      const dir = tempB.copy(vector).multiplyScalar(multiplier); const len = dir.length();
+      group.position.copy(origin); group.visible = visible && len > .001;
+      if (!group.visible) return;
+      dir.normalize(); group.quaternion.setFromUnitVectors(up, dir);
+      group.userData.shaft.scale.set(1, Math.max(.02, len - .11), 1); group.userData.shaft.position.y = Math.max(.01, (len - .11) / 2);
+      group.userData.head.position.y = Math.max(.12, len - .035);
+      group.userData.material.opacity = opacity;
+    }
+    function updateModel(pose, targetPose, forcePose, stage, progress) {
+      const vectors = [];
+      for (let i = 0; i < atomMeshes.length; i += 1) {
+        const p = poseVector(pose, i); atomMeshes[i].position.copy(p);
+        vectors.push(p);
+      }
+      BONDS.forEach(([a,b], index) => setCylinder(bondMeshes[index], vectors[a], vectors[b]));
+      densityLines.forEach((line) => {
+        const centre = vectors[line.userData.atomIndex]; line.position.copy(centre);
+        const strength = stage === 1 ? (.08 + .46 * progress) * (1 - line.userData.ring * .045) : 0;
+        line.material.opacity = strength;
+        line.scale.setScalar(1 + .035 * Math.sin(progress * Math.PI * 2 + line.userData.ring));
+      });
+      cloudGroup.children.forEach((cloud) => { cloud.position.copy(vectors[cloud.userData.atomIndex]); cloud.material.opacity = stage === 1 ? .055 + progress * .12 : 0; });
+      activeRings.forEach((ring) => { ring.position.copy(vectors[ring.userData.atomIndex]); ring.material.opacity = stage === 1 ? .12 + .12 * Math.sin(progress * Math.PI) : (stage === 2 ? .06 : 0); });
+      const showForce = stage === 2 || stage === 3;
+      const showMove = stage === 0;
+      const showVelocity = stage === 3;
+      for (let i = 0; i < vectors.length; i += 1) {
+        const displacement = tempA.subVectors(poseVector(targetPose, i), poseVector(POSITIONS[Math.min(currentState.step, POSITIONS.length - 2)], i));
+        setArrow(moveArrows[i], vectors[i], displacement, 4.4, showMove, .33 + .5 * progress);
+        setArrow(forceArrows[i], vectors[i], poseVector(forcePose, i), 20, showForce, .28 + .62 * (stage === 2 ? progress : .72));
+        const velocity = tempB.subVectors(poseVector(targetPose, i), poseVector(POSITIONS[Math.min(currentState.step, POSITIONS.length - 2)], i));
+        setArrow(velocityArrows[i], vectors[i], velocity, 5.6, showVelocity, .22 + .64 * progress);
+      }
+    }
+
+    let currentState = {stage:0, progress:0, step:0, totalProgress:0};
+    function sample(t) {
+      const wrapped = ((t % SEQUENCE_SECONDS) + SEQUENCE_SECONDS) % SEQUENCE_SECONDS;
+      const cycleIndex = Math.min(POSITIONS.length - 2, Math.floor(wrapped / CYCLE_SECONDS));
+      const within = wrapped - cycleIndex * CYCLE_SECONDS;
+      let cursor = 0; let stage = 0; let progress = 0;
+      for (let i = 0; i < STAGE_DURATIONS.length; i += 1) {
+        if (within <= cursor + STAGE_DURATIONS[i] || i === STAGE_DURATIONS.length - 1) { stage = i; progress = Math.max(0, Math.min(1, (within - cursor) / STAGE_DURATIONS[i])); break; }
+        cursor += STAGE_DURATIONS[i];
+      }
+      const eased = smooth(progress);
+      const start = POSITIONS[cycleIndex]; const target = POSITIONS[cycleIndex + 1];
+      const pose = (stage === 0) ? start.map((_,i) => [start[i][0] + (target[i][0]-start[i][0])*eased, start[i][1] + (target[i][1]-start[i][1])*eased, start[i][2] + (target[i][2]-start[i][2])*eased]) : target;
+      return {stage, progress, step:cycleIndex, totalProgress:wrapped / SEQUENCE_SECONDS, pose, target, force:FORCES[cycleIndex + 1]};
+    }
+
+    function updateChart(step, iteration) {
+      const data = RESIDUALS[step]; const count = SCF_COUNTS[step];
+      const finite = data.slice(0, count); const minLog = -9.2; const maxLog = 1.0;
+      const x0 = 28, x1 = 250, y0 = 15, y1 = 111;
+      const points = finite.map((value, index) => { const x = x0 + (x1-x0) * index / Math.max(1, count-1); const log = Math.log10(value); const y = y0 + (y1-y0) * ((maxLog-log) / (maxLog-minLog)); return [x, Math.max(y0, Math.min(y1, y))]; });
+      $("#residual-line").setAttribute("d", points.map((p,i) => `${i ? "L" : "M"}${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join(" "));
+      const current = points[Math.min(Math.max(iteration - 1, 0), points.length - 1)];
+      $("#residual-dot").setAttribute("cx", current[0].toFixed(1)); $("#residual-dot").setAttribute("cy", current[1].toFixed(1));
+    }
+
+    function updateUI(state) {
+      currentState = state;
+      const stageInfo = STAGES[state.stage];
+      stageHeading.textContent = stageInfo.name;
+      stageDescription.textContent = stageInfo.description;
+      stageCounter.textContent = `STEP ${String(state.step + 1).padStart(2,"0")} / 06`;
+      stageProgressLabel.textContent = `${Math.round(state.progress * 100)}% through stage`;
+      viewportStatus.textContent = stageInfo.viewport;
+      vectorLegend.textContent = stageInfo.label;
+      equation.textContent = stageInfo.equation;
+      equationNote.textContent = stageInfo.note;
+      timelineReadout.textContent = `step ${String(state.step + 1).padStart(2,"0")} · ${stageInfo.name.toLowerCase()}`;
+      stageItems.forEach((item, index) => { item.classList.toggle("active", index === state.stage); item.classList.toggle("done", index < state.stage); });
+      const scfIteration = state.stage === 1 ? Math.max(1, Math.min(SCF_COUNTS[state.step], Math.round(state.progress * (SCF_COUNTS[state.step] - 1)) + 1)) : (state.stage > 1 ? SCF_COUNTS[state.step] : 0);
+      const residual = state.stage === 1 ? RESIDUALS[state.step][scfIteration - 1] : RESIDUALS[state.step][SCF_COUNTS[state.step] - 1];
+      metricStep.textContent = `${String(state.step + 1).padStart(2,"0")} / 06`;
+      metricIteration.textContent = state.stage === 0 ? `— / ${SCF_COUNTS[state.step]}` : `${scfIteration} / ${SCF_COUNTS[state.step]}`;
+      metricResidual.textContent = residual >= 1 ? residual.toExponential(2).replace("e+0","e+0") : residual.toExponential(2);
+      metricEnergy.textContent = `${ENERGIES[state.step + 1].toFixed(6).replace("-","−")} Eₕ`;
+      miniState.textContent = state.stage === 1 ? (scfIteration >= SCF_COUNTS[state.step] ? "CONVERGED" : "CONVERGING") : (state.stage === 2 ? "READY FOR FORCE" : "AIMD LOOP");
+      chartStage.textContent = state.stage === 1 ? `iteration ${scfIteration}` : "fixed R";
+      updateChart(state.step, scfIteration || SCF_COUNTS[state.step]);
+      const percent = `${(state.totalProgress * 100).toFixed(2)}%`;
+      trackProgress.style.width = percent; trackThumb.style.left = percent; timeScrubber.value = state.totalProgress;
+      updateModel(state.pose, state.target, state.force, state.stage, state.progress);
+    }
+
+    let playing = true; let speed = 1; let simTime = 0; let lastTime = performance.now();
+    function setPlaying(value) {
+      playing = value; runState.textContent = value ? "playing" : "paused"; runState.classList.toggle("paused", !value); playButton.textContent = value ? "Pause" : "Play";
+    }
+    playButton.addEventListener("click", () => setPlaying(!playing));
+    $("#restart-btn").addEventListener("click", () => { simTime = 0; setPlaying(true); updateUI(sample(simTime)); });
+    document.querySelectorAll(".speed-btn").forEach((button) => button.addEventListener("click", () => { speed = Number(button.dataset.speed); document.querySelectorAll(".speed-btn").forEach((item) => item.classList.toggle("active", item === button)); }));
+    timeScrubber.addEventListener("input", () => { simTime = Number(timeScrubber.value) * SEQUENCE_SECONDS; updateUI(sample(simTime)); });
+    stageItems.forEach((item) => item.addEventListener("click", () => { const stage = Number(item.dataset.stage); const cycleStart = Math.floor(simTime / CYCLE_SECONDS) * CYCLE_SECONDS; const stageStart = STAGE_DURATIONS.slice(0, stage).reduce((a,b) => a+b, 0); simTime = cycleStart + stageStart + .06; setPlaying(false); updateUI(sample(simTime)); }));
+    window.addEventListener("keydown", (event) => { if (event.code === "Space" && !/input|button/i.test(document.activeElement?.tagName || "")) { event.preventDefault(); setPlaying(!playing); } });
+
+    function resize() { const width = viewport.clientWidth; const height = viewport.clientHeight; if (!width || !height) return; camera.aspect = width / height; camera.updateProjectionMatrix(); renderer.setSize(width, height, false); }
+    new ResizeObserver(resize).observe(viewport); resize(); updateUI(sample(0));
+
+    function animate(now) {
+      const delta = Math.min(.05, (now - lastTime) / 1000); lastTime = now;
+      if (playing) { simTime += delta * speed; updateUI(sample(simTime)); }
+      controls.update(); renderer.render(scene, camera); requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+  </script>
+</body>
+</html>
