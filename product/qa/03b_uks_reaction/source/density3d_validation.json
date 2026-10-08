@@ -2,14 +2,14 @@
   "density_npz": "product\\data\\uks_tnt_reaction_density3d.npz",
   "frames": 101,
   "shape": [
-    81,
-    62,
+    80,
+    64,
     79
   ],
   "spacing_angstrom": [
-    0.21849224217974475,
-    0.21741781407574076,
-    0.21928157154797892
+    0.21971841456499788,
+    0.21883487249734013,
+    0.21953509728393286
   ],
   "elements": [
     "C",
@@ -39,37 +39,37 @@
       "frame": 0,
       "channel": "alpha",
       "path": "product\\qa\\03b_uks_reaction\\source\\density3d\\frame_0000_alpha.cube",
-      "max_atom_error_angstrom": 4.283716206955369e-09
+      "max_atom_error_angstrom": 3.9714445061611356e-09
     },
     {
       "frame": 0,
       "channel": "beta",
       "path": "product\\qa\\03b_uks_reaction\\source\\density3d\\frame_0000_beta.cube",
-      "max_atom_error_angstrom": 4.283716206955369e-09
+      "max_atom_error_angstrom": 3.9714445061611356e-09
     },
     {
       "frame": 50,
       "channel": "alpha",
       "path": "product\\qa\\03b_uks_reaction\\source\\density3d\\frame_0050_alpha.cube",
-      "max_atom_error_angstrom": 4.0188778311158564e-09
+      "max_atom_error_angstrom": 3.732768732368771e-09
     },
     {
       "frame": 50,
       "channel": "beta",
       "path": "product\\qa\\03b_uks_reaction\\source\\density3d\\frame_0050_beta.cube",
-      "max_atom_error_angstrom": 4.0188778311158564e-09
+      "max_atom_error_angstrom": 3.732768732368771e-09
     },
     {
       "frame": 100,
       "channel": "alpha",
       "path": "product\\qa\\03b_uks_reaction\\source\\density3d\\frame_0100_alpha.cube",
-      "max_atom_error_angstrom": 3.769932367933217e-09
+      "max_atom_error_angstrom": 3.91341734880149e-09
     },
     {
       "frame": 100,
       "channel": "beta",
       "path": "product\\qa\\03b_uks_reaction\\source\\density3d\\frame_0100_beta.cube",
-      "max_atom_error_angstrom": 3.769932367933217e-09
+      "max_atom_error_angstrom": 3.91341734880149e-09
     }
   ],
   "passed": true

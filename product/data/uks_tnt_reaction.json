@@ -2,8 +2,8 @@
   "schema_version": 1,
   "stem": "03b_uks_reaction",
   "data_stem": "uks_tnt_reaction",
-  "backend": "analytic_demo",
-  "method": "analytic surrogate for visual QA",
+  "backend": "pyscf_uks",
+  "method": "UKS/PBE0/def2-SVP",
   "elements": [
     "C",
     "C",
@@ -106,28 +106,35 @@
   "n_steps": 100,
   "relative_speed_ang_fs": 0.05,
   "density3d": {
-    "npz": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\data\\uks_tnt_reaction_density3d.npz",
+    "npz": "product/data/uks_tnt_reaction_density3d.npz",
     "representative_cubes": [
-      "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\density3d\\frame_0000_alpha.cube",
-      "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\density3d\\frame_0000_beta.cube",
-      "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\density3d\\frame_0050_alpha.cube",
-      "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\density3d\\frame_0050_beta.cube",
-      "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\density3d\\frame_0100_alpha.cube",
-      "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\density3d\\frame_0100_beta.cube"
+      "product/qa/03b_uks_reaction/source/density3d/frame_0000_alpha.cube",
+      "product/qa/03b_uks_reaction/source/density3d/frame_0000_beta.cube",
+      "product/qa/03b_uks_reaction/source/density3d/frame_0050_alpha.cube",
+      "product/qa/03b_uks_reaction/source/density3d/frame_0050_beta.cube",
+      "product/qa/03b_uks_reaction/source/density3d/frame_0100_alpha.cube",
+      "product/qa/03b_uks_reaction/source/density3d/frame_0100_beta.cube"
     ],
     "units": "electron/angstrom^3",
     "grid_order": "x,y,z",
     "shape": [
-      81,
-      62,
+      80,
+      64,
       79
     ],
     "spacing_ang": 0.22
   },
-  "npz": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\data\\uks_tnt_reaction.npz",
-  "source_sha256": "30e8a96296d0114e4ea6e36080740b84505202e8d0e98cf4caebdd0bfa556b75",
-  "density3d_sha256": "473f1ce283bee15fedbe87ef8b9fd34c19061b1a428052ddf533c73dccb55125",
+  "npz": "product/data/uks_tnt_reaction.npz",
+  "source_sha256": "eeea8d9bc6297901543c4c3690199ddcf9b7832165f84d55acb7a9f071988a72",
+  "density3d_sha256": "5c8b761898f5e61929a61cc5977ceae7030429c2b994616530c95bca887bb2bb",
+  "bohrium_job": {
+    "bohr_id": 20835773,
+    "image": "registry.dp.tech/dptech/ubuntu:22.04-py3.10",
+    "machine_type": "c32_m64_cpu",
+    "backend": "pyscf_uks"
+  },
   "notes": [
-    "The analytic backend is for renderer/layout QA only; it is not UKS data."
+    "Alpha/beta 3-D density is saved on one fixed Cartesian grid for every accepted ionic frame.",
+    "Energetics are qualitative and are not a production barrier or rate calculation."
   ]
 }

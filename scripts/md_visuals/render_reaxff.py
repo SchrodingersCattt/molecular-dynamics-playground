@@ -166,17 +166,9 @@ def bo_curves(manifest: dict) -> dict[str, tuple[np.ndarray, np.ndarray]]:
 # MatterVis scenes
 # ---------------------------------------------------------------------------
 def build_camera(positions: np.ndarray) -> SceneCamera:
-    frame = np.asarray(positions, dtype=float)[0]
-    ring = frame[:6]
-    ring_centre = ring.mean(axis=0)
-    _, _, vh = np.linalg.svd(ring - ring_centre, full_matrices=False)
-    direction = np.asarray(vh[-1], dtype=float)
-    if direction[2] < 0.0:
-        direction = -direction
-    up = frame[1] - frame[0]
-    up = up - direction * float(np.dot(up, direction))
-    up /= max(float(np.linalg.norm(up)), 1.0e-12)
-    probe = SceneCamera(target=tuple(ring_centre), ortho_scale=1.0, direction=tuple(direction), up=tuple(up))
+    direction = np.asarray([0.30, -0.55, 1.0])
+    direction /= np.linalg.norm(direction)
+    probe = SceneCamera(target=(0.0, 0.0, 0.0), ortho_scale=1.0, direction=tuple(direction), up=(0.0, 1.0, 0.0))
     right, up = camera_basis(probe)
     flat = positions.reshape(-1, 3)
     pad = 0.7
@@ -193,7 +185,7 @@ def build_camera(positions: np.ndarray) -> SceneCamera:
         ortho_scale=float(ortho),
         frame=0,
         direction=tuple(float(x) for x in direction),
-        up=tuple(float(value) for value in up),
+        up=(0.0, 1.0, 0.0),
     )
 
 

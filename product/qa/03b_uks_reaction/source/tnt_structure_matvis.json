@@ -6,8 +6,8 @@
     1,
     12
   ],
-  "breaking_bond_distance_angstrom": 1.4583245097690225,
-  "minimum_oxygen_oxygen_distance_angstrom": 2.1954244486105936,
+  "breaking_bond_distance_angstrom": 1.4749698055445748,
+  "minimum_oxygen_oxygen_distance_angstrom": 2.1523758553196357,
   "mat_vis_inspect": {
     "ok": true,
     "schema": "mattervis.inspect/v1",
@@ -15,7 +15,7 @@
       "frame": 0,
       "input_format": "xyz",
       "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\tnt_optimized.xyz",
-      "sha256": "a0c5b006ad583d399daddc0f6a5dd0337b6307682154546827812b807052572b",
+      "sha256": "09bad27182a1530c8795613d0266d962f89141dfb05fee1da90be74a8c19e785",
       "total_frames": 1
     },
     "structure": {

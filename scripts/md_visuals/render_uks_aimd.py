@@ -65,6 +65,7 @@ STEM = "03b_uks_reaction"
 QA_DIR = ROOT / "qa" / STEM
 MATTERVIS_DIR = QA_DIR / "source" / "mattervis_multistep_v3"
 RAW_DATA_PATH = ROOT / "data" / "uks_tnt_reaction.npz"
+MANIFEST_PATH = ROOT / "data" / "uks_tnt_reaction.json"
 DATA_PATH = ROOT / "data" / "uks_tnt_aimd.npz"
 MOTION_SOURCE = ROOT / "data" / "uks_tnt_aimd.extxyz"
 
@@ -343,6 +344,7 @@ def load_data() -> dict[str, np.ndarray]:
         raise FileNotFoundError(f"Missing {RAW_DATA_PATH}; generate the 03b dataset first")
     with np.load(RAW_DATA_PATH, allow_pickle=False) as archive:
         raw = {key: archive[key] for key in archive.files}
+    manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8")) if MANIFEST_PATH.exists() else {}
     source_positions = np.asarray(raw["positions"], dtype=float)
     source_indices = np.rint(np.linspace(0, len(source_positions) - 1, ION_SNAPSHOT_COUNT)).astype(int)
     positions = source_positions[source_indices]
@@ -389,6 +391,7 @@ def load_data() -> dict[str, np.ndarray]:
         "r_cn": np.asarray(raw["r_cn"], dtype=float)[source_indices],
         "r_no": np.asarray(raw["r_no"], dtype=float)[source_indices],
         "spin_square": np.asarray(raw["spin_square"], dtype=float)[source_indices],
+        "backend": np.asarray(manifest.get("backend", "unknown")),
     }
     np.savez_compressed(DATA_PATH, **data)
     return data
@@ -1648,7 +1651,7 @@ def main() -> None:
             QA_DIR / "qa_report_strict.json",
             {
                 "stem": STEM,
-                "backend": "analytic_demo",
+                "backend": str(data.get("backend", "unknown")),
                 "static": {
                     "width": 3508,
                     "height": 2480,
