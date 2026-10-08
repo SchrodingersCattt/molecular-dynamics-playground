@@ -171,6 +171,21 @@ def write_xyz(path: Path, positions: np.ndarray, *, comment: str) -> None:
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def read_xyz(path: Path) -> np.ndarray:
+    lines = path.read_text(encoding="utf-8").splitlines()
+    if len(lines) < len(ELEMENTS) + 2 or int(lines[0].strip()) != len(ELEMENTS):
+        raise ValueError(f"Expected a 21-atom TNT XYZ file: {path}")
+    symbols = []
+    positions = []
+    for line in lines[2 : 2 + len(ELEMENTS)]:
+        fields = line.split()
+        symbols.append(fields[0])
+        positions.append([float(value) for value in fields[1:4]])
+    if symbols != ELEMENTS.tolist():
+        raise ValueError("TNT XYZ atom order does not match the fixed C2-N2 atom map")
+    return np.asarray(positions, dtype=float)
+
+
 def write_cube(
     path: Path,
     positions: np.ndarray,
@@ -467,12 +482,16 @@ def main() -> None:
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--steps", type=int, default=N_STEPS)
     parser.add_argument("--speed", type=float, default=RELATIVE_SPEED)
+    parser.add_argument("--geometry", type=Path, default=None, help="use an optimized TNT XYZ instead of running geometry optimization")
     args = parser.parse_args()
     output = DATA_DIR / f"{DATA_STEM}.npz"
     if output.exists() and not args.force:
         print(f"[INFO] {output} exists; use --force to regenerate")
         return
-    geometry = initial_geometry() if args.demo else optimize_geometry()
+    if args.geometry is not None:
+        geometry = read_xyz(args.geometry)
+    else:
+        geometry = initial_geometry() if args.demo else optimize_geometry()
     write_xyz(
         REPO_ROOT / "product" / "qa" / "03b_uks_reaction" / "source" / "tnt_optimized.xyz",
         geometry,

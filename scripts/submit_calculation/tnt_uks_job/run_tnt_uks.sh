@@ -16,7 +16,7 @@ PY
 
 mkdir -p results
 PYTHONPATH="$PWD/scripts/run_md:$PWD/scripts/build_box" \
-  python scripts/build_box/generate_uks_tnt.py --steps 100 --force
+  python scripts/build_box/generate_uks_tnt.py --steps 100 --speed 0.10 --geometry tnt_optimized.xyz --force
 
 cp product/data/uks_tnt_reaction.npz results/
 cp product/data/uks_tnt_reaction.json results/
