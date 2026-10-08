@@ -4,19 +4,19 @@
   "format": "png",
   "width": 1500,
   "height": 950,
-  "plan_sha256": "02cced592e60d15a158a86aa9f782a3be713f599a987cbecd2be15ffa9d99581",
-  "output_sha256": "d03c705a1b7eed6c0dbd7c658609135932912eb2de041c9ec1c984235f784170",
+  "plan_sha256": "7c844a4dd739e05c452fee0c4828f0f3510a4c058d65ef307489c4c884053ad1",
+  "output_sha256": "cc7bc72132b39cd2c9fa3e39eb3f78b70e7d00b675b3cc5c5615ecc31808ada6",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\02b_reaxff\\source\\reaxff_v1\\base_11.png",
-  "source_sha256": "a7eda9efe438a0c3cf360ed4198cda8ad948636b251ebedc81fb03a50b57a870",
+  "source_sha256": "34e3053d4226e88b6ba8a1e27a8464076c080459b4db5a6b9720bd14d9d132f9",
   "frame": 11,
   "view": "cluster",
   "camera": {
     "target": [
-      0.13880550917000883,
-      0.031240938948097416,
-      -0.1670979126939544
+      0.16834787053883682,
+      0.01784214804629916,
+      -0.07363214419141526
     ],
-    "ortho_scale": 3.839909952431857,
+    "ortho_scale": 3.9190680175889714,
     "direction": [
       -0.03754873875062198,
       0.9874468261405996,
@@ -28,9 +28,9 @@
       0.8048568485303175
     ],
     "scene_offset": [
-      8.0675772998,
-      6.3206887953,
-      8.6026777593
+      7.7732547059999995,
+      6.4616905334000005,
+      8.4692716933
     ]
   },
   "render_settings": {
@@ -48,7 +48,7 @@
   "vector_count": 0,
   "vector_renderer": "MatterVis native world-space vector_overlays",
   "mesh_signature": "[]",
-  "atom_signature": "{\"bonds\":{\"1-12\":{\"color\":\"#2E3338\",\"opacity\":0.19408642283302252,\"radius_scale\":0.47852650889195575}},\"color\":{},\"opacity\":{}}",
+  "atom_signature": "{\"bonds\":{\"1-12\":{\"opacity\":0.0}},\"color\":{},\"opacity\":{}}",
   "mesh_renderer": "MatterVis native world-space mesh overlay",
   "pipeline_version": 7,
   "warnings": [],
@@ -58,14 +58,14 @@
     "actual_backend": "cpu",
     "camera": {
       "position": [
-        7.305213078955081,
-        30.05065356162249,
-        12.11775068342802
+        7.040432846523908,
+        30.17825650882069,
+        12.077810385930558
       ],
       "target": [
-        8.206382808970009,
-        6.351929734248097,
-        8.435579846606046
+        7.941602576538836,
+        6.4795326814463,
+        8.395639549108584
       ],
       "up": [
         0.5844928132592843,
@@ -76,7 +76,7 @@
       "fov_y_deg": 45.0,
       "near": 0.01,
       "far": 10000.0,
-      "ortho_scale": 3.839909952431857
+      "ortho_scale": 3.9190680175889714
     },
     "source": {
       "path": null,

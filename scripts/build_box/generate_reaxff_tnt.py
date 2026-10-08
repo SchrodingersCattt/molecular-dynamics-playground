@@ -80,15 +80,21 @@ K_OVER = 0.65
 K_ANGLE = 1.2
 REP_A = 80.0
 REP_RHO = 0.28
-# The schematic energy is not a fitted TNT force field.  A weak reference
+# The schematic energy is not a fitted TNT force field.  A reference
 # restraint keeps spectator atoms (especially light H atoms) near the optimized
 # scaffold so the only visible event is the requested C2--NO2 departure.
-SPECTATOR_ANCHOR_K = 8.0
+SPECTATOR_ANCHOR_K = 30.0
+NITRO_ANGLE_K = 10.0
+NITRO_OO_K = 12.0
+NITRO_GROUPS = ((12, 15, 16), (13, 17, 18), (14, 19, 20))
+
+
+REFERENCE_GEOMETRY = initial_geometry()
 SPECTATOR_INDICES = np.asarray([i for i in range(len(ELEMENTS)) if i not in {BREAKING_N, 15, 16}], dtype=int)
 
 
 def reference_distances() -> np.ndarray:
-    positions = initial_geometry()
+    positions = REFERENCE_GEOMETRY
     return np.asarray([np.linalg.norm(positions[j] - positions[i]) for i, j in BONDS], dtype=float)
 
 
@@ -155,12 +161,24 @@ def energy_terms(positions: torch.Tensor) -> dict[str, torch.Tensor]:
         theta = torch.arccos(torch.clamp(cos, -1.0 + 1e-12, 1.0 - 1e-12))
         theta0 = float(np.deg2rad(120.0))
         e_angle = e_angle + K_ANGLE * (theta - theta0) ** 2
+    reference = torch.as_tensor(REFERENCE_GEOMETRY, dtype=positions.dtype)
+    for n, o1, o2 in NITRO_GROUPS:
+        u = positions[o1] - positions[n]
+        v = positions[o2] - positions[n]
+        cos = (u @ v) / (torch.linalg.norm(u) * torch.linalg.norm(v))
+        theta = torch.arccos(torch.clamp(cos, -1.0 + 1e-12, 1.0 - 1e-12))
+        ru = reference[o1] - reference[n]
+        rv = reference[o2] - reference[n]
+        theta0 = torch.arccos(torch.clamp((ru @ rv) / (torch.linalg.norm(ru) * torch.linalg.norm(rv)), -1.0 + 1e-12, 1.0 - 1e-12))
+        e_angle = e_angle + NITRO_ANGLE_K * (theta - theta0) ** 2
+        oo = torch.linalg.norm(positions[o2] - positions[o1])
+        oo0 = torch.linalg.norm(reference[o2] - reference[o1])
+        e_angle = e_angle + 0.5 * NITRO_OO_K * (oo - oo0) ** 2
     e_rep = torch.zeros((), dtype=positions.dtype)
     for i in range(len(ELEMENTS)):
         for j in range(i + 1, len(ELEMENTS)):
             distance = torch.linalg.norm(positions[j] - positions[i])
             e_rep = e_rep + REP_A * torch.exp(-distance / REP_RHO)
-    reference = torch.as_tensor(initial_geometry(), dtype=positions.dtype)
     spectator = torch.as_tensor(SPECTATOR_INDICES, dtype=torch.long)
     displacement = positions[spectator] - reference[spectator]
     e_anchor = 0.5 * SPECTATOR_ANCHOR_K * (displacement**2).sum()
@@ -188,7 +206,7 @@ def evaluate(positions: np.ndarray) -> dict[str, np.ndarray | float]:
     raw_energy = float(terms["total"].detach())
     raw_forces = -torch.autograd.grad(terms["total"], tensor)[0].detach().numpy()
     if _REFERENCE_FORCE is None:
-        _REFERENCE_POSITIONS = initial_geometry().copy()
+        _REFERENCE_POSITIONS = REFERENCE_GEOMETRY.copy()
         _REFERENCE_FORCE = raw_forces.copy()
     corrected_energy = raw_energy + float(np.sum(_REFERENCE_FORCE * (positions - _REFERENCE_POSITIONS)))
     corrected_forces = raw_forces - _REFERENCE_FORCE
@@ -278,6 +296,11 @@ def main() -> None:
             "type": "harmonic reference restraint in hidden schematic term",
             "k_ev_ang2": SPECTATOR_ANCHOR_K,
             "excluded_atoms": [BREAKING_N, 15, 16],
+        },
+        "nitro_internal_restraint": {
+            "angle_k_ev_rad2": NITRO_ANGLE_K,
+            "oo_k_ev_ang2": NITRO_OO_K,
+            "groups": [list(group) for group in NITRO_GROUPS],
         },
         "checks": {
             "start_max_force_ev_ang": float(np.abs(start["forces"]).max()),

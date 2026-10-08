@@ -94,6 +94,7 @@ SNAP_STRIDE = 25
 N_SNAP = 17  # steps 0, 25, ..., 400
 FORCE_SCALE = 1.6  # Angstrom of arrow per eV/Angstrom
 VELOCITY_SCALE = 40.0  # Angstrom of arrow per Angstrom/fs
+MAX_VECTOR_LENGTH = 0.72  # keep native MatterVis vectors readable in the fixed slot
 CELL_SECONDS = 0.8
 DETAIL_END = 9.6
 DURATION = DETAIL_END + CELL_SECONDS * (N_SNAP - 2)
@@ -223,8 +224,13 @@ def arrow_groups(group_id: str, origins: np.ndarray, vectors: np.ndarray, *, sca
     keep = lengths > 0.16
     if not np.any(keep):
         return []
-    group = make_vector_group(group_id, origins[keep], vectors[keep], scale=scale, color=color)
-    for arrow, length in zip(group[0]["arrows"], lengths[keep]):
+    display_vectors = np.asarray(vectors[keep], dtype=float).copy()
+    display_lengths = lengths[keep]
+    clip = np.minimum(1.0, MAX_VECTOR_LENGTH / np.maximum(display_lengths, 1.0e-12))
+    display_vectors *= clip[:, None]
+    display_lengths = np.minimum(display_lengths, MAX_VECTOR_LENGTH)
+    group = make_vector_group(group_id, origins[keep], display_vectors, scale=scale, color=color)
+    for arrow, length in zip(group[0]["arrows"], display_lengths):
         head = float(min(0.34, 0.5 * length))
         arrow["style"] = {
             "shaft_radius": 0.045,
@@ -519,9 +525,9 @@ def draw_overlays(
             # Keep every δ marker, but choose an alternate nearby angular gap
             # when the first candidate would overlap a previously placed label.
             candidates = []
-            for offset in np.linspace(-np.pi, np.pi, 17)[:-1]:
+            for offset in np.linspace(-np.pi / 3.0, np.pi / 3.0, 9):
                 direction = np.asarray([np.cos(angle + offset), np.sin(angle + offset)])
-                candidate = xy[atom] + direction / pixel * 0.16
+                candidate = xy[atom] + direction / pixel * 0.09
                 # Keep the existing δ markers inside the scene slot even when
                 # a spectator atom reaches the edge of the schematic camera.
                 candidates.append(np.clip(candidate, [0.16, 0.20], [0.84, 0.80]))
