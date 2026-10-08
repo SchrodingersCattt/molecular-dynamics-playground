@@ -14,6 +14,7 @@ import numpy as np
 from matplotlib.patches import Ellipse, Rectangle
 from PIL import Image
 from scipy import ndimage
+from scipy.interpolate import RegularGridInterpolator
 
 from common import (
     R_BLUE,
@@ -338,6 +339,35 @@ def _write_extxyz(path: Path, elements: np.ndarray, positions: np.ndarray) -> No
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def _reproject_density_planes(
+    density3d: np.ndarray,
+    grid_x: np.ndarray,
+    grid_y: np.ndarray,
+    grid_z: np.ndarray,
+    positions: np.ndarray,
+    plane_centre: np.ndarray,
+    plane_u: np.ndarray,
+    plane_v: np.ndarray,
+    plane_x: np.ndarray,
+    plane_y: np.ndarray,
+) -> np.ndarray:
+    """Sample fixed-grid 3-D density on the same TNT plane used by the camera."""
+
+    uu, vv = np.meshgrid(plane_x, plane_y, indexing="xy")
+    points = plane_centre + uu[..., None] * plane_u + vv[..., None] * plane_v
+    flat_points = points.reshape(-1, 3)
+    output = np.zeros((len(positions), len(plane_y), len(plane_x)), dtype=np.float32)
+    for frame, field in enumerate(np.asarray(density3d, dtype=float)):
+        interpolator = RegularGridInterpolator(
+            (grid_x, grid_y, grid_z),
+            field,
+            bounds_error=False,
+            fill_value=0.0,
+        )
+        output[frame] = np.asarray(interpolator(flat_points), dtype=np.float32).reshape(len(plane_y), len(plane_x))
+    return output
+
+
 def load_data() -> dict[str, np.ndarray]:
     """Adapt the saved kick trajectory to the exact 03 seven-ion-step schema."""
     if not RAW_DATA_PATH.exists():
@@ -355,8 +385,35 @@ def load_data() -> dict[str, np.ndarray]:
     grad_conv = 27.211386245988 / 0.529177210903
     forces_eh_per_bohr = forces_ev_ang / grad_conv
     half_velocities = velocities.copy()
-    rho_alpha = np.asarray(raw["rho_alpha"], dtype=float)[source_indices]
-    rho_beta = np.asarray(raw["rho_beta"], dtype=float)[source_indices]
+    plane_centre, plane_u, plane_v, plane_normal = tnt_plane_basis(source_positions)
+    density3d_path = ROOT / "data" / "uks_tnt_reaction_density3d.npz"
+    if density3d_path.exists():
+        with np.load(density3d_path, allow_pickle=False) as density_archive:
+            density3d_alpha = np.asarray(density_archive["rho_alpha_3d"], dtype=float)
+            density3d_beta = np.asarray(density_archive["rho_beta_3d"], dtype=float)
+            grid_x = np.asarray(density_archive["grid_x_ang"], dtype=float)
+            grid_y = np.asarray(density_archive["grid_y_ang"], dtype=float)
+            grid_z = np.asarray(density_archive["grid_z_ang"], dtype=float)
+        projected = (source_positions - plane_centre) @ np.vstack((plane_u, plane_v)).T
+        plane_x = np.linspace(float(projected[:, 0].min() - 3.0), float(projected[:, 0].max() + 3.0), 128)
+        plane_y = np.linspace(float(projected[:, 1].min() - 3.0), float(projected[:, 1].max() + 3.0), 88)
+        rho_alpha_all = _reproject_density_planes(
+            density3d_alpha, grid_x, grid_y, grid_z, source_positions,
+            plane_centre, plane_u, plane_v, plane_x, plane_y,
+        )
+        rho_beta_all = _reproject_density_planes(
+            density3d_beta, grid_x, grid_y, grid_z, source_positions,
+            plane_centre, plane_u, plane_v, plane_x, plane_y,
+        )
+        rho_alpha = rho_alpha_all[source_indices]
+        rho_beta = rho_beta_all[source_indices]
+        density_plane_source = "reprojected_from_fixed_3d_cartesian_grid"
+    else:
+        rho_alpha = np.asarray(raw["rho_alpha"], dtype=float)[source_indices]
+        rho_beta = np.asarray(raw["rho_beta"], dtype=float)[source_indices]
+        plane_x = np.asarray(raw["spin_density_x"], dtype=float)
+        plane_y = np.asarray(raw["spin_density_y"], dtype=float)
+        density_plane_source = "legacy_saved_2d_plane"
     counts = np.full(ION_SNAPSHOT_COUNT, 11, dtype=int)
     counts[0] = 12
     expanded_alpha = np.zeros((ION_SNAPSHOT_COUNT, int(counts.max()), *rho_alpha.shape[1:]), dtype=float)
@@ -367,9 +424,6 @@ def load_data() -> dict[str, np.ndarray]:
         expanded_alpha[ion, :count] = scale[:, None, None] * rho_alpha[ion][None, :, :]
         expanded_beta[ion, :count] = scale[:, None, None] * rho_beta[ion][None, :, :]
         residuals[ion, :count] = np.geomspace(1.0e-2, 1.0e-9, int(count))
-    plane_x = np.asarray(raw["spin_density_x"], dtype=float)
-    plane_y = np.asarray(raw["spin_density_y"], dtype=float)
-    plane_centre, plane_u, plane_v, plane_normal = tnt_plane_basis(positions)
     _write_extxyz(MOTION_SOURCE, elements, positions)
     data = {
         "elements": elements,
@@ -388,6 +442,7 @@ def load_data() -> dict[str, np.ndarray]:
         "plane_normal": plane_normal,
         "plane_u_axis_angstrom": plane_x,
         "plane_v_axis_angstrom": plane_y,
+        "density_plane_source": np.asarray(density_plane_source),
         "r_cn": np.asarray(raw["r_cn"], dtype=float)[source_indices],
         "r_no": np.asarray(raw["r_no"], dtype=float)[source_indices],
         "spin_square": np.asarray(raw["spin_square"], dtype=float)[source_indices],
