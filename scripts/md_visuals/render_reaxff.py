@@ -94,7 +94,8 @@ SNAP_STRIDE = 25
 N_SNAP = 17  # steps 0, 25, ..., 400
 FORCE_SCALE = 1.6  # Angstrom of arrow per eV/Angstrom
 VELOCITY_SCALE = 40.0  # Angstrom of arrow per Angstrom/fs
-MAX_VECTOR_LENGTH = 0.72  # keep native MatterVis vectors readable in the fixed slot
+FORCE_MAX_VECTOR_LENGTH = 0.68  # force arrows stay compact beside the scaffold
+VELOCITY_MAX_VECTOR_LENGTH = 1.10  # velocity arrows remain visibly distinct
 CELL_SECONDS = 0.8
 DETAIL_END = 9.6
 DURATION = DETAIL_END + CELL_SECONDS * (N_SNAP - 2)
@@ -219,16 +220,24 @@ def bond_styles(bo: np.ndarray) -> dict[tuple[int, int], dict]:
     }
 
 
-def arrow_groups(group_id: str, origins: np.ndarray, vectors: np.ndarray, *, scale: float, color: str) -> list[dict]:
+def arrow_groups(
+    group_id: str,
+    origins: np.ndarray,
+    vectors: np.ndarray,
+    *,
+    scale: float,
+    color: str,
+    max_length: float,
+) -> list[dict]:
     lengths = np.linalg.norm(vectors, axis=1) * scale
     keep = lengths > 0.16
     if not np.any(keep):
         return []
     display_vectors = np.asarray(vectors[keep], dtype=float).copy()
     display_lengths = lengths[keep]
-    clip = np.minimum(1.0, MAX_VECTOR_LENGTH / np.maximum(display_lengths, 1.0e-12))
+    clip = np.minimum(1.0, max_length / np.maximum(display_lengths, 1.0e-12))
     display_vectors *= clip[:, None]
-    display_lengths = np.minimum(display_lengths, MAX_VECTOR_LENGTH)
+    display_lengths = np.minimum(display_lengths, max_length)
     group = make_vector_group(group_id, origins[keep], display_vectors, scale=scale, color=color)
     for arrow, length in zip(group[0]["arrows"], display_lengths):
         head = float(min(0.34, 0.5 * length))
@@ -282,10 +291,18 @@ def prepare_assets(data: dict) -> tuple[dict[str, object], SceneCamera]:
         bonds = bond_styles(data["bo"][k])
         assets["base"].append(render(f"base_{k:02d}", k, [], bonds))
         if k < N_SNAP - 1:
-            groups = arrow_groups(f"force-{k}", pos, data["forces"][k], scale=FORCE_SCALE, color=A_ORANGE)
+            groups = arrow_groups(
+                f"force-{k}", pos, data["forces"][k],
+                scale=FORCE_SCALE, color=A_ORANGE,
+                max_length=FORCE_MAX_VECTOR_LENGTH,
+            )
             assets["force"].append(render(f"force_{k:02d}", k, groups, bonds))
     pos = data["positions"][0]
-    groups = arrow_groups("vel-0", pos, data["velocities"][0], scale=VELOCITY_SCALE, color=V_PURPLE)
+    groups = arrow_groups(
+        "vel-0", pos, data["velocities"][0],
+        scale=VELOCITY_SCALE, color=V_PURPLE,
+        max_length=VELOCITY_MAX_VECTOR_LENGTH,
+    )
     assets["vel0"] = render("vel_00", 0, groups, bond_styles(data["bo"][0]))
     write_provenance_index(ASSET_DIR, records)
     return assets, camera
@@ -784,6 +801,8 @@ def write_manifest(data: dict, camera: SceneCamera) -> None:
             "display_scales": {
                 "force_ang_per_ev_ang": FORCE_SCALE,
                 "velocity_ang_per_ang_fs": VELOCITY_SCALE,
+                "force_max_length_ang": FORCE_MAX_VECTOR_LENGTH,
+                "velocity_max_length_ang": VELOCITY_MAX_VECTOR_LENGTH,
             },
             "bond_tube": {"radius_ang": "0.020 + 0.040 * min(BO, 1.7)", "opacity": "0.22 + 0.78 * min(BO, 1)", "hidden_below_bo": 0.05},
             "camera": {"target": list(camera.target), "ortho_scale": camera.ortho_scale, "direction": list(camera.direction)},

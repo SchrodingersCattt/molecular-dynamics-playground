@@ -8,7 +8,9 @@
   },
   "display_scales": {
     "force_ang_per_ev_ang": 1.6,
-    "velocity_ang_per_ang_fs": 40.0
+    "velocity_ang_per_ang_fs": 40.0,
+    "force_max_length_ang": 0.68,
+    "velocity_max_length_ang": 1.1
   },
   "bond_tube": {
     "radius_ang": "0.020 + 0.040 * min(BO, 1.7)",
