@@ -6,7 +6,7 @@
 
 - TNT topology now comes from the RDKit 2,4,6-trinitrotoluene SMILES with an explicit atom-order map; the selected breaking site is C2–N2. The previous hand-built coordinates could trigger a spurious O–O bond in MatterVis and are no longer used.
 - `scripts/md_visuals/inspect_tnt_structure.py` runs the mandatory `mat-vis inspect` plus CPU `ball_stick` render preflight. The checked local reference has formula C7H5N3O6, 21 atoms, 21 perceived bonds, no O–O bond, and C2–N2 = 1.46 Å.
-- TNT 03b demo data currently save fixed-grid 3-D alpha/beta density in `product/data/uks_tnt_reaction_density3d.npz`; the scientific `backend=pyscf_uks` dataset still requires the Bohrium run.
+- TNT 03b now has the recovered real `backend=pyscf_uks` dataset from Bohrium job 20835773: 101 MD frames, fixed-grid 3-D alpha/beta density, representative Cube files, and mat-vis alignment QA.
 
 ## 2026-10-07（第二轮）：PPT 字号、统一 r/v/a 配色、01/02b/03/03b/04/04b 修订
 
