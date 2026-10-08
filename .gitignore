@@ -46,10 +46,12 @@ build/
 dist/
 *.tmp
 *.temp
+_tmp/
 
 # Media / rendered outputs
 *.mp4
 !product/videos/*.mp4
+product/videos/_*.mp4
 *.mov
 *.avi
 *.mkv
@@ -80,3 +82,6 @@ product/qa/04_4c/bohr_live_water/*.pt
 
 # Generated 3-D UKS density fields are retained locally/externally; GitHub has a 100 MB file cap.
 product/data/*_density3d.npz
+
+# Strict-video failure captures are diagnostic only.
+product/qa/**/failed_frame_*.png
