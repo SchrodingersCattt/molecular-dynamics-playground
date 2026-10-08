@@ -4,33 +4,33 @@
   "format": "png",
   "width": 1500,
   "height": 950,
-  "plan_sha256": "ee121aa7833baccf90051ca74873514bf67726510f5ba6b0afa7f931598e2105",
-  "output_sha256": "d6e6e1459126caada1a00353f8159791c0ebf1214983e4fb3d7f6cd942c01fba",
+  "plan_sha256": "d977f4749d8e18a39ef44ccf2c1aeac2770707d601d4dea7d423b98ebfdaff6c",
+  "output_sha256": "09332ff3cc1ef23ebe772fd4393e10b455acc4834edeaada4507190a8e85ab96",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\02b_reaxff\\source\\reaxff_v1\\base_02.png",
-  "source_sha256": "6a486c54679cd4be7a4a35d51dfd3cb26aafd17e64da9282eac43d080e50c1e6",
+  "source_sha256": "a7eda9efe438a0c3cf360ed4198cda8ad948636b251ebedc81fb03a50b57a870",
   "frame": 2,
   "view": "cluster",
   "camera": {
     "target": [
-      0.15275462551570007,
-      -3.4013830743932716,
-      -1.9165870785710095
+      0.13880550917000883,
+      0.031240938948097416,
+      -0.1670979126939544
     ],
-    "ortho_scale": 8.54609747877391,
+    "ortho_scale": 3.839909952431857,
     "direction": [
-      0.2542281591642215,
-      -0.46608495846773945,
-      0.8474271972140716
+      -0.03754873875062198,
+      0.9874468261405996,
+      0.15342378486758232
     ],
     "up": [
-      0.0,
-      1.0,
-      0.0
+      0.5844928132592843,
+      -0.10282803422264399,
+      0.8048568485303175
     ],
     "scene_offset": [
-      7.7435245707,
-      6.3297470269,
-      8.5999011469
+      7.753645881100001,
+      6.3297478808,
+      8.5959312185
     ]
   },
   "render_settings": {
@@ -48,7 +48,7 @@
   "vector_count": 0,
   "vector_renderer": "MatterVis native world-space vector_overlays",
   "mesh_signature": "[]",
-  "atom_signature": "{\"bonds\":{\"1-12\":{\"color\":\"#2E3338\",\"opacity\":0.4396098514775896,\"radius_scale\":0.6373946097796168}},\"color\":{},\"opacity\":{}}",
+  "atom_signature": "{\"bonds\":{\"1-12\":{\"color\":\"#2E3338\",\"opacity\":0.44254471743868606,\"radius_scale\":0.6392936406956204}},\"color\":{},\"opacity\":{}}",
   "mesh_renderer": "MatterVis native world-space mesh overlay",
   "pipeline_version": 7,
   "warnings": [],
@@ -58,25 +58,25 @@
     "actual_backend": "cpu",
     "camera": {
       "position": [
-        13.997755016157015,
-        -8.257675050719019,
-        27.02156680146671
+        6.991281660255082,
+        30.05971264712249,
+        12.111004142628023
       ],
       "target": [
-        7.8962791962157,
-        2.928363952506728,
-        6.6833140683289916
+        7.8924513902700095,
+        6.360988819748098,
+        8.428833305806046
       ],
       "up": [
-        0.0,
-        1.0,
-        0.0
+        0.5844928132592843,
+        -0.10282803422264399,
+        0.8048568485303175
       ],
       "projection": "orthographic",
       "fov_y_deg": 45.0,
       "near": 0.01,
       "far": 10000.0,
-      "ortho_scale": 8.54609747877391
+      "ortho_scale": 3.839909952431857
     },
     "source": {
       "path": null,

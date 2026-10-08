@@ -166,12 +166,25 @@ def bo_curves(manifest: dict) -> dict[str, tuple[np.ndarray, np.ndarray]]:
 # MatterVis scenes
 # ---------------------------------------------------------------------------
 def build_camera(positions: np.ndarray) -> SceneCamera:
-    direction = np.asarray([0.30, -0.55, 1.0])
-    direction /= np.linalg.norm(direction)
-    probe = SceneCamera(target=(0.0, 0.0, 0.0), ortho_scale=1.0, direction=tuple(direction), up=(0.0, 1.0, 0.0))
+    # Keep the TNT aromatic plane facing the page, matching the real UKS
+    # renderer.  The old generic oblique view made C2--NO2 motion mostly
+    # disappear into depth.  Fit the fixed camera to the chemically relevant
+    # heavy-atom scaffold; the schematic spectator H atoms can acquire large
+    # nonphysical velocities and must not zoom the reaction out of view.
+    ring = np.asarray(positions[0, np.arange(6, dtype=int)], dtype=float)
+    centre = ring.mean(axis=0)
+    _, _, vh = np.linalg.svd(ring - centre, full_matrices=False)
+    direction = np.asarray(vh[-1], dtype=float)
+    if direction[2] < 0.0:
+        direction = -direction
+    up = np.asarray(positions[0, 1] - positions[0, 0], dtype=float)
+    up -= direction * float(np.dot(up, direction))
+    up /= max(float(np.linalg.norm(up)), 1.0e-12)
+    probe = SceneCamera(target=tuple(centre), ortho_scale=1.0, direction=tuple(direction), up=tuple(up))
     right, up = camera_basis(probe)
-    flat = positions.reshape(-1, 3)
-    pad = 0.7
+    visual_indices = np.asarray(list(range(7)) + list(range(12, 21)), dtype=int)
+    flat = positions[:, visual_indices, :].reshape(-1, 3)
+    pad = 0.45
     cloud = np.vstack([flat + pad * right, flat - pad * right, flat + pad * up, flat - pad * up])
     sx, sy = cloud @ right, cloud @ up
     aspect = IMAGE_SIZE[0] / IMAGE_SIZE[1]
@@ -185,7 +198,7 @@ def build_camera(positions: np.ndarray) -> SceneCamera:
         ortho_scale=float(ortho),
         frame=0,
         direction=tuple(float(x) for x in direction),
-        up=(0.0, 1.0, 0.0),
+        up=tuple(float(x) for x in up),
     )
 
 
@@ -508,11 +521,14 @@ def draw_overlays(
             candidates = []
             for offset in np.linspace(-np.pi, np.pi, 17)[:-1]:
                 direction = np.asarray([np.cos(angle + offset), np.sin(angle + offset)])
-                candidates.append(xy[atom] + direction / pixel * 0.16)
+                candidate = xy[atom] + direction / pixel * 0.16
+                # Keep the existing δ markers inside the scene slot even when
+                # a spectator atom reaches the edge of the schematic camera.
+                candidates.append(np.clip(candidate, [0.16, 0.20], [0.84, 0.80]))
             reserved_free = [
                 candidate
                 for candidate in candidates
-                if 0.10 < candidate[0] < 0.90 and 0.14 < candidate[1] < 0.82
+                if 0.18 < candidate[0] < 0.82 and 0.22 < candidate[1] < 0.78
             ]
             if reserved_free:
                 candidates = reserved_free

@@ -373,7 +373,14 @@ def _pad(values: list[np.ndarray]) -> np.ndarray:
     return output
 
 
-def save_dataset(frames: list[dict[str, object]], *, backend: str, geometry: np.ndarray, grid: tuple[np.ndarray, np.ndarray, np.ndarray]) -> None:
+def save_dataset(
+    frames: list[dict[str, object]],
+    *,
+    backend: str,
+    geometry: np.ndarray,
+    grid: tuple[np.ndarray, np.ndarray, np.ndarray],
+    relative_speed: float,
+) -> None:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     positions = np.asarray([frame["positions"] for frame in frames], dtype=float)
     velocities = np.asarray([frame["velocities"] for frame in frames], dtype=float)
@@ -454,7 +461,7 @@ def save_dataset(frames: list[dict[str, object]], *, backend: str, geometry: np.
         "geometry_source": "PBE0/def2-SVP RKS optimization from deterministic TNT reference geometry",
         "dt_fs": DT_FS,
         "n_steps": len(frames) - 1,
-        "relative_speed_ang_fs": RELATIVE_SPEED,
+        "relative_speed_ang_fs": float(relative_speed),
         "density3d": {
             "npz": str(density_output),
             "representative_cubes": cube_outputs,
@@ -530,7 +537,13 @@ def main() -> None:
         n_steps=args.steps,
         dt_fs=DT_FS,
     )
-    save_dataset(frames, backend=backend, geometry=geometry, grid=grid)
+    save_dataset(
+        frames,
+        backend=backend,
+        geometry=geometry,
+        grid=grid,
+        relative_speed=args.speed,
+    )
     print(f"Saved {len(frames)} frames ({backend}) -> {output}")
 
 

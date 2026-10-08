@@ -80,6 +80,11 @@ K_OVER = 0.65
 K_ANGLE = 1.2
 REP_A = 80.0
 REP_RHO = 0.28
+# The schematic energy is not a fitted TNT force field.  A weak reference
+# restraint keeps spectator atoms (especially light H atoms) near the optimized
+# scaffold so the only visible event is the requested C2--NO2 departure.
+SPECTATOR_ANCHOR_K = 8.0
+SPECTATOR_INDICES = np.asarray([i for i in range(len(ELEMENTS)) if i not in {BREAKING_N, 15, 16}], dtype=int)
 
 
 def reference_distances() -> np.ndarray:
@@ -155,7 +160,12 @@ def energy_terms(positions: torch.Tensor) -> dict[str, torch.Tensor]:
         for j in range(i + 1, len(ELEMENTS)):
             distance = torch.linalg.norm(positions[j] - positions[i])
             e_rep = e_rep + REP_A * torch.exp(-distance / REP_RHO)
+    reference = torch.as_tensor(initial_geometry(), dtype=positions.dtype)
+    spectator = torch.as_tensor(SPECTATOR_INDICES, dtype=torch.long)
+    displacement = positions[spectator] - reference[spectator]
+    e_anchor = 0.5 * SPECTATOR_ANCHOR_K * (displacement**2).sum()
     total = e_bond + e_over + e_angle + e_coul + e_rep
+    total = total + e_anchor
     return {
         "total": total,
         "bond": e_bond,
@@ -163,6 +173,7 @@ def energy_terms(positions: torch.Tensor) -> dict[str, torch.Tensor]:
         "angle": e_angle,
         "coulomb": e_coul,
         "repulsion": e_rep,
+        "anchor": e_anchor,
         "bo": bo,
         "delta": delta,
         "q": q,
@@ -263,6 +274,11 @@ def main() -> None:
         "dt_fs": DT_FS,
         "n_steps": int(args.steps),
         "integrator": "velocity Verlet with analytic autograd forces",
+        "spectator_restraint": {
+            "type": "harmonic reference restraint in hidden schematic term",
+            "k_ev_ang2": SPECTATOR_ANCHOR_K,
+            "excluded_atoms": [BREAKING_N, 15, 16],
+        },
         "checks": {
             "start_max_force_ev_ang": float(np.abs(start["forces"]).max()),
             "force_finite_difference_max_error": fd,

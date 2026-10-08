@@ -17,13 +17,22 @@
   "dt_fs": 0.1,
   "n_steps": 500,
   "integrator": "velocity Verlet with analytic autograd forces",
+  "spectator_restraint": {
+    "type": "harmonic reference restraint in hidden schematic term",
+    "k_ev_ang2": 8.0,
+    "excluded_atoms": [
+      12,
+      15,
+      16
+    ]
+  },
   "checks": {
     "start_max_force_ev_ang": 0.0,
-    "force_finite_difference_max_error": 3.508866530665955e-09,
-    "total_energy_drift_ev": 0.1891806839585115,
-    "r_cn_final_ang": 2.909424323075279,
-    "bo_cn_final": 0.009623768042668523
+    "force_finite_difference_max_error": 3.7237848360405224e-09,
+    "total_energy_drift_ev": 0.24119003290266505,
+    "r_cn_final_ang": 2.481016229532392,
+    "bo_cn_final": 0.03790722684177917
   },
   "npz": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\data\\02b_reaxff.npz",
-  "source_sha256": "024f0ada589e23755926ef34a2d080b584c9267592fa26899ef595c8ab425acd"
+  "source_sha256": "aa839aa4585c7ca4b193892a24aaed0bb577d6d8a462bbbdbd87fca651c4e4b6"
 }
