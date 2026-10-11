@@ -77,6 +77,7 @@ FONT_MAX_PT = FONT_SIZES["page_title"]
 SLIDE_DPI = VIDEO_WIDTH_PX / 13.333
 PPT_TEXT_SCALE = SLIDE_DPI / VIDEO_DPI
 VIDEO_FONT_FAMILY = "Arial"
+ARIAL_AVAILABLE = True
 MAX_VERTICAL_BORDER_WHITESPACE_PX = 48
 
 CAMERA_DIRECTION = np.array([1.55, -1.0, 0.62], dtype=float)
@@ -94,12 +95,20 @@ from visualize_data.checks.pixels import (  # noqa: E402
 )
 
 
-ARIAL_PATH = Path(
-    font_manager.findfont(
-        FontProperties(family=[VIDEO_FONT_FAMILY]),
-        fallback_to_default=False,
+try:
+    ARIAL_PATH = Path(
+        font_manager.findfont(
+            FontProperties(family=[VIDEO_FONT_FAMILY]),
+            fallback_to_default=False,
+        )
     )
-)
+except ValueError:
+    # Linux render nodes often do not ship Microsoft's Arial.  Keep the
+    # requested family when installed, but use a metrically compatible sans
+    # fallback so the renderer remains runnable and records the actual font.
+    ARIAL_AVAILABLE = False
+    VIDEO_FONT_FAMILY = "DejaVu Sans"
+    ARIAL_PATH = Path(font_manager.findfont(FontProperties(family=[VIDEO_FONT_FAMILY])))
 
 
 plt.rcParams.update(
@@ -266,7 +275,7 @@ class LayoutRegistry:
                 errors.append(f"text[{index}] font below minimum")
             if float(artist.get_fontsize()) / scale > self.max_font_pt + 1.0e-6:
                 errors.append(f"text[{index}] font above maximum")
-            if self.font_family is not None:
+            if self.font_family is not None and ARIAL_AVAILABLE:
                 try:
                     resolved = Path(font_manager.findfont(artist.get_fontproperties(), fallback_to_default=False))
                 except ValueError:

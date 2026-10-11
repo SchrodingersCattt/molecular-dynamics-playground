@@ -32,6 +32,7 @@ from common import (
     LINE_GRAY,
     R_BLUE,
     V_PURPLE,
+    VIDEO_FONT_FAMILY,
     WHITE,
     LayoutRegistry,
     axes_from_top_slot,
@@ -810,7 +811,7 @@ def render_static(assets, builder, data) -> None:
 def video_registry() -> LayoutRegistry:
     return LayoutRegistry(
         min_font_pt=FONT_SIZES["micro"], max_font_pt=FONT_SIZES["page_title"], edge_pad_px=12,
-        font_family="Arial", coerce_min_font=True,
+        font_family=VIDEO_FONT_FAMILY, coerce_min_font=True,
     )
 
 
@@ -947,6 +948,7 @@ def main() -> None:
     parser.add_argument("--assets-only", action="store_true")
     parser.add_argument("--preview-only", action="store_true")
     parser.add_argument("--static-only", action="store_true")
+    parser.add_argument("--video-only", action="store_true", help="skip the A4 still and export only the MP4")
     parser.add_argument("--strict-video", action="store_true")
     args = parser.parse_args()
     data = load_data()
@@ -957,7 +959,8 @@ def main() -> None:
     if args.preview_only:
         print(render_keyframes(assets, builder, data))
         return
-    render_static(assets, builder, data)
+    if not args.video_only:
+        render_static(assets, builder, data)
     if not args.static_only:
         if args.strict_video:
             render_animation(assets, builder, data)

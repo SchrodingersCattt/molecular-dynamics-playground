@@ -24,6 +24,9 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import os
+import subprocess
+import time
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -44,6 +47,7 @@ from common import (
     NAVY,
     R_BLUE,
     V_PURPLE,
+    VIDEO_FONT_FAMILY,
     WHITE,
     LayoutRegistry,
     axes_from_top_slot,
@@ -1178,7 +1182,7 @@ def render_keyframes(model: str, data: dict[str, object], scene: dict[str, objec
     failures: list[str] = []
     for index, time_seconds in enumerate(KEYFRAME_TIMES):
         fig = new_video_figure()
-        registry = LayoutRegistry(min_font_pt=FONT_SIZES["micro"], max_font_pt=FONT_SIZES["page_title"], edge_pad_px=12, font_family="Arial", coerce_min_font=True)
+        registry = LayoutRegistry(min_font_pt=FONT_SIZES["micro"], max_font_pt=FONT_SIZES["page_title"], edge_pad_px=12, font_family=VIDEO_FONT_FAMILY, coerce_min_font=True)
         semantics = draw_frame(fig, time_seconds, registry, data, scene, model=model)
         errors = registry.validate(fig)
         path = output_dir / f"frame_{index:02d}_{time_seconds:05.2f}s.png"
@@ -1224,6 +1228,52 @@ def render_animation(model: str, data: dict[str, object], scene: dict[str, objec
     )
 
 
+def render_animation_fast(model: str, data: dict[str, object], scene: dict[str, object]) -> None:
+    """Encode the movie without the expensive per-frame QA image sequence."""
+    output = ROOT / "videos" / f"{MODELS[model]['stem']}.mp4"
+    output.parent.mkdir(parents=True, exist_ok=True)
+    temporary = output.with_name(f"_{output.stem}.{os.getpid()}.{time.time_ns()}.encoding.mp4")
+    process = subprocess.Popen(
+        [
+            "ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24",
+            "-s", "1920x600", "-r", "24", "-i", "-", "-an", "-c:v", "libx264",
+            "-pix_fmt", "yuv420p", "-movflags", "+faststart", str(temporary),
+        ],
+        stdin=subprocess.PIPE,
+    )
+    figure = new_video_figure()
+    try:
+        for frame_index in range(int(round(VIDEO_DURATION * 24))):
+            figure.clear()
+            registry = LayoutRegistry(
+                min_font_pt=FONT_SIZES["micro"],
+                max_font_pt=FONT_SIZES["page_title"],
+                edge_pad_px=12,
+                font_family=VIDEO_FONT_FAMILY,
+                coerce_min_font=True,
+            )
+            draw_frame(figure, frame_index / 24.0, registry, data, scene, model=model)
+            figure.canvas.draw()
+            rgb = np.ascontiguousarray(np.asarray(figure.canvas.buffer_rgba())[:, :, :3])
+            assert process.stdin is not None
+            process.stdin.write(rgb.tobytes())
+        assert process.stdin is not None
+        process.stdin.close()
+        process.stdin = None
+        if process.wait() != 0:
+            raise RuntimeError("ffmpeg failed")
+        temporary.replace(output)
+    finally:
+        plt.close(figure)
+        if process.stdin is not None:
+            process.stdin.close()
+        if process.poll() is None:
+            process.kill()
+            process.wait()
+        if temporary.exists():
+            temporary.unlink()
+
+
 def write_provenance(model: str, data: dict[str, object], scene: dict[str, object], qa_dir: Path) -> None:
     centre = data["central_index"]
     local0 = local_environment(data, 0)
@@ -1266,6 +1316,7 @@ def main() -> None:
     parser.add_argument("--assets-only", action="store_true")
     parser.add_argument("--preview-only", action="store_true")
     parser.add_argument("--static-only", action="store_true")
+    parser.add_argument("--video-only", action="store_true", help="skip A4 stills and export only MP4s")
     args = parser.parse_args()
     models = tuple(MODELS) if args.model == "all" else (args.model,)
     for model in models:
@@ -1279,9 +1330,13 @@ def main() -> None:
         if args.preview_only:
             print(render_keyframes(model, data, scene, qa_dir))
             continue
-        render_static(model, data, scene)
+        if not args.video_only:
+            render_static(model, data, scene)
         if not args.static_only:
-            render_animation(model, data, scene, qa_dir)
+            if args.video_only:
+                render_animation_fast(model, data, scene)
+            else:
+                render_animation(model, data, scene, qa_dir)
 
 
 if __name__ == "__main__":

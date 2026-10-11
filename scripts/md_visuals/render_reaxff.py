@@ -32,6 +32,7 @@ from common import (
     LINE_GRAY,
     V_PURPLE,
     VIDEO_HEIGHT_PX,
+    VIDEO_FONT_FAMILY,
     VIDEO_WIDTH_PX,
     WHITE,
     LayoutRegistry,
@@ -704,7 +705,7 @@ def render_keyframes(assets, camera, data) -> Path:
     thumbs = []
     for index, t in enumerate(KEYFRAME_TIMES):
         fig = new_video_figure()
-        registry = LayoutRegistry(min_font_pt=FONT_SIZES["micro"], max_font_pt=FONT_SIZES["page_title"], edge_pad_px=12, font_family="Arial", coerce_min_font=True)
+        registry = LayoutRegistry(min_font_pt=FONT_SIZES["micro"], max_font_pt=FONT_SIZES["page_title"], edge_pad_px=12, font_family=VIDEO_FONT_FAMILY, coerce_min_font=True)
         compose(fig, t, registry, assets, camera, data, video=True)
         errors = registry.validate(fig)
         path = out_dir / f"frame_{index:02d}_{t:05.2f}s.png"
@@ -741,7 +742,7 @@ def render_animation_fast(assets, camera, data) -> None:
     try:
         for index in range(int(round(DURATION * 24))):
             figure.clear()
-            registry = LayoutRegistry(min_font_pt=FONT_SIZES["micro"], max_font_pt=FONT_SIZES["page_title"], edge_pad_px=12, font_family="Arial", coerce_min_font=True)
+            registry = LayoutRegistry(min_font_pt=FONT_SIZES["micro"], max_font_pt=FONT_SIZES["page_title"], edge_pad_px=12, font_family=VIDEO_FONT_FAMILY, coerce_min_font=True)
             compose(figure, index / 24.0, registry, assets, camera, data, video=True)
             figure.canvas.draw()
             rgb = np.ascontiguousarray(np.asarray(figure.canvas.buffer_rgba())[:, :, :3])
@@ -819,6 +820,7 @@ def main() -> None:
     parser.add_argument("--assets-only", action="store_true")
     parser.add_argument("--preview-only", action="store_true")
     parser.add_argument("--static-only", action="store_true")
+    parser.add_argument("--video-only", action="store_true", help="skip the A4 still and export only the MP4")
     parser.add_argument("--strict-video", action="store_true")
     args = parser.parse_args()
     data = load_data()
@@ -829,7 +831,8 @@ def main() -> None:
     if args.preview_only:
         print(render_keyframes(assets, camera, data))
         return
-    render_static(assets, camera, data)
+    if not args.video_only:
+        render_static(assets, camera, data)
     if not args.static_only:
         if args.strict_video:
             render_animation_strict(assets, camera, data)

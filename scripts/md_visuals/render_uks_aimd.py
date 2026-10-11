@@ -39,6 +39,7 @@ from common import (
     render_video,
     save_static,
     VIDEO_HEIGHT_PX,
+    VIDEO_FONT_FAMILY,
     VIDEO_WIDTH_PX,
 )
 from mattervis_story import (
@@ -143,7 +144,16 @@ ION_SNAPSHOT_COUNT = 19
 REACTION_TARGET_TIME = 18.0
 REACTION_DISSOCIATION_DISTANCE = 2.20
 DETAILED_BLOCK_SECONDS = 5.0
-RAPID_BLOCK_SECONDS = 1.25
+# The rapid section contains one block for every update-capable saved step
+# (ions 02..17), followed by an explicit hold on the final saved geometry
+# (ion 18).  Keeping the hold inside the existing 30 s contract prevents the
+# last position update from being cut off before the broken geometry is shown.
+RAPID_UPDATE_COUNT = ION_SNAPSHOT_COUNT - 3
+FINAL_STATE_HOLD_SECONDS = 0.80
+RAPID_BLOCK_SECONDS = (
+    (VIDEO_DURATION - 2.0 * DETAILED_BLOCK_SECONDS - FINAL_STATE_HOLD_SECONDS)
+    / RAPID_UPDATE_COUNT
+)
 SCF_LOOP_FRACTION = 0.60
 SCF_PAUSE_FRACTION = 0.15
 
@@ -1146,8 +1156,8 @@ def draw_case(
             )
         )
 
-    if mode in {"scf", "pause"}:
-        if mode == "pause":
+    if mode in {"scf", "pause", "hold"}:
+        if mode in {"pause", "hold"}:
             current = len(density_paths) - 1
             following = current
             blend = 0.0
@@ -1163,10 +1173,9 @@ def draw_case(
             blend=blend,
             zorder=4,
         )
-        stage_text = (
+        stage_text = "UKS: final broken geometry" if mode == "hold" else (
             "UKS converged · nuclei ready for force evaluation"
-            if mode == "pause"
-            else "UKS: nuclei fixed"
+            if mode == "pause" else "UKS: nuclei fixed"
         )
     elif mode == "force":
         place_render(ax, force_paths[ion_index], scene_rect, zorder=5)
@@ -1222,7 +1231,7 @@ def draw_case(
     }
     if mode in legend:
         draw_arrow_legend(ax, registry, [legend[mode]], x_right=0.925, y=0.070, video=video)
-    if video and mode in {"scf", "pause"}:
+    if video and mode in {"scf", "pause", "hold"}:
         registry.text(
             ax,
             0.925,
@@ -1285,7 +1294,7 @@ def draw_energy_curve(
             electronic_status = f"SCF iteration {iteration_index + 1:02d} / {count:02d}"
         else:
             electronic_status = f"SCF iteration {iteration_index + 1:02d} / {count:02d}"
-    elif mode == "pause":
+    elif mode in {"pause", "hold"}:
         electronic_status = f"SCF converged ({count} iterations)"
     else:
         electronic_status = f"SCF converged ({count} iterations)"
@@ -1341,7 +1350,7 @@ def draw_energy_curve(
         lw=2.8 if video else 1.5,
         zorder=2,
     )
-    marker_color = GREEN if mode == "pause" else NAVY
+    marker_color = GREEN if mode in {"pause", "hold"} else NAVY
     plot_ax.scatter(
         [visible_x[-1]],
         [visible_y[-1]],
@@ -1616,13 +1625,20 @@ def video_state(
 
     rapid_time = bounded - 2.0 * DETAILED_BLOCK_SECONDS
     # The final saved ionic snapshot has no following force/velocity/move
-    # asset.  The rapid loop therefore cycles only through update-capable
-    # steps, preserving the existing real-assets contract.
-    rapid_count = max(len(scf_counts) - 3, 1)
-    # 03b carries enough real ionic snapshots to fill the complete rapid
-    # section monotonically.  There is no modulo replay and no terminal hold.
-    rapid_index = int(rapid_time // RAPID_BLOCK_SECONDS)
-    max_update_index = len(scf_counts) - 2
+    # asset.  Reserve the tail of the rapid section for a real terminal hold
+    # instead of ending during the preceding move phase.
+    rapid_count = min(max(len(scf_counts) - 3, 1), RAPID_UPDATE_COUNT)
+    if rapid_time >= rapid_count * RAPID_BLOCK_SECONDS:
+        return _phase_state(
+            "hold",
+            ion_index=len(scf_counts) - 1,
+            progress=(rapid_time - rapid_count * RAPID_BLOCK_SECONDS)
+            / max(FINAL_STATE_HOLD_SECONDS, 1.0e-12),
+            iteration_count=int(scf_counts[-1]),
+            rapid=True,
+        )
+    rapid_index = min(int(rapid_time // RAPID_BLOCK_SECONDS), rapid_count - 1)
+    max_update_index = min(len(scf_counts) - 2, 2 + rapid_count - 1)
     # When the sampled reaction coordinate crosses 2.20 Å, align that first
     # dissociation snapshot with the requested ~18 s point.  If a trajectory
     # never reaches that threshold, retain the monotonic fallback and do not
@@ -1704,6 +1720,7 @@ def draw_video_frame(
     stage_for_mode = {
         "scf": 1,
         "pause": 1,
+        "hold": 1,
         "force": 1,
         "velocity": 2,
         "move": 0,
@@ -1744,7 +1761,7 @@ def draw_video_frame(
         converged=state["mode"] != "scf",
     )
     if not state["rapid"]:
-        if state["mode"] in {"scf", "pause"}:
+        if state["mode"] in {"scf", "pause", "hold"}:
             # The lower-right electronic loop is the active slow-stage panel.
             # Quiet only the left and middle panels.  Keep the upper-right
             # residual plot visible but held, so the later serial update is
@@ -1757,7 +1774,7 @@ def draw_video_frame(
             # panel changes.
             for panel in (panel_c, panel_d):
                 _deemphasize_panel(panel)
-    if state["mode"] in {"scf", "pause"}:
+    if state["mode"] in {"scf", "pause", "hold"}:
         return [
             {
                 "id": "alpha_density",
@@ -1838,6 +1855,7 @@ KEYFRAME_TIMES = [
     23.80,
     25.05,
     28.80,
+    29.60,
     29.80,
 ]
 
@@ -1857,7 +1875,7 @@ def render_representative_frames(
             min_font_pt=FONT_SIZES["micro"],
             max_font_pt=FONT_SIZES["page_title"],
             edge_pad_px=12,
-            font_family="Arial",
+            font_family=VIDEO_FONT_FAMILY,
             coerce_min_font=True,
         )
         semantics = draw_video_frame(
@@ -2004,7 +2022,7 @@ def render_animation_fast(
                 min_font_pt=FONT_SIZES["micro"],
                 max_font_pt=FONT_SIZES["page_title"],
                 edge_pad_px=12,
-                font_family="Arial",
+                font_family=VIDEO_FONT_FAMILY,
                 coerce_min_font=True,
             )
             draw_video_frame(
@@ -2042,6 +2060,7 @@ def main() -> None:
     parser.add_argument("--assets-only", action="store_true")
     parser.add_argument("--preview-only", action="store_true")
     parser.add_argument("--static-only", action="store_true")
+    parser.add_argument("--video-only", action="store_true", help="skip the A4 still and export only the MP4")
     parser.add_argument("--strict-video", action="store_true", help="repeat the full pixel-level QA render")
     args = parser.parse_args()
     data = load_data()
@@ -2055,7 +2074,8 @@ def main() -> None:
         assets, _camera = prepare_mattervis(data)
     if args.assets_only:
         return
-    render_static(data, assets)
+    if not args.video_only:
+        render_static(data, assets)
     if args.preview_only:
         render_representative_frames(data, assets)
         return
