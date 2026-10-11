@@ -1,0 +1,44 @@
+{
+  "schema": "chunked_npz/v1",
+  "file": "uks_tnt_reaction_density3d.npz",
+  "bytes": 364909053,
+  "sha256": "2bdc75b9842e7ad6f414c55239e317a05f55f80ad82047a83f45015b10aa57b9",
+  "chunk_bytes": 52428800,
+  "chunks": [
+    {
+      "path": "uks_tnt_reaction_density3d.npz.part-000",
+      "bytes": 52428800,
+      "sha256": "2e5c2eefad6b6a4ad4961b8a7f21f58fd5d982a767b9ef3abc450160627230a8"
+    },
+    {
+      "path": "uks_tnt_reaction_density3d.npz.part-001",
+      "bytes": 52428800,
+      "sha256": "71228bd9ecfc1b25bd185fe6014c20cf32eca5cce722bd0bc61c3da8af0fb1af"
+    },
+    {
+      "path": "uks_tnt_reaction_density3d.npz.part-002",
+      "bytes": 52428800,
+      "sha256": "82e8e1d419bffc930c6c515eaabdcb203804d246e49358d21a1b838ec17288c6"
+    },
+    {
+      "path": "uks_tnt_reaction_density3d.npz.part-003",
+      "bytes": 52428800,
+      "sha256": "abd5300555a4c0d6f963ad949a763c81d001b8eb78ae03fa02c8f56db1ff6c4f"
+    },
+    {
+      "path": "uks_tnt_reaction_density3d.npz.part-004",
+      "bytes": 52428800,
+      "sha256": "608bb4370d874cc9ee3fa0a5b83573cc6e0cde16916170a5420f51bb310ce5df"
+    },
+    {
+      "path": "uks_tnt_reaction_density3d.npz.part-005",
+      "bytes": 52428800,
+      "sha256": "85ca6313beffbb263b35290eb2108bb85ecc40834f3f6b6744a639bf21247bc1"
+    },
+    {
+      "path": "uks_tnt_reaction_density3d.npz.part-006",
+      "bytes": 50336253,
+      "sha256": "88b392f1d70c1f0fb679d36276c0c601facbc0ecb97af9d02fba185c9e386b67"
+    }
+  ]
+}
