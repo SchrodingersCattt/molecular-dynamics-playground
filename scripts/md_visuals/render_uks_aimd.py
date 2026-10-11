@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import argparse
+import gc
+import hashlib
 import json
 import os
 import subprocess
@@ -97,6 +99,14 @@ DISPLACEMENT_ARROW_SCALE = 4.0
 DENSITY_LEVELS = np.asarray(
     [0.003, 0.007, 0.015, 0.035, 0.080, 0.180, 0.400, 0.900]
 )
+# The centre asset is a true 3-D density surface.  The lowest level is below
+# the interpolated density at every nucleus (including H), so the outer shell
+# is tied to the electronic field rather than to a 2-D aromatic-plane slice.
+DENSITY_ISO_LEVELS = (0.05,)
+DENSITY_ISO_STRIDE = 2
+DENSITY_ISO_OPACITIES = (0.025,)
+DENSITY_CONTOUR_LEVELS = np.asarray((0.05, 0.15, 0.40, 1.00), dtype=float)
+PROJECTION_DEPTHS = np.linspace(-3.0, 3.0, 49, dtype=float)
 DENSITY_COLORS = (
     "#DDE5EA",
     "#CEDAE1",
@@ -130,6 +140,8 @@ BETA_COLORS = (
 
 VIDEO_DURATION = 30.0
 ION_SNAPSHOT_COUNT = 19
+REACTION_TARGET_TIME = 18.0
+REACTION_DISSOCIATION_DISTANCE = 2.20
 DETAILED_BLOCK_SECONDS = 5.0
 RAPID_BLOCK_SECONDS = 1.25
 SCF_LOOP_FRACTION = 0.60
@@ -368,6 +380,206 @@ def _reproject_density_planes(
     return output
 
 
+def ensure_chunked_density3d(path: Path) -> None:
+    """Reassemble the GitHub-friendly chunk set when the NPZ is absent."""
+
+    if path.exists():
+        return
+    manifest_path = path.parent / "chunks" / f"{path.name}.manifest.json"
+    if not manifest_path.exists():
+        return
+    import hashlib
+
+    payload = json.loads(manifest_path.read_text(encoding="utf-8"))
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("wb") as target:
+        for item in payload["chunks"]:
+            chunk = manifest_path.parent / str(item["path"])
+            digest = hashlib.sha256(chunk.read_bytes()).hexdigest()
+            if digest != item["sha256"]:
+                raise RuntimeError(f"Chunk SHA256 mismatch: {chunk}")
+            with chunk.open("rb") as source:
+                for block in iter(lambda: source.read(1024 * 1024), b""):
+                    target.write(block)
+    digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    if path.stat().st_size != int(payload["bytes"]) or digest != payload["sha256"]:
+        raise RuntimeError(f"Reassembled density NPZ SHA256 mismatch: {path}")
+
+
+def density_isosurface_meshes(
+    density_alpha: np.ndarray,
+    density_beta: np.ndarray,
+    grid_x: np.ndarray,
+    grid_y: np.ndarray,
+    grid_z: np.ndarray,
+) -> list[dict]:
+    """Extract aligned alpha/beta 3-D density shells for MatterVis.
+
+    ``density_*`` are electron/Angstrom^3 on the fixed Cartesian grid written
+    by the UKS job.  Marching cubes returns index coordinates, so the explicit
+    grid origin and spacing are applied before the meshes reach MatterVis.
+    This keeps every shell in the same world frame as the nuclei and avoids
+    the old single-plane compositing artefact.
+    """
+
+    from skimage.measure import marching_cubes
+
+    fields = (
+        ("alpha", np.asarray(density_alpha, dtype=np.float32), ALPHA_COLORS[-2]),
+        ("beta", np.asarray(density_beta, dtype=np.float32), BETA_COLORS[-2]),
+    )
+    axes = (np.asarray(grid_x, dtype=float), np.asarray(grid_y, dtype=float), np.asarray(grid_z, dtype=float))
+    spacing = tuple(float(np.diff(axis).mean()) for axis in axes)
+    origin = np.asarray([axis[0] for axis in axes], dtype=float)
+    meshes: list[dict] = []
+    for channel, field, color in fields:
+        if field.shape != tuple(len(axis) for axis in axes):
+            raise ValueError(
+                f"{channel} density shape {field.shape} does not match "
+                f"grid {[len(axis) for axis in axes]}"
+            )
+        for level, opacity in zip(DENSITY_ISO_LEVELS, DENSITY_ISO_OPACITIES):
+            if not float(np.nanmin(field)) < level < float(np.nanmax(field)):
+                continue
+            try:
+                vertices, faces, normals, _ = marching_cubes(
+                    field,
+                    level=float(level),
+                    spacing=spacing,
+                    step_size=DENSITY_ISO_STRIDE,
+                )
+            except (RuntimeError, ValueError):
+                continue
+            vertices = np.asarray(vertices, dtype=float) + origin
+            meshes.append(
+                {
+                    "id": f"density-{channel}-{level:g}",
+                    "name": f"{channel} density {level:g} e/A^3",
+                    "vertices": vertices,
+                    "triangles": np.asarray(faces, dtype=np.int64),
+                    "normals": np.asarray(normals, dtype=float),
+                    "color": color,
+                    "opacity": float(opacity),
+                    "level": float(level),
+                    "phase": f"uks:{channel}",
+                    "metadata": {
+                        "material": {"ambient": 0.72, "diffuse": 0.28},
+                        "density_units": "electron/angstrom^3",
+                    },
+                }
+            )
+    if not meshes:
+        raise ValueError("The UKS density grid has no positive isosurface crossings")
+    return meshes
+
+
+def render_density_projection_contour_scene(
+    density_alpha: np.ndarray,
+    density_beta: np.ndarray,
+    structure_image: Path,
+    output: Path,
+    *,
+    grid_x: np.ndarray,
+    grid_y: np.ndarray,
+    grid_z: np.ndarray,
+    plane_centre: np.ndarray,
+    plane_u: np.ndarray,
+    plane_v: np.ndarray,
+    plane_normal: np.ndarray,
+    u_axis: np.ndarray,
+    v_axis: np.ndarray,
+    camera: SceneCamera,
+    ion_index: int,
+) -> dict:
+    """Draw line-only contours from a 3-D max-density projection.
+
+    The field is sampled along the camera normal and reduced by a maximum,
+    retaining electron/Angstrom^3 units.  Unlike the old single-plane slice,
+    this projection sees density around atoms displaced above or below the
+    aromatic plane; unlike a filled volume, it keeps the original contour-line
+    visual language readable.
+    """
+
+    with Image.open(structure_image) as structure_source:
+        width, height = structure_source.size
+    plane_x, plane_y = np.meshgrid(
+        np.asarray(u_axis, dtype=float),
+        np.asarray(v_axis, dtype=float),
+    )
+    plane_points = (
+        np.asarray(plane_centre, dtype=float)
+        + plane_x[:, :, None] * np.asarray(plane_u, dtype=float)
+        + plane_y[:, :, None] * np.asarray(plane_v, dtype=float)
+    )
+    flat = plane_points.reshape(-1, 3)
+    normal = np.asarray(plane_normal, dtype=float)
+    normal /= max(float(np.linalg.norm(normal)), 1.0e-12)
+    interpolators = [
+        RegularGridInterpolator(
+            (np.asarray(grid_x), np.asarray(grid_y), np.asarray(grid_z)),
+            np.asarray(field, dtype=float),
+            bounds_error=False,
+            fill_value=0.0,
+        )
+        for field in (density_alpha, density_beta)
+    ]
+    projected_fields = []
+    for interpolator in interpolators:
+        projected = np.zeros(len(flat), dtype=float)
+        for depth in PROJECTION_DEPTHS:
+            projected = np.maximum(
+                projected,
+                np.asarray(interpolator(flat + depth * normal), dtype=float),
+            )
+        projected_fields.append(projected.reshape(plane_x.shape))
+    points_projected = project_world(
+        plane_points.reshape(-1, 3),
+        camera=camera,
+        rect=(0.0, 0.0, float(width), float(height)),
+        image_aspect=width / height,
+    ).reshape(plane_points.shape[:2] + (2,))
+    grid_px = points_projected[:, :, 0]
+    grid_py = height - points_projected[:, :, 1]
+    figure = plt.figure(figsize=(width / 100.0, height / 100.0), dpi=100, facecolor=WHITE)
+    axes = figure.add_axes([0.0, 0.0, 1.0, 1.0])
+    axes.set_xlim(0.0, width - 1.0)
+    axes.set_ylim(height - 1.0, 0.0)
+    for channel_index, (field, colors) in enumerate(
+        zip(projected_fields, (ALPHA_COLORS, BETA_COLORS))
+    ):
+        axes.contour(
+            grid_px,
+            grid_py,
+            field,
+            levels=DENSITY_CONTOUR_LEVELS,
+            colors=[colors[index] for index in (1, 3, 5, 7)],
+            linewidths=(2.4, 2.1, 1.8, 1.5) if channel_index == 0 else (1.9, 1.7, 1.5, 1.3),
+            linestyles="solid" if channel_index == 0 else "dashed",
+            antialiased=True,
+        )
+    axes.axis("off")
+    figure.canvas.draw()
+    base = Image.fromarray(np.asarray(figure.canvas.buffer_rgba()).copy(), mode="RGBA")
+    plt.close(figure)
+    base.alpha_composite(Image.open(structure_image).convert("RGBA"))
+    output.parent.mkdir(parents=True, exist_ok=True)
+    base.convert("RGB").save(output)
+    payload = {
+        "pipeline_version": 6,
+        "density_rendering": "3d_max_normal_projection_contours",
+        "density_units": "electron/angstrom^3",
+        "density_source": str(ROOT / "data" / "uks_tnt_reaction_density3d.npz"),
+        "structure_source": str(structure_image),
+        "ion_index": int(ion_index),
+        "projection_axis": normal.tolist(),
+        "projection_depth_angstrom": [float(PROJECTION_DEPTHS[0]), float(PROJECTION_DEPTHS[-1])],
+        "levels": DENSITY_CONTOUR_LEVELS.tolist(),
+        "output": str(output),
+    }
+    json_dump(output.with_suffix(".json"), payload)
+    return payload
+
+
 def load_data() -> dict[str, np.ndarray]:
     """Adapt the saved kick trajectory to the exact 03 seven-ion-step schema."""
     if not RAW_DATA_PATH.exists():
@@ -387,10 +599,17 @@ def load_data() -> dict[str, np.ndarray]:
     half_velocities = velocities.copy()
     plane_centre, plane_u, plane_v, plane_normal = tnt_plane_basis(source_positions)
     density3d_path = ROOT / "data" / "uks_tnt_reaction_density3d.npz"
+    ensure_chunked_density3d(density3d_path)
+    density_alpha_3d = None
+    density_beta_3d = None
+    density_grid_x = density_grid_y = density_grid_z = None
     if density3d_path.exists():
         with np.load(density3d_path, allow_pickle=False) as density_archive:
-            density3d_alpha = np.asarray(density_archive["rho_alpha_3d"], dtype=float)
-            density3d_beta = np.asarray(density_archive["rho_beta_3d"], dtype=float)
+            # Keep the fixed grid in float32 while building the 19 displayed
+            # ionic snapshots; the archived 101-frame field is several
+            # hundred MB in float64 and does not need to stay resident.
+            density3d_alpha = np.asarray(density_archive["rho_alpha_3d"], dtype=np.float32)
+            density3d_beta = np.asarray(density_archive["rho_beta_3d"], dtype=np.float32)
             grid_x = np.asarray(density_archive["grid_x_ang"], dtype=float)
             grid_y = np.asarray(density_archive["grid_y_ang"], dtype=float)
             grid_z = np.asarray(density_archive["grid_z_ang"], dtype=float)
@@ -398,15 +617,21 @@ def load_data() -> dict[str, np.ndarray]:
         plane_x = np.linspace(float(projected[:, 0].min() - 3.0), float(projected[:, 0].max() + 3.0), 128)
         plane_y = np.linspace(float(projected[:, 1].min() - 3.0), float(projected[:, 1].max() + 3.0), 88)
         rho_alpha_all = _reproject_density_planes(
-            density3d_alpha, grid_x, grid_y, grid_z, source_positions,
+            density3d_alpha[source_indices], grid_x, grid_y, grid_z, source_positions[source_indices],
             plane_centre, plane_u, plane_v, plane_x, plane_y,
         )
         rho_beta_all = _reproject_density_planes(
-            density3d_beta, grid_x, grid_y, grid_z, source_positions,
+            density3d_beta[source_indices], grid_x, grid_y, grid_z, source_positions[source_indices],
             plane_centre, plane_u, plane_v, plane_x, plane_y,
         )
-        rho_alpha = rho_alpha_all[source_indices]
-        rho_beta = rho_beta_all[source_indices]
+        rho_alpha = rho_alpha_all
+        rho_beta = rho_beta_all
+        density_alpha_3d = density3d_alpha[source_indices].astype(np.float32)
+        density_beta_3d = density3d_beta[source_indices].astype(np.float32)
+        del density3d_alpha, density3d_beta
+        density_grid_x = grid_x
+        density_grid_y = grid_y
+        density_grid_z = grid_z
         density_plane_source = "reprojected_from_fixed_3d_cartesian_grid"
     else:
         rho_alpha = np.asarray(raw["rho_alpha"], dtype=float)[source_indices]
@@ -420,9 +645,12 @@ def load_data() -> dict[str, np.ndarray]:
     expanded_beta = np.zeros_like(expanded_alpha)
     residuals = np.zeros((ION_SNAPSHOT_COUNT, int(counts.max())), dtype=float)
     for ion, count in enumerate(counts):
-        scale = np.linspace(0.12, 1.0, int(count), dtype=float)
-        expanded_alpha[ion, :count] = scale[:, None, None] * rho_alpha[ion][None, :, :]
-        expanded_beta[ion, :count] = scale[:, None, None] * rho_beta[ion][None, :, :]
+        # The UKS job stores converged density matrices, not a density matrix
+        # for every callback iteration.  Repeat the measured ionic field while
+        # the SCF loop advances instead of inventing scaled intermediate
+        # densities that would not be physically attributable to a calculation.
+        expanded_alpha[ion, :count] = rho_alpha[ion][None, :, :]
+        expanded_beta[ion, :count] = rho_beta[ion][None, :, :]
         residuals[ion, :count] = np.geomspace(1.0e-2, 1.0e-9, int(count))
     _write_extxyz(MOTION_SOURCE, elements, positions)
     data = {
@@ -443,6 +671,11 @@ def load_data() -> dict[str, np.ndarray]:
         "plane_u_axis_angstrom": plane_x,
         "plane_v_axis_angstrom": plane_y,
         "density_plane_source": np.asarray(density_plane_source),
+        "density_alpha_3d": density_alpha_3d,
+        "density_beta_3d": density_beta_3d,
+        "density_grid_x_ang": density_grid_x,
+        "density_grid_y_ang": density_grid_y,
+        "density_grid_z_ang": density_grid_z,
         "r_cn": np.asarray(raw["r_cn"], dtype=float)[source_indices],
         "r_no": np.asarray(raw["r_no"], dtype=float)[source_indices],
         "spin_square": np.asarray(raw["spin_square"], dtype=float)[source_indices],
@@ -464,6 +697,21 @@ def prepare_mattervis(
     residuals = np.asarray(data["scf_residuals"], dtype=float)
     density_alpha_planes = np.asarray(data["density_alpha_planes"], dtype=float)
     density_beta_planes = np.asarray(data["density_beta_planes"], dtype=float)
+    density_alpha_3d = data.get("density_alpha_3d")
+    density_beta_3d = data.get("density_beta_3d")
+    density_grid_x = data.get("density_grid_x_ang")
+    density_grid_y = data.get("density_grid_y_ang")
+    density_grid_z = data.get("density_grid_z_ang")
+    has_3d_density = all(
+        value is not None
+        for value in (
+            density_alpha_3d,
+            density_beta_3d,
+            density_grid_x,
+            density_grid_y,
+            density_grid_z,
+        )
+    )
 
     # Face the aromatic plane toward the paper.  The old generic oblique view
     # made the TNT ring edge-on and also made the density plane look displaced.
@@ -478,47 +726,81 @@ def prepare_mattervis(
     )
     records: list[dict] = []
     structure_paths: list[Path] = []
-    for ion_index in range(len(positions)):
-        path = MATTERVIS_DIR / f"ion_{ion_index:02d}_structure.png"
-        records.append(
-            render_structure(
-                MOTION_SOURCE,
-                path,
-                camera=camera,
-                frame=ion_index,
-                width=RENDER_WIDTH,
-                height=RENDER_HEIGHT,
-                atom_scale=0.90,
-                bond_radius=0.102,
+    if has_3d_density:
+        structure_paths = [
+            MATTERVIS_DIR / f"ion_{ion_index:02d}_structure.png"
+            for ion_index in range(len(positions))
+        ]
+    else:
+        for ion_index in range(len(positions)):
+            path = MATTERVIS_DIR / f"ion_{ion_index:02d}_structure.png"
+            records.append(
+                render_structure(
+                    MOTION_SOURCE,
+                    path,
+                    camera=camera,
+                    frame=ion_index,
+                    width=RENDER_WIDTH,
+                    height=RENDER_HEIGHT,
+                    atom_scale=0.90,
+                    bond_radius=0.102,
+                )
             )
-        )
-        structure_paths.append(path)
+            structure_paths.append(path)
 
     density_paths: list[list[Path]] = []
     for ion_index, count in enumerate(scf_counts):
         ion_paths: list[Path] = []
-        for scf_index in range(int(count)):
-            output = MATTERVIS_DIR / (
-                f"ion_{ion_index:02d}_scf_{scf_index:02d}_density.png"
+        if (
+            has_3d_density
+        ):
+            # The converged ionic density is one measured field.  Reuse that
+            # single asset for the SCF timing states instead of fabricating a
+            # different density per callback iteration.
+            output = MATTERVIS_DIR / f"ion_{ion_index:02d}_scf_00_density.png"
+            record = render_density_projection_contour_scene(
+                density_alpha_3d[ion_index],
+                density_beta_3d[ion_index],
+                structure_paths[ion_index],
+                output,
+                grid_x=density_grid_x,
+                grid_y=density_grid_y,
+                grid_z=density_grid_z,
+                plane_centre=plane_centre,
+                plane_u=data["plane_u"],
+                plane_v=plane_v,
+                plane_normal=plane_normal,
+                u_axis=data["plane_u_axis_angstrom"],
+                v_axis=data["plane_v_axis_angstrom"],
+                camera=camera,
+                ion_index=ion_index,
             )
-            records.append(
-                render_density_plane_array_scene(
-                    density_alpha_planes[ion_index, scf_index],
-                    structure_paths[ion_index],
-                    output,
-                    density_beta=density_beta_planes[ion_index, scf_index],
-                    plane_centre=plane_centre,
-                    plane_u=data["plane_u"],
-                    plane_v=plane_v,
-                    u_axis=data["plane_u_axis_angstrom"],
-                    v_axis=data["plane_v_axis_angstrom"],
-                    residuals=residuals[ion_index, : int(count)],
-                    camera=camera,
-                    ion_index=ion_index,
-                    scf_index=scf_index,
+            records.append(record)
+            gc.collect()
+            ion_paths = [output for _ in range(int(count))]
+        else:
+            for scf_index in range(int(count)):
+                output = MATTERVIS_DIR / (
+                    f"ion_{ion_index:02d}_scf_{scf_index:02d}_density.png"
                 )
-            )
-            ion_paths.append(output)
+                records.append(
+                    render_density_plane_array_scene(
+                        density_alpha_planes[ion_index, scf_index],
+                        structure_paths[ion_index],
+                        output,
+                        density_beta=density_beta_planes[ion_index, scf_index],
+                        plane_centre=plane_centre,
+                        plane_u=data["plane_u"],
+                        plane_v=plane_v,
+                        u_axis=data["plane_u_axis_angstrom"],
+                        v_axis=data["plane_v_axis_angstrom"],
+                        residuals=residuals[ion_index, : int(count)],
+                        camera=camera,
+                        ion_index=ion_index,
+                        scf_index=scf_index,
+                    )
+                )
+                ion_paths.append(output)
         density_paths.append(ion_paths)
 
     arrow_style = {
@@ -651,6 +933,53 @@ def prepare_mattervis(
         "force": force_paths,
         "velocity": velocity_paths,
         "movement": movement_paths,
+    }, camera
+
+
+def reuse_mattervis_assets(
+    data: dict[str, np.ndarray],
+) -> tuple[dict[str, object], SceneCamera]:
+    """Load an already-rendered asset set without rebuilding MatterVis scenes.
+
+    The fixed-grid density meshes are expensive and the public CPU renderer
+    can retain raster buffers for the lifetime of a process.  Once the assets
+    have passed their per-file render sidecars, composition should reuse them
+    directly; this keeps static/video export bounded and does not alter any
+    layout or camera choice.
+    """
+
+    positions = np.asarray(data["positions"], dtype=float)
+    centre = np.asarray(data["plane_centre_angstrom"], dtype=float)
+    plane_v = np.asarray(data["plane_v"], dtype=float)
+    normal = np.asarray(data["plane_normal"], dtype=float)
+    counts = np.asarray(data["scf_counts"], dtype=int)
+    camera = camera_for_source(
+        MOTION_SOURCE,
+        target=centre,
+        ortho_scale=CAMERA_SCALE,
+        frame=0,
+        direction=tuple(normal),
+        up=tuple(plane_v),
+    )
+    density = [
+        [MATTERVIS_DIR / f"ion_{ion:02d}_scf_00_density.png" for _ in range(int(count))]
+        for ion, count in enumerate(counts)
+    ]
+    structure = [MATTERVIS_DIR / f"ion_{ion:02d}_structure.png" for ion in range(len(positions))]
+    force = [MATTERVIS_DIR / f"ion_{ion:02d}_force.png" for ion in range(len(positions) - 1)]
+    velocity = [MATTERVIS_DIR / f"ion_{ion:02d}_velocity.png" for ion in range(len(positions) - 1)]
+    movement = [MATTERVIS_DIR / f"ion_{ion:02d}_move.png" for ion in range(len(positions) - 1)]
+    required = [path for path in force + velocity + movement]
+    required.extend(path for ion_paths in density for path in ion_paths)
+    missing = [path for path in required if not path.exists()]
+    if missing:
+        raise FileNotFoundError(f"Missing cached MatterVis asset: {missing[0]}")
+    return {
+        "density": density,
+        "structure": structure,
+        "force": force,
+        "velocity": velocity,
+        "movement": movement,
     }, camera
 
 
@@ -1235,8 +1564,12 @@ def _phase_state(
     }
 
 
-def video_state(time_seconds: float, scf_counts: np.ndarray) -> dict:
-    """Map 30 s to two detailed steps followed by a repeating rapid cycle."""
+def video_state(
+    time_seconds: float,
+    scf_counts: np.ndarray,
+    reaction_coords: np.ndarray | None = None,
+) -> dict:
+    """Map 30 s to two detailed steps and a reaction-aligned rapid cycle."""
     bounded = float(np.clip(time_seconds, 0.0, VIDEO_DURATION - 1.0e-9))
     if bounded < 2.0 * DETAILED_BLOCK_SECONDS:
         ion_index = int(bounded // DETAILED_BLOCK_SECONDS)
@@ -1289,7 +1622,29 @@ def video_state(time_seconds: float, scf_counts: np.ndarray) -> dict:
     # 03b carries enough real ionic snapshots to fill the complete rapid
     # section monotonically.  There is no modulo replay and no terminal hold.
     rapid_index = int(rapid_time // RAPID_BLOCK_SECONDS)
-    ion_index = 2 + rapid_index
+    max_update_index = len(scf_counts) - 2
+    # When the sampled reaction coordinate crosses 2.20 Å, align that first
+    # dissociation snapshot with the requested ~18 s point.  If a trajectory
+    # never reaches that threshold, retain the monotonic fallback and do not
+    # relabel a compressed geometry as a dissociation event.
+    event_index = None
+    if reaction_coords is not None:
+        coordinates = np.asarray(reaction_coords, dtype=float)
+        candidates = np.flatnonzero(coordinates >= REACTION_DISSOCIATION_DISTANCE)
+        if candidates.size:
+            event_index = int(np.clip(candidates[0], 2, max_update_index))
+    if event_index is not None:
+        event_block = int(round((REACTION_TARGET_TIME - 2.0 * DETAILED_BLOCK_SECONDS) / RAPID_BLOCK_SECONDS))
+        event_block = int(np.clip(event_block, 1, max(1, rapid_count - 1)))
+        if rapid_index <= event_block:
+            fraction = rapid_index / float(event_block)
+            ion_index = 2 + int(round(fraction * (event_index - 2)))
+        else:
+            fraction = (rapid_index - event_block) / float(max(1, rapid_count - 1 - event_block))
+            ion_index = event_index + int(round(fraction * (max_update_index - event_index)))
+        ion_index = int(np.clip(ion_index, 2, max_update_index))
+    else:
+        ion_index = min(2 + rapid_index, max_update_index)
     local = rapid_time % RAPID_BLOCK_SECONDS
     count = int(scf_counts[ion_index])
     if local < 0.50:
@@ -1341,7 +1696,7 @@ def draw_video_frame(
     assets: dict[str, object],
 ) -> list[dict]:
     del frame_index
-    state = video_state(time_seconds, data["scf_counts"])
+    state = video_state(time_seconds, data["scf_counts"], data.get("r_cn"))
     panel_a = axes_from_top_slot(fig, VIDEO_A)
     panel_b = axes_from_top_slot(fig, VIDEO_B)
     panel_c = axes_from_top_slot(fig, VIDEO_C)
@@ -1524,7 +1879,7 @@ def render_representative_frames(
                 + "\n".join(errors + texts)
             )
         images.append(Image.open(path).convert("RGB").resize((640, 200)))
-        state = video_state(time_seconds, data["scf_counts"])
+        state = video_state(time_seconds, data["scf_counts"], data.get("r_cn"))
         records.append(
             {
                 "time_seconds": time_seconds,
@@ -1690,7 +2045,14 @@ def main() -> None:
     parser.add_argument("--strict-video", action="store_true", help="repeat the full pixel-level QA render")
     args = parser.parse_args()
     data = load_data()
-    assets, _camera = prepare_mattervis(data)
+    cached_density = [
+        MATTERVIS_DIR / f"ion_{ion:02d}_scf_00_density.png"
+        for ion in range(len(np.asarray(data["positions"])))
+    ]
+    if all(path.exists() for path in cached_density) and not args.assets_only:
+        assets, _camera = reuse_mattervis_assets(data)
+    else:
+        assets, _camera = prepare_mattervis(data)
     if args.assets_only:
         return
     render_static(data, assets)

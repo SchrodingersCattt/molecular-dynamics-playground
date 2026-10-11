@@ -2,6 +2,18 @@
 
 更新：2026-10-07
 
+## 2026-10-09：03b 三维密度对齐与 Bohrium 重提
+
+- 03b 中心资产改为固定笛卡尔网格的三维 α/β 最大密度投影等值线；投影沿相机法向取最大密度，不填充体积，原子、网格原点、网格间距和相机仍使用同一世界坐标，保留原有四栏布局与 30 s/24 fps 时间轴。
+- 修正 PySCF 密度单位转换：NPZ 为 electron/Angstrom^3，Cube 导出为 electron/Bohr^3；新增每帧 α/β 电子数积分和 Cube 原子坐标 QA。现有 101 帧积分约 57.0–60.5 e/channel，代表性 Cube 坐标误差约 4×10⁻9 Å。
+- SCF 回调未保存中间密度矩阵，因此 SCF 阶段复用对应离子步的实测收敛密度，不再用比例缩放伪造中间场；渲染 provenance 明确记录 `3d_marching_cubes_fixed_cartesian_grid`。
+- Bohrium 提交包同步修正单位，重提命令省略 `--max_run_time`，使用预装 PySCF/geometric 镜像、`c32_m64_cpu` 和 `--max_reschedule_times 2`。
+
+## 2026-10-11：新 UKS 轨迹接入与 18 s 解离对齐
+
+- Bohrium job 20864421 已完成（101 帧，`exitCode=0`，`relative_speed=0.10 Å/fs`）；新 C2–N2 距离 1.475 → 2.395 Å，首次达到 2.20 Å 的清晰解离快照被对齐到视频约 18 s。
+- 最终视频使用三维最大密度投影等值线：α 红色实线、β 绿色虚线。当前 α/β 场仍几乎重叠，这是 `spin=0` 闭壳层 UKS 收敛的真实结果；线型用于区分通道，不伪造空间自旋分离。
+
 ## 2026-10-07：TNT C2–NO2 replacement in progress
 
 - TNT topology now comes from the RDKit 2,4,6-trinitrotoluene SMILES with an explicit atom-order map; the selected breaking site is C2–N2. The previous hand-built coordinates could trigger a spurious O–O bond in MatterVis and are no longer used.

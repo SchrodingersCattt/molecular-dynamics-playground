@@ -8,6 +8,7 @@ renders with paper-space explanatory diagrams.
 from __future__ import annotations
 
 import json
+import hashlib
 import inspect
 from dataclasses import asdict, dataclass
 from functools import lru_cache
@@ -115,7 +116,10 @@ def _rgba(path: Path) -> np.ndarray:
         return np.asarray(image.convert("RGBA"))
 
 
-@lru_cache(maxsize=128)
+# Video compositions reuse only the small set of assets visible in one frame.
+# Keeping this cache bounded avoids retaining every 1650x950 RGBA panel across
+# a long 03b export.
+@lru_cache(maxsize=24)
 def _composition_rgba(path: Path) -> np.ndarray:
     """Decode immutable source art once for repeated animation composition."""
     return _rgba(path)
@@ -373,19 +377,38 @@ def render_structure(
         sort_keys=True,
         separators=(",", ":"),
     )
-    mesh_signature = json.dumps(
-        [
+    # Meshes can contain tens of thousands of marching-cubes vertices.  Keep
+    # the cache key exact without copying all coordinates into every JSON
+    # sidecar; the renderer still receives the full arrays below.
+    mesh_signature_records = []
+    for index, mesh in enumerate(mesh_overlays):
+        vertices = np.ascontiguousarray(
+            np.asarray(mesh.get("vertices", mesh.get("verts", [])), dtype=np.float64)
+        )
+        triangles = np.ascontiguousarray(
+            np.asarray(mesh.get("triangles", mesh.get("faces", [])), dtype=np.int64)
+        )
+        normals = np.ascontiguousarray(
+            np.asarray(mesh.get("normals", []), dtype=np.float64)
+        )
+        digest = hashlib.sha256()
+        for array in (vertices, triangles, normals):
+            digest.update(str(array.shape).encode("ascii"))
+            digest.update(array.tobytes())
+        mesh_signature_records.append(
             {
                 "id": str(mesh.get("id") or mesh.get("name") or index),
-                "vertices": np.asarray(mesh.get("vertices", mesh.get("verts", [])), dtype=float).round(8).tolist(),
-                "triangles": np.asarray(mesh.get("triangles", mesh.get("faces", [])), dtype=np.int64).tolist(),
-                "normals": np.asarray(mesh.get("normals", []), dtype=float).round(8).tolist(),
+                "vertices_shape": list(vertices.shape),
+                "triangles_shape": list(triangles.shape),
+                "normals_shape": list(normals.shape),
+                "sha256": digest.hexdigest(),
                 "color": mesh.get("color"),
                 "opacity": mesh.get("opacity"),
                 "metadata": mesh.get("metadata", {}),
             }
-            for index, mesh in enumerate(mesh_overlays)
-        ],
+        )
+    mesh_signature = json.dumps(
+        mesh_signature_records,
         sort_keys=True,
         separators=(",", ":"),
     )

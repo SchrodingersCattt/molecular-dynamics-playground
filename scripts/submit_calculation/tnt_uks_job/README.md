@@ -14,9 +14,13 @@ bohr job submit \
   --input_directory scripts/submit_calculation/tnt_uks_job \
   --project-id "$BOHRIUM_PROJECT_ID" \
   -n 0314-tnt-uks-c2-no2 \
-  --max_run_time 360 \
   --max_reschedule_times 2
 ```
+
+The resubmission intentionally omits `--max_run_time`; the Bohrium request
+uses the platform's no-user-timeout setting.  The prebuilt image avoids a
+runtime package install, and the generated NPZ stores alpha/beta fields in
+electron/Angstrom^3 with a fixed Cartesian grid shared by the Cube export.
 
 The job uses the prebuilt `pyscf-geometric:dev-260608` image.  Do not add a
 runtime `pip install`: the previous Ubuntu submission spent most of its wall

@@ -73,7 +73,7 @@
 分子动力学从给定位置、速度和受力出发，通过离散时间推进得到多体轨迹。轨迹的可信度同时取决于三个相互衔接的问题：积分器能否在长时间传播中保留哈密顿（Hamilton）动力学的几何结构，势能模型能否给出可靠且连续的能量与力，以及有限而相关的轨迹能否支持统计结论。斜抛运动和谐振子分别提供闭式基准与失稳反例，由此可辨认显式 Euler 的相空间膨胀以及速度 Verlet（velocity Verlet）的对称、辛和时间可逆结构。势能来源决定每一步的主要成本：经验势把物理假设写入解析函数，从头算分子动力学（ab initio molecular dynamics, AIMD）在每个离子步内迭代电子密度，深度势（Deep Potential）以局域环境和原子能分解近似电子结构势能面。系综控制、自相关和增强采样进一步决定轨迹访问哪些状态，以及其中包含多少独立信息。积分误差、势能面误差、系综偏差和统计误差需要分层判断；稳定的能量曲线本身不足以说明轨迹能够支持所报告的物理结论。
 \end{abstract}
 
-\noindent\textbf{关键词：} 分子动力学；velocity Verlet；势能面；自洽场（SCF）；Deep Potential；增强采样
+\noindent\textbf{关键词：} 分子动力学；velocity Verlet；势能面；自洽场（SCF）；UKS；Deep Potential；增强采样
 
 \section{初值问题：位置、速度与受力怎样确定轨迹}
 
@@ -322,6 +322,27 @@ Born--Oppenheimer MD 在每个离子步把电子自由度收敛到基态，再�
   \includegraphics[width=0.93\textwidth]{../product/figures/03_aimd_scf.png}
   \caption{AIMD 中电子步与离子步的嵌套关系（本图为 RHF/STO-3G 教学示例）。每个离子构型先经过 SCF 迭代得到收敛电子密度和核力，随后更新速度与位置并进入下一离子步；右上曲线是能量误差示意，不等同于密度残差。}
   \label{fig:aimd}
+\end{figure}
+
+\subsection{UKS 与准化学解离：03b 反应型示例}
+
+RHF/RKS 把同一空间轨道成对分配给 \(\alpha\) 与 \(\beta\) 电子；unrestricted Kohn--Sham（UKS）则允许两种自旋通道拥有不同的空间轨道和密度。03b 以
+\[
+  \mathrm{HClO_4\longrightarrow\cdot OH+\cdot ClO_3}
+\]
+作为 Cl--O(H) 同裂解的定性示例。初始分子是总电荷为零的单重态，轨迹给 OH 与 ClO\(_3\) 片段施加质量加权的相反初速度，使质心不漂移；随 \(r_{\mathrm{ClO}}\) 增大，broken-symmetry UKS 的
+\[
+  m(\mathbf r)=\rho_\alpha(\mathbf r)-\rho_\beta(\mathbf r)
+\]
+可在两个自由基片段上局域化。\(\langle S^2\rangle\) 必须同时记录，因为 broken-symmetry 单重态不是严格的自旋本征函数；自旋局域化的可视化不能被表述为精确的多参考基态解。
+
+03b 延续 Born--Oppenheimer MD 的外层结构，但把每个离子步的电子求解从 RHF 换为 UKS，并保存 \(D_\alpha,D_\beta\)、两条 SCF 历史、UKS 核梯度和自旋密度平面。它是人为 kick-started 的非平衡轨迹，不是从热平衡中自发观察到的反应，也不用于报告热分解速率或定量势垒。数据清单中的 \texttt{backend=pyscf\_uks} 才表示真实 UKS 计算；\texttt{backend=analytic\_demo} 仅用于检查版式和视频 QA。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.93\textwidth]{../product/figures/03b_uks_reaction.png}
+  \caption{03b UKS 反应型 AIMD 的展示结构：左侧为初始 OH outward kick 与 velocity Verlet，中部为 Cl--O(H) 解离和 \(\alpha/\beta\) 自旋密度，右侧为反应坐标、自旋诊断和 UKS 自洽循环。当前仓库中的演示数据明确标记为 analytic surrogate，不能当作真实 UKS 电子结构结果。}
+  \label{fig:uks-reaction}
 \end{figure}
 
 \subsection{Deep Potential 的局域能量分解}

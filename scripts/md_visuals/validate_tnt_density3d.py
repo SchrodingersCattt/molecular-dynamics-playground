@@ -30,6 +30,39 @@ def main() -> None:
     for axis, values in zip(("x", "y", "z"), grid):
         if not np.allclose(np.diff(values), np.diff(values)[0], atol=1.0e-8):
             raise SystemExit(f"non-uniform {axis} grid spacing")
+    # The 03b contract stores electron density in electron/Angstrom^3.  For a
+    # neutral singlet with 116 electrons, each unrestricted channel must
+    # integrate to 58 electrons on the fixed grid.  This catches the old
+    # Bohr/Angstrom conversion error that left the Cube export looking right
+    # while the NPZ field was 45.6 times too small.
+    cell_volume = float(np.prod(spacing))
+    expected_channel_electrons = 0.5 * 116.0
+    integral_checks = []
+    for frame in range(alpha.shape[0]):
+        alpha_integral = float(np.sum(alpha[frame], dtype=np.float64) * cell_volume)
+        beta_integral = float(np.sum(beta[frame], dtype=np.float64) * cell_volume)
+        relative_error = max(
+            abs(alpha_integral - expected_channel_electrons),
+            abs(beta_integral - expected_channel_electrons),
+        ) / expected_channel_electrons
+        # The fixed 0.22 Å Cartesian grid is a visualization field rather
+        # than an atom-centred quadrature rule; near-nuclear peaks can move
+        # between grid points as the nuclei travel.  Keep a 12% envelope while
+        # still rejecting the previous 45.6x unit-conversion error.
+        if relative_error > 0.12:
+            raise SystemExit(
+                f"density electron integral mismatch at frame {frame}: "
+                f"alpha={alpha_integral:.6g}, beta={beta_integral:.6g}, "
+                f"expected={expected_channel_electrons:.6g}"
+            )
+        integral_checks.append(
+            {
+                "frame": frame,
+                "alpha_electrons": alpha_integral,
+                "beta_electrons": beta_integral,
+                "relative_error": relative_error,
+            }
+        )
     cube_checks = []
     for frame in (0, positions.shape[0] // 2, positions.shape[0] - 1):
         for channel in ("alpha", "beta"):
@@ -49,6 +82,10 @@ def main() -> None:
         "frames": int(alpha.shape[0]),
         "shape": list(alpha.shape[1:]),
         "spacing_angstrom": spacing.tolist(),
+        "units": "electron/angstrom^3",
+        "cell_volume_angstrom3": cell_volume,
+        "expected_channel_electrons": expected_channel_electrons,
+        "integral_checks": integral_checks,
         "elements": elements.tolist(),
         "cube_checks": cube_checks,
         "passed": True,

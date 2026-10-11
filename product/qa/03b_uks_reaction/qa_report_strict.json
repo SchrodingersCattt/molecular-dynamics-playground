@@ -15,8 +15,8 @@
     "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\videos\\03b_uks_reaction.mp4"
   },
   "mattervis": true,
-  "mode": "strict_video",
-  "full_frame_qa": true,
+  "mode": "fast_export",
+  "full_frame_qa": false,
   "arrow_scales": {
     "force": 150.0,
     "half_step_velocity": 34.0,

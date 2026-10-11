@@ -104,7 +104,7 @@
   "geometry_source": "PBE0/def2-SVP RKS optimization from deterministic TNT reference geometry",
   "dt_fs": 0.1,
   "n_steps": 100,
-  "relative_speed_ang_fs": 0.05,
+  "relative_speed_ang_fs": 0.1,
   "density3d": {
     "npz": "product/data/uks_tnt_reaction_density3d.npz",
     "representative_cubes": [
@@ -125,16 +125,20 @@
     "spacing_ang": 0.22
   },
   "npz": "product/data/uks_tnt_reaction.npz",
-  "source_sha256": "eeea8d9bc6297901543c4c3690199ddcf9b7832165f84d55acb7a9f071988a72",
-  "density3d_sha256": "5c8b761898f5e61929a61cc5977ceae7030429c2b994616530c95bca887bb2bb",
-  "bohrium_job": {
-    "bohr_id": 20835773,
-    "image": "registry.dp.tech/dptech/ubuntu:22.04-py3.10",
-    "machine_type": "c32_m64_cpu",
-    "backend": "pyscf_uks"
-  },
+  "source_sha256": "3dea51bec621f39b41ff951fba0f678f18787982cf09429f5e83e434952b23f0",
+  "density3d_sha256": "2bdc75b9842e7ad6f414c55239e317a05f55f80ad82047a83f45015b10aa57b9",
   "notes": [
     "Alpha/beta 3-D density is saved on one fixed Cartesian grid for every accepted ionic frame.",
     "Energetics are qualitative and are not a production barrier or rate calculation."
-  ]
+  ],
+  "bohrium_job": {
+    "bohr_id": 20864421,
+    "image": "registry.dp.tech/dptech/dp/native/prod-19853/pyscf-geometric:dev-260608",
+    "machine_type": "c32_m64_cpu",
+    "backend": "pyscf_uks",
+    "status": "completed",
+    "exit_code": 0,
+    "spend_time_seconds": 44629,
+    "completed_at": "2026-10-09 23:30:54 Asia/Shanghai"
+  }
 }

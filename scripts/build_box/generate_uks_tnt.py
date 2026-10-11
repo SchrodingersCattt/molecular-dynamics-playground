@@ -197,7 +197,9 @@ def write_cube(
     """Write one scalar field in Gaussian Cube convention."""
 
     x, y, z = (np.asarray(axis, dtype=float) for axis in grid)
-    field = np.asarray(values, dtype=float) / (0.529177210903**3)
+    # Cube values are electron/Bohr^3, while the saved field is
+    # electron/Angstrom^3.  Convert in the physical direction when exporting.
+    field = np.asarray(values, dtype=float) * (0.529177210903**3)
     if field.shape != (len(x), len(y), len(z)):
         raise ValueError(f"Cube field shape {field.shape} does not match grid {(len(x), len(y), len(z))}")
     path.parent.mkdir(parents=True, exist_ok=True)

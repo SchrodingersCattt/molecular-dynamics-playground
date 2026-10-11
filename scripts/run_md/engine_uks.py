@@ -197,8 +197,17 @@ def evaluate_spin_density_plane(
     ao = dft.numint.eval_ao(mol, coords_bohr)
     rho_alpha = np.asarray(numint.eval_rho(mol, ao, dm_alpha), dtype=float)
     rho_beta = np.asarray(numint.eval_rho(mol, ao, dm_beta), dtype=float)
+    # PySCF evaluates densities in electron/Bohr^3.  The visual/data
+    # contract stores all spatial fields in electron/Angstrom^3, so converting
+    # the plane here keeps it consistent with the fixed 3-D grid below.
+    density_scale = ANG_TO_BOHR**3
     shape = (len(y), len(x))
-    return x, y, rho_alpha.reshape(shape), rho_beta.reshape(shape)
+    return (
+        x,
+        y,
+        rho_alpha.reshape(shape) * density_scale,
+        rho_beta.reshape(shape) * density_scale,
+    )
 
 
 def evaluate_spin_density_grid(
@@ -226,9 +235,10 @@ def evaluate_spin_density_grid(
     ao = dft.numint.eval_ao(mol, coords_ang * ANG_TO_BOHR)
     rho_alpha = np.asarray(numint.eval_rho(mol, ao, dm_alpha), dtype=float)
     rho_beta = np.asarray(numint.eval_rho(mol, ao, dm_beta), dtype=float)
-    # PySCF reports electron/Bohr^3; the project stores spatial fields in the
-    # same Angstrom coordinate frame as the trajectory and Cube atom records.
-    scale = BOHR_TO_ANG**3
+    # PySCF reports electron/Bohr^3; the project stores spatial fields in
+    # electron/Angstrom^3.  Since 1 Angstrom = ANG_TO_BOHR Bohr, the numeric
+    # density value is multiplied by ANG_TO_BOHR**3.
+    scale = ANG_TO_BOHR**3
     shape = (len(x), len(y), len(z))
     return (rho_alpha.reshape(shape) * scale, rho_beta.reshape(shape) * scale)
 

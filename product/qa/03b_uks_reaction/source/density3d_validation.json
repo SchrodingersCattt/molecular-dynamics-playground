@@ -7,9 +7,620 @@
     79
   ],
   "spacing_angstrom": [
-    0.21971841456499788,
-    0.21883487249734013,
-    0.21953509728393286
+    0.21971841456455699,
+    0.2188348724968254,
+    0.2195350972833333
+  ],
+  "units": "electron/angstrom^3",
+  "cell_volume_angstrom3": 0.010555697795773951,
+  "expected_channel_electrons": 58.0,
+  "integral_checks": [
+    {
+      "frame": 0,
+      "alpha_electrons": 58.47461277278148,
+      "beta_electrons": 58.47461156530166,
+      "relative_error": 0.008182978841059941
+    },
+    {
+      "frame": 1,
+      "alpha_electrons": 58.750324667275926,
+      "beta_electrons": 58.7503244392996,
+      "relative_error": 0.012936632194412519
+    },
+    {
+      "frame": 2,
+      "alpha_electrons": 58.96580227574891,
+      "beta_electrons": 58.965802185494056,
+      "relative_error": 0.016651763374981268
+    },
+    {
+      "frame": 3,
+      "alpha_electrons": 59.09448404919814,
+      "beta_electrons": 59.094483916014816,
+      "relative_error": 0.018870414641347186
+    },
+    {
+      "frame": 4,
+      "alpha_electrons": 59.11475821206058,
+      "beta_electrons": 59.114758178034045,
+      "relative_error": 0.019219969173458258
+    },
+    {
+      "frame": 5,
+      "alpha_electrons": 59.019821825302174,
+      "beta_electrons": 59.019821941205294,
+      "relative_error": 0.017583136917332647
+    },
+    {
+      "frame": 6,
+      "alpha_electrons": 58.8237358135217,
+      "beta_electrons": 58.823735796811526,
+      "relative_error": 0.014202341612443117
+    },
+    {
+      "frame": 7,
+      "alpha_electrons": 58.557401111160544,
+      "beta_electrons": 58.557401125363796,
+      "relative_error": 0.00961036423041028
+    },
+    {
+      "frame": 8,
+      "alpha_electrons": 58.25708375600339,
+      "beta_electrons": 58.25708375844881,
+      "relative_error": 0.004432478593944957
+    },
+    {
+      "frame": 9,
+      "alpha_electrons": 57.95412693645974,
+      "beta_electrons": 57.95412693380828,
+      "relative_error": 0.0007909149343399529
+    },
+    {
+      "frame": 10,
+      "alpha_electrons": 57.67112343674541,
+      "beta_electrons": 57.6711234356548,
+      "relative_error": 0.005670285592158637
+    },
+    {
+      "frame": 11,
+      "alpha_electrons": 57.4232272090922,
+      "beta_electrons": 57.423227212616666,
+      "relative_error": 0.009944358463927643
+    },
+    {
+      "frame": 12,
+      "alpha_electrons": 57.22086724503924,
+      "beta_electrons": 57.22086724660116,
+      "relative_error": 0.013433323361392465
+    },
+    {
+      "frame": 13,
+      "alpha_electrons": 57.07179092370525,
+      "beta_electrons": 57.07179092586366,
+      "relative_error": 0.01600360476370257
+    },
+    {
+      "frame": 14,
+      "alpha_electrons": 56.98228443272736,
+      "beta_electrons": 56.98228443240295,
+      "relative_error": 0.01754682013098364
+    },
+    {
+      "frame": 15,
+      "alpha_electrons": 56.95791391903789,
+      "beta_electrons": 56.957913919038546,
+      "relative_error": 0.017967001395898404
+    },
+    {
+      "frame": 16,
+      "alpha_electrons": 57.00385845746368,
+      "beta_electrons": 57.00385845746368,
+      "relative_error": 0.017174854181660714
+    },
+    {
+      "frame": 17,
+      "alpha_electrons": 57.12475297942386,
+      "beta_electrons": 57.12475297942386,
+      "relative_error": 0.01509046587200241
+    },
+    {
+      "frame": 18,
+      "alpha_electrons": 57.324164500488244,
+      "beta_electrons": 57.324164500488244,
+      "relative_error": 0.011652336198478547
+    },
+    {
+      "frame": 19,
+      "alpha_electrons": 57.604121793311805,
+      "beta_electrons": 57.604121793311805,
+      "relative_error": 0.0068254863222102615
+    },
+    {
+      "frame": 20,
+      "alpha_electrons": 57.96488159047735,
+      "beta_electrons": 57.96488159047735,
+      "relative_error": 0.0006054898193560841
+    },
+    {
+      "frame": 21,
+      "alpha_electrons": 58.40364761737638,
+      "beta_electrons": 58.40364761737638,
+      "relative_error": 0.006959441678903082
+    },
+    {
+      "frame": 22,
+      "alpha_electrons": 58.9090916707698,
+      "beta_electrons": 58.9090916707698,
+      "relative_error": 0.015673994323617192
+    },
+    {
+      "frame": 23,
+      "alpha_electrons": 59.44993820390308,
+      "beta_electrons": 59.44993820390308,
+      "relative_error": 0.024998934550053115
+    },
+    {
+      "frame": 24,
+      "alpha_electrons": 59.96429603807324,
+      "beta_electrons": 59.96429603807324,
+      "relative_error": 0.03386717307022833
+    },
+    {
+      "frame": 25,
+      "alpha_electrons": 60.36628737980238,
+      "beta_electrons": 60.366287379802365,
+      "relative_error": 0.04079805827245482
+    },
+    {
+      "frame": 26,
+      "alpha_electrons": 60.58010386082432,
+      "beta_electrons": 60.58010386082432,
+      "relative_error": 0.044484549324557296
+    },
+    {
+      "frame": 27,
+      "alpha_electrons": 60.582828030923004,
+      "beta_electrons": 60.582828030923004,
+      "relative_error": 0.04453151777453455
+    },
+    {
+      "frame": 28,
+      "alpha_electrons": 60.416996617921505,
+      "beta_electrons": 60.4169966179212,
+      "relative_error": 0.041672355481405264
+    },
+    {
+      "frame": 29,
+      "alpha_electrons": 60.159848268865034,
+      "beta_electrons": 60.159848268865034,
+      "relative_error": 0.03723876325629368
+    },
+    {
+      "frame": 30,
+      "alpha_electrons": 59.88054736553115,
+      "beta_electrons": 59.88054736553115,
+      "relative_error": 0.03242323044019225
+    },
+    {
+      "frame": 31,
+      "alpha_electrons": 59.618833341706484,
+      "beta_electrons": 59.618833341706484,
+      "relative_error": 0.02791091968459455
+    },
+    {
+      "frame": 32,
+      "alpha_electrons": 59.38859795018105,
+      "beta_electrons": 59.38859795018105,
+      "relative_error": 0.023941343968638812
+    },
+    {
+      "frame": 33,
+      "alpha_electrons": 59.19036184087401,
+      "beta_electrons": 59.19036184087401,
+      "relative_error": 0.020523480015069165
+    },
+    {
+      "frame": 34,
+      "alpha_electrons": 59.02011475903304,
+      "beta_electrons": 59.02011475903304,
+      "relative_error": 0.017588185500569693
+    },
+    {
+      "frame": 35,
+      "alpha_electrons": 58.872637715893234,
+      "beta_electrons": 58.872637715893234,
+      "relative_error": 0.015045477860228166
+    },
+    {
+      "frame": 36,
+      "alpha_electrons": 58.74236069739675,
+      "beta_electrons": 58.74236069739675,
+      "relative_error": 0.012799322368909448
+    },
+    {
+      "frame": 37,
+      "alpha_electrons": 58.62408868324991,
+      "beta_electrons": 58.62408868324991,
+      "relative_error": 0.01076014971120532
+    },
+    {
+      "frame": 38,
+      "alpha_electrons": 58.513935778552494,
+      "beta_electrons": 58.513935778552494,
+      "relative_error": 0.008860961699180924
+    },
+    {
+      "frame": 39,
+      "alpha_electrons": 58.409995567513796,
+      "beta_electrons": 58.409995567515026,
+      "relative_error": 0.007068889095086647
+    },
+    {
+      "frame": 40,
+      "alpha_electrons": 58.31244080425375,
+      "beta_electrons": 58.31244080425375,
+      "relative_error": 0.005386910418168048
+    },
+    {
+      "frame": 41,
+      "alpha_electrons": 58.22315287110016,
+      "beta_electrons": 58.22315287110016,
+      "relative_error": 0.003847463294830372
+    },
+    {
+      "frame": 42,
+      "alpha_electrons": 58.14512814803265,
+      "beta_electrons": 58.14512814803265,
+      "relative_error": 0.0025022094488387444
+    },
+    {
+      "frame": 43,
+      "alpha_electrons": 58.08187372217395,
+      "beta_electrons": 58.08187372217395,
+      "relative_error": 0.0014116158995509053
+    },
+    {
+      "frame": 44,
+      "alpha_electrons": 58.03688923772506,
+      "beta_electrons": 58.03688923772508,
+      "relative_error": 0.0006360213400875406
+    },
+    {
+      "frame": 45,
+      "alpha_electrons": 58.01326948826307,
+      "beta_electrons": 58.01326948826307,
+      "relative_error": 0.0002287842803977616
+    },
+    {
+      "frame": 46,
+      "alpha_electrons": 58.01344288787148,
+      "beta_electrons": 58.01344288787148,
+      "relative_error": 0.0002317739288185721
+    },
+    {
+      "frame": 47,
+      "alpha_electrons": 58.03906069720246,
+      "beta_electrons": 58.03906069719754,
+      "relative_error": 0.0006734602965941125
+    },
+    {
+      "frame": 48,
+      "alpha_electrons": 58.09102241963937,
+      "beta_electrons": 58.09102241963937,
+      "relative_error": 0.0015693520627478059
+    },
+    {
+      "frame": 49,
+      "alpha_electrons": 58.16962209808564,
+      "beta_electrons": 58.16962209808564,
+      "relative_error": 0.002924518932511027
+    },
+    {
+      "frame": 50,
+      "alpha_electrons": 58.274765724795564,
+      "beta_electrons": 58.274765724795564,
+      "relative_error": 0.004737340082682145
+    },
+    {
+      "frame": 51,
+      "alpha_electrons": 58.40622354784763,
+      "beta_electrons": 58.40622354784763,
+      "relative_error": 0.007003854273235018
+    },
+    {
+      "frame": 52,
+      "alpha_electrons": 58.56387525667351,
+      "beta_electrons": 58.56387525667351,
+      "relative_error": 0.009721987184026072
+    },
+    {
+      "frame": 53,
+      "alpha_electrons": 58.747910821554974,
+      "beta_electrons": 58.747910821554974,
+      "relative_error": 0.012895014164740938
+    },
+    {
+      "frame": 54,
+      "alpha_electrons": 58.958945193967196,
+      "beta_electrons": 58.958945193967196,
+      "relative_error": 0.01653353782702062
+    },
+    {
+      "frame": 55,
+      "alpha_electrons": 59.19799692894265,
+      "beta_electrons": 59.19799692894265,
+      "relative_error": 0.02065511946452846
+    },
+    {
+      "frame": 56,
+      "alpha_electrons": 59.46627000274923,
+      "beta_electrons": 59.46627000274923,
+      "relative_error": 0.025280517288779888
+    },
+    {
+      "frame": 57,
+      "alpha_electrons": 59.76470434644239,
+      "beta_electrons": 59.76470434644239,
+      "relative_error": 0.030425937007627465
+    },
+    {
+      "frame": 58,
+      "alpha_electrons": 60.093338210568895,
+      "beta_electrons": 60.093338210568895,
+      "relative_error": 0.03609203811325681
+    },
+    {
+      "frame": 59,
+      "alpha_electrons": 60.45063536908927,
+      "beta_electrons": 60.45063536908927,
+      "relative_error": 0.042252333949814994
+    },
+    {
+      "frame": 60,
+      "alpha_electrons": 60.83293537162479,
+      "beta_electrons": 60.83293537162479,
+      "relative_error": 0.04884371330387573
+    },
+    {
+      "frame": 61,
+      "alpha_electrons": 61.23386303290374,
+      "beta_electrons": 61.23386303290374,
+      "relative_error": 0.055756259187995545
+    },
+    {
+      "frame": 62,
+      "alpha_electrons": 61.64289308446296,
+      "beta_electrons": 61.64289308446296,
+      "relative_error": 0.06280850145625796
+    },
+    {
+      "frame": 63,
+      "alpha_electrons": 62.04223870410105,
+      "beta_electrons": 62.04223870410105,
+      "relative_error": 0.06969377076036297
+    },
+    {
+      "frame": 64,
+      "alpha_electrons": 62.40309424357669,
+      "beta_electrons": 62.40309424357669,
+      "relative_error": 0.07591541799270153
+    },
+    {
+      "frame": 65,
+      "alpha_electrons": 62.68556731250022,
+      "beta_electrons": 62.68556731250022,
+      "relative_error": 0.08078564331896929
+    },
+    {
+      "frame": 66,
+      "alpha_electrons": 62.847336212593554,
+      "beta_electrons": 62.847336212593554,
+      "relative_error": 0.08357476228609576
+    },
+    {
+      "frame": 67,
+      "alpha_electrons": 62.85997182425131,
+      "beta_electrons": 62.85997182425131,
+      "relative_error": 0.08379261765950535
+    },
+    {
+      "frame": 68,
+      "alpha_electrons": 62.72252834350139,
+      "beta_electrons": 62.72252834350139,
+      "relative_error": 0.08142290247416185
+    },
+    {
+      "frame": 69,
+      "alpha_electrons": 62.46115029139986,
+      "beta_electrons": 62.46115029139986,
+      "relative_error": 0.07691638433448035
+    },
+    {
+      "frame": 70,
+      "alpha_electrons": 62.11499206533244,
+      "beta_electrons": 62.11499206533244,
+      "relative_error": 0.07094813905745581
+    },
+    {
+      "frame": 71,
+      "alpha_electrons": 61.72004264648273,
+      "beta_electrons": 61.72004264648273,
+      "relative_error": 0.06413866631866778
+    },
+    {
+      "frame": 72,
+      "alpha_electrons": 61.30115402391941,
+      "beta_electrons": 61.30115402391941,
+      "relative_error": 0.056916448688265675
+    },
+    {
+      "frame": 73,
+      "alpha_electrons": 60.87319022948671,
+      "beta_electrons": 60.87319022948671,
+      "relative_error": 0.049537762577357064
+    },
+    {
+      "frame": 74,
+      "alpha_electrons": 60.44590174255048,
+      "beta_electrons": 60.44590174255048,
+      "relative_error": 0.04217071969914625
+    },
+    {
+      "frame": 75,
+      "alpha_electrons": 60.02772759390845,
+      "beta_electrons": 60.02772759390845,
+      "relative_error": 0.03496082058462848
+    },
+    {
+      "frame": 76,
+      "alpha_electrons": 59.62706375349584,
+      "beta_electrons": 59.62706375349584,
+      "relative_error": 0.028052823336135166
+    },
+    {
+      "frame": 77,
+      "alpha_electrons": 59.251881814066806,
+      "beta_electrons": 59.251881814066806,
+      "relative_error": 0.021584169208048377
+    },
+    {
+      "frame": 78,
+      "alpha_electrons": 58.908974231081025,
+      "beta_electrons": 58.908974231081025,
+      "relative_error": 0.015671969501396984
+    },
+    {
+      "frame": 79,
+      "alpha_electrons": 58.60354399466015,
+      "beta_electrons": 58.60354399466015,
+      "relative_error": 0.010405930942416378
+    },
+    {
+      "frame": 80,
+      "alpha_electrons": 58.33921577881336,
+      "beta_electrons": 58.33921577881336,
+      "relative_error": 0.0058485479105752
+    },
+    {
+      "frame": 81,
+      "alpha_electrons": 58.11826017864883,
+      "beta_electrons": 58.11826017864883,
+      "relative_error": 0.002038968597393655
+    },
+    {
+      "frame": 82,
+      "alpha_electrons": 57.941842897883554,
+      "beta_electrons": 57.941842897883554,
+      "relative_error": 0.0010027086571801108
+    },
+    {
+      "frame": 83,
+      "alpha_electrons": 57.81020841232675,
+      "beta_electrons": 57.81020841232675,
+      "relative_error": 0.00327226875298704
+    },
+    {
+      "frame": 84,
+      "alpha_electrons": 57.722816397713714,
+      "beta_electrons": 57.722816397713714,
+      "relative_error": 0.0047790276256256155
+    },
+    {
+      "frame": 85,
+      "alpha_electrons": 57.67844533671264,
+      "beta_electrons": 57.67844533671264,
+      "relative_error": 0.005544045918747556
+    },
+    {
+      "frame": 86,
+      "alpha_electrons": 57.67526466772642,
+      "beta_electrons": 57.67526466772642,
+      "relative_error": 0.0055988850391997125
+    },
+    {
+      "frame": 87,
+      "alpha_electrons": 57.71085743959232,
+      "beta_electrons": 57.71085743959232,
+      "relative_error": 0.004985216558753154
+    },
+    {
+      "frame": 88,
+      "alpha_electrons": 57.7821927983369,
+      "beta_electrons": 57.7821927983369,
+      "relative_error": 0.003755296580398262
+    },
+    {
+      "frame": 89,
+      "alpha_electrons": 57.8855725315408,
+      "beta_electrons": 57.8855725315408,
+      "relative_error": 0.001972887387227547
+    },
+    {
+      "frame": 90,
+      "alpha_electrons": 58.01662210493323,
+      "beta_electrons": 58.01662210493323,
+      "relative_error": 0.0002865880160901115
+    },
+    {
+      "frame": 91,
+      "alpha_electrons": 58.17040957487277,
+      "beta_electrons": 58.17040957487277,
+      "relative_error": 0.0029380961184960514
+    },
+    {
+      "frame": 92,
+      "alpha_electrons": 58.34169968609016,
+      "beta_electrons": 58.34169968609016,
+      "relative_error": 0.005891373898106191
+    },
+    {
+      "frame": 93,
+      "alpha_electrons": 58.52511791846539,
+      "beta_electrons": 58.52511791846539,
+      "relative_error": 0.009053757214920528
+    },
+    {
+      "frame": 94,
+      "alpha_electrons": 58.71471516949048,
+      "beta_electrons": 58.71471516949048,
+      "relative_error": 0.012322675336042794
+    },
+    {
+      "frame": 95,
+      "alpha_electrons": 58.90241463198108,
+      "beta_electrons": 58.90241463198108,
+      "relative_error": 0.015558872965191053
+    },
+    {
+      "frame": 96,
+      "alpha_electrons": 59.07557336902464,
+      "beta_electrons": 59.07557336902464,
+      "relative_error": 0.018544368431459287
+    },
+    {
+      "frame": 97,
+      "alpha_electrons": 59.21536506920851,
+      "beta_electrons": 59.21536506920851,
+      "relative_error": 0.020954570158767404
+    },
+    {
+      "frame": 98,
+      "alpha_electrons": 59.29871695612823,
+      "beta_electrons": 59.29871695612821,
+      "relative_error": 0.022391671657383302
+    },
+    {
+      "frame": 99,
+      "alpha_electrons": 59.30515441472675,
+      "beta_electrons": 59.30515441472675,
+      "relative_error": 0.02250266232287501
+    },
+    {
+      "frame": 100,
+      "alpha_electrons": 59.22592661947536,
+      "beta_electrons": 59.22592661947475,
+      "relative_error": 0.021136665853023436
+    }
   ],
   "elements": [
     "C",
@@ -39,37 +650,37 @@
       "frame": 0,
       "channel": "alpha",
       "path": "product\\qa\\03b_uks_reaction\\source\\density3d\\frame_0000_alpha.cube",
-      "max_atom_error_angstrom": 3.9714445061611356e-09
+      "max_atom_error_angstrom": 3.983346766821601e-09
     },
     {
       "frame": 0,
       "channel": "beta",
       "path": "product\\qa\\03b_uks_reaction\\source\\density3d\\frame_0000_beta.cube",
-      "max_atom_error_angstrom": 3.9714445061611356e-09
+      "max_atom_error_angstrom": 3.983346766821601e-09
     },
     {
       "frame": 50,
       "channel": "alpha",
       "path": "product\\qa\\03b_uks_reaction\\source\\density3d\\frame_0050_alpha.cube",
-      "max_atom_error_angstrom": 3.732768732368771e-09
+      "max_atom_error_angstrom": 4.163941083847359e-09
     },
     {
       "frame": 50,
       "channel": "beta",
       "path": "product\\qa\\03b_uks_reaction\\source\\density3d\\frame_0050_beta.cube",
-      "max_atom_error_angstrom": 3.732768732368771e-09
+      "max_atom_error_angstrom": 4.163941083847359e-09
     },
     {
       "frame": 100,
       "channel": "alpha",
       "path": "product\\qa\\03b_uks_reaction\\source\\density3d\\frame_0100_alpha.cube",
-      "max_atom_error_angstrom": 3.91341734880149e-09
+      "max_atom_error_angstrom": 3.9396772861060554e-09
     },
     {
       "frame": 100,
       "channel": "beta",
       "path": "product\\qa\\03b_uks_reaction\\source\\density3d\\frame_0100_beta.cube",
-      "max_atom_error_angstrom": 3.91341734880149e-09
+      "max_atom_error_angstrom": 3.9396772861060554e-09
     }
   ],
   "passed": true

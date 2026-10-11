@@ -13,12 +13,12 @@
 - Total charge: 0; total electron count: 116; BS singlet convention: `spin=0`.
 - The aryl fragment and NO2 receive mass-weighted opposite initial velocities so the centre of mass remains stationary.
 - A real dataset must have `backend=pyscf_uks`. `backend=analytic_demo` is a renderer/layout fixture and must remain visibly labelled.
-- Real UKS data must contain converged alpha/beta density matrices, UKS gradients, SCF histories, `<S²>`, alpha/beta density planes, and fixed-grid 3-D alpha/beta density fields.
+- Real UKS data must contain converged alpha/beta density matrices, UKS gradients, SCF histories, `<S²>`, and fixed-grid 3-D alpha/beta density fields in electron/Angstrom^3. Cube exports convert the same field to electron/Bohr^3 without changing atom coordinates.
 
 ## Visual contract
 
 - Left: the same velocity-Verlet rail and active stage logic as 03 AIMD.
-- Centre: fixed-camera native MatterVis TNT structure, with the current SCF density asset or force/velocity/position asset.
+- Centre: fixed-camera native MatterVis TNT structure, with line-only alpha/beta contours from a fixed-grid 3-D maximum projection along the camera normal, or a force/velocity/position asset. The projected density and nuclei share the same Cartesian origin and axes; it is not a single aromatic-plane contour slice or a filled volume.
 - Upper right: the current ionic step's UKS SCF residual curve, held during force/velocity/position updates.
 - Lower right: the alpha/beta UKS self-consistency loop.
 - Static size is 3508 × 2480 px; video size is 1920 × 600 px at 24 fps.
