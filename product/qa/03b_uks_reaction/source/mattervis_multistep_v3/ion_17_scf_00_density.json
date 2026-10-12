@@ -1,60 +1,54 @@
 {
-  "pipeline_version": 5,
-  "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\data\\uks_tnt_aimd.npz",
+  "pipeline_version": 7,
+  "signature": {
+    "pipeline_version": 7,
+    "asset_stamp": "2026-10-12-pose-aligned-same-nuclei",
+    "ion_index": 17,
+    "width": 1500,
+    "height": 950,
+    "camera": {
+      "target": [
+        0.23172526697955448,
+        0.0603797580155548,
+        -0.38415238483870123
+      ],
+      "direction": [
+        0.23121552453364444,
+        0.9300234133236358,
+        0.28564984138711746
+      ],
+      "up": [
+        0.490014527356601,
+        -0.3649682439845321,
+        0.7916337182449558
+      ],
+      "ortho_scale": 3.8090758788213326,
+      "scene_offset": [
+        7.7368491852000005,
+        6.4357737222,
+        8.776742520500001
+      ]
+    }
+  },
+  "density_rendering": "3d_max_normal_projection_contours",
+  "density_units": "electron/angstrom^3",
+  "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\data\\uks_tnt_reaction_density3d.npz",
   "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\mattervis_multistep_v3\\ion_17_structure.png",
   "ion_index": 17,
-  "scf_index": 0,
-  "residual": 0.01,
-  "visual_progress": 0.0,
-  "blur_sigma_pixels": 5.5,
+  "projection_axis": [
+    0.23121552453364444,
+    0.9300234133236358,
+    0.28564984138711746
+  ],
+  "projection_depth_angstrom": [
+    -3.0,
+    3.0
+  ],
   "levels": [
-    0.003,
-    0.007,
-    0.015,
-    0.035,
-    0.08,
-    0.18,
+    0.05,
+    0.15,
     0.4,
-    0.9
+    1.0
   ],
-  "density_channels": "alpha_beta",
-  "alpha_colors": [
-    "#F8D9DE",
-    "#F1B5BF",
-    "#E88C9A",
-    "#D96578",
-    "#C6455B",
-    "#B52F47",
-    "#A32035",
-    "#861A2B"
-  ],
-  "beta_colors": [
-    "#D9F0E3",
-    "#B8E0C9",
-    "#91CFAC",
-    "#69BD8E",
-    "#4EA979",
-    "#398C64",
-    "#2F6B4F",
-    "#20533D"
-  ],
-  "camera": {
-    "target": [
-      0.5792749716419446,
-      -0.037389220733273304,
-      -0.2045762906096915
-    ],
-    "direction": [
-      0.23121552452349908,
-      0.9300234133250025,
-      0.28564984139088034
-    ],
-    "up": [
-      0.8404910137481313,
-      -0.04306543337280485,
-      -0.5401113072849437
-    ],
-    "ortho_scale": 3.85
-  },
   "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\mattervis_multistep_v3\\ion_17_scf_00_density.png"
 }

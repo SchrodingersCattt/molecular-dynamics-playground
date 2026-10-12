@@ -51,6 +51,7 @@ from mattervis_story import (
     STORY_VIDEO_B,
     STORY_VIDEO_C,
     STORY_VIDEO_D,
+    camera_basis,
     camera_for_source,
     draw_arrow_legend,
     draw_vv_loop,
@@ -73,7 +74,7 @@ DATA_PATH = ROOT / "data" / "uks_tnt_aimd.npz"
 MOTION_SOURCE = ROOT / "data" / "uks_tnt_aimd.extxyz"
 
 STATIC_SCENE_RECT = (0.04, 0.10, 0.96, 0.87)
-VIDEO_SCENE_RECT = (0.04, 0.08, 0.96, 0.88)
+VIDEO_SCENE_RECT = (0.04, 0.09, 0.96, 0.86)
 
 STATIC_A = STORY_STATIC_A
 STATIC_B = STORY_STATIC_B
@@ -85,11 +86,10 @@ VIDEO_B = STORY_VIDEO_B
 VIDEO_C = STORY_VIDEO_C
 VIDEO_D = STORY_VIDEO_D
 
-# A tighter fixed view keeps the dimer and its density slice legible inside B.
-CAMERA_SCALE = 3.85
-# Wider than the 03 canvas: the departing NO2 density reaches past x = 1500 px.
-RENDER_WIDTH = 1650
+# Same canvas as 02b so the fitted molecule has the same size in the centre panel.
+RENDER_WIDTH = 1500
 RENDER_HEIGHT = 950
+ASSET_STAMP = "2026-10-12-pose-aligned-same-nuclei"
 POSITION_LAKE = R_BLUE
 VELOCITY_EMERALD = V_PURPLE
 FORCE_DISPLAY_SCALE = 150.0
@@ -502,6 +502,29 @@ def render_density_projection_contour_scene(
 
     with Image.open(structure_image) as structure_source:
         width, height = structure_source.size
+    signature = {
+        "pipeline_version": 7,
+        "asset_stamp": ASSET_STAMP,
+        "ion_index": int(ion_index),
+        "width": int(width),
+        "height": int(height),
+        "camera": {
+            "target": [float(value) for value in camera.target],
+            "direction": [float(value) for value in camera.direction],
+            "up": [float(value) for value in camera.up],
+            "ortho_scale": float(camera.ortho_scale),
+            "scene_offset": [float(value) for value in camera.scene_offset],
+        },
+    }
+    sidecar = output.with_suffix(".json")
+    if (
+        output.exists()
+        and sidecar.exists()
+        and output.stat().st_mtime >= structure_image.stat().st_mtime
+    ):
+        previous = json.loads(sidecar.read_text(encoding="utf-8"))
+        if previous.get("signature") == signature:
+            return previous
     plane_x, plane_y = np.meshgrid(
         np.asarray(u_axis, dtype=float),
         np.asarray(v_axis, dtype=float),
@@ -544,6 +567,9 @@ def render_density_projection_contour_scene(
     axes = figure.add_axes([0.0, 0.0, 1.0, 1.0])
     axes.set_xlim(0.0, width - 1.0)
     axes.set_ylim(height - 1.0, 0.0)
+    # The saved UKS solution is closed-shell, so the two fields lie on top of
+    # each other.  Saturated ink and a wide dash gap keep both channels
+    # readable without shifting either contour off the measured density.
     for channel_index, (field, colors) in enumerate(
         zip(projected_fields, (ALPHA_COLORS, BETA_COLORS))
     ):
@@ -552,9 +578,9 @@ def render_density_projection_contour_scene(
             grid_py,
             field,
             levels=DENSITY_CONTOUR_LEVELS,
-            colors=[colors[index] for index in (1, 3, 5, 7)],
-            linewidths=(2.4, 2.1, 1.8, 1.5) if channel_index == 0 else (1.9, 1.7, 1.5, 1.3),
-            linestyles="solid" if channel_index == 0 else "dashed",
+            colors=[colors[index] for index in (4, 5, 6, 7)],
+            linewidths=(2.2, 2.0, 1.8, 1.6),
+            linestyles="solid" if channel_index == 0 else [(0, (2.0, 3.2))] * len(DENSITY_CONTOUR_LEVELS),
             antialiased=True,
         )
     axes.axis("off")
@@ -565,7 +591,8 @@ def render_density_projection_contour_scene(
     output.parent.mkdir(parents=True, exist_ok=True)
     base.convert("RGB").save(output)
     payload = {
-        "pipeline_version": 6,
+        "pipeline_version": 7,
+        "signature": signature,
         "density_rendering": "3d_max_normal_projection_contours",
         "density_units": "electron/angstrom^3",
         "density_source": str(ROOT / "data" / "uks_tnt_reaction_density3d.npz"),
@@ -685,6 +712,64 @@ def load_data() -> dict[str, np.ndarray]:
     return data
 
 
+def build_camera(positions: np.ndarray) -> SceneCamera:
+    """Match the 02b TNT pose: ring facing the page, C0→C1 upward, same fit."""
+
+    ring = np.asarray(positions[0, :6], dtype=float)
+    centre = ring.mean(axis=0)
+    _, _, vh = np.linalg.svd(ring - centre, full_matrices=False)
+    direction = np.asarray(vh[-1], dtype=float)
+    if direction[2] < 0.0:
+        direction = -direction
+    up = np.asarray(positions[0, 1] - positions[0, 0], dtype=float)
+    up -= direction * float(np.dot(up, direction))
+    up /= max(float(np.linalg.norm(up)), 1.0e-12)
+    probe = SceneCamera(
+        target=tuple(float(value) for value in centre),
+        ortho_scale=1.0,
+        direction=tuple(float(value) for value in direction),
+        up=tuple(float(value) for value in up),
+    )
+    right, screen_up = camera_basis(probe)
+    visual_indices = np.asarray(list(range(7)) + list(range(12, 21)), dtype=int)
+    flat = np.asarray(positions[:, visual_indices, :], dtype=float).reshape(-1, 3)
+    pad = 0.45
+    cloud = np.vstack(
+        [flat + pad * right, flat - pad * right, flat + pad * screen_up, flat - pad * screen_up]
+    )
+    screen_x = cloud @ right
+    screen_y = cloud @ screen_up
+    aspect = RENDER_WIDTH / RENDER_HEIGHT
+    half_w = 0.5 * (screen_x.max() - screen_x.min()) * 1.03
+    half_h = 0.5 * (screen_y.max() - screen_y.min()) * 1.03
+    ortho = max(half_h, half_w / aspect)
+    target = (
+        0.5 * (screen_x.max() + screen_x.min()) * right
+        + 0.5 * (screen_y.max() + screen_y.min()) * screen_up
+    )
+    return camera_for_source(
+        MOTION_SOURCE,
+        target=tuple(float(value) for value in target),
+        ortho_scale=float(ortho),
+        frame=0,
+        direction=tuple(float(value) for value in direction),
+        up=tuple(float(value) for value in screen_up),
+    )
+
+
+def frame_camera(camera: SceneCamera, frame: int) -> SceneCamera:
+    """Keep one pose, but use this frame's MatterVis origin shift."""
+
+    return camera_for_source(
+        MOTION_SOURCE,
+        target=camera.target,
+        ortho_scale=camera.ortho_scale,
+        frame=frame,
+        direction=camera.direction,
+        up=camera.up,
+    )
+
+
 def prepare_mattervis(
     data: dict[str, np.ndarray],
 ) -> tuple[dict[str, object], SceneCamera]:
@@ -713,40 +798,27 @@ def prepare_mattervis(
         )
     )
 
-    # Face the aromatic plane toward the paper.  The old generic oblique view
-    # made the TNT ring edge-on and also made the density plane look displaced.
-    view_direction = np.asarray(plane_normal, dtype=float)
-    camera = camera_for_source(
-        MOTION_SOURCE,
-        target=plane_centre,
-        ortho_scale=CAMERA_SCALE,
-        frame=0,
-        direction=tuple(view_direction),
-        up=tuple(plane_v),
-    )
+    # Same ring-facing pose as 02b.  The previous up-vector was the in-plane
+    # normal to C0→C1, which rotated this molecule a quarter turn relative
+    # to the ReaxFF panel.
+    camera = build_camera(positions)
     records: list[dict] = []
     structure_paths: list[Path] = []
-    if has_3d_density:
-        structure_paths = [
-            MATTERVIS_DIR / f"ion_{ion_index:02d}_structure.png"
-            for ion_index in range(len(positions))
-        ]
-    else:
-        for ion_index in range(len(positions)):
-            path = MATTERVIS_DIR / f"ion_{ion_index:02d}_structure.png"
-            records.append(
-                render_structure(
-                    MOTION_SOURCE,
-                    path,
-                    camera=camera,
-                    frame=ion_index,
-                    width=RENDER_WIDTH,
-                    height=RENDER_HEIGHT,
-                    atom_scale=0.90,
-                    bond_radius=0.102,
-                )
+    for ion_index in range(len(positions)):
+        path = MATTERVIS_DIR / f"ion_{ion_index:02d}_structure.png"
+        records.append(
+            render_structure(
+                MOTION_SOURCE,
+                path,
+                camera=frame_camera(camera, ion_index),
+                frame=ion_index,
+                width=RENDER_WIDTH,
+                height=RENDER_HEIGHT,
+                atom_scale=0.90,
+                bond_radius=0.102,
             )
-            structure_paths.append(path)
+        )
+        structure_paths.append(path)
 
     density_paths: list[list[Path]] = []
     for ion_index, count in enumerate(scf_counts):
@@ -772,7 +844,7 @@ def prepare_mattervis(
                 plane_normal=plane_normal,
                 u_axis=data["plane_u_axis_angstrom"],
                 v_axis=data["plane_v_axis_angstrom"],
-                camera=camera,
+                camera=frame_camera(camera, ion_index),
                 ion_index=ion_index,
             )
             records.append(record)
@@ -795,7 +867,7 @@ def prepare_mattervis(
                         u_axis=data["plane_u_axis_angstrom"],
                         v_axis=data["plane_v_axis_angstrom"],
                         residuals=residuals[ion_index, : int(count)],
-                        camera=camera,
+                        camera=frame_camera(camera, ion_index),
                         ion_index=ion_index,
                         scf_index=scf_index,
                     )
@@ -846,7 +918,7 @@ def prepare_mattervis(
             render_structure(
                 MOTION_SOURCE,
                 force_path,
-                camera=camera,
+                camera=frame_camera(camera, ion_index),
                 frame=ion_index,
                 width=RENDER_WIDTH,
                 height=RENDER_HEIGHT,
@@ -880,7 +952,7 @@ def prepare_mattervis(
             render_structure(
                 MOTION_SOURCE,
                 velocity_path,
-                camera=camera,
+                camera=frame_camera(camera, ion_index),
                 frame=ion_index,
                 width=RENDER_WIDTH,
                 height=RENDER_HEIGHT,
@@ -915,8 +987,8 @@ def prepare_mattervis(
             render_structure(
                 MOTION_SOURCE,
                 movement_path,
-                camera=camera,
-                frame=ion_index + 1,
+                camera=frame_camera(camera, ion_index),
+                frame=ion_index,
                 width=RENDER_WIDTH,
                 height=RENDER_HEIGHT,
                 atom_scale=0.90,
@@ -927,6 +999,7 @@ def prepare_mattervis(
         movement_paths.append(movement_path)
 
     write_provenance_index(MATTERVIS_DIR, records)
+    (MATTERVIS_DIR / "asset_stamp.txt").write_text(ASSET_STAMP + "\n", encoding="utf-8")
     return {
         "density": density_paths,
         "structure": structure_paths,
@@ -949,18 +1022,8 @@ def reuse_mattervis_assets(
     """
 
     positions = np.asarray(data["positions"], dtype=float)
-    centre = np.asarray(data["plane_centre_angstrom"], dtype=float)
-    plane_v = np.asarray(data["plane_v"], dtype=float)
-    normal = np.asarray(data["plane_normal"], dtype=float)
     counts = np.asarray(data["scf_counts"], dtype=int)
-    camera = camera_for_source(
-        MOTION_SOURCE,
-        target=centre,
-        ortho_scale=CAMERA_SCALE,
-        frame=0,
-        direction=tuple(normal),
-        up=tuple(plane_v),
-    )
+    camera = build_camera(positions)
     density = [
         [MATTERVIS_DIR / f"ion_{ion:02d}_scf_00_density.png" for _ in range(int(count))]
         for ion, count in enumerate(counts)
@@ -1992,7 +2055,8 @@ def render_animation_fast(
     command = [
         "ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24",
         "-s", f"{VIDEO_WIDTH_PX}x{VIDEO_HEIGHT_PX}", "-r", "24", "-i", "-",
-        "-an", "-c:v", "libx264", "-pix_fmt", "yuv420p", "-movflags", "+faststart",
+        "-an", "-c:v", "libx264", "-pix_fmt", "yuv420p",
+        "-g", "1", "-bf", "0", "-movflags", "+faststart",
         str(temporary),
     ]
     process = subprocess.Popen(command, stdin=subprocess.PIPE)
@@ -2049,7 +2113,9 @@ def main() -> None:
         MATTERVIS_DIR / f"ion_{ion:02d}_scf_00_density.png"
         for ion in range(len(np.asarray(data["positions"])))
     ]
-    if all(path.exists() for path in cached_density) and not args.assets_only:
+    stamp_path = MATTERVIS_DIR / "asset_stamp.txt"
+    stamp_ok = stamp_path.exists() and stamp_path.read_text(encoding="utf-8").strip() == ASSET_STAMP
+    if stamp_ok and all(path.exists() for path in cached_density) and not args.assets_only:
         assets, _camera = reuse_mattervis_assets(data)
     else:
         assets, _camera = prepare_mattervis(data)

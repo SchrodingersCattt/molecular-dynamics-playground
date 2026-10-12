@@ -2,39 +2,39 @@
   "schema": "mattervis.render-result/v1",
   "backend": "cpu",
   "format": "png",
-  "width": 1650,
+  "width": 1500,
   "height": 950,
-  "plan_sha256": "cc24fcde316d2bdfeee57e37a02e32558c9afe04868a7de3364d636a6da28ea3",
-  "output_sha256": "e450684970ee9f863e9d68e3a44242c769a5043ebee3e8acfbad519484e21d08",
+  "plan_sha256": "62aa3536825ab12f0f2d21bbd9fe9c016d0eccd6234ae3f291f729ae1f0c4bbc",
+  "output_sha256": "0afb0d7879d2c5ebc693d00ef3f4a12c0d5667f64b2b45851c6a0a21e93e8bed",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\mattervis_multistep_v3\\ion_15_move.png",
-  "source_sha256": "9ff981f36ca5a354c6b1e1963b74b41fdeb60e9644999d455b0561cba83b9f7d",
-  "frame": 16,
+  "source_sha256": "74d27fea52cd64a281010907e385aa5bfe3b6e89d8aaf3227d720ac14f68ec82",
+  "frame": 15,
   "view": "cluster",
   "camera": {
     "target": [
-      0.5792749716419446,
-      -0.037389220733273304,
-      -0.2045762906096915
+      0.23172526697955448,
+      0.0603797580155548,
+      -0.38415238483870123
     ],
-    "ortho_scale": 3.85,
+    "ortho_scale": 3.8090758788213326,
     "direction": [
-      0.23121552452349908,
-      0.9300234133250025,
-      0.28564984139088034
+      0.23121552453364444,
+      0.9300234133236358,
+      0.28564984138711746
     ],
     "up": [
-      0.8404910137481313,
-      -0.04306543337280485,
-      -0.5401113072849437
+      0.490014527356601,
+      -0.3649682439845321,
+      0.7916337182449558
     ],
     "scene_offset": [
-      7.8174126989,
-      6.3249764653,
-      8.6028654843
+      7.7477161065,
+      6.4249949507,
+      8.7564391093
     ]
   },
   "render_settings": {
-    "width": 1650,
+    "width": 1500,
     "height": 950,
     "atom_scale": 0.9,
     "bond_radius": 0.102,
@@ -44,7 +44,7 @@
     "cell_color": "#333333",
     "cell_width_px": 2.0
   },
-  "vector_signature": "[{\"color\":\"#2F6FB3\",\"id\":\"position-drift-ion-15-12\",\"opacity\":1.0,\"origin\":[-0.9152265822264181,-0.4501890718581657,2.482974350757596],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.030691992845943705,-0.013979544940643018,0.07485909005483649]},{\"color\":\"#2F6FB3\",\"id\":\"position-drift-ion-15-15\",\"opacity\":1.0,\"origin\":[-0.5374010706579045,-1.368360910836418,3.171959440272474],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.032480616918004745,-0.009655888001960378,0.07604671019351272]},{\"color\":\"#2F6FB3\",\"id\":\"position-drift-ion-15-16\",\"opacity\":1.0,\"origin\":[-1.783285638726634,0.3336624706227011,2.7882660535305717],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.02841170678537086,-0.019476001466511184,0.07974725113121828]}]",
+  "vector_signature": "[{\"color\":\"#2F6FB3\",\"id\":\"position-drift-ion-15-12\",\"opacity\":1.0,\"origin\":[-1.0201283335568443,-0.49819711403685163,2.7411042708928655],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.06952174494830565,-0.03094023934152812,0.1678744109192465]},{\"color\":\"#2F6FB3\",\"id\":\"position-drift-ion-15-15\",\"opacity\":1.0,\"origin\":[-0.6406949955629849,-1.4131553329471458,3.425179540283777],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.06641805855911365,-0.023679235417593425,0.15858692292776944]},{\"color\":\"#2F6FB3\",\"id\":\"position-drift-ion-15-16\",\"opacity\":1.0,\"origin\":[-1.8836417154937888,0.2831856666408979,3.043352348663592],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.06061836211291638,-0.03682531775088993,0.16352808130549157]}]",
   "vector_count": 3,
   "vector_renderer": "MatterVis native world-space vector_overlays",
   "mesh_signature": "[]",
@@ -58,25 +58,25 @@
     "actual_backend": "cpu",
     "camera": {
       "position": [
-        13.945860259105924,
-        28.608149164366786,
-        15.253885387071437
+        13.528613962287022,
+        28.80593662848281,
+        15.227882917752119
       ],
       "target": [
-        8.396687670541946,
-        6.287587244566726,
-        8.398289193690308
+        7.979441373479555,
+        6.485374708715555,
+        8.372286724461299
       ],
       "up": [
-        0.8404910137481313,
-        -0.04306543337280485,
-        -0.5401113072849437
+        0.490014527356601,
+        -0.3649682439845321,
+        0.7916337182449558
       ],
       "projection": "orthographic",
       "fov_y_deg": 45.0,
       "near": 0.01,
       "far": 10000.0,
-      "ortho_scale": 3.85
+      "ortho_scale": 3.8090758788213326
     },
     "source": {
       "path": null,

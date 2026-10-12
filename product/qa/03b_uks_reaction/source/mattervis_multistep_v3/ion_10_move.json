@@ -2,39 +2,39 @@
   "schema": "mattervis.render-result/v1",
   "backend": "cpu",
   "format": "png",
-  "width": 1650,
+  "width": 1500,
   "height": 950,
-  "plan_sha256": "2965e82ae473fd999fa9df977372cb6eed7785d352ce14c013d0fa913418ff23",
-  "output_sha256": "54a8bc3931749d39d5a5fbe3213056a63443cd83dceb1e5b1634cb4a1abc12bb",
+  "plan_sha256": "8db6671ba4fdd831d7d89e336b1a426c272c4bf05aff4980050df5a7ef86d904",
+  "output_sha256": "9cba8323d508def27f436f47c7b894a2eab893fe98f76360523d1157438de88e",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\mattervis_multistep_v3\\ion_10_move.png",
-  "source_sha256": "9ff981f36ca5a354c6b1e1963b74b41fdeb60e9644999d455b0561cba83b9f7d",
-  "frame": 11,
+  "source_sha256": "74d27fea52cd64a281010907e385aa5bfe3b6e89d8aaf3227d720ac14f68ec82",
+  "frame": 10,
   "view": "cluster",
   "camera": {
     "target": [
-      0.5792749716419446,
-      -0.037389220733273304,
-      -0.2045762906096915
+      0.23172526697955448,
+      0.0603797580155548,
+      -0.38415238483870123
     ],
-    "ortho_scale": 3.85,
+    "ortho_scale": 3.8090758788213326,
     "direction": [
-      0.23121552452349908,
-      0.9300234133250025,
-      0.28564984139088034
+      0.23121552453364444,
+      0.9300234133236358,
+      0.28564984138711746
     ],
     "up": [
-      0.8404910137481313,
-      -0.04306543337280485,
-      -0.5401113072849437
+      0.490014527356601,
+      -0.3649682439845321,
+      0.7916337182449558
     ],
     "scene_offset": [
-      7.8174126989,
-      6.3249764653,
-      8.6028654843
+      7.7729164445,
+      6.3964095148,
+      8.7065285888
     ]
   },
   "render_settings": {
-    "width": 1650,
+    "width": 1500,
     "height": 950,
     "atom_scale": 0.9,
     "bond_radius": 0.102,
@@ -44,8 +44,8 @@
     "cell_color": "#333333",
     "cell_width_px": 2.0
   },
-  "vector_signature": "[{\"color\":\"#2F6FB3\",\"id\":\"position-drift-ion-10-16\",\"opacity\":1.0,\"origin\":[-1.7501906426522365,0.3526467328032661,2.70077598654503],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.02633278257033833,-0.01520238417849118,0.06975133292155]}]",
-  "vector_count": 1,
+  "vector_signature": "[{\"color\":\"#2F6FB3\",\"id\":\"position-drift-ion-10-12\",\"opacity\":1.0,\"origin\":[-0.9491191180775653,-0.4658586915560257,2.566980399295035],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.0569030511626476,-0.0259025547563434,0.13945867534998158]},{\"color\":\"#2F6FB3\",\"id\":\"position-drift-ion-10-15\",\"opacity\":1.0,\"origin\":[-0.5690810470066411,-1.38523994410397,3.2525017200462734],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.05712483758134734,-0.02233914130183301,0.13790018983436703]},{\"color\":\"#2F6FB3\",\"id\":\"position-drift-ion-10-16\",\"opacity\":1.0,\"origin\":[-1.8165428315951317,0.3206299694904377,2.867348690662052],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.05363506275251506,-0.029855975648180655,0.14057457112127025]}]",
+  "vector_count": 3,
   "vector_renderer": "MatterVis native world-space vector_overlays",
   "mesh_signature": "[]",
   "atom_signature": "{\"color\":{},\"opacity\":{}}",
@@ -58,25 +58,25 @@
     "actual_backend": "cpu",
     "camera": {
       "position": [
-        13.945860259105924,
-        28.608149164366786,
-        15.253885387071437
+        13.55381430028702,
+        28.777351192582813,
+        15.177972397252116
       ],
       "target": [
-        8.396687670541946,
-        6.287587244566726,
-        8.398289193690308
+        8.004641711479554,
+        6.456789272815555,
+        8.322376203961298
       ],
       "up": [
-        0.8404910137481313,
-        -0.04306543337280485,
-        -0.5401113072849437
+        0.490014527356601,
+        -0.3649682439845321,
+        0.7916337182449558
       ],
       "projection": "orthographic",
       "fov_y_deg": 45.0,
       "near": 0.01,
       "far": 10000.0,
-      "ortho_scale": 3.85
+      "ortho_scale": 3.8090758788213326
     },
     "source": {
       "path": null,
