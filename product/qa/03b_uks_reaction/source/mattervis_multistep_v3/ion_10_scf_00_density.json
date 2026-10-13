@@ -1,8 +1,8 @@
 {
-  "pipeline_version": 7,
+  "pipeline_version": 8,
   "signature": {
-    "pipeline_version": 7,
-    "asset_stamp": "2026-10-13-bs-contour-margin",
+    "pipeline_version": 8,
+    "asset_stamp": "2026-10-13-bs-screen-contours",
     "ion_index": 10,
     "width": 1500,
     "height": 950,

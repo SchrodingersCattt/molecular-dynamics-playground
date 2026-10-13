@@ -89,7 +89,7 @@ VIDEO_D = STORY_VIDEO_D
 # Same canvas as 02b so the fitted molecule has the same size in the centre panel.
 RENDER_WIDTH = 1500
 RENDER_HEIGHT = 950
-ASSET_STAMP = "2026-10-13-bs-contour-margin"
+ASSET_STAMP = "2026-10-13-bs-screen-contours"
 POSITION_LAKE = R_BLUE
 VELOCITY_EMERALD = V_PURPLE
 FORCE_DISPLAY_SCALE = 150.0
@@ -503,7 +503,7 @@ def render_density_projection_contour_scene(
     with Image.open(structure_image) as structure_source:
         width, height = structure_source.size
     signature = {
-        "pipeline_version": 7,
+        "pipeline_version": 8,
         "asset_stamp": ASSET_STAMP,
         "ion_index": int(ion_index),
         "width": int(width),
@@ -525,18 +525,31 @@ def render_density_projection_contour_scene(
         previous = json.loads(sidecar.read_text(encoding="utf-8"))
         if previous.get("signature") == signature:
             return previous
-    plane_x, plane_y = np.meshgrid(
-        np.asarray(u_axis, dtype=float),
-        np.asarray(v_axis, dtype=float),
-    )
-    plane_points = (
-        np.asarray(plane_centre, dtype=float)
-        + plane_x[:, :, None] * np.asarray(plane_u, dtype=float)
-        + plane_y[:, :, None] * np.asarray(plane_v, dtype=float)
-    )
-    flat = plane_points.reshape(-1, 3)
+    # Sample on the camera screen. The aromatic-plane parameter grid is
+    # rotated relative to the screen, and contouring it directly cuts the
+    # density above the ring into a straight edge.
     normal = np.asarray(plane_normal, dtype=float)
     normal /= max(float(np.linalg.norm(normal)), 1.0e-12)
+    view = np.asarray(camera.direction, dtype=float)
+    view /= max(float(np.linalg.norm(view)), 1.0e-12)
+    right, screen_up = camera_basis(camera)
+    ortho = float(camera.ortho_scale)
+    aspect = width / height
+    target = np.asarray(camera.target, dtype=float)
+    centre = np.asarray(plane_centre, dtype=float)
+    screen_nx = np.linspace(0.0, 1.0, 280)
+    screen_ny = np.linspace(0.0, 1.0, 180)
+    screen_x, screen_y = np.meshgrid(screen_nx, screen_ny, indexing="xy")
+    world = (
+        target
+        + (screen_x[..., None] - 0.5) * (2.0 * ortho * aspect) * right
+        + (screen_y[..., None] - 0.5) * (2.0 * ortho) * screen_up
+    )
+    denom = float(np.dot(view, normal))
+    if abs(denom) < 1.0e-8:
+        denom = 1.0e-8 if denom >= 0.0 else -1.0e-8
+    shift = np.einsum("...i,i->...", centre - world, normal) / denom
+    on_plane = world + shift[..., None] * view
     interpolators = [
         RegularGridInterpolator(
             (np.asarray(grid_x), np.asarray(grid_y), np.asarray(grid_z)),
@@ -548,28 +561,20 @@ def render_density_projection_contour_scene(
     ]
     projected_fields = []
     for interpolator in interpolators:
-        projected = np.zeros(len(flat), dtype=float)
+        projected = np.zeros(screen_x.shape, dtype=float)
+        flat_plane = on_plane.reshape(-1, 3)
         for depth in PROJECTION_DEPTHS:
             projected = np.maximum(
                 projected,
-                np.asarray(interpolator(flat + depth * normal), dtype=float),
+                np.asarray(interpolator(flat_plane + depth * normal), dtype=float).reshape(screen_x.shape),
             )
-        projected_fields.append(projected.reshape(plane_x.shape))
-    points_projected = project_world(
-        plane_points.reshape(-1, 3),
-        camera=camera,
-        rect=(0.0, 0.0, float(width), float(height)),
-        image_aspect=width / height,
-    ).reshape(plane_points.shape[:2] + (2,))
-    grid_px = points_projected[:, :, 0]
-    grid_py = height - points_projected[:, :, 1]
+        projected_fields.append(projected)
+    grid_px = screen_nx * (width - 1.0)
+    grid_py = (1.0 - screen_ny) * (height - 1.0)
     figure = plt.figure(figsize=(width / 100.0, height / 100.0), dpi=100, facecolor=WHITE)
     axes = figure.add_axes([0.0, 0.0, 1.0, 1.0])
     axes.set_xlim(0.0, width - 1.0)
     axes.set_ylim(height - 1.0, 0.0)
-    # The saved UKS solution is closed-shell, so the two fields lie on top of
-    # each other.  Saturated ink and a wide dash gap keep both channels
-    # readable without shifting either contour off the measured density.
     for channel_index, (field, colors) in enumerate(
         zip(projected_fields, (ALPHA_COLORS, BETA_COLORS))
     ):
@@ -591,7 +596,7 @@ def render_density_projection_contour_scene(
     output.parent.mkdir(parents=True, exist_ok=True)
     base.convert("RGB").save(output)
     payload = {
-        "pipeline_version": 7,
+        "pipeline_version": 8,
         "signature": signature,
         "density_rendering": "3d_max_normal_projection_contours",
         "density_units": "electron/angstrom^3",
