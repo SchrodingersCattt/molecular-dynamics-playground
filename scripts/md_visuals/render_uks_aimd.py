@@ -89,7 +89,7 @@ VIDEO_D = STORY_VIDEO_D
 # Same canvas as 02b so the fitted molecule has the same size in the centre panel.
 RENDER_WIDTH = 1500
 RENDER_HEIGHT = 950
-ASSET_STAMP = "2026-10-13-bs-radical-pair"
+ASSET_STAMP = "2026-10-13-bs-contour-margin"
 POSITION_LAKE = R_BLUE
 VELOCITY_EMERALD = V_PURPLE
 FORCE_DISPLAY_SCALE = 150.0
@@ -739,7 +739,8 @@ def build_camera(positions: np.ndarray) -> SceneCamera:
     right, screen_up = camera_basis(probe)
     visual_indices = np.asarray(list(range(7)) + list(range(12, 21)), dtype=int)
     flat = np.asarray(positions[:, visual_indices, :], dtype=float).reshape(-1, 3)
-    pad = 0.45
+    # The nuclei fit inside 0.45 Å, which slices the outer 0.05 e/Å³ contour.
+    pad = 1.70
     cloud = np.vstack(
         [flat + pad * right, flat - pad * right, flat + pad * screen_up, flat - pad * screen_up]
     )
