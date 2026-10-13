@@ -54,7 +54,8 @@ def info(ax,reg,d,mode,video=True):
     for i,(label,value,color) in enumerate(rows):
         y=.84-i*.16; active=(mode=="geometry" and i<=2) or (mode=="distance" and i==2) or (mode=="energy" and i==3) or (mode in {"force","accel"} and i==4)
         ax.add_patch(FancyBboxPatch((.08,y-.055),.84,.11,boxstyle="round,pad=.008,rounding_size=.015",fc="#EAF2EE" if active else "#F7F8F6",ec=color if active else LINE_GRAY,lw=2 if video else 1.3)); reg.text(ax,.16,y+.032,label,ha="left",va="center",fontsize=10 if video else 9,color=color,weight="bold"); reg.text(ax,.16,y-.032,value,ha="left",va="center",fontsize=10 if video else 9,color=INK)
-    reg.text(ax,.5,.10,"O–O LJ term only · electrostatics omitted",ha="center",va="center",fontsize=9 if video else 8,color=DARK_GRAY)
+    reg.text(ax,.5,.12,"O–O LJ term only",ha="center",va="center",fontsize=14 if video else 10,color=DARK_GRAY)
+    reg.text(ax,.5,.055,"electrostatics omitted",ha="center",va="center",fontsize=14 if video else 10,color=DARK_GRAY)
 def state_at(t):
     if t<2:return "structure",0
     if t<5:return "geometry",(t-2)/3
@@ -68,7 +69,7 @@ def state_at(t):
     if t<23:return "fast",(t-18)/5
     return "commit",1
 def compose(fig,t,reg,d,s,video=True):
-    mode,prog=state_at(t);rail,main,right=story_axes(fig,video=video);active={"force":1,"accel":1,"velocity":2,"position":0}.get(mode);stage_rail(rail,reg,active=active,video=video,return_phase=mode=="commit");title={"structure":"initial water-dimer structure","geometry":"measure molecular geometry","distance":"lock O···O distance","energy":"evaluate LJ potential","force":"LJ force: opposite pair","accel":"force → acceleration","velocity":"update velocity","position":"update position","commit":"complete state","fast":"rapid VV steps"}[mode];panel_box(main,reg,f"CLASSICAL MD · TIP3P WATER DIMER · {title}",video=video);rect=(.03,.13,.97,.90)
+    mode,prog=state_at(t);rail,main,right=story_axes(fig,video=video);active={"force":1,"accel":1,"velocity":2,"position":0}.get(mode);stage_rail(rail,reg,active=active,video=video,return_phase=mode=="commit");title={"structure":"initial water-dimer structure","geometry":"measure molecular geometry","distance":"lock O···O distance","energy":"evaluate LJ potential","force":"LJ force: opposite pair","accel":"force → acceleration","velocity":"update velocity","position":"update position","commit":"complete state","fast":"rapid VV steps"}[mode];panel_box(main,reg,title,video=video);rect=(.03,.13,.97,.90)
     if mode in {"structure","geometry","distance"}:
         gstage = 0 if mode == "structure" else (min(2, int(prog * 3.0)) if mode == "geometry" else 2)
         geometry_overlay(main,reg,d,s,gstage,video=video)

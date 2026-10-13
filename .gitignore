@@ -51,12 +51,14 @@ _tmp/
 # Media / rendered outputs
 *.mp4
 !product/videos/*.mp4
+!product/videos/ppt/*.mp4
 product/videos/_*.mp4
 *.mov
 *.avi
 *.mkv
 *.webm
 *.gif
+!product/videos/ppt/*.gif
 
 # Scientific / generated data
 *.npz

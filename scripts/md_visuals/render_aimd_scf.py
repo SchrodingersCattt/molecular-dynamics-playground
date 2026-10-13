@@ -26,6 +26,7 @@ from common import (
     LayoutRegistry,
     axes_from_top_slot,
     json_dump,
+    latched_scf_stage_weights,
     mix_hex,
     new_static_figure,
     new_video_figure,
@@ -456,7 +457,7 @@ def draw_scf_loop(
     radius_x = 0.072 if video else 0.064
     centre_x = 0.50
     for index, (start, end) in enumerate(arrows):
-        arrow_weight = max(stage_weights[index], stage_weights[(index + 1) % 4])
+        arrow_weight = stage_weights[index]
         registry.arrow(
             ax,
             start,
@@ -490,7 +491,7 @@ def draw_scf_loop(
             ha="center",
             va="center",
             fontsize=FONT_SIZES["body"],
-            color=WHITE if weight > 0.48 else DARK_GRAY,
+            color=WHITE if weight > 0.48 else INK,
             weight="normal",
             zorder=5,
         )
@@ -911,7 +912,7 @@ def _scf_state(
             "blend": 0.0,
             "curve_progress": 1.0,
             "scf_phase": "curve",
-            "stage_weights": (0.0, 0.0, 0.0, 1.0),
+            "stage_weights": (1.0, 1.0, 1.0, 1.0),
             "progress": progress,
             "scf_progress": progress,
             "rapid": rapid,
@@ -927,24 +928,15 @@ def _scf_state(
         1.0,
     )
     if within_cycle < SCF_LOOP_FRACTION:
-        stage_float = loop_progress * 4.0
-        active_stage = min(int(stage_float), 3)
-        following_stage = min(active_stage + 1, 3)
-        stage_within = stage_float - int(stage_float)
-        stage_blend = stage_within
-        stage_weights = [0.0, 0.0, 0.0, 0.0]
-        stage_weights[active_stage] = 1.0 - stage_blend
-        stage_weights[following_stage] = stage_blend
+        stage_weights = list(latched_scf_stage_weights(loop_progress))
         scf_phase = "loop"
     elif within_cycle < curve_start:
-        # Keep the last SCF node visible during the explicit pause.  Do not
-        # wrap the ring back to F before the residual plot begins.
-        stage_weights = [0.0, 0.0, 0.0, 1.0]
+        # The finished round stays black through the pause. The next
+        # electronic iteration opens on four white nodes.
+        stage_weights = [1.0, 1.0, 1.0, 1.0]
         scf_phase = "pause"
     else:
-        # The completed loop remains visible but inactive while the upper
-        # right plot commits the next residual point at constant speed.
-        stage_weights = [0.0, 0.0, 0.0, 1.0]
+        stage_weights = [1.0, 1.0, 1.0, 1.0]
         scf_phase = "curve"
     return {
         "mode": "scf",

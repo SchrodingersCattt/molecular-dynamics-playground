@@ -34,7 +34,6 @@ from common import (
     LIGHT_GRAY,
     LINE_GRAY,
     NAVY,
-    STAGE_COLORS,
     WHITE,
     LayoutRegistry,
     json_dump,
@@ -1005,8 +1004,9 @@ def draw_vv_loop(
 ) -> None:
     """Draw the shared three-stage Velocity Verlet loop.
 
-    Every stage owns one colour (``STAGE_COLORS``); the same colour is used for
-    that quantity's arrows in the scene, so the loop doubles as the legend.
+    Position, acceleration and velocity are black. The active node is black
+    with a white symbol; the other two stay white with black symbols. Scene
+    arrows keep their own colours.
     Word labels sit outside the circle so the arc never runs through them.
     """
     figure_width, figure_height = ax.figure.canvas.get_width_height()
@@ -1019,7 +1019,7 @@ def draw_vv_loop(
     ax.add_patch(Arc((centre_x, centre_y), 2 * radius_x, 2 * radius_y, theta1=0, theta2=360, color=ring_grey, lw=2.6 if video else 2.0, zorder=1))
     if active_stage is not None:
         theta1, theta2 = arc_ranges[active_stage]
-        ax.add_patch(Arc((centre_x, centre_y), 2 * radius_x, 2 * radius_y, theta1=theta1, theta2=theta2, color=STAGE_COLORS[active_stage], lw=4.2 if video else 2.8, zorder=2))
+        ax.add_patch(Arc((centre_x, centre_y), 2 * radius_x, 2 * radius_y, theta1=theta1, theta2=theta2, color=INK, lw=4.2 if video else 2.8, zorder=2))
     tangent_angles = ((38, 24), (-82, -98), (-202, -218))
     for index, (start_angle, end_angle) in enumerate(tangent_angles):
         def point(angle: float) -> tuple[float, float]:
@@ -1032,7 +1032,7 @@ def draw_vv_loop(
             arrowstyle="-|>",
             mutation_scale=22 if video else 14,
             lw=3.0 if video else 2.2,
-            color=STAGE_COLORS[index] if active_stage == index else ring_grey,
+            color=INK if active_stage == index else ring_grey,
             zorder=3,
         )
     nodes = [
@@ -1045,14 +1045,13 @@ def draw_vv_loop(
     bottom_label_y = centre_y - radius_y - 0.045
     for index, (x, y, symbol, label) in enumerate(nodes):
         active = active_stage == index
-        colour = STAGE_COLORS[index]
         ax.add_patch(
             Ellipse(
                 (x, y),
                 width=2.0 * node_half_width,
                 height=2.0 * node_half_height,
-                fc=colour if active else WHITE,
-                ec=colour,
+                fc=INK if active else WHITE,
+                ec=INK,
                 lw=3.0 if video else 2.0,
                 zorder=4,
             )
@@ -1065,7 +1064,7 @@ def draw_vv_loop(
             ha="center",
             va="center_baseline",
             fontsize=FONT_SIZES["page_title"],
-            color=WHITE if active else colour,
+            color=WHITE if active else INK,
             zorder=5,
         )
         if index == 0:
@@ -1081,7 +1080,7 @@ def draw_vv_loop(
             ha=align,
             va=valign,
             fontsize=FONT_SIZES["micro"],
-            color=colour,
+            color=INK,
             zorder=5,
         )
     registry.text(

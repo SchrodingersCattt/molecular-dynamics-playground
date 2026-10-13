@@ -110,8 +110,8 @@ def stage_rail(
         video=video,
         active_stage=active,
         centre_text=centre_formula,
-        centre_y=0.55,
-        radius_x=0.38,
+        centre_y=0.47,
+        radius_x=0.32,
     )
     if return_phase:
         ax.add_patch(

@@ -48,6 +48,21 @@ R_BLUE = "#2F6FB3"
 V_PURPLE = "#7A4FB8"
 A_ORANGE = "#E07A1F"
 STAGE_COLORS = (R_BLUE, A_ORANGE, V_PURPLE)  # loop stage index: r, a, v
+
+
+def latched_scf_stage_weights(loop_progress: float) -> tuple[float, float, float, float]:
+    """Fill the four SCF nodes in order, then let the next round start blank.
+
+    The first slice of the ring is all white. Each later slice turns the next
+    node black and leaves the earlier nodes black. A finished round is
+    therefore four black nodes, and the following round opens on four white ones.
+    """
+    progress = float(np.clip(loop_progress, 0.0, 1.0))
+    reset = 0.16
+    if progress < reset:
+        return (0.0, 0.0, 0.0, 0.0)
+    active = min(int((progress - reset) / (1.0 - reset) * 4.0), 3)
+    return tuple(1.0 if index <= active else 0.0 for index in range(4))
 FORCE_OLIVE = A_ORANGE
 # Energy and the geometric quantities that enter it share one hue.
 ENERGY_TEAL = "#1F7A7A"

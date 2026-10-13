@@ -32,6 +32,7 @@ from common import (
     LayoutRegistry,
     axes_from_top_slot,
     json_dump,
+    latched_scf_stage_weights,
     mix_hex,
     new_static_figure,
     new_video_figure,
@@ -89,7 +90,7 @@ VIDEO_D = STORY_VIDEO_D
 # Same canvas as 02b so the fitted molecule has the same size in the centre panel.
 RENDER_WIDTH = 1500
 RENDER_HEIGHT = 950
-ASSET_STAMP = "2026-10-13-bs-screen-contours"
+ASSET_STAMP = "2026-10-13-bs-beta-dash"
 POSITION_LAKE = R_BLUE
 VELOCITY_EMERALD = V_PURPLE
 FORCE_DISPLAY_SCALE = 150.0
@@ -132,11 +133,12 @@ BETA_COLORS = (
     "#B8E0C9",
     "#91CFAC",
     "#69BD8E",
-    "#4EA979",
-    "#398C64",
-    "#2F6B4F",
-    "#20533D",
+    "#15944A",
+    "#0E7A3C",
+    "#0A6230",
+    "#064824",
 )
+BETA_DASH = (0, (8.0, 3.0))
 
 VIDEO_DURATION = 30.0
 ION_SNAPSHOT_COUNT = 19
@@ -503,7 +505,7 @@ def render_density_projection_contour_scene(
     with Image.open(structure_image) as structure_source:
         width, height = structure_source.size
     signature = {
-        "pipeline_version": 8,
+        "pipeline_version": 9,
         "asset_stamp": ASSET_STAMP,
         "ion_index": int(ion_index),
         "width": int(width),
@@ -578,14 +580,25 @@ def render_density_projection_contour_scene(
     for channel_index, (field, colors) in enumerate(
         zip(projected_fields, (ALPHA_COLORS, BETA_COLORS))
     ):
+        if channel_index == 1:
+            axes.contour(
+                grid_px,
+                grid_py,
+                field,
+                levels=DENSITY_CONTOUR_LEVELS,
+                colors=["#FFFFFF"] * len(DENSITY_CONTOUR_LEVELS),
+                linewidths=(4.8, 4.6, 4.4, 4.2),
+                linestyles=[BETA_DASH] * len(DENSITY_CONTOUR_LEVELS),
+                antialiased=True,
+            )
         axes.contour(
             grid_px,
             grid_py,
             field,
             levels=DENSITY_CONTOUR_LEVELS,
             colors=[colors[index] for index in (4, 5, 6, 7)],
-            linewidths=(2.2, 2.0, 1.8, 1.6),
-            linestyles="solid" if channel_index == 0 else [(0, (2.0, 3.2))] * len(DENSITY_CONTOUR_LEVELS),
+            linewidths=(2.2, 2.0, 1.8, 1.6) if channel_index == 0 else (3.0, 2.8, 2.6, 2.4),
+            linestyles="solid" if channel_index == 0 else [BETA_DASH] * len(DENSITY_CONTOUR_LEVELS),
             antialiased=True,
         )
     axes.axis("off")
@@ -596,7 +609,7 @@ def render_density_projection_contour_scene(
     output.parent.mkdir(parents=True, exist_ok=True)
     base.convert("RGB").save(output)
     payload = {
-        "pipeline_version": 8,
+        "pipeline_version": 9,
         "signature": signature,
         "density_rendering": "3d_max_normal_projection_contours",
         "density_units": "electron/angstrom^3",
@@ -1097,7 +1110,7 @@ def draw_scf_loop(
     radius_x = 0.072 if video else 0.064
     centre_x = 0.50
     for index, (start, end) in enumerate(arrows):
-        arrow_weight = max(stage_weights[index], stage_weights[(index + 1) % 4])
+        arrow_weight = stage_weights[index]
         registry.arrow(
             ax,
             start,
@@ -1131,7 +1144,7 @@ def draw_scf_loop(
             ha="center",
             va="center",
             fontsize=FONT_SIZES["body"],
-            color=WHITE if weight > 0.48 else DARK_GRAY,
+            color=WHITE if weight > 0.48 else INK,
             weight="normal",
             zorder=5,
         )
@@ -1568,7 +1581,7 @@ def _scf_state(
             "blend": 0.0,
             "curve_progress": 1.0,
             "scf_phase": "curve",
-            "stage_weights": (0.0, 0.0, 0.0, 1.0),
+            "stage_weights": (1.0, 1.0, 1.0, 1.0),
             "progress": progress,
             "scf_progress": progress,
             "rapid": rapid,
@@ -1584,24 +1597,15 @@ def _scf_state(
         1.0,
     )
     if within_cycle < SCF_LOOP_FRACTION:
-        stage_float = loop_progress * 4.0
-        active_stage = min(int(stage_float), 3)
-        following_stage = min(active_stage + 1, 3)
-        stage_within = stage_float - int(stage_float)
-        stage_blend = stage_within
-        stage_weights = [0.0, 0.0, 0.0, 0.0]
-        stage_weights[active_stage] = 1.0 - stage_blend
-        stage_weights[following_stage] = stage_blend
+        stage_weights = list(latched_scf_stage_weights(loop_progress))
         scf_phase = "loop"
     elif within_cycle < curve_start:
-        # Keep the last SCF node visible during the explicit pause.  Do not
-        # wrap the ring back to F before the residual plot begins.
-        stage_weights = [0.0, 0.0, 0.0, 1.0]
+        # The finished round stays black through the pause. The next
+        # electronic iteration opens on four white nodes.
+        stage_weights = [1.0, 1.0, 1.0, 1.0]
         scf_phase = "pause"
     else:
-        # The completed loop remains visible but inactive while the upper
-        # right plot commits the next residual point at constant speed.
-        stage_weights = [0.0, 0.0, 0.0, 1.0]
+        stage_weights = [1.0, 1.0, 1.0, 1.0]
         scf_phase = "curve"
     return {
         "mode": "scf",
