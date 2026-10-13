@@ -1,144 +1,93 @@
 {
-  "schema_version": 1,
-  "stem": "03b_uks_reaction",
-  "data_stem": "uks_tnt_reaction",
-  "backend": "pyscf_uks",
+  "backend": "gpu4pyscf_uks",
   "method": "UKS/PBE0/def2-SVP",
-  "elements": [
-    "C",
-    "C",
-    "C",
-    "C",
-    "C",
-    "C",
-    "C",
-    "H",
-    "H",
-    "H",
-    "H",
-    "H",
-    "N",
-    "N",
-    "N",
-    "O",
-    "O",
-    "O",
-    "O",
-    "O",
-    "O"
-  ],
-  "formula": "C7H5N3O6",
-  "smiles": "Cc1c([N+](=O)[O-])cc([N+](=O)[O-])cc1[N+](=O)[O-]",
-  "atom_map": {
-    "ring_c1_c6": [
-      0,
-      1,
-      2,
-      3,
-      4,
-      5
-    ],
-    "methyl_c": 6,
-    "ring_h": [
-      7,
-      8
-    ],
-    "methyl_h": [
-      9,
-      10,
-      11
-    ],
-    "nitro_n": [
-      12,
-      13,
-      14
-    ],
-    "nitro_o": [
-      [
-        15,
-        16
-      ],
-      [
-        17,
-        18
-      ],
-      [
-        19,
-        20
-      ]
-    ]
-  },
   "charge": 0,
   "spin": 0,
-  "electron_count": 116,
-  "reaction": "TNT -> aryl radical + NO2 radical (C2-NO2 homolytic dissociation)",
-  "breaking_bond": [
-    1,
-    12
-  ],
-  "no2_atoms": [
-    12,
-    15,
-    16
-  ],
-  "aryl_atoms": [
+  "frames": 25,
+  "head_source_indices": [
     0,
-    1,
-    2,
-    3,
-    4,
-    5,
     6,
-    7,
-    8,
-    9,
-    10,
     11,
-    13,
-    14,
     17,
-    18,
-    19,
-    20
+    22,
+    28,
+    33,
+    39,
+    44,
+    50,
+    56,
+    61,
+    67,
+    72,
+    78
   ],
-  "geometry_source": "PBE0/def2-SVP RKS optimization from deterministic TNT reference geometry",
-  "dt_fs": 0.1,
-  "n_steps": 100,
-  "relative_speed_ang_fs": 0.1,
-  "density3d": {
-    "npz": "product/data/uks_tnt_reaction_density3d.npz",
-    "representative_cubes": [
-      "product/qa/03b_uks_reaction/source/density3d/frame_0000_alpha.cube",
-      "product/qa/03b_uks_reaction/source/density3d/frame_0000_beta.cube",
-      "product/qa/03b_uks_reaction/source/density3d/frame_0050_alpha.cube",
-      "product/qa/03b_uks_reaction/source/density3d/frame_0050_beta.cube",
-      "product/qa/03b_uks_reaction/source/density3d/frame_0100_alpha.cube",
-      "product/qa/03b_uks_reaction/source/density3d/frame_0100_beta.cube"
-    ],
-    "units": "electron/angstrom^3",
-    "grid_order": "x,y,z",
-    "shape": [
-      80,
-      64,
-      79
-    ],
-    "spacing_ang": 0.22
-  },
-  "npz": "product/data/uks_tnt_reaction.npz",
-  "source_sha256": "3dea51bec621f39b41ff951fba0f678f18787982cf09429f5e83e434952b23f0",
-  "density3d_sha256": "2bdc75b9842e7ad6f414c55239e317a05f55f80ad82047a83f45015b10aa57b9",
-  "notes": [
-    "Alpha/beta 3-D density is saved on one fixed Cartesian grid for every accepted ionic frame.",
-    "Energetics are qualitative and are not a production barrier or rate calculation."
+  "tail_r_cn_targets": [
+    2.35,
+    2.4722222222222223,
+    2.5944444444444446,
+    2.716666666666667,
+    2.838888888888889,
+    2.9611111111111112,
+    3.0833333333333335,
+    3.2055555555555557,
+    3.327777777777778,
+    3.45
   ],
-  "bohrium_job": {
-    "bohr_id": 20864421,
-    "image": "registry.dp.tech/dptech/dp/native/prod-19853/pyscf-geometric:dev-260608",
-    "machine_type": "c32_m64_cpu",
-    "backend": "pyscf_uks",
-    "status": "completed",
-    "exit_code": 0,
-    "spend_time_seconds": 44629,
-    "completed_at": "2026-10-09 23:30:54 Asia/Shanghai"
-  }
+  "continuation": "constant velocity from the 2.20 \u00c5 frame of job 20864421",
+  "force_unit": "eV/Angstrom",
+  "density_unit": "electron/Angstrom^3",
+  "r_cn": [
+    1.474969805544575,
+    1.534540871645697,
+    1.583865152691106,
+    1.642423089138958,
+    1.6905977336823137,
+    1.7476216301160932,
+    1.7945043224152515,
+    1.8500597817146553,
+    1.8958359190993392,
+    1.9502405193166081,
+    2.0041820836436757,
+    2.048864183678539,
+    2.10225598561465,
+    2.146629816954904,
+    2.199814627048606,
+    2.350500144418405,
+    2.4746226493602497,
+    2.5987669821739385,
+    2.7229301573200586,
+    2.847109709643017,
+    2.9624321580186725,
+    3.086637785161964,
+    3.2108546503712745,
+    3.3350814979437953,
+    3.45044299511834
+  ],
+  "spin_square": [
+    5.330067182285347e-06,
+    2.7482629860742236e-07,
+    1.4383147117769113e-08,
+    7.645866162420134e-10,
+    4.128963837501942e-11,
+    2.1245227799226996e-12,
+    -8.526512829121202e-14,
+    -2.1316282072803006e-13,
+    -1.9184653865522705e-13,
+    -1.8474111129762605e-13,
+    -1.9895196601282805e-13,
+    -2.1316282072803006e-13,
+    -2.2737367544323206e-13,
+    -2.1316282072803006e-13,
+    -2.0605739337042905e-13,
+    0.3222862107512867,
+    0.5508993810108436,
+    0.7018435256791875,
+    0.8029796511695508,
+    0.8711660118212166,
+    0.9142482632619249,
+    0.9464422751561443,
+    0.9683641393301556,
+    0.9834343877619602,
+    0.9931831741294559
+  ]
 }

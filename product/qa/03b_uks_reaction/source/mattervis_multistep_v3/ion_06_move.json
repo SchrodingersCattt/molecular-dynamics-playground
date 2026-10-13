@@ -4,19 +4,19 @@
   "format": "png",
   "width": 1500,
   "height": 950,
-  "plan_sha256": "a8d5d18bd2638bdc178fe522e6a40e0bf4bd23b7d66b40122c4c4ccc75db3e64",
-  "output_sha256": "9bccc6dd494813a96b7219cf1d22316c2c941af9543cb6c88e6234cc61dac5c6",
+  "plan_sha256": "5e36a34910a17f094af70c9db3d2ed72d3d37a883c8c4021650070bafffda1b9",
+  "output_sha256": "33c255339764864dd99e2388a687b7dcc33ee483563acf3d4da8f4fe001c8b6d",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\mattervis_multistep_v3\\ion_06_move.png",
-  "source_sha256": "74d27fea52cd64a281010907e385aa5bfe3b6e89d8aaf3227d720ac14f68ec82",
+  "source_sha256": "abc9f5958fccb53e928813a8307a69db02f81a74d9940b5c1d0dbc4273256319",
   "frame": 6,
   "view": "cluster",
   "camera": {
     "target": [
-      0.23172526697955448,
-      0.0603797580155548,
-      -0.38415238483870123
+      0.1109735740179911,
+      0.004291716427221046,
+      -0.10379914703478446
     ],
-    "ortho_scale": 3.8090758788213326,
+    "ortho_scale": 4.148468498721203,
     "direction": [
       0.23121552453364444,
       0.9300234133236358,
@@ -58,14 +58,14 @@
     "actual_backend": "cpu",
     "camera": {
       "position": [
-        13.573108657887019,
-        28.74976385248281,
-        15.13540779875212
+        13.452356964925457,
+        28.69367581089448,
+        15.415761036556034
       ],
       "target": [
-        8.023936069079554,
-        6.4292019327155545,
-        8.2798116054613
+        7.9031843761179905,
+        6.373113891127221,
+        8.560164843265216
       ],
       "up": [
         0.490014527356601,
@@ -76,7 +76,7 @@
       "fov_y_deg": 45.0,
       "near": 0.01,
       "far": 10000.0,
-      "ortho_scale": 3.8090758788213326
+      "ortho_scale": 4.148468498721203
     },
     "source": {
       "path": null,

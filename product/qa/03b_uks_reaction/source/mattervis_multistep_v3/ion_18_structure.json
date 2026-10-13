@@ -4,19 +4,19 @@
   "format": "png",
   "width": 1500,
   "height": 950,
-  "plan_sha256": "e385c1cd731f8eb0f279f8ad58466dd2934aabefa23b1c1cbaca9c27571a30f6",
-  "output_sha256": "ddbfab8fc649a88d34a9ddaeef9d593e57b75a2facd38b2e7d6f3c97f6976943",
+  "plan_sha256": "ff956871358024e289d46d9738b10960e25a8e96ec1954a7a2983be1e8cd45c6",
+  "output_sha256": "4806ef4260c7cfe9b2f3d63da7ac4fb091a67d228b22e16f2db5b9d6821f23f3",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\mattervis_multistep_v3\\ion_18_structure.png",
-  "source_sha256": "74d27fea52cd64a281010907e385aa5bfe3b6e89d8aaf3227d720ac14f68ec82",
+  "source_sha256": "abc9f5958fccb53e928813a8307a69db02f81a74d9940b5c1d0dbc4273256319",
   "frame": 18,
   "view": "cluster",
   "camera": {
     "target": [
-      0.23172526697955448,
-      0.0603797580155548,
-      -0.38415238483870123
+      0.1109735740179911,
+      0.004291716427221046,
+      -0.10379914703478446
     ],
-    "ortho_scale": 3.8090758788213326,
+    "ortho_scale": 4.148468498721203,
     "direction": [
       0.23121552453364444,
       0.9300234133236358,
@@ -28,9 +28,9 @@
       0.7916337182449558
     ],
     "scene_offset": [
-      7.7308722517,
-      6.4415472138,
-      8.7878053318
+      7.695709040600001,
+      6.4799107391,
+      8.8562098117
     ]
   },
   "render_settings": {
@@ -58,14 +58,14 @@
     "actual_backend": "cpu",
     "camera": {
       "position": [
-        13.51177010748702,
-        28.82248889158281,
-        15.259249140252116
+        13.355855203425458,
+        28.80476437529448,
+        15.608006857956035
       ],
       "target": [
-        7.962597518679555,
-        6.501926971815554,
-        8.403652946961298
+        7.8066826146179915,
+        6.484202455527221,
+        8.752410664665215
       ],
       "up": [
         0.490014527356601,
@@ -76,7 +76,7 @@
       "fov_y_deg": 45.0,
       "near": 0.01,
       "far": 10000.0,
-      "ortho_scale": 3.8090758788213326
+      "ortho_scale": 4.148468498721203
     },
     "source": {
       "path": null,

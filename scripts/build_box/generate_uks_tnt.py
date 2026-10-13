@@ -519,17 +519,31 @@ def main() -> None:
             basis="def2-svp",
             xc="pbe0",
             density_grid=grid,
+            polarized_atoms=NO2_ATOMS.tolist(),
         )
-        state: dict[str, tuple[np.ndarray, np.ndarray] | None] = {"dm": None}
+        state: dict[str, object] = {"dm": None, "s2": 0.0}
 
         def evaluator(positions: np.ndarray, step: int, branch: int) -> UKSResult:
+            r_cn = float(np.linalg.norm(positions[BREAKING_N] - positions[BREAKING_C]))
+            # Once a closed-shell density is saved, reusing it keeps later
+            # frames on the restricted solution.  Past 1.75 Å, rebuild the
+            # NO2-versus-aryl guess unless the previous frame already carries
+            # a real spin polarization.
+            polarized = float(state["s2"]) >= 0.20
+            use_saved = state["dm"] is not None and (polarized or r_cn < 1.75)
             result = engine.evaluate(
                 positions,
-                dm0=state["dm"],
+                dm0=state["dm"] if use_saved else None,
                 branch_id=branch,
-                seed_if_missing=state["dm"] is None,
+                seed_if_missing=not use_saved,
+                break_if_closed=r_cn >= 1.90 and not polarized,
             )
             state["dm"] = result.density_matrix
+            state["s2"] = float(result.spin_square)
+            print(
+                f"step {step:03d} r_cn={r_cn:.3f} <S2>={result.spin_square:.4f}",
+                flush=True,
+            )
             return result
         backend = "pyscf_uks"
     frames = run_trajectory(

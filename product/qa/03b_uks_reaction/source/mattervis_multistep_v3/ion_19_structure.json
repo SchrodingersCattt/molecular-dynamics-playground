@@ -1,0 +1,106 @@
+{
+  "schema": "mattervis.render-result/v1",
+  "backend": "cpu",
+  "format": "png",
+  "width": 1500,
+  "height": 950,
+  "plan_sha256": "696630fa7ef9c9fd5999afdd359cc4e9295d152d3e8adb285122ba045bdca5af",
+  "output_sha256": "8727b0539e00e7dcbe4801d8246ac7a3a708a57bafcd63f25e6144741bd3b0f8",
+  "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\mattervis_multistep_v3\\ion_19_structure.png",
+  "source_sha256": "abc9f5958fccb53e928813a8307a69db02f81a74d9940b5c1d0dbc4273256319",
+  "frame": 19,
+  "view": "cluster",
+  "camera": {
+    "target": [
+      0.1109735740179911,
+      0.004291716427221046,
+      -0.10379914703478446
+    ],
+    "ortho_scale": 4.148468498721203,
+    "direction": [
+      0.23121552453364444,
+      0.9300234133236358,
+      0.28564984138711746
+    ],
+    "up": [
+      0.490014527356601,
+      -0.3649682439845321,
+      0.7916337182449558
+    ],
+    "scene_offset": [
+      7.6822165346,
+      6.4941351092,
+      8.8820758083
+    ]
+  },
+  "render_settings": {
+    "width": 1500,
+    "height": 950,
+    "atom_scale": 0.9,
+    "bond_radius": 0.102,
+    "show_cell": false,
+    "include_boundary_replicas": true,
+    "show_bonds": true,
+    "cell_color": "#333333",
+    "cell_width_px": 2.0
+  },
+  "vector_signature": "[]",
+  "vector_count": 0,
+  "vector_renderer": "MatterVis native world-space vector_overlays",
+  "mesh_signature": "[]",
+  "atom_signature": "{\"color\":{},\"opacity\":{}}",
+  "mesh_renderer": "MatterVis native world-space mesh overlay",
+  "pipeline_version": 7,
+  "warnings": [],
+  "metadata": {
+    "transparent_compositor": "per-pixel-fragment-list",
+    "scale": 1,
+    "actual_backend": "cpu",
+    "camera": {
+      "position": [
+        13.342362697425457,
+        28.818988745394478,
+        15.633872854556035
+      ],
+      "target": [
+        7.793190108617991,
+        6.498426825627221,
+        8.778276661265215
+      ],
+      "up": [
+        0.490014527356601,
+        -0.3649682439845321,
+        0.7916337182449558
+      ],
+      "projection": "orthographic",
+      "fov_y_deg": 45.0,
+      "near": 0.01,
+      "far": 10000.0,
+      "ortho_scale": 4.148468498721203
+    },
+    "source": {
+      "path": null,
+      "input_format": null,
+      "frame": null
+    },
+    "requirements": {
+      "schema": "mattervis.requirements/v1",
+      "requested": [
+        "png"
+      ],
+      "capabilities": [
+        "core"
+      ],
+      "extras": [],
+      "available": true,
+      "missing_capabilities": [],
+      "install": "python -m pip install \"matter-vis\"",
+      "notes": [
+        "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+      ]
+    },
+    "install": "python -m pip install \"matter-vis\"",
+    "fallback": null,
+    "atom_property_color": null
+  }
+}

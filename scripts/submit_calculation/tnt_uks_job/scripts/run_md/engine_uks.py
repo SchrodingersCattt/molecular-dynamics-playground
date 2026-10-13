@@ -136,33 +136,52 @@ def _ao_fragment_weights(mol: Any, fragment_atoms: Iterable[int]) -> np.ndarray:
 def seed_broken_symmetry_guess(
     mf: Any,
     *,
-    oh_atoms: Iterable[int] = (1, 2),
-    seed_strength: float = 0.035,
+    polarized_atoms: Iterable[int] = (1, 2),
+    electrons: float = 1.0,
+    oh_atoms: Iterable[int] | None = None,
 ) -> tuple[np.ndarray, np.ndarray]:
-    """Build a charge-preserving alpha/beta perturbation.
+    """Put one unpaired electron on a fragment and the opposite spin elsewhere.
 
-    The initial total density comes from PySCF's MINAO guess.  The perturbation
-    only separates the two spin channels on the OH and ClO3 AO blocks; it is
-    intentionally small so the converged state, rather than the seed, controls
-    the result.
+    The total density is PySCF's MINAO guess.  ``polarized_atoms`` receives
+    about one alpha electron and the complementary fragment receives the
+    matching beta electron, so the guess is a broken-symmetry singlet:
+    the electron count and the net spin both stay at the molecular values.
+    ``oh_atoms`` is the older name of the same fragment list.
     """
 
+    fragment = polarized_atoms if oh_atoms is None else oh_atoms
     dm = np.asarray(mf.get_init_guess(key="minao"), dtype=float)
     if dm.ndim == 3:
         dm = np.sum(dm, axis=0)
     overlap = np.asarray(mf.get_ovlp(), dtype=float)
-    oh = _ao_fragment_weights(mf.mol, oh_atoms)
-    other = 1.0 - oh
-    mask = np.diag(oh - other)
-    delta = overlap @ mask @ overlap
-    # Remove the component that would alter the total S-weighted spin count.
-    trace_delta = float(np.trace(overlap @ delta))
-    trace_metric = max(float(np.trace(overlap @ overlap)), 1.0e-12)
-    delta = delta - (trace_delta / trace_metric) * overlap
-    delta *= float(seed_strength)
-    dm_alpha = 0.5 * dm + delta
-    dm_beta = 0.5 * dm - delta
-    return dm_alpha, dm_beta
+    weights = _ao_fragment_weights(mf.mol, fragment)
+    complement = 1.0 - weights
+    fragment_dm = weights[:, None] * dm * weights[None, :]
+    complement_dm = complement[:, None] * dm * complement[None, :]
+    fragment_electrons = float(np.einsum("ij,ji->", fragment_dm, overlap))
+    complement_electrons = float(np.einsum("ij,ji->", complement_dm, overlap))
+    # dma = 0.5 dm + a*fragment - b*complement keeps both channels
+    # positive when a and b stay below one half.
+    alpha_gain = min(0.45, float(electrons) / max(2.0 * fragment_electrons, 1.0e-8))
+    beta_gain = min(0.45, float(electrons) / max(2.0 * complement_electrons, 1.0e-8))
+    delta = alpha_gain * fragment_dm - beta_gain * complement_dm
+    return 0.5 * dm + delta, 0.5 * dm - delta
+
+
+def _restart_from_internal_instability(mf: Any) -> bool:
+    """Follow an internal UKS instability when the closed shell is not stable."""
+
+    original = np.asarray(mf.mo_coeff)
+    try:
+        rotated = mf.stability(internal=True, external=False)
+    except Exception as exc:
+        print(f"[WARN] UKS stability analysis failed: {exc}", flush=True)
+        return False
+    orbitals = np.asarray(rotated[0] if isinstance(rotated, tuple) else rotated)
+    if orbitals.shape != original.shape or np.allclose(orbitals, original, atol=1.0e-4):
+        return False
+    mf.kernel(dm0=mf.make_rdm1(orbitals, mf.mo_occ))
+    return True
 
 
 def _plane_grid(positions_ang: np.ndarray, *, nx: int = 96, ny: int = 72) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
@@ -197,6 +216,9 @@ def evaluate_spin_density_plane(
     ao = dft.numint.eval_ao(mol, coords_bohr)
     rho_alpha = np.asarray(numint.eval_rho(mol, ao, dm_alpha), dtype=float)
     rho_beta = np.asarray(numint.eval_rho(mol, ao, dm_beta), dtype=float)
+    # PySCF evaluates densities in electron/Bohr^3.  The visual/data
+    # contract stores all spatial fields in electron/Angstrom^3, so converting
+    # the plane here keeps it consistent with the fixed 3-D grid below.
     density_scale = ANG_TO_BOHR**3
     shape = (len(y), len(x))
     return (
@@ -233,7 +255,8 @@ def evaluate_spin_density_grid(
     rho_alpha = np.asarray(numint.eval_rho(mol, ao, dm_alpha), dtype=float)
     rho_beta = np.asarray(numint.eval_rho(mol, ao, dm_beta), dtype=float)
     # PySCF reports electron/Bohr^3; the project stores spatial fields in
-    # electron/Angstrom^3.
+    # electron/Angstrom^3.  Since 1 Angstrom = ANG_TO_BOHR Bohr, the numeric
+    # density value is multiplied by ANG_TO_BOHR**3.
     scale = ANG_TO_BOHR**3
     shape = (len(x), len(y), len(z))
     return (rho_alpha.reshape(shape) * scale, rho_beta.reshape(shape) * scale)
@@ -254,6 +277,7 @@ class UKSEngine:
         conv_tol: float = 1.0e-8,
         max_cycle: int = 100,
         density_grid: tuple[np.ndarray, np.ndarray, np.ndarray] | None = None,
+        polarized_atoms: Iterable[int] | None = None,
     ) -> None:
         self.elements = tuple(str(element) for element in elements)
         self.charge = int(charge)
@@ -264,6 +288,7 @@ class UKSEngine:
         self.conv_tol = float(conv_tol)
         self.max_cycle = int(max_cycle)
         self.density_grid = density_grid
+        self.polarized_atoms = None if polarized_atoms is None else tuple(int(index) for index in polarized_atoms)
 
     def evaluate(
         self,
@@ -272,6 +297,7 @@ class UKSEngine:
         dm0: tuple[np.ndarray, np.ndarray] | None = None,
         branch_id: int = 0,
         seed_if_missing: bool = True,
+        break_if_closed: bool = False,
     ) -> UKSResult:
         dft, _, _, _ = _require_pyscf()
         mol = make_molecule(
@@ -298,13 +324,24 @@ class UKSEngine:
 
         mf.callback = callback
         if dm0 is None and seed_if_missing:
-            dm0 = seed_broken_symmetry_guess(mf)
+            seed_kwargs = {}
+            if self.polarized_atoms is not None:
+                seed_kwargs["polarized_atoms"] = self.polarized_atoms
+            dm0 = seed_broken_symmetry_guess(mf, **seed_kwargs)
         energy_ha = float(mf.kernel(dm0=dm0))
         if not mf.converged:
             raise RuntimeError(
                 f"UKS did not converge for 03b geometry; cycles={mf.cycles}, "
                 f"last energy={energy_ha:.12f} Ha"
             )
+        ss_probe, _ = mf.spin_square()
+        if break_if_closed and float(ss_probe) < 0.05 and _restart_from_internal_instability(mf):
+            if not mf.converged:
+                raise RuntimeError(
+                    f"UKS stability restart did not converge; cycles={mf.cycles}, "
+                    f"last energy={float(mf.e_tot):.12f} Ha"
+                )
+            energy_ha = float(mf.e_tot)
         dm_alpha, dm_beta = (np.asarray(item, dtype=float) for item in mf.make_rdm1())
         gradient = np.asarray(mf.nuc_grad_method().kernel(), dtype=float)
         forces = -gradient * GRAD_HA_BOHR_TO_EV_ANG

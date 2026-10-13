@@ -89,7 +89,7 @@ VIDEO_D = STORY_VIDEO_D
 # Same canvas as 02b so the fitted molecule has the same size in the centre panel.
 RENDER_WIDTH = 1500
 RENDER_HEIGHT = 950
-ASSET_STAMP = "2026-10-12-pose-aligned-same-nuclei"
+ASSET_STAMP = "2026-10-13-bs-radical-pair"
 POSITION_LAKE = R_BLUE
 VELOCITY_EMERALD = V_PURPLE
 FORCE_DISPLAY_SCALE = 150.0
@@ -615,7 +615,13 @@ def load_data() -> dict[str, np.ndarray]:
         raw = {key: archive[key] for key in archive.files}
     manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8")) if MANIFEST_PATH.exists() else {}
     source_positions = np.asarray(raw["positions"], dtype=float)
-    source_indices = np.rint(np.linspace(0, len(source_positions) - 1, ION_SNAPSHOT_COUNT)).astype(int)
+    # The GPU broken-symmetry trajectory stores the frames the video should
+    # play.  The original 101-frame kick is still subsampled to 19 ions.
+    if len(source_positions) <= 40:
+        source_indices = np.arange(len(source_positions), dtype=int)
+    else:
+        source_indices = np.rint(np.linspace(0, len(source_positions) - 1, ION_SNAPSHOT_COUNT)).astype(int)
+    n_ions = len(source_indices)
     positions = source_positions[source_indices]
     elements = np.asarray(raw["elements"]).astype(str)
     forces_ev_ang = np.asarray(raw["forces"], dtype=float)[source_indices]
@@ -666,11 +672,11 @@ def load_data() -> dict[str, np.ndarray]:
         plane_x = np.asarray(raw["spin_density_x"], dtype=float)
         plane_y = np.asarray(raw["spin_density_y"], dtype=float)
         density_plane_source = "legacy_saved_2d_plane"
-    counts = np.full(ION_SNAPSHOT_COUNT, 11, dtype=int)
+    counts = np.full(n_ions, 11, dtype=int)
     counts[0] = 12
-    expanded_alpha = np.zeros((ION_SNAPSHOT_COUNT, int(counts.max()), *rho_alpha.shape[1:]), dtype=float)
+    expanded_alpha = np.zeros((n_ions, int(counts.max()), *rho_alpha.shape[1:]), dtype=float)
     expanded_beta = np.zeros_like(expanded_alpha)
-    residuals = np.zeros((ION_SNAPSHOT_COUNT, int(counts.max())), dtype=float)
+    residuals = np.zeros((n_ions, int(counts.max())), dtype=float)
     for ion, count in enumerate(counts):
         # The UKS job stores converged density matrices, not a density matrix
         # for every callback iteration.  Repeat the measured ionic field while

@@ -1,6 +1,6 @@
 {
   "stem": "03b_uks_reaction",
-  "backend": "pyscf_uks",
+  "backend": "gpu4pyscf_uks",
   "static": {
     "width": 3508,
     "height": 2480,
