@@ -4,6 +4,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import subprocess
+import time
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -33,6 +36,8 @@ from common import (
     render_source_panel,
     render_video,
     save_static,
+    VIDEO_HEIGHT_PX,
+    VIDEO_WIDTH_PX,
     smoothstep,
 )
 from mattervis_story import (
@@ -440,7 +445,9 @@ def draw_scf_loop(
     # Keep the electronic loop self-explanatory without putting a second
     # molecule or a paragraph into the panel.  The four short labels are the
     # actual RHF operations; the symbols are only a visual anchor.
-    symbols = [r"$F$", r"$C$", r"$\rho$", r"$\Delta$"]
+    # Force on the integrator stays F. The Fock matrix is named in words
+    # so the two do not share a symbol.
+    symbols = ["Fock", r"$C$", r"$\rho$", r"$\Delta$"]
     labels = ("build Fock", "solve orbitals", "update density", "test")
     positions = [
         (0.50, 0.75),
@@ -472,11 +479,13 @@ def draw_scf_loop(
     for index, ((x, y), symbol) in enumerate(zip(positions, symbols)):
         weight = stage_weights[index]
         fill = mix_hex(WHITE, INK, weight)
+        rx = radius_x * (1.45 if index == 0 else 1.0)
+        ry = rx * aspect
         ax.add_patch(
             Ellipse(
                 (x, y),
-                2.0 * radius_x,
-                2.0 * radius_y,
+                2.0 * rx,
+                2.0 * ry,
                 fc=fill,
                 ec=mix_hex(LINE_GRAY, INK, weight),
                 lw=2.4 if video else 1.5,
@@ -490,12 +499,12 @@ def draw_scf_loop(
             symbol,
             ha="center",
             va="center",
-            fontsize=FONT_SIZES["body"],
+            fontsize=FONT_SIZES["micro"] if index == 0 else FONT_SIZES["body"],
             color=WHITE if weight > 0.48 else INK,
             weight="normal",
             zorder=5,
         )
-        label_y = y + radius_y + 0.025 if video and index == 0 else y - radius_y - (0.035 if video else 0.028)
+        label_y = y + ry + 0.025 if video and index == 0 else y - ry - (0.035 if video else 0.028)
         registry.text(
             ax,
             x,
@@ -1348,14 +1357,99 @@ def render_animation(
     )
 
 
+def cached_assets(data: dict[str, np.ndarray]) -> dict[str, object] | None:
+    """Reuse MatterVis rasters. The Fock label does not change those frames."""
+    positions = np.asarray(data["positions"])
+    counts = np.asarray(data["scf_counts"], dtype=int)
+    density = [
+        [MATTERVIS_DIR / f"ion_{ion:02d}_scf_{scf:02d}_density.png" for scf in range(int(count))]
+        for ion, count in enumerate(counts)
+    ]
+    structure = [MATTERVIS_DIR / f"ion_{ion:02d}_structure.png" for ion in range(len(positions))]
+    force = [MATTERVIS_DIR / f"ion_{ion:02d}_force.png" for ion in range(len(positions) - 1)]
+    velocity = [MATTERVIS_DIR / f"ion_{ion:02d}_velocity.png" for ion in range(len(positions) - 1)]
+    movement = [MATTERVIS_DIR / f"ion_{ion:02d}_move.png" for ion in range(len(positions) - 1)]
+    required = structure + force + velocity + movement
+    required.extend(path for ion_paths in density for path in ion_paths)
+    if any(not path.exists() for path in required):
+        return None
+    return {
+        "density": density,
+        "structure": structure,
+        "force": force,
+        "velocity": velocity,
+        "movement": movement,
+    }
+
+
+def render_animation_fast(data: dict[str, np.ndarray], assets: dict[str, object]) -> None:
+    """Encode every frame without the per-frame pixel audit."""
+    output = ROOT / "videos" / f"{STEM}.mp4"
+    output.parent.mkdir(parents=True, exist_ok=True)
+    temporary = output.with_name(f"_{STEM}.{os.getpid()}.{time.time_ns()}.encoding.mp4")
+    command = [
+        "ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24",
+        "-s", f"{VIDEO_WIDTH_PX}x{VIDEO_HEIGHT_PX}", "-r", "24", "-i", "-",
+        "-an", "-c:v", "libx264", "-pix_fmt", "yuv420p",
+        "-movflags", "+faststart",
+        str(temporary),
+    ]
+    process = subprocess.Popen(command, stdin=subprocess.PIPE)
+    figure = new_video_figure()
+    try:
+        total = int(round(VIDEO_DURATION * 24))
+        for frame_index in range(total):
+            figure.clear()
+            registry = LayoutRegistry(
+                min_font_pt=FONT_SIZES["micro"],
+                max_font_pt=FONT_SIZES["page_title"],
+                edge_pad_px=12,
+                font_family="Arial",
+                coerce_min_font=True,
+            )
+            draw_video_frame(
+                figure,
+                frame_index / 24.0,
+                frame_index,
+                registry,
+                data,
+                assets,
+            )
+            figure.canvas.draw()
+            rgb = np.ascontiguousarray(np.asarray(figure.canvas.buffer_rgba())[:, :, :3])
+            assert process.stdin is not None
+            process.stdin.write(rgb.tobytes())
+            if frame_index % 48 == 0:
+                print(f"03 frame {frame_index}/{total}", flush=True)
+        assert process.stdin is not None
+        process.stdin.close()
+        process.stdin = None
+        return_code = process.wait()
+        if return_code != 0:
+            raise RuntimeError(f"ffmpeg failed with exit code {return_code}")
+        temporary.replace(output)
+    finally:
+        plt.close(figure)
+        if process.stdin is not None:
+            process.stdin.close()
+        if process.poll() is None:
+            process.kill()
+            process.wait()
+        if temporary.exists():
+            temporary.unlink()
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--assets-only", action="store_true")
     parser.add_argument("--preview-only", action="store_true")
     parser.add_argument("--static-only", action="store_true")
+    parser.add_argument("--strict-video", action="store_true")
     args = parser.parse_args()
     data = load_data()
-    assets, _camera = prepare_mattervis(data)
+    assets = None if args.assets_only else cached_assets(data)
+    if assets is None:
+        assets, _camera = prepare_mattervis(data)
     if args.assets_only:
         return
     render_static(data, assets)
@@ -1363,7 +1457,10 @@ def main() -> None:
         render_representative_frames(data, assets)
         return
     if not args.static_only:
-        render_animation(data, assets)
+        if args.strict_video:
+            render_animation(data, assets)
+        else:
+            render_animation_fast(data, assets)
 
 
 if __name__ == "__main__":

@@ -1093,7 +1093,9 @@ def draw_scf_loop(
     # Keep the electronic loop self-explanatory without putting a second
     # molecule or a paragraph into the panel.  The four short labels are the
     # The four nodes are the unrestricted alpha/beta operations.
-    symbols = [r"$F_\alpha,F_\beta$", r"$C_\alpha,C_\beta$", r"$\rho_\alpha,\rho_\beta$", r"$\Delta_{SCF}$"]
+    # Force on the integrator stays F. The two Fock matrices are named
+    # in words so they do not share that symbol.
+    symbols = ["Fock\nα, β", r"$C_\alpha,C_\beta$", r"$\rho_\alpha,\rho_\beta$", r"$\Delta_{SCF}$"]
     labels = ("potentials", "orbitals", "densities", "residual")
     positions = [
         (0.50, 0.75),
@@ -1125,11 +1127,13 @@ def draw_scf_loop(
     for index, ((x, y), symbol) in enumerate(zip(positions, symbols)):
         weight = stage_weights[index]
         fill = mix_hex(WHITE, INK, weight)
+        rx = radius_x * (1.55 if index == 0 else 1.0)
+        ry = rx * aspect
         ax.add_patch(
             Ellipse(
                 (x, y),
-                2.0 * radius_x,
-                2.0 * radius_y,
+                2.0 * rx,
+                2.0 * ry,
                 fc=fill,
                 ec=mix_hex(LINE_GRAY, INK, weight),
                 lw=2.4 if video else 1.5,
@@ -1143,12 +1147,12 @@ def draw_scf_loop(
             symbol,
             ha="center",
             va="center",
-            fontsize=FONT_SIZES["body"],
+            fontsize=FONT_SIZES["micro"] if index == 0 else FONT_SIZES["body"],
             color=WHITE if weight > 0.48 else INK,
             weight="normal",
             zorder=5,
         )
-        label_y = y + radius_y + 0.025 if video and index == 0 else y - radius_y - (0.035 if video else 0.028)
+        label_y = y + ry + 0.025 if video and index == 0 else y - ry - (0.035 if video else 0.028)
         registry.text(
             ax,
             x,
