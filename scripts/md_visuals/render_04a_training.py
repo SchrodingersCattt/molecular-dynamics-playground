@@ -8,7 +8,7 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.patches import Rectangle
+from matplotlib.patches import ConnectionPatch, Ellipse, Rectangle
 
 from common import (
     A_ORANGE, ENERGY_TEAL, FONT_SIZES, INK, LINE_GRAY, LIGHT_GRAY,
@@ -16,7 +16,7 @@ from common import (
     new_video_figure, render_video, smoothstep,
 )
 from mattervis_story import _composition_rgba
-from render_nnmd_end_to_end import camera_for_source, draw_box_magnifier, load_data, prepare_assets
+from render_nnmd_end_to_end import _axes_aspect, camera_for_source, draw_box_magnifier, load_data, prepare_assets
 
 ROOT = Path(__file__).resolve().parents[2] / "product"
 DATA_DIR = ROOT / "data"
@@ -146,6 +146,7 @@ def _draw_network(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
         forward_phase = 1.0
     back_t = np.clip((time_seconds - 8.5) / 3.0, 0.0, 1.0)
     backward_p = smoothstep(back_t)
+    backprop_active = 8.5 <= time_seconds < 11.5
     update_t = smoothstep(np.clip((time_seconds - 11.5) / 2.0, 0.0, 1.0))
     update_on = time_seconds >= 11.5
     if time_seconds < 8.5:
@@ -160,12 +161,22 @@ def _draw_network(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
 
     input_rect = (0.035, 0.420, 0.205, 0.755)
     hidden_rects = [(0.280, 0.385, 0.385, 0.795), (0.455, 0.385, 0.560, 0.795), (0.630, 0.385, 0.735, 0.795)]
-    # Scalar energy output: wider and shorter than the tensor blocks so the
-    # symbol and numeric value stay inside one clean output card.
-    output_rect = (0.755, 0.500, 0.970, 0.700)
+    # Scalar energy output: a coloured node, with the numeric value labelled
+    # below in black. Tensor layers keep the matrix/grid treatment.
+    output_center = (0.860, 0.630)
+    output_radius = 0.065
     layer_centres = [0.5 * (rect[0] + rect[2]) for rect in hidden_rects]
-    input_active = 1.0 if time_seconds >= 2.0 else smoothstep(np.clip((time_seconds - 0.3) / 0.7, 0.0, 1.0))
-    _heat_block(ax, input_rect, fill=INPUT_FILL if input_active > 0.2 else WHITE, edge=NAVY, active=input_active)
+    # Keep the descriptor quiet during the sample/zoom phase.  It is the
+    # network's first evaluated block, so the navy border should appear only
+    # when the forward pass reaches the network at 2 s.
+    input_active = 1.0 if time_seconds >= 2.0 else 0.0
+    _heat_block(
+        ax,
+        input_rect,
+        fill=INPUT_FILL if input_active > 0.2 else WHITE,
+        edge=NAVY if time_seconds >= 2.0 else LINE_GRAY,
+        active=input_active,
+    )
     registry.text(ax, 0.120, 0.825, "descriptor", ha="center", va="bottom", fontsize=FONT_SIZES["micro"], color=INK)
     registry.text(ax, 0.120, 0.350, r"$\mathbf{R}_i$", ha="center", va="top", fontsize=FONT_SIZES["body"], color=INK)
 
@@ -174,8 +185,8 @@ def _draw_network(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
         forward_arrival = float(np.clip((forward_phase - (0.10 + 0.22 * index)) / 0.20, 0.0, 1.0))
         reverse_offset = (2 - index) * 0.30
         reverse_arrival = float(np.clip((back_t * 1.30 - reverse_offset) / 0.36, 0.0, 1.0))
-        active = max(forward_arrival, reverse_arrival if backward_p > 0.0 else 0.0)
-        if backward_p > 0.0:
+        active = max(forward_arrival, reverse_arrival if backprop_active else 0.0)
+        if backprop_active and backward_p > 0.0:
             edge = GRADIENT_ORANGE if reverse_arrival > 0.02 else LINE_GRAY
             fill = LOSS_FILL if reverse_arrival > 0.25 else WHITE
         else:
@@ -184,36 +195,48 @@ def _draw_network(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
         _heat_block(ax, rect, fill=fill, edge=edge, active=active)
         label = ("G¹", "G²", "fit")[index]
         registry.text(ax, layer_centres[index], 0.825, label, ha="center", va="bottom", fontsize=FONT_SIZES["micro"], color=INK)
-        if backward_p <= 0.0:
+        if not backprop_active:
             registry.text(ax, layer_centres[index], 0.350, label, ha="center", va="top", fontsize=FONT_SIZES["micro"], color=INK)
 
     output_active = float(np.clip((forward_phase - 0.76) / 0.20, 0.0, 1.0))
     if time_seconds >= 13.5:
         output_active = 1.0
     output_ready = output_active > 0.35
-    ax.add_patch(Rectangle(
-        (output_rect[0], output_rect[1]), output_rect[2] - output_rect[0], output_rect[3] - output_rect[1],
-        fc=PREDICTION_FILL if output_ready else WHITE,
-        ec=ENERGY_TEAL if output_ready else LINE_GRAY,
-        lw=1.6, zorder=3,
-    ))
     if output_ready:
-        output_x = 0.5 * (output_rect[0] + output_rect[2])
-        registry.text(ax, output_x, 0.650, r"$\hat{\varepsilon}_{i}$", ha="center", va="center", fontsize=FONT_SIZES["body"], color=INK)
+        aspect = _axes_aspect(ax)
+        output_edge = GRADIENT_ORANGE if backprop_active and backward_p > 0.0 else ENERGY_TEAL
+        output_fill = LOSS_FILL if backprop_active and backward_p > 0.0 else PREDICTION_FILL
+        ax.add_patch(Ellipse(
+            output_center,
+            2.0 * output_radius,
+            2.0 * output_radius * aspect,
+            fc=output_fill,
+            ec=output_edge,
+            lw=1.8,
+            zorder=3,
+        ))
+        # The scalar node stays a simple coloured circle.  Its symbol and
+        # value are black labels below it, so the node is not confused with a
+        # tensor layer or a card.
+        output_x = output_center[0]
+        registry.text(ax, output_x, 0.565, r"$\hat{\varepsilon}_{i}$", ha="center", va="top", fontsize=FONT_SIZES["body"], color=INK)
         value = float(demo["_arrays"]["updated"][0] if time_seconds >= 13.5 else demo["_arrays"]["initial"][0])
-        registry.text(ax, output_x, 0.555, f"{_fmt_ev(value)} eV", ha="center", va="center", fontsize=FONT_SIZES["body"], color=INK)
+        registry.text(ax, output_x, 0.505, f"{_fmt_ev(value)} eV", ha="center", va="top", fontsize=FONT_SIZES["body"], color=INK)
 
     links = [
         ((input_rect[2], 0.600), (hidden_rects[0][0], 0.600)),
         ((hidden_rects[0][2], 0.600), (hidden_rects[1][0], 0.600)),
         ((hidden_rects[1][2], 0.600), (hidden_rects[2][0], 0.600)),
-        ((hidden_rects[2][2], 0.600), (output_rect[0], 0.600)),
+        ((hidden_rects[2][2], 0.600), (output_center[0] - output_radius, output_center[1])),
     ]
-    for start, end in links:
-        if backward_p > 0.0:
+    for link_index, (start, end) in enumerate(links):
+        if link_index == 3 and not output_ready:
+            continue
+        if backprop_active and backward_p > 0.0:
             _network_arrow(ax, registry, end, start, colour=GRADIENT_ORANGE, alpha=0.35 + 0.55 * backward_p)
         else:
-            _network_arrow(ax, registry, start, end, colour=NAVY, alpha=max(0.25, forward_phase))
+            forward_colour = ENERGY_TEAL if time_seconds >= 13.5 else NAVY
+            _network_arrow(ax, registry, start, end, colour=forward_colour, alpha=max(0.25, forward_phase))
 
     if 8.5 <= time_seconds < 11.5:
         pulse = np.clip(back_t * 4.0, 0.0, 3.999)
@@ -224,11 +247,11 @@ def _draw_network(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
         y = end[1] + local_p * (start[1] - end[1])
         ax.plot([x], [y], marker="o", markersize=7.0, color=GRADIENT_ORANGE, zorder=8)
 
-    card_y0, card_y1 = 0.000, 0.195
+    card_y0, card_y1 = 0.015, 0.195
     card_w = 0.145
     old_values = (0.42, -0.18, 0.31)
     new_values = (0.47, -0.12, 0.28)
-    if backward_p > 0.02 or update_on:
+    if backprop_active or update_on:
         registry.text(ax, 0.035, 0.240, "parameters", ha="left", va="center", fontsize=FONT_SIZES["micro"], color=INK)
         for index, x in enumerate(layer_centres):
             reverse_offset = (2 - index) * 0.30
@@ -238,17 +261,25 @@ def _draw_network(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
             ax.add_patch(Rectangle((x - card_w / 2, card_y0), card_w, card_y1 - card_y0, fc=fill, ec=edge, lw=1.3, zorder=2))
             connector_alpha = max(0.20, arrival) if not update_on else 1.0
             ax.plot([x, x], [hidden_rects[index][1] - 0.01, card_y1], color=edge, lw=2.0, alpha=connector_alpha, zorder=1)
+            registry.text(ax, x, 0.165, f"w{index + 1}", ha="center", va="center", fontsize=FONT_SIZES["micro"], color=INK)
+
+            def swatch(y: float, value: float, colour: str, alpha: float) -> None:
+                # Magnitude is carried by block length and shade; sign is
+                # carried by the teal/navy hue, so numeric values are not
+                # needed in every parameter card.
+                magnitude = float(np.clip(abs(value) / 0.50, 0.0, 1.0))
+                width = card_w * (0.22 + 0.58 * magnitude)
+                ax.add_patch(Rectangle((x - width / 2, y), width, 0.027, fc=colour, ec="none", alpha=alpha, zorder=4))
+
             if not update_on:
-                registry.text(ax, x, 0.180, f"w{index + 1}", ha="center", va="center", fontsize=FONT_SIZES["micro"], color=INK)
-                registry.text(ax, x, 0.100, rf"$\partial L/\partial w_{index + 1}$", ha="center", va="center", fontsize=FONT_SIZES["micro"], color=INK)
+                swatch(0.075, old_values[index], GRADIENT_ORANGE, 0.25 + 0.60 * arrival)
             else:
                 current = old_values[index] + update_t * (new_values[index] - old_values[index])
-                registry.text(ax, x, 0.165, f"w{index + 1}", ha="center", va="center", fontsize=FONT_SIZES["micro"], color=INK)
-                registry.text(ax, x, 0.090, f"{old_values[index]:.2f}", ha="center", va="center", fontsize=FONT_SIZES["micro"], color=INK)
-                registry.arrow(ax, (x, 0.062), (x, 0.032), arrowstyle="-|>", mutation_scale=8, lw=1.2, color=GRADIENT_ORANGE, zorder=6)
-                registry.text(ax, x, 0.000, f"{current:.2f}", ha="center", va="bottom", fontsize=FONT_SIZES["micro"], color=INK)
+                swatch(0.108, old_values[index], NAVY if old_values[index] < 0 else ENERGY_TEAL, 0.32)
+                registry.arrow(ax, (x, 0.101), (x, 0.077), arrowstyle="-|>", mutation_scale=8, lw=1.1, color=GRADIENT_ORANGE, zorder=6)
+                swatch(0.040, current, NAVY if current < 0 else ENERGY_TEAL, 0.35 + 0.55 * update_t)
         registry.text(ax, 0.965, 0.240, r"$w' = w - \eta\,\partial L/\partial w$", ha="right", va="center", fontsize=FONT_SIZES["micro"], color=INK)
-        if not update_on and backward_p > 0.12:
+        if backprop_active and backward_p > 0.12:
             registry.text(ax, 0.50, 0.240, r"$\partial L/\partial w$", ha="center", va="center", fontsize=FONT_SIZES["body"], color=INK)
 
 def _metric_card(
@@ -263,7 +294,7 @@ def _metric_card(
 ) -> None:
     x0, y0, x1, y1 = rect
     ax.add_patch(Rectangle((x0, y0), x1 - x0, y1 - y0, fc=fill, ec=colour, lw=1.6, zorder=2))
-    registry.text(ax, x0 + 0.025, y1 - 0.025, title, ha="left", va="top", fontsize=FONT_SIZES["micro"], color=INK)
+    registry.text(ax, x0 + 0.025, y1 - 0.005, title, ha="left", va="top", fontsize=FONT_SIZES["micro"], color=INK)
     registry.text(ax, x0 + 0.025, y0 + 0.010, value, ha="left", va="bottom", fontsize=FONT_SIZES["body"], color=INK)
 
 
@@ -278,42 +309,80 @@ def _draw_metrics(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
     updated_delta = updated - ref
     loss = float(demo["derived"]["focus_loss_ev2"])
     updated_loss = float(demo["derived"]["updated_focus_loss_ev2"])
-    reference_on = time_seconds >= 0.6
-    prediction_on = time_seconds >= 4.35
-    loss_on = time_seconds >= 6.5
-    backprop_on = 8.5 <= time_seconds < 11.5
-    update_on = 11.5 <= time_seconds < 13.5
+    # Keep the compare panel quiet during sample/zoom and the forward pass.
+    # Once the prediction is ready, use three stacked teaching elements only:
+    # truth, prediction, and the resulting error.
+    prediction_on = time_seconds >= 4.5
     final_on = time_seconds >= 13.5
 
-    if reference_on:
+    if prediction_on:
         _metric_card(
-            ax, registry, rect=(0.05, 0.730, 0.95, 0.910), colour=ENERGY_TEAL,
-            title="DFT reference · dataset", value=rf"$\varepsilon_i^{{ref}} = {_fmt_ev(ref)}$ eV", fill=STRUCTURE_BG,
+            ax, registry, rect=(0.05, 0.765, 0.95, 0.910), colour=ENERGY_TEAL,
+            title="truth · DFT reference", value=rf"$\varepsilon_i^{{ref}} = {_fmt_ev(ref)}$ eV", fill=STRUCTURE_BG,
+        )
+        prediction_value = updated if final_on else initial
+        prediction_label = "prediction · after update" if final_on else "prediction · network output"
+        _metric_card(
+            ax, registry, rect=(0.05, 0.535, 0.95, 0.705), colour=ENERGY_TEAL if final_on else NAVY,
+            title=prediction_label, value=rf"$\hat{{\varepsilon}}_i = {_fmt_ev(prediction_value)}$ eV", fill=PREDICTION_FILL,
+        )
+        error_colour = ENERGY_TEAL if final_on else GRADIENT_ORANGE
+        error_fill = UPDATED_FILL if final_on else LOSS_FILL
+        error_value = abs(updated_delta) if final_on else abs(delta)
+        loss_value = updated_loss if final_on else loss
+        _metric_card(
+            ax, registry, rect=(0.05, 0.275, 0.95, 0.455), colour=error_colour,
+            title="error · prediction − truth",
+            value=rf"$|\delta_i| = {error_value:.2f}$ eV   ·   $L_i = {loss_value:.3f}$ eV$^2$",
+            fill=error_fill,
         )
 
-    # The network output is the only place where the prediction value is
-    # printed. The right panel shows the calculation that uses that output and
-    # the dataset value, without a second prediction or error box.
-    if prediction_on and not loss_on and not final_on:
-        registry.text(ax, 0.075, 0.575, r"network output $\hat{\varepsilon}_i$", ha="left", va="center", fontsize=FONT_SIZES["body"], color=INK)
-        registry.text(ax, 0.075, 0.485, r"$\longrightarrow$ dataset reference", ha="left", va="center", fontsize=FONT_SIZES["body"], color=INK)
 
-    if loss_on and not update_on and not final_on:
-        registry.text(ax, 0.075, 0.555, "prediction − dataset", ha="left", va="top", fontsize=FONT_SIZES["micro"], color=INK)
-        registry.text(ax, 0.075, 0.455, rf"$\delta_i = \hat{{\varepsilon}}_i - \varepsilon_i^{{ref}} = {_fmt_ev(delta)}$ eV", ha="left", va="center", fontsize=FONT_SIZES["body"], color=INK)
-        registry.text(ax, 0.075, 0.350, rf"$L_i = \frac{{1}}{{2}}\delta_i^2 = {loss:.3f}$ eV$^2$", ha="left", va="center", fontsize=FONT_SIZES["body"], color=INK)
-        if backprop_on:
-            registry.text(ax, 0.075, 0.255, r"$\partial L/\partial w$", ha="left", va="center", fontsize=FONT_SIZES["body"], color=INK)
+def _draw_story_links(
+    fig: plt.Figure,
+    structure_ax: plt.Axes,
+    network_ax: plt.Axes,
+    metrics_ax: plt.Axes,
+    time_seconds: float,
+) -> None:
+    """Connect the physical centre atom, network entrance, output, and loss."""
+    # The descriptor is computed from the central O126 environment.  Start
+    # the cross-panel relation at the atom in the magnified view, rather than
+    # at the structure panel edge, so the source of R_i is unambiguous.
+    input_reveal = smoothstep(np.clip((time_seconds - 1.15) / 0.55, 0.0, 1.0))
+    if input_reveal > 0.0:
+        input_link = ConnectionPatch(
+            xyA=(0.675, 0.57), coordsA="data", axesA=structure_ax,
+            xyB=(0.035, 0.60), coordsB="data", axesB=network_ax,
+            arrowstyle="-|>", mutation_scale=13, lw=1.6,
+            color=NAVY, alpha=0.25 + 0.65 * input_reveal, zorder=12,
+            connectionstyle="arc3,rad=-0.16",
+        )
+        input_link.set_clip_on(False)
+        fig.add_artist(input_link)
 
-    if update_on:
-        registry.text(ax, 0.075, 0.555, "apply gradient", ha="left", va="top", fontsize=FONT_SIZES["micro"], color=INK)
-        registry.text(ax, 0.075, 0.455, r"$w' = w - \eta\,\partial L/\partial w$", ha="left", va="center", fontsize=FONT_SIZES["body"], color=INK)
-        registry.text(ax, 0.075, 0.350, "gradient held fixed; parameters update", ha="left", va="center", fontsize=FONT_SIZES["micro"], color=INK)
-
-    if final_on:
-        registry.text(ax, 0.075, 0.555, "prediction − dataset", ha="left", va="top", fontsize=FONT_SIZES["micro"], color=INK)
-        registry.text(ax, 0.075, 0.455, rf"$|\delta_i|$: {abs(delta):.2f} → {abs(updated_delta):.2f}$\ \mathrm{{eV}}$", ha="left", va="center", fontsize=FONT_SIZES["body"], color=INK)
-        registry.text(ax, 0.075, 0.350, rf"$L_i$: {loss:.3f} → {updated_loss:.3f}$\ \mathrm{{eV}}^2$", ha="left", va="center", fontsize=FONT_SIZES["body"], color=INK)
+    if 6.5 <= time_seconds < 8.5:
+        output_link = ConnectionPatch(
+            xyA=(0.925, 0.63), coordsA="data", axesA=network_ax,
+            xyB=(0.05, 0.62), coordsB="data", axesB=metrics_ax,
+            arrowstyle="-|>", mutation_scale=13, lw=1.5,
+            color=NAVY, alpha=0.75, zorder=12,
+        )
+        output_link.set_clip_on(False)
+        fig.add_artist(output_link)
+    elif 8.5 <= time_seconds < 11.5:
+        # Once the loss is formed, the error travels back to the scalar
+        # output first.  The network then continues the orange pulse through
+        # fit, G², G¹, and the descriptor in _draw_network.
+        error_link = ConnectionPatch(
+            xyA=(0.05, 0.36), coordsA="data", axesA=metrics_ax,
+            xyB=(0.795, 0.63), coordsB="data", axesB=network_ax,
+            arrowstyle="-|>", mutation_scale=14, lw=2.0,
+            color=GRADIENT_ORANGE, alpha=0.88, zorder=12,
+            connectionstyle="arc3,rad=0.10",
+        )
+        error_link.set_clip_on(False)
+        fig.add_artist(error_link)
 
 def _stage_label(time_seconds: float) -> str:
     if time_seconds < 2.0:
@@ -332,9 +401,13 @@ def _stage_label(time_seconds: float) -> str:
 
 
 def draw_frame(fig: plt.Figure, time_seconds: float, registry: LayoutRegistry, demo: dict[str, object], scene: dict[str, object]) -> list[dict]:
-    _draw_structure(_slot_axes(fig, PANEL_STRUCTURE), registry, demo, scene, time_seconds)
-    _draw_network(_slot_axes(fig, PANEL_NETWORK), registry, demo, time_seconds)
-    _draw_metrics(_slot_axes(fig, PANEL_METRICS), registry, demo, time_seconds)
+    structure_ax = _slot_axes(fig, PANEL_STRUCTURE)
+    network_ax = _slot_axes(fig, PANEL_NETWORK)
+    metrics_ax = _slot_axes(fig, PANEL_METRICS)
+    _draw_structure(structure_ax, registry, demo, scene, time_seconds)
+    _draw_network(network_ax, registry, demo, time_seconds)
+    _draw_metrics(metrics_ax, registry, demo, time_seconds)
+    _draw_story_links(fig, structure_ax, network_ax, metrics_ax, time_seconds)
     stage = _stage_label(time_seconds)
     semantics = [{"id": "structure", "color": NAVY, "min_pixels": 20, "tolerance": 70}, {"id": "reference", "color": ENERGY_TEAL, "min_pixels": 20, "tolerance": 70}]
     if stage in {"backprop", "update"}:

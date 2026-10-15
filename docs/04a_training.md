@@ -26,13 +26,21 @@ vertical arrow. This keeps gradient evaluation and parameter update visually
 separate.
 
 The right panel is deliberately staged so that only the current teaching
-quantity is prominent. The reference card represents the dataset label; the
-prediction value is shown only in the network output block. The right panel
-then writes the calculation `delta_i = epsilon_hat_i - epsilon_ref_i` and the
-loss as unboxed equations, followed by the update rule and the reduced error.
+quantity is prominent. It stays quiet during sample/zoom and the forward pass;
+when the prediction is ready it shows three stacked elements: the DFT truth at
+the top, the network prediction in the middle (aligned with the output path),
+and the error at the bottom. The prediction value remains visible in the
+circular network output node, while the bottom element carries `|delta_i|` and
+`L_i` without an additional axis or comparison plot.
 Text is black by default; colour is reserved for the small stage marker and
 for graphical borders, arrows, and activation paths. Descriptor and hidden
-layers remain grids, while the scalar atomic energy output is a numeric box.
+layers remain grids, while the scalar atomic energy output is a circular node
+with a black symbol and numeric label below it. A cross-panel path starts at
+the central O126 atom and enters the descriptor. During backpropagation the
+loss arrow first returns to the output node, then continues through fit, G²,
+G¹, and the descriptor. Parameter cards use shaded swatches for magnitude and
+colour for sign, with an arrow between the pre-update and post-update swatch;
+they do not print a separate numeric value for every weight.
 The per-atom values are a small teaching fixture in
 `product/data/04a_training_demo.json`. The repository does not
 contain a raw per-atom DFT decomposition, so these values remain labelled
