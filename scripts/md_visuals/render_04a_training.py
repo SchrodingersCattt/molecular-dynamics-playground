@@ -154,8 +154,8 @@ def _draw_grid_colorbar(ax: plt.Axes, registry: LayoutRegistry, *, label: str) -
         left = x0 + (x1 - x0) * index / steps
         right = x0 + (x1 - x0) * (index + 1) / steps
         ax.add_patch(Rectangle((left, y0), right - left, y1 - y0, fc=GRID_CMAP(index / (steps - 1)), ec="none", zorder=3))
-    registry.text(ax, x0, 0.082, "−1", ha="left", va="top", fontsize=FONT_SIZES["micro"], color=INK)
-    registry.text(ax, x1, 0.082, "+1", ha="right", va="top", fontsize=FONT_SIZES["micro"], color=INK)
+    registry.text(ax, x0, 0.070, "−1", ha="left", va="top", fontsize=FONT_SIZES["micro"], color=INK)
+    registry.text(ax, x1, 0.070, "+1", ha="right", va="top", fontsize=FONT_SIZES["micro"], color=INK)
     registry.text(ax, 0.80, 0.180, label, ha="center", va="bottom", fontsize=FONT_SIZES["micro"], color=INK)
 
 
