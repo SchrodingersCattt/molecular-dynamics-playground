@@ -317,7 +317,6 @@ def _prediction_card(
 
 def _draw_metrics(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object], time_seconds: float) -> None:
     _panel_background(ax)
-    registry.text(ax, 0.03, 0.965, "Compare → correct", ha="left", va="top", fontsize=FONT_SIZES["panel_title"], color=INK)
     registry.text(ax, 0.97, 0.965, "O126", ha="right", va="top", fontsize=FONT_SIZES["micro"], color=INK)
     ref = float(demo["_arrays"]["reference"][0])
     initial = float(demo["_arrays"]["initial"][0])
@@ -340,7 +339,10 @@ def _draw_metrics(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
         prediction_value = updated if final_on else initial
         _prediction_card(ax, registry, value=prediction_value, final_on=final_on)
         registry.arrow(
-            ax, (0.90, 0.760), (0.90, 0.708),
+            # Anchor the double arrow on the horizontal centre lines of the
+            # truth and prediction bands, so the relation remains long and
+            # legible even when the inter-band gap is narrow.
+            ax, (0.90, 0.8375), (0.90, 0.6175),
             arrowstyle="<->", mutation_scale=16, lw=2.0,
             color=GRADIENT_ORANGE, zorder=6,
         )
