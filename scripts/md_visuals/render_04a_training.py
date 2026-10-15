@@ -160,7 +160,9 @@ def _draw_network(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
 
     input_rect = (0.035, 0.420, 0.205, 0.755)
     hidden_rects = [(0.280, 0.385, 0.385, 0.795), (0.455, 0.385, 0.560, 0.795), (0.630, 0.385, 0.735, 0.795)]
-    output_rect = (0.835, 0.485, 0.970, 0.705)
+    # Scalar energy output: wider and shorter than the tensor blocks so the
+    # symbol and numeric value stay inside one clean output card.
+    output_rect = (0.755, 0.500, 0.970, 0.700)
     layer_centres = [0.5 * (rect[0] + rect[2]) for rect in hidden_rects]
     input_active = 1.0 if time_seconds >= 2.0 else smoothstep(np.clip((time_seconds - 0.3) / 0.7, 0.0, 1.0))
     _heat_block(ax, input_rect, fill=INPUT_FILL if input_active > 0.2 else WHITE, edge=NAVY, active=input_active)
@@ -196,9 +198,10 @@ def _draw_network(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
         lw=1.6, zorder=3,
     ))
     if output_ready:
-        registry.text(ax, 0.902, 0.650, r"$\hat{\varepsilon}_{i}$", ha="center", va="bottom", fontsize=FONT_SIZES["body"], color=INK)
+        output_x = 0.5 * (output_rect[0] + output_rect[2])
+        registry.text(ax, output_x, 0.650, r"$\hat{\varepsilon}_{i}$", ha="center", va="center", fontsize=FONT_SIZES["body"], color=INK)
         value = float(demo["_arrays"]["updated"][0] if time_seconds >= 13.5 else demo["_arrays"]["initial"][0])
-        registry.text(ax, 0.902, 0.545, f"{_fmt_ev(value)} eV", ha="center", va="top", fontsize=FONT_SIZES["body"], color=INK)
+        registry.text(ax, output_x, 0.555, f"{_fmt_ev(value)} eV", ha="center", va="center", fontsize=FONT_SIZES["body"], color=INK)
 
     links = [
         ((input_rect[2], 0.600), (hidden_rects[0][0], 0.600)),
