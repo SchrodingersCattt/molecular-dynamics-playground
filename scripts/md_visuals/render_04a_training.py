@@ -286,13 +286,17 @@ def _prediction_card(
     final_on: bool,
 ) -> None:
     """Merge the scalar output node and prediction panel into one element."""
-    rect = (0.05, 0.515, 0.95, 0.720)
+    # Let the merged prediction element extend a little into the inter-panel
+    # gap so the fit block and output node do not leave a large white void.
+    rect = (-0.20, 0.515, 0.95, 0.720)
     edge = ENERGY_TEAL if final_on else NAVY
-    ax.add_patch(Rectangle((rect[0], rect[1]), rect[2] - rect[0], rect[3] - rect[1], fc=PREDICTION_FILL, ec=edge, lw=1.6, zorder=2))
+    card = Rectangle((rect[0], rect[1]), rect[2] - rect[0], rect[3] - rect[1], fc=PREDICTION_FILL, ec=edge, lw=1.6, zorder=2)
+    card.set_clip_on(False)
+    ax.add_patch(card)
     aspect = _axes_aspect(ax)
-    circle_center = (0.17, 0.635)
+    circle_center = (-0.12, 0.635)
     radius = 0.045
-    ax.add_patch(Ellipse(
+    circle = Ellipse(
         circle_center,
         2.0 * radius,
         2.0 * radius * aspect,
@@ -300,13 +304,15 @@ def _prediction_card(
         ec=edge,
         lw=1.8,
         zorder=4,
-    ))
+    )
+    circle.set_clip_on(False)
+    ax.add_patch(circle)
     # Keep the requested black label below the circle while the numeric value
     # sits in the same card, so the network output is no longer duplicated.
     registry.text(ax, circle_center[0], 0.575, r"$\hat{\varepsilon}_{i}$", ha="center", va="top", fontsize=FONT_SIZES["body"], color=INK)
     title = "prediction · after update" if final_on else "prediction · network output"
-    registry.text(ax, 0.29, 0.685, title, ha="left", va="top", fontsize=FONT_SIZES["micro"], color=INK)
-    registry.text(ax, 0.29, 0.575, f"{_fmt_ev(value)} eV", ha="left", va="top", fontsize=FONT_SIZES["body"], color=INK)
+    registry.text(ax, 0.08, 0.685, title, ha="left", va="top", fontsize=FONT_SIZES["micro"], color=INK)
+    registry.text(ax, 0.08, 0.575, f"{_fmt_ev(value)} eV", ha="left", va="top", fontsize=FONT_SIZES["body"], color=INK)
 
 
 def _draw_metrics(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object], time_seconds: float) -> None:
@@ -373,34 +379,34 @@ def _draw_story_links(
         input_link.set_clip_on(False)
         fig.add_artist(input_link)
 
-    if time_seconds >= 4.5:
-        # Route the DFT truth connector over the panel headers so it does not
-        # cross the descriptor grids or the prediction path.
-        dft_segments = (
-            ConnectionPatch(
-                xyA=(0.675, 0.57), coordsA="data", axesA=structure_ax,
-                xyB=(0.98, 0.90), coordsB="data", axesB=structure_ax,
-                arrowstyle="-", lw=1.3, color=ENERGY_TEAL, alpha=1.0, zorder=10,
-            ),
-            ConnectionPatch(
-                xyA=(0.98, 0.90), coordsA="data", axesA=structure_ax,
-                xyB=(0.05, 0.90), coordsB="data", axesB=metrics_ax,
-                arrowstyle="-", lw=1.3, color=ENERGY_TEAL, alpha=1.0, zorder=10,
-            ),
-            ConnectionPatch(
-                xyA=(0.05, 0.90), coordsA="data", axesA=metrics_ax,
-                xyB=(0.05, 0.84), coordsB="data", axesB=metrics_ax,
-                arrowstyle="-|>", mutation_scale=11, lw=1.3, color=ENERGY_TEAL, alpha=1.0, zorder=10,
-            ),
-        )
-        for dft_link in dft_segments:
-            dft_link.set_clip_on(False)
-            fig.add_artist(dft_link)
+    # The dataset relation is structural, so draw it from the first frame as
+    # a solid inverted-Π connector: local atom up, across the headers, then
+    # down into the DFT truth element.
+    dft_segments = (
+        ConnectionPatch(
+            xyA=(0.675, 0.57), coordsA="data", axesA=structure_ax,
+            xyB=(0.675, 0.985), coordsB="data", axesB=structure_ax,
+            arrowstyle="-", lw=1.3, color=ENERGY_TEAL, alpha=1.0, zorder=10,
+        ),
+        ConnectionPatch(
+            xyA=(0.675, 0.985), coordsA="data", axesA=structure_ax,
+            xyB=(0.50, 0.985), coordsB="data", axesB=metrics_ax,
+            arrowstyle="-", lw=1.3, color=ENERGY_TEAL, alpha=1.0, zorder=10,
+        ),
+        ConnectionPatch(
+            xyA=(0.50, 0.985), coordsA="data", axesA=metrics_ax,
+            xyB=(0.50, 0.885), coordsB="data", axesB=metrics_ax,
+            arrowstyle="-|>", mutation_scale=11, lw=1.3, color=ENERGY_TEAL, alpha=1.0, zorder=10,
+        ),
+    )
+    for dft_link in dft_segments:
+        dft_link.set_clip_on(False)
+        fig.add_artist(dft_link)
 
     if (4.5 <= time_seconds < 8.5) or time_seconds >= 13.5:
         output_link = ConnectionPatch(
             xyA=(0.735, 0.60), coordsA="data", axesA=network_ax,
-            xyB=(0.125, 0.635), coordsB="data", axesB=metrics_ax,
+            xyB=(-0.165, 0.635), coordsB="data", axesB=metrics_ax,
             arrowstyle="-|>", mutation_scale=13, lw=1.5,
             color=ENERGY_TEAL if time_seconds >= 13.5 else NAVY, alpha=0.85, zorder=12,
         )
@@ -410,12 +416,12 @@ def _draw_story_links(
         # The error first returns to the merged prediction/output node, then
         # crosses back to fit and continues through G², G¹, and the descriptor.
         metrics_ax.annotate(
-            "", xy=(0.17, 0.585), xytext=(0.17, 0.46),
+            "", xy=(-0.12, 0.585), xytext=(-0.12, 0.46),
             arrowprops={"arrowstyle": "-|>", "mutation_scale": 12, "lw": 1.8, "color": GRADIENT_ORANGE},
             zorder=12,
         )
         error_link = ConnectionPatch(
-            xyA=(0.125, 0.635), coordsA="data", axesA=metrics_ax,
+            xyA=(-0.165, 0.635), coordsA="data", axesA=metrics_ax,
             xyB=(0.735, 0.60), coordsB="data", axesB=network_ax,
             arrowstyle="-|>", mutation_scale=14, lw=2.0,
             color=GRADIENT_ORANGE, alpha=0.88, zorder=12,
