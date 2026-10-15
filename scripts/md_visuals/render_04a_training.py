@@ -254,14 +254,13 @@ def _draw_network(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
         y = end[1] + local_p * (start[1] - end[1])
         ax.plot([x], [y], marker="o", markersize=7.0, color=GRADIENT_ORANGE, zorder=8)
 
-    if time_seconds >= 2.0:
-        if backprop_active:
-            colourbar_label = "gradient value (mock)"
-        elif update_on and time_seconds < 13.5:
-            colourbar_label = "updated activation (mock)"
-        else:
-            colourbar_label = "activation value (mock)"
-        _draw_grid_colorbar(ax, registry, label=colourbar_label)
+    if backprop_active:
+        colourbar_label = "gradient value (mock)"
+    elif update_on and time_seconds < 13.5:
+        colourbar_label = "updated activation (mock)"
+    else:
+        colourbar_label = "activation value (mock)"
+    _draw_grid_colorbar(ax, registry, label=colourbar_label)
 
 def _metric_card(
     ax: plt.Axes,
