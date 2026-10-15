@@ -48,7 +48,6 @@ from common import (
     LayoutRegistry,
     axes_from_top_slot,
     json_dump,
-    mix_hex,
     new_static_figure,
     new_video_figure,
     render_video,
@@ -424,7 +423,6 @@ def prepare_assets(model: str, data: dict[str, object], qa_dir: Path) -> dict[st
     box = data["box_length"]
     centre = data["central_index"]
     n_states = positions.shape[0]
-    origin = positions[0, centre]
     box_centre = np.full(3, 0.5 * box)
     direction = VIEW_DIRECTION
     up = (0.0, 0.0, 1.0)
@@ -548,6 +546,83 @@ def _place_image(ax: plt.Axes, image: np.ndarray, rect: tuple[float, float, floa
     return artist
 
 
+def draw_box_magnifier(
+    ax: plt.Axes,
+    data: dict[str, object],
+    scene: dict[str, object],
+    *,
+    image: np.ndarray,
+    state: int = 0,
+    box_center: tuple[float, float] = (0.140, 0.560),
+    box_radius: float = 0.120,
+    magnifier_center: tuple[float, float] = (0.640, 0.505),
+    magnifier_radius: float = 0.295,
+    reveal: float = 1.0,
+    video: bool = True,
+    zorder: float = 4.0,
+) -> dict[str, object]:
+    """Draw the canonical 04 box → cutoff circle → magnifier composition.
+
+    The helper deliberately accepts an already-composed magnifier image.  This
+    keeps the geometry, projection and guide lines shared between the 04 MD
+    story and the 04a training story while allowing each story to choose which
+    MatterVis stage is shown inside the same magnifier.
+    """
+    assets = scene["assets"]
+    box_camera: SceneCamera = scene["box_camera"]
+    focus_camera: SceneCamera = scene["focus_camera"]
+    positions = data["positions"]
+    centre = int(data["central_index"])
+    n_states = positions.shape[0]
+    state = min(int(state), n_states - 1)
+    reveal = float(np.clip(reveal, 0.0, 1.0))
+    aspect = _axes_aspect(ax)
+
+    box_rect = _square_rect(ax, box_center, box_radius)
+    _place_image(ax, _composition_rgba(assets["box"][state]), box_rect, zorder=zorder)
+    centre_world = positions[state, centre]
+    projected_centre = project_world(centre_world[None, :], camera=box_camera, rect=box_rect, image_aspect=1.0)[0]
+    radius_axes = data["cutoff"] / (2.0 * BOX_ORTHO) * (box_rect[2] - box_rect[0])
+    ax.add_patch(Ellipse(
+        tuple(projected_centre), 2.0 * radius_axes, 2.0 * radius_axes * aspect,
+        fill=False, ec=SPHERE_TEAL, lw=2.4 if video else 1.4,
+        alpha=0.9, zorder=zorder + 5,
+    ))
+
+    mag_rect = _square_rect(ax, magnifier_center, magnifier_radius)
+    mag_rx = magnifier_radius
+    mag_ry = mag_rx * aspect
+    mag_alpha = smoothstep(reveal)
+    clip = Ellipse(magnifier_center, 2.0 * mag_rx, 2.0 * mag_ry, transform=ax.transData, fc="none", ec="none")
+    ax.add_patch(Ellipse(
+        magnifier_center, 2.0 * mag_rx, 2.0 * mag_ry,
+        fc=WHITE, ec=LINE_GRAY, lw=2.0 if video else 1.2,
+        alpha=max(0.15, mag_alpha), zorder=zorder - 1,
+    ))
+    for sign in (1.0, -1.0):
+        start = (projected_centre[0] + radius_axes * 0.35, projected_centre[1] + sign * radius_axes * aspect * 0.94)
+        end = (magnifier_center[0] - mag_rx * 0.70, magnifier_center[1] + sign * mag_ry * 0.71)
+        ax.add_line(Line2D(
+            [start[0], end[0]], [start[1], end[1]],
+            color=SPHERE_TEAL, lw=1.6 if video else 1.0,
+            alpha=0.55 * mag_alpha, zorder=zorder - 2,
+        ))
+    _place_image(ax, image, mag_rect, zorder=zorder + 1, clip=clip, alpha=mag_alpha)
+    ax.add_patch(Ellipse(
+        magnifier_center, 2.0 * mag_rx, 2.0 * mag_ry,
+        fill=False, ec=LINE_GRAY, lw=2.0 if video else 1.2,
+        alpha=max(0.15, mag_alpha), zorder=zorder + 3,
+    ))
+    return {
+        "box_rect": box_rect,
+        "mag_rect": mag_rect,
+        "mag_centre": magnifier_center,
+        "mag_radius": (mag_rx, mag_ry),
+        "projected_centre": projected_centre,
+        "focus_camera": focus_camera,
+    }
+
+
 def _deemphasize(ax: plt.Axes, alpha: float = 0.70) -> None:
     for target in (ax, *getattr(ax, "child_axes", [])):
         target.add_patch(Rectangle((0.0, 0.0), 1.0, 1.0, transform=target.transAxes, facecolor=WHITE, edgecolor="none", alpha=alpha, zorder=1000))
@@ -588,42 +663,15 @@ def draw_case(
 ) -> dict[str, object]:
     config = MODELS[model]
     assets = scene["assets"]
-    box_camera: SceneCamera = scene["box_camera"]
     focus_camera: SceneCamera = scene["focus_camera"]
     centre = data["central_index"]
     positions = data["positions"]
     box = data["box_length"]
     local = local_environment(data, state)
-    n_states = positions.shape[0]
     if not video:
         ax.add_patch(Rectangle((0.02, 0.02), 0.96, 0.96, fill=False, ec=LINE_GRAY, lw=1.1, zorder=20))
 
     # --- periodic box (left) with the in-situ cutoff circle -----------------
-    box_x, box_y, box_r = (0.140, 0.560, 0.120) if video else (0.150, 0.580, 0.130)
-    box_rect = _square_rect(ax, (box_x, box_y), box_r)
-    _place_image(ax, _composition_rgba(assets["box"][min(state, n_states - 1)]), box_rect, zorder=4)
-    centre_world = positions[state, centre]
-    projected_centre = project_world(centre_world[None, :], camera=box_camera, rect=box_rect, image_aspect=1.0)[0]
-    aspect = _axes_aspect(ax)
-    radius_axes = data["cutoff"] / (2.0 * BOX_ORTHO) * (box_rect[2] - box_rect[0])
-    ax.add_patch(Ellipse(tuple(projected_centre), 2.0 * radius_axes, 2.0 * radius_axes * aspect, fill=False, ec=SPHERE_TEAL, lw=2.4 if video else 1.4, alpha=0.9, zorder=9))
-    registry.text(ax, box_x, box_rect[3] + (0.035 if video else 0.015), "64 H$_2$O periodic box", ha="center", va="bottom", fontsize=FONT_SIZES["micro"], color=DARK_GRAY, zorder=21)
-
-    # --- magnifier (right) --------------------------------------------------
-    mag_centre = (0.640, 0.505) if video else (0.640, 0.540)
-    mag_rx = 0.295 if video else 0.335
-    mag_rect = _square_rect(ax, mag_centre, mag_rx)
-    mag_ry = mag_rx * aspect
-    clip = Ellipse(mag_centre, 2.0 * mag_rx, 2.0 * mag_ry, transform=ax.transData, fc="none", ec="none")
-    ax.add_patch(clip)
-    ax.add_patch(Ellipse(mag_centre, 2.0 * mag_rx, 2.0 * mag_ry, fc=WHITE, ec=LINE_GRAY, lw=2.0 if video else 1.2, zorder=3))
-    # The in-situ circle, its guide lines and the magnified cutoff sphere are
-    # one object and are always drawn together.
-    for sign in (1.0, -1.0):
-        start = (projected_centre[0] + radius_axes * 0.35, projected_centre[1] + sign * radius_axes * aspect * 0.94)
-        end = (mag_centre[0] - mag_rx * 0.70, mag_centre[1] + sign * mag_ry * 0.71)
-        ax.add_line(Line2D([start[0], end[0]], [start[1], end[1]], color=SPHERE_TEAL, lw=1.6 if video else 1.0, alpha=0.55, zorder=2))
-
     if mode == "positions":
         image = _composition_rgba(assets["plain"][state])
     elif mode == "neighbours":
@@ -644,7 +692,19 @@ def draw_case(
         image = _composition_rgba(assets["move"][state])
     else:
         raise ValueError(mode)
-    _place_image(ax, image, mag_rect, zorder=5, clip=clip)
+    box_x, box_y, box_r = (0.140, 0.560, 0.120) if video else (0.150, 0.580, 0.130)
+    mag_centre = (0.640, 0.505) if video else (0.640, 0.540)
+    mag_rx = 0.295 if video else 0.335
+    composition = draw_box_magnifier(
+        ax, data, scene, image=image, state=state,
+        box_center=(box_x, box_y), box_radius=box_r,
+        magnifier_center=mag_centre, magnifier_radius=mag_rx,
+        reveal=1.0, video=video, zorder=4.0,
+    )
+    box_rect = composition["box_rect"]
+    mag_rect = composition["mag_rect"]
+    mag_rx, mag_ry = composition["mag_radius"]
+    registry.text(ax, box_x, box_rect[3] + (0.035 if video else 0.015), "64 H$_2$O periodic box", ha="center", va="bottom", fontsize=FONT_SIZES["micro"], color=DARK_GRAY, zorder=21)
 
     focus_origin = positions[0, centre]
     local_vectors = local["vectors"]
@@ -652,7 +712,6 @@ def draw_case(
 
     # --- stage title and step label ---------------------------------------
     title_colour = INK
-    n_neigh = len(local["ids"])
     cutoff = data["cutoff"]
     title = {
         "positions": r"Current positions $\mathbf{r}_n$",

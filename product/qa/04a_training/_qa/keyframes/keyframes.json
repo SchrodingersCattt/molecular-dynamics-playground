@@ -1,0 +1,55 @@
+{
+  "frames": [
+    {
+      "time_seconds": 0.0,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04a_training\\_qa\\keyframes\\frame_00_00.0s.png",
+      "stage": "sample_zoom"
+    },
+    {
+      "time_seconds": 1.0,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04a_training\\_qa\\keyframes\\frame_01_01.0s.png",
+      "stage": "sample_zoom"
+    },
+    {
+      "time_seconds": 2.0,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04a_training\\_qa\\keyframes\\frame_02_02.0s.png",
+      "stage": "forward"
+    },
+    {
+      "time_seconds": 4.5,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04a_training\\_qa\\keyframes\\frame_03_04.5s.png",
+      "stage": "compare"
+    },
+    {
+      "time_seconds": 7.0,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04a_training\\_qa\\keyframes\\frame_04_07.0s.png",
+      "stage": "loss"
+    },
+    {
+      "time_seconds": 9.0,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04a_training\\_qa\\keyframes\\frame_05_09.0s.png",
+      "stage": "backprop"
+    },
+    {
+      "time_seconds": 10.5,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04a_training\\_qa\\keyframes\\frame_06_10.5s.png",
+      "stage": "backprop"
+    },
+    {
+      "time_seconds": 12.0,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04a_training\\_qa\\keyframes\\frame_07_12.0s.png",
+      "stage": "update"
+    },
+    {
+      "time_seconds": 14.0,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04a_training\\_qa\\keyframes\\frame_08_14.0s.png",
+      "stage": "forward_again"
+    },
+    {
+      "time_seconds": 15.5,
+      "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04a_training\\_qa\\keyframes\\frame_09_15.5s.png",
+      "stage": "forward_again"
+    }
+  ],
+  "failures": []
+}

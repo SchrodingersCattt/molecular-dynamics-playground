@@ -1,0 +1,71 @@
+{
+  "schema": "nnmd_training_story/v1",
+  "stem": "04a_training",
+  "manifest": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\data\\04a_training_demo.json",
+  "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\data\\water_box_64.npz",
+  "trajectory_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\data\\dpmd_water_box_trajectory.npz",
+  "structure_status": "real retained 64-water periodic box from the 04 story",
+  "label_kind": "DFT reference \u00b7 schematic",
+  "label_note": "The repository does not contain a per-atom DFT decomposition. These values are a single teaching example and are not copied from DeepMD model output.",
+  "focus_atom": "O126",
+  "centre_atom_index": 126,
+  "box_length_angstrom": 12.429633119082435,
+  "cutoff_angstrom": 6.0,
+  "derived": {
+    "delta_ev": [
+      0.8600000000000003,
+      -0.45999999999999996,
+      0.45999999999999996
+    ],
+    "updated_delta_ev": [
+      0.16999999999999993,
+      -0.08999999999999986,
+      0.040000000000000036
+    ],
+    "focus_loss_ev2": 0.3698000000000003,
+    "updated_focus_loss_ev2": 0.014449999999999987,
+    "sum_reference_ev": -13.57,
+    "sum_prediction_initial_ev": -12.709999999999999,
+    "sum_prediction_updated_ev": -13.45
+  },
+  "timeline_seconds": {
+    "sample_zoom": [
+      0.0,
+      2.0
+    ],
+    "forward": [
+      2.0,
+      4.5
+    ],
+    "compare": [
+      4.5,
+      6.5
+    ],
+    "loss": [
+      6.5,
+      8.5
+    ],
+    "backprop": [
+      8.5,
+      11.5
+    ],
+    "update": [
+      11.5,
+      13.5
+    ],
+    "forward_again": [
+      13.5,
+      16.0
+    ]
+  },
+  "video": {
+    "duration_seconds": 16.0,
+    "canvas": [
+      1920,
+      600
+    ],
+    "fps": 24,
+    "aspect_ratio": "16:5"
+  },
+  "mattervis_assets": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\04_deep_potential_md\\source\\mattervis_v1"
+}

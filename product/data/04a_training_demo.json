@@ -1,0 +1,29 @@
+{
+  "schema": "nnmd_training_demo/v1",
+  "structure_source": "water_box_64.npz",
+  "trajectory_source": "dpmd_water_box_trajectory.npz",
+  "structure_status": "real retained 64-water periodic box from the 04 story",
+  "label_kind": "DFT reference · schematic",
+  "label_note": "The repository does not contain a per-atom DFT decomposition. These values are a single teaching example and are not copied from DeepMD model output.",
+  "focus_atom": "O126",
+  "atoms": [
+    {"id": "O126", "element": "O", "reference_ev": -5.78, "prediction_initial_ev": -4.92, "prediction_updated_ev": -5.61},
+    {"id": "H127", "element": "H", "reference_ev": -3.91, "prediction_initial_ev": -4.37, "prediction_updated_ev": -4.00},
+    {"id": "H128", "element": "H", "reference_ev": -3.88, "prediction_initial_ev": -3.42, "prediction_updated_ev": -3.84}
+  ],
+  "loss": {
+    "formula": "L_i = 1/2 (epsilon_hat_i - epsilon_ref_i)^2",
+    "focus_atom_only": true,
+    "optimizer_update": "w <- w - eta * grad_w L"
+  },
+  "units": {"per_atom_energy": "eV", "loss": "eV^2"},
+  "timeline_seconds": {
+    "sample_zoom": [0.0, 2.0],
+    "forward": [2.0, 4.5],
+    "compare": [4.5, 6.5],
+    "loss": [6.5, 8.5],
+    "backprop": [8.5, 11.5],
+    "update": [11.5, 13.5],
+    "forward_again": [13.5, 16.0]
+  }
+}
