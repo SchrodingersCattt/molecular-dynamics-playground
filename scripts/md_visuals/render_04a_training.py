@@ -11,7 +11,7 @@ import numpy as np
 from matplotlib.patches import Rectangle
 
 from common import (
-    A_ORANGE, DARK_GRAY, ENERGY_TEAL, FONT_SIZES, INK, LINE_GRAY, LIGHT_GRAY,
+    A_ORANGE, ENERGY_TEAL, FONT_SIZES, INK, LINE_GRAY, LIGHT_GRAY,
     NAVY, WHITE, LayoutRegistry, axes_from_top_slot, json_dump,
     new_video_figure, render_video, smoothstep,
 )
@@ -101,19 +101,19 @@ def _draw_structure(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, obje
     )
     registry.text(
         ax, 0.185, 0.330, "64 H$_2$O periodic box",
-        ha="center", va="top", fontsize=FONT_SIZES["micro"], color=DARK_GRAY,
+        ha="center", va="top", fontsize=FONT_SIZES["micro"], color=INK,
     )
     registry.text(
         ax, 0.675, 0.245, "local environment around O126",
-        ha="center", va="top", fontsize=FONT_SIZES["micro"], color=DARK_GRAY,
+        ha="center", va="top", fontsize=FONT_SIZES["micro"], color=INK,
     )
     registry.text(
         ax, 0.05, 0.105, "DFT reference · schematic",
-        ha="left", va="center", fontsize=FONT_SIZES["micro"], color=ENERGY_TEAL,
+        ha="left", va="center", fontsize=FONT_SIZES["micro"], color=INK,
     )
     registry.text(
         ax, 0.05, 0.045, "one structure  →  one target",
-        ha="left", va="center", fontsize=FONT_SIZES["micro"], color=DARK_GRAY,
+        ha="left", va="center", fontsize=FONT_SIZES["micro"], color=INK,
     )
 
 def _heat_block(ax: plt.Axes, rect: tuple[float, float, float, float], *, fill: str, edge: str, active: float) -> None:
@@ -160,12 +160,12 @@ def _draw_network(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
 
     input_rect = (0.035, 0.420, 0.205, 0.755)
     hidden_rects = [(0.280, 0.385, 0.385, 0.795), (0.455, 0.385, 0.560, 0.795), (0.630, 0.385, 0.735, 0.795)]
-    output_rect = (0.835, 0.445, 0.970, 0.730)
+    output_rect = (0.835, 0.485, 0.970, 0.705)
     layer_centres = [0.5 * (rect[0] + rect[2]) for rect in hidden_rects]
     input_active = 1.0 if time_seconds >= 2.0 else smoothstep(np.clip((time_seconds - 0.3) / 0.7, 0.0, 1.0))
     _heat_block(ax, input_rect, fill=INPUT_FILL if input_active > 0.2 else WHITE, edge=NAVY, active=input_active)
-    registry.text(ax, 0.120, 0.825, "descriptor", ha="center", va="bottom", fontsize=FONT_SIZES["micro"], color=NAVY)
-    registry.text(ax, 0.120, 0.350, r"$\mathbf{R}_i$", ha="center", va="top", fontsize=FONT_SIZES["body"], color=NAVY)
+    registry.text(ax, 0.120, 0.825, "descriptor", ha="center", va="bottom", fontsize=FONT_SIZES["micro"], color=INK)
+    registry.text(ax, 0.120, 0.350, r"$\mathbf{R}_i$", ha="center", va="top", fontsize=FONT_SIZES["body"], color=INK)
 
     for index, rect in enumerate(hidden_rects):
         # G1, G2, and fit occupy successive windows of the forward pass.
@@ -181,19 +181,24 @@ def _draw_network(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
             fill = PREDICTION_FILL if forward_arrival > 0.35 else WHITE
         _heat_block(ax, rect, fill=fill, edge=edge, active=active)
         label = ("G¹", "G²", "fit")[index]
-        registry.text(ax, layer_centres[index], 0.825, label, ha="center", va="bottom", fontsize=FONT_SIZES["micro"], color=edge)
+        registry.text(ax, layer_centres[index], 0.825, label, ha="center", va="bottom", fontsize=FONT_SIZES["micro"], color=INK)
         if backward_p <= 0.0:
-            registry.text(ax, layer_centres[index], 0.350, label, ha="center", va="top", fontsize=FONT_SIZES["micro"], color=edge)
+            registry.text(ax, layer_centres[index], 0.350, label, ha="center", va="top", fontsize=FONT_SIZES["micro"], color=INK)
 
     output_active = float(np.clip((forward_phase - 0.76) / 0.20, 0.0, 1.0))
     if time_seconds >= 13.5:
         output_active = 1.0
     output_ready = output_active > 0.35
-    _heat_block(ax, output_rect, fill=PREDICTION_FILL if output_ready else WHITE, edge=ENERGY_TEAL if output_ready else LINE_GRAY, active=output_active)
+    ax.add_patch(Rectangle(
+        (output_rect[0], output_rect[1]), output_rect[2] - output_rect[0], output_rect[3] - output_rect[1],
+        fc=PREDICTION_FILL if output_ready else WHITE,
+        ec=ENERGY_TEAL if output_ready else LINE_GRAY,
+        lw=1.6, zorder=3,
+    ))
     if output_ready:
-        registry.text(ax, 0.902, 0.765, r"$\hat{\varepsilon}_{i}$", ha="center", va="bottom", fontsize=FONT_SIZES["body"], color=ENERGY_TEAL)
+        registry.text(ax, 0.902, 0.650, r"$\hat{\varepsilon}_{i}$", ha="center", va="bottom", fontsize=FONT_SIZES["body"], color=INK)
         value = float(demo["_arrays"]["updated"][0] if time_seconds >= 13.5 else demo["_arrays"]["initial"][0])
-        registry.text(ax, 0.902, 0.395, f"{_fmt_ev(value)} eV", ha="center", va="top", fontsize=FONT_SIZES["body"], color=ENERGY_TEAL if time_seconds >= 13.5 else INK)
+        registry.text(ax, 0.902, 0.545, f"{_fmt_ev(value)} eV", ha="center", va="top", fontsize=FONT_SIZES["body"], color=INK)
 
     links = [
         ((input_rect[2], 0.600), (hidden_rects[0][0], 0.600)),
@@ -221,7 +226,7 @@ def _draw_network(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
     old_values = (0.42, -0.18, 0.31)
     new_values = (0.47, -0.12, 0.28)
     if backward_p > 0.02 or update_on:
-        registry.text(ax, 0.035, 0.240, "parameters", ha="left", va="center", fontsize=FONT_SIZES["micro"], color=GRADIENT_ORANGE if not update_on else ENERGY_TEAL)
+        registry.text(ax, 0.035, 0.240, "parameters", ha="left", va="center", fontsize=FONT_SIZES["micro"], color=INK)
         for index, x in enumerate(layer_centres):
             reverse_offset = (2 - index) * 0.30
             arrival = float(np.clip((back_t * 1.30 - reverse_offset) / 0.36, 0.0, 1.0))
@@ -231,17 +236,17 @@ def _draw_network(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
             connector_alpha = max(0.20, arrival) if not update_on else 1.0
             ax.plot([x, x], [hidden_rects[index][1] - 0.01, card_y1], color=edge, lw=2.0, alpha=connector_alpha, zorder=1)
             if not update_on:
-                registry.text(ax, x, 0.180, f"w{index + 1}", ha="center", va="center", fontsize=FONT_SIZES["micro"], color=edge)
-                registry.text(ax, x, 0.100, rf"$\partial L/\partial w_{index + 1}$", ha="center", va="center", fontsize=FONT_SIZES["micro"], color=edge if arrival > 0.2 else DARK_GRAY)
+                registry.text(ax, x, 0.180, f"w{index + 1}", ha="center", va="center", fontsize=FONT_SIZES["micro"], color=INK)
+                registry.text(ax, x, 0.100, rf"$\partial L/\partial w_{index + 1}$", ha="center", va="center", fontsize=FONT_SIZES["micro"], color=INK)
             else:
                 current = old_values[index] + update_t * (new_values[index] - old_values[index])
-                registry.text(ax, x, 0.165, f"w{index + 1}", ha="center", va="center", fontsize=FONT_SIZES["micro"], color=edge)
+                registry.text(ax, x, 0.165, f"w{index + 1}", ha="center", va="center", fontsize=FONT_SIZES["micro"], color=INK)
                 registry.text(ax, x, 0.090, f"{old_values[index]:.2f}", ha="center", va="center", fontsize=FONT_SIZES["micro"], color=INK)
                 registry.arrow(ax, (x, 0.062), (x, 0.032), arrowstyle="-|>", mutation_scale=8, lw=1.2, color=GRADIENT_ORANGE, zorder=6)
                 registry.text(ax, x, 0.000, f"{current:.2f}", ha="center", va="bottom", fontsize=FONT_SIZES["micro"], color=INK)
-        registry.text(ax, 0.965, 0.240, r"$w' = w - \eta\,\partial L/\partial w$", ha="right", va="center", fontsize=FONT_SIZES["micro"], color=edge)
+        registry.text(ax, 0.965, 0.240, r"$w' = w - \eta\,\partial L/\partial w$", ha="right", va="center", fontsize=FONT_SIZES["micro"], color=INK)
         if not update_on and backward_p > 0.12:
-            registry.text(ax, 0.50, 0.240, r"$\partial L/\partial w$", ha="center", va="center", fontsize=FONT_SIZES["body"], color=GRADIENT_ORANGE)
+            registry.text(ax, 0.50, 0.240, r"$\partial L/\partial w$", ha="center", va="center", fontsize=FONT_SIZES["body"], color=INK)
 
 def _metric_card(
     ax: plt.Axes,
@@ -255,14 +260,14 @@ def _metric_card(
 ) -> None:
     x0, y0, x1, y1 = rect
     ax.add_patch(Rectangle((x0, y0), x1 - x0, y1 - y0, fc=fill, ec=colour, lw=1.6, zorder=2))
-    registry.text(ax, x0 + 0.025, y1 - 0.025, title, ha="left", va="top", fontsize=FONT_SIZES["micro"], color=colour)
+    registry.text(ax, x0 + 0.025, y1 - 0.025, title, ha="left", va="top", fontsize=FONT_SIZES["micro"], color=INK)
     registry.text(ax, x0 + 0.025, y0 + 0.010, value, ha="left", va="bottom", fontsize=FONT_SIZES["body"], color=INK)
 
 
 def _draw_metrics(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object], time_seconds: float) -> None:
     _panel_background(ax)
     registry.text(ax, 0.03, 0.965, "Compare → correct", ha="left", va="top", fontsize=FONT_SIZES["panel_title"], color=INK)
-    registry.text(ax, 0.97, 0.965, "O126", ha="right", va="top", fontsize=FONT_SIZES["micro"], color=DARK_GRAY)
+    registry.text(ax, 0.97, 0.965, "O126", ha="right", va="top", fontsize=FONT_SIZES["micro"], color=INK)
     ref = float(demo["_arrays"]["reference"][0])
     initial = float(demo["_arrays"]["initial"][0])
     updated = float(demo["_arrays"]["updated"][0])
@@ -287,26 +292,25 @@ def _draw_metrics(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
     # printed. The right panel shows the calculation that uses that output and
     # the dataset value, without a second prediction or error box.
     if prediction_on and not loss_on and not final_on:
-        registry.text(ax, 0.075, 0.575, r"network output $\hat{\varepsilon}_i$", ha="left", va="center", fontsize=FONT_SIZES["body"], color=NAVY)
-        registry.text(ax, 0.075, 0.485, r"$\longrightarrow$ dataset reference", ha="left", va="center", fontsize=FONT_SIZES["body"], color=DARK_GRAY)
+        registry.text(ax, 0.075, 0.575, r"network output $\hat{\varepsilon}_i$", ha="left", va="center", fontsize=FONT_SIZES["body"], color=INK)
+        registry.text(ax, 0.075, 0.485, r"$\longrightarrow$ dataset reference", ha="left", va="center", fontsize=FONT_SIZES["body"], color=INK)
 
     if loss_on and not update_on and not final_on:
-        colour = GRADIENT_ORANGE
-        registry.text(ax, 0.075, 0.555, "prediction − dataset", ha="left", va="top", fontsize=FONT_SIZES["micro"], color=colour)
-        registry.text(ax, 0.075, 0.455, rf"$\delta_i = \hat{{\varepsilon}}_i - \varepsilon_i^{{ref}} = {_fmt_ev(delta)}$ eV", ha="left", va="center", fontsize=FONT_SIZES["body"], color=colour)
-        registry.text(ax, 0.075, 0.350, rf"$L_i = \frac{{1}}{{2}}\delta_i^2 = {loss:.3f}$ eV$^2$", ha="left", va="center", fontsize=FONT_SIZES["body"], color=colour)
+        registry.text(ax, 0.075, 0.555, "prediction − dataset", ha="left", va="top", fontsize=FONT_SIZES["micro"], color=INK)
+        registry.text(ax, 0.075, 0.455, rf"$\delta_i = \hat{{\varepsilon}}_i - \varepsilon_i^{{ref}} = {_fmt_ev(delta)}$ eV", ha="left", va="center", fontsize=FONT_SIZES["body"], color=INK)
+        registry.text(ax, 0.075, 0.350, rf"$L_i = \frac{{1}}{{2}}\delta_i^2 = {loss:.3f}$ eV$^2$", ha="left", va="center", fontsize=FONT_SIZES["body"], color=INK)
         if backprop_on:
-            registry.text(ax, 0.075, 0.255, r"$\partial L/\partial w$", ha="left", va="center", fontsize=FONT_SIZES["body"], color=colour)
+            registry.text(ax, 0.075, 0.255, r"$\partial L/\partial w$", ha="left", va="center", fontsize=FONT_SIZES["body"], color=INK)
 
     if update_on:
-        registry.text(ax, 0.075, 0.555, "apply gradient", ha="left", va="top", fontsize=FONT_SIZES["micro"], color=GRADIENT_ORANGE)
-        registry.text(ax, 0.075, 0.455, r"$w' = w - \eta\,\partial L/\partial w$", ha="left", va="center", fontsize=FONT_SIZES["body"], color=GRADIENT_ORANGE)
-        registry.text(ax, 0.075, 0.350, "gradient held fixed; parameters update", ha="left", va="center", fontsize=FONT_SIZES["micro"], color=DARK_GRAY)
+        registry.text(ax, 0.075, 0.555, "apply gradient", ha="left", va="top", fontsize=FONT_SIZES["micro"], color=INK)
+        registry.text(ax, 0.075, 0.455, r"$w' = w - \eta\,\partial L/\partial w$", ha="left", va="center", fontsize=FONT_SIZES["body"], color=INK)
+        registry.text(ax, 0.075, 0.350, "gradient held fixed; parameters update", ha="left", va="center", fontsize=FONT_SIZES["micro"], color=INK)
 
     if final_on:
-        registry.text(ax, 0.075, 0.555, "prediction − dataset", ha="left", va="top", fontsize=FONT_SIZES["micro"], color=ENERGY_TEAL)
-        registry.text(ax, 0.075, 0.455, rf"$|\delta_i|$: {abs(delta):.2f} → {abs(updated_delta):.2f}$\ \mathrm{{eV}}$", ha="left", va="center", fontsize=FONT_SIZES["body"], color=ENERGY_TEAL)
-        registry.text(ax, 0.075, 0.350, rf"$L_i$: {loss:.3f} → {updated_loss:.3f}$\ \mathrm{{eV}}^2$", ha="left", va="center", fontsize=FONT_SIZES["body"], color=ENERGY_TEAL)
+        registry.text(ax, 0.075, 0.555, "prediction − dataset", ha="left", va="top", fontsize=FONT_SIZES["micro"], color=INK)
+        registry.text(ax, 0.075, 0.455, rf"$|\delta_i|$: {abs(delta):.2f} → {abs(updated_delta):.2f}$\ \mathrm{{eV}}$", ha="left", va="center", fontsize=FONT_SIZES["body"], color=INK)
+        registry.text(ax, 0.075, 0.350, rf"$L_i$: {loss:.3f} → {updated_loss:.3f}$\ \mathrm{{eV}}^2$", ha="left", va="center", fontsize=FONT_SIZES["body"], color=INK)
 
 def _stage_label(time_seconds: float) -> str:
     if time_seconds < 2.0:
@@ -330,7 +334,7 @@ def draw_frame(fig: plt.Figure, time_seconds: float, registry: LayoutRegistry, d
     _draw_metrics(_slot_axes(fig, PANEL_METRICS), registry, demo, time_seconds)
     stage = _stage_label(time_seconds)
     semantics = [{"id": "structure", "color": NAVY, "min_pixels": 20, "tolerance": 70}, {"id": "reference", "color": ENERGY_TEAL, "min_pixels": 20, "tolerance": 70}]
-    if stage in {"loss", "backprop", "update"}:
+    if stage in {"backprop", "update"}:
         semantics.append({"id": "gradient", "color": GRADIENT_ORANGE, "min_pixels": 20, "tolerance": 70})
     return semantics
 

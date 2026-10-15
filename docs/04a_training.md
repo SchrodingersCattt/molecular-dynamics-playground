@@ -30,6 +30,9 @@ quantity is prominent. The reference card represents the dataset label; the
 prediction value is shown only in the network output block. The right panel
 then writes the calculation `delta_i = epsilon_hat_i - epsilon_ref_i` and the
 loss as unboxed equations, followed by the update rule and the reduced error.
+Text is black by default; colour is reserved for the small stage marker and
+for graphical borders, arrows, and activation paths. Descriptor and hidden
+layers remain grids, while the scalar atomic energy output is a numeric box.
 The per-atom values are a small teaching fixture in
 `product/data/04a_training_demo.json`. The repository does not
 contain a raw per-atom DFT decomposition, so these values remain labelled
