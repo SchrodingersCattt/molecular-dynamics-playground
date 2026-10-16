@@ -17,3 +17,7 @@
 
 ## QA
 - Same as 08.
+
+## Round 10 revision (2026-10-17)
+- Canvas 338 × 105.6 mm (16:5, same width as 08); grey cards with dark-grey borders; all text black.
+- Focus kept on the shared DPA3 descriptor by a heavier (3.2 pt) dark-grey border and size, not by fill colour; it flashes the active head's colour on each update. The active head is marked by a coloured border (a line) on a grey card; idle cards are white with a light border. Gradient arrows stay teal/orange.

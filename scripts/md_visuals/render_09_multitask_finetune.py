@@ -3,7 +3,7 @@
 Config: product/data/09_multitask_config.json (values copied from exp7a_fold0/input.json on a800).
 Focus: the shared descriptor in the centre. Each training step draws one head with p = 0.5
 (model_prob 0.5 / 0.5); that head lights up and its gradient flows back into the shared descriptor,
-whose RepFlow activations update. Inputs and the step ribbon are drawn in grey on purpose.
+whose RepFlow activations update. Inputs and the step ribbon stay in idle (white/light-border) cards. Style: grey cards, black text.
 Outputs: product/figures/09_multitask_finetune.png (4000x1250, 300 dpi at 13.33 in),
 product/videos/09_multitask_finetune.mp4 (1920x600, 24 fps) + every-frame QA and contact sheets.
 """
@@ -15,25 +15,22 @@ from pathlib import Path
 
 import numpy as np
 
-from common import render_video
 from explainer_common import (
-    FONT_SIZES, INK, INPUT_FILL, LINE_GRAY, LOSS_FILL, MID_GRAY, NAVY, ORANGE, PREDICTION_FILL, SIGNED_CMAP,
-    SOFT_ORANGE, SOFT_TEAL, STRUCTURE_BG, TEAL, WHITE, big_arrow, canvas, card, full_panel_audit, mix_hex,
-    save_static, sf, smoothstep,
+    CARD_EDGE, CARD_FILL, DARK_GRAY, FONT_SIZES, IDLE_EDGE, IDLE_FILL, INK, LINE_GRAY, MID_GRAY, MM, ORANGE, SIGNED_CMAP,
+    TEAL, WHITE, big_arrow, canvas, card, mix_hex, render_video_canvas, save_static, sf, smoothstep,
 )
 
 ROOT = Path(__file__).resolve().parents[2] / "product"
 STEM = "09_multitask_finetune"
 CONFIG = ROOT / "data" / "09_multitask_config.json"
 QA_ROOT = ROOT / "qa" / STEM
+SIZE_IN = (338 * MM, 338 * MM * 5 / 16)  # 338 x 105.6 mm, same width as 08
 INTRO, STEP_SECONDS, HOLD = 1.0, 2.0, 1.5
 REPRESENTATIVE_TIMES = (0.5, 1.3, 1.8, 2.3, 2.8, 4.5, 6.5, 8.5, 10.5, 12.8, 13.8)
 
 DESC = (0.335, 0.045, 0.655, 0.955)
 HEAD = {0: (0.745, 0.560, 0.990, 0.955), 1: (0.745, 0.045, 0.990, 0.440)}
 HEAD_COLOUR = {0: TEAL, 1: ORANGE}
-HEAD_FILL = {0: PREDICTION_FILL, 1: LOSS_FILL}
-HEAD_SOFT = {0: SOFT_TEAL, 1: SOFT_ORANGE}
 HEAD_TEXT = {0: ("$E$ / $F$ head", "pretrained"), 1: ("$V_{\\mathrm{det}}$ head", "random init")}
 INPUT = {0: (0.012, 0.560, 0.200, 0.780), 1: (0.012, 0.220, 0.200, 0.440)}
 INPUT_TEXT = {0: "DFT frames", 1: "Ion clusters"}
@@ -68,8 +65,9 @@ def state(t, data):
 
 def descriptor(ax, reg, fig, data, st, glow):
     k = sf(fig)
-    edge = NAVY if glow is None else mix_hex(NAVY, glow[0], 0.6 * glow[1])
-    card(ax, DESC, fill=INPUT_FILL, edge=edge, lw=2.6 + 1.6 * (glow[1] if glow else 0), fig=fig, z=2)
+    # focus: same grey card as everything else, but a heavy dark-grey border that flashes the head colour on update
+    edge = CARD_EDGE if glow is None else mix_hex(CARD_EDGE, glow[0], 0.8 * glow[1])
+    card(ax, DESC, fill=CARD_FILL, edge=edge, lw=3.2 + 1.6 * (glow[1] if glow else 0), fig=fig, z=2)
     reg.text(ax, 0.5 * (DESC[0] + DESC[2]), DESC[3] - 0.075, "Shared DPA3 descriptor", ha="center", va="center",
              fontsize=FONT_SIZES["panel_title"], color=INK)
     heat = data["heat"]
@@ -94,13 +92,14 @@ def plt_rect(x, y, w, h, colour, k):
 def head(ax, reg, fig, h, level):
     """level 0 = idle (grey), 1 = active."""
     col = HEAD_COLOUR[h]
-    fill = mix_hex(STRUCTURE_BG, HEAD_FILL[h], level); edge = mix_hex(LINE_GRAY, col, level)
-    card(ax, HEAD[h], fill=fill, edge=edge, lw=1.4 + 1.4 * level, fig=fig, z=2)
+    # idle: white card, light border; active: grey card, border in the head colour (a line, not text)
+    fill = mix_hex(IDLE_FILL, CARD_FILL, level); edge = mix_hex(IDLE_EDGE, col, level)
+    card(ax, HEAD[h], fill=fill, edge=edge, lw=1.1 + 1.9 * level, fig=fig, z=2)
     x0, y0, x1, y1 = HEAD[h]; xc = 0.5 * (x0 + x1)
     reg.text(ax, xc, 0.5 * (y0 + y1) + 0.075, HEAD_TEXT[h][0], ha="center", va="center", fontsize=FONT_SIZES["panel_title"],
-             color=mix_hex(MID_GRAY, INK, level))
+             color=INK)
     reg.text(ax, xc, 0.5 * (y0 + y1) - 0.085, HEAD_TEXT[h][1], ha="center", va="center", fontsize=FONT_SIZES["body"],
-             color=mix_hex(MID_GRAY, mix_hex(col, INK, 0.25), level))
+             color=INK)
 
 
 def grad_arrow(ax, reg, fig, h, progress, label=None, fan=True):
@@ -119,15 +118,15 @@ def grad_arrow(ax, reg, fig, h, progress, label=None, fan=True):
                       colour=HEAD_COLOUR[h], lw=2.4, ms=16, z=7)
     if label:
         reg.text(ax, 0.5 * (xs + DESC[2]), y + (0.055 if h == 0 else -0.055), label, ha="center", va="center",
-                 fontsize=FONT_SIZES["body"], color=mix_hex(HEAD_COLOUR[h], INK, 0.25))
+                 fontsize=FONT_SIZES["body"], color=INK)
 
 
 def draw(fig, reg, t, data):
     ax = canvas(fig); st = state(t, data); sched = data["schedule"]
     active = None if st is None or st["step"] < 0 else sched[st["step"]]
     # left column: step ribbon + inputs (de-emphasised)
-    reg.text(ax, 0.012, RIBBON_Y + 0.045, "One head per step,", ha="left", va="center", fontsize=FONT_SIZES["micro"], color=MID_GRAY)
-    reg.text(ax, 0.012, RIBBON_Y - 0.035, "$p$ = 0.5 / 0.5", ha="left", va="center", fontsize=FONT_SIZES["micro"], color=MID_GRAY)
+    reg.text(ax, 0.012, RIBBON_Y + 0.045, "One head per step,", ha="left", va="center", fontsize=FONT_SIZES["micro"], color=INK)
+    reg.text(ax, 0.012, RIBBON_Y - 0.035, "$p$ = 0.5 / 0.5", ha="left", va="center", fontsize=FONT_SIZES["micro"], color=INK)
     from explainer_common import disc
     for i, hh in enumerate(sched):
         shown = st is None or i <= st["step"]
@@ -135,10 +134,10 @@ def draw(fig, reg, t, data):
         disc(ax, fig, cx, RIBBON_Y - 0.035, 0.0105 if current else 0.0075, HEAD_COLOUR[hh] if shown else LINE_GRAY, z=4)
     for h in (0, 1):
         lit = 1.0 if st is None else (st["fwd"] if active == h else 0.0)
-        card(ax, INPUT[h], fill=STRUCTURE_BG, edge=mix_hex(LINE_GRAY, MID_GRAY, lit), lw=1.1, fig=fig, z=1)
+        card(ax, INPUT[h], fill=mix_hex(IDLE_FILL, CARD_FILL, lit), edge=mix_hex(IDLE_EDGE, CARD_EDGE, lit), lw=1.1, fig=fig, z=1)
         x0, y0, x1, y1 = INPUT[h]
         reg.text(ax, 0.5 * (x0 + x1), 0.5 * (y0 + y1), INPUT_TEXT[h], ha="center", va="center", fontsize=FONT_SIZES["body"],
-                 color=mix_hex(MID_GRAY, INK, 0.5 * lit))
+                 color=INK)
         yin = 0.5 * (y0 + y1)
         big_arrow(ax, reg, fig, (x1 + 0.006, yin), (DESC[0] - 0.006, yin), colour=mix_hex(LINE_GRAY, MID_GRAY, lit), lw=2.2, ms=18)
         yout = 0.81 if h == 0 else 0.19
@@ -161,21 +160,21 @@ def draw(fig, reg, t, data):
 
 
 def static(data):
-    return save_static(lambda fig, reg: draw(fig, reg, None, data), ROOT / "figures" / f"{STEM}.png")
+    return save_static(lambda fig, reg: draw(fig, reg, None, data), ROOT / "figures" / f"{STEM}.png", SIZE_IN)
 
 
-def video(data):
-    return render_video(stem=STEM, duration_seconds=data["duration"],
-                        draw_frame=lambda fig, t, _i, reg: draw(fig, reg, t, data),
-                        audit_config=full_panel_audit(), qa_directory=QA_ROOT / "_qa",
-                        representative_times=REPRESENTATIVE_TIMES)
+def video(data, frame_dump=None):
+    return render_video_canvas(stem=STEM, size_in=SIZE_IN, duration_seconds=data["duration"],
+                               draw_frame=lambda fig, t, _i, reg: draw(fig, reg, t, data),
+                               qa_directory=QA_ROOT / "_qa", representative_times=REPRESENTATIVE_TIMES, frame_dump=frame_dump)
 
 
 def main():
-    ap = argparse.ArgumentParser(); ap.add_argument("--static-only", action="store_true"); args = ap.parse_args()
+    ap = argparse.ArgumentParser(); ap.add_argument("--static-only", action="store_true")
+    ap.add_argument("--frame-dump", type=Path, help="also save every 2nd frame (review only)"); args = ap.parse_args()
     data = load(); print("schedule", data["schedule"]); print(static(data))
     if not args.static_only:
-        print(video(data))
+        print(video(data, args.frame_dump))
 
 
 if __name__ == "__main__":

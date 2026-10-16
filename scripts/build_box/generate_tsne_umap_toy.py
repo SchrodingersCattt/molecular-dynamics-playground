@@ -1,6 +1,6 @@
 """Toy data for the 08 t-SNE / UMAP explainer: exact t-SNE and a full-batch UMAP-style optimisation.
 
-24 points in 10-D (three clusters of 8; A and B close, C far) plus one large non-informative
+24 points in 10-D (also a random 2-D view and the PCA eigen-decomposition for the PCA row) (three clusters of 8; A and B close, C far) plus one large non-informative
 dimension, so the PCA projection mixes the clusters. Both methods start from that PCA layout.
 Writes product/data/08_tsne_umap_toy.json (positions per recorded iteration and the loss).
 Deterministic: numpy seed 20261032 (see SEED).
@@ -77,7 +77,14 @@ def main():
     rng = np.random.default_rng(SEED); X, lab = make_points(rng); Y0 = pca2(X)
     P, tt, tl = tsne(X, Y0); W, ut, ul = umap_like(X, Y0)
     pos = lambda arr: [[i, j, round(float(arr[i, j]), 5)] for i in range(24) for j in range(i + 1, 24) if arr[i, j] > 0]
-    out = {"seed": SEED, "labels": lab.tolist(), "pca": Y0.tolist(), "tsne": {"P": pos(P), "traj": tt, "kl": tl},
+    Xc = X - X.mean(0); evals, evecs = np.linalg.eigh(np.cov(Xc.T)); order = np.argsort(evals)[::-1]
+    evals, evecs = evals[order], evecs[:, order]
+    evecs = evecs * np.sign(evecs[np.abs(evecs).argmax(0), np.arange(evecs.shape[1])])  # fixed sign convention
+    R = np.random.default_rng(SEED + 1).standard_normal((X.shape[1], 2))
+    view, _ = np.linalg.qr(np.cos(1.0) * evecs[:, :2] + np.sin(1.0) * R / np.linalg.norm(R, axis=0))  # an oblique 2-D linear view (57 deg off the PC plane)
+    pca_row = {"Xc": Xc.round(6).tolist(), "view": view.tolist(), "evecs2": evecs[:, :2].tolist(),
+               "var_ratio": (evals / evals.sum()).tolist()}
+    out = {"seed": SEED, "labels": lab.tolist(), "pca": Y0.tolist(), "pca_row": pca_row, "tsne": {"P": pos(P), "traj": tt, "kl": tl},
            "umap": {"W": pos(W), "traj": ut, "ce": ul, "a": 1.577, "b": 0.895, "k": 6}}
     OUT.parent.mkdir(parents=True, exist_ok=True); OUT.write_text(json.dumps(out), encoding="utf-8")
     print(OUT, "KL", round(tl[0], 3), "->", round(tl[-1], 3), "CE", round(ul[0], 2), "->", round(ul[-1], 2))

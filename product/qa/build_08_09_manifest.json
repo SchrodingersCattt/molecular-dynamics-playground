@@ -4,12 +4,12 @@
     "master": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\videos\\08_tsne_umap_principle.mp4",
     "ppt": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\videos\\ppt\\08_tsne_umap_principle.mp4",
     "poster": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\videos\\ppt\\08_tsne_umap_principle_poster.png",
-    "frames": 396,
+    "frames": 540,
     "qa_passed": true,
     "sha256": {
-      "png": "3ed293a1e77f09009243fab842ba99509bf83cc36cd247d9be76956eaf0741fb",
-      "master": "ddc2c613e336ba0671fae27936b09ea0a1227c28418dcc3bb96410d99aea9244",
-      "ppt": "303981b1fb5b55471ef55f26f9f008efc63edbb4239365b80d039c00b176aea1"
+      "png": "4e1aff390d630a6c4840d9eb986b2f6192250ce3e7b5fa4e59c36235d3c82d4f",
+      "master": "aaf5b1c695b90e7aa03bd2fb3f4e93224d5e45854ca8b069e6df456076a84033",
+      "ppt": "20f7986105f7cf46498d835d0fd4a7419a8db8f741a8c1505c5ad5c5c932bffa"
     }
   },
   "09_multitask_finetune": {
@@ -20,9 +20,9 @@
     "frames": 348,
     "qa_passed": true,
     "sha256": {
-      "png": "468e07c481247ed643e8494084717e306a3944789187c96d22897e349dd449ae",
-      "master": "859460bdf4f3419b37290029dc13ef32f7bcd170c2437a1031b5fee628608f24",
-      "ppt": "6c240b8fe8fff69e60b49d0ee48c1afc21950ce12a97ad8964511a492b14f203"
+      "png": "fe87f5d2e7d877654155e73b97a3fd2cad23e9d076090fdece69892a34becdbc",
+      "master": "0bbb9012873c12699f72e09a6c5d2249d5481748071811387695c991230b7bd9",
+      "ppt": "6add87c1c87d6ee8f8eb2e6650d30b23141c60b4f31a0e82041a701d8d3f5fd8"
     }
   }
 }

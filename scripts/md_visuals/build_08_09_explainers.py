@@ -4,7 +4,8 @@
 
 Steps: regenerate the toy data (seeded) -> static PNGs (300 dpi) -> master videos with every-frame QA
 and contact sheets (common.render_video) -> PowerPoint copies via export_ppt_media.export_one
-(1280x400, 24 fps, CRF 30) -> optional copy of PNG/MP4/poster into a deck asset folder.
+(1280x400, 24 fps, CRF 30) for 09; 08 is 338x125 mm (not 16:5), so it gets the same ffmpeg settings
+at 1280 px wide with an even height (export_wide below) -> optional copy of PNG/MP4/poster into a deck asset folder.
 Writes build_08_09_manifest.json with SHA-256 of every output.
 """
 from __future__ import annotations
@@ -27,6 +28,15 @@ def sha(p: Path) -> str:
     return hashlib.sha256(p.read_bytes()).hexdigest()
 
 
+def export_wide(master: Path) -> Path:
+    """export_one's settings (24 fps, H.264 CRF 30, yuv420p, faststart) without forcing 16:5."""
+    out = master.parent / "ppt" / master.name; out.parent.mkdir(parents=True, exist_ok=True)
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(master), "-vf", "scale=1280:-2:flags=lanczos,fps=24",
+                    "-c:v", "libx264", "-crf", "30", "-preset", "slow", "-pix_fmt", "yuv420p", "-movflags", "+faststart",
+                    "-an", str(out)], check=True)
+    return out
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(); ap.add_argument("--deck-assets", type=Path); args = ap.parse_args()
     py = sys.executable
@@ -37,7 +47,7 @@ def main() -> None:
     from export_ppt_media import export_one
     out = {}
     for stem in STEMS:
-        master = PRODUCT / "videos" / f"{stem}.mp4"; export_one(master)
+        master = PRODUCT / "videos" / f"{stem}.mp4"; (export_wide if stem.startswith("08") else export_one)(master)
         ppt = PRODUCT / "videos" / "ppt" / f"{stem}.mp4"; png = PRODUCT / "figures" / f"{stem}.png"
         poster = PRODUCT / "videos" / "ppt" / f"{stem}_poster.png"
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-sseof", "-0.1", "-i", str(ppt), "-frames:v", "1", str(poster)], check=True)

@@ -20,3 +20,9 @@
 
 ## QA
 - `common.render_video` every-frame QA (layout registry, pixel checks, vertical whitespace) must pass; contact sheets reviewed; static layout registry must pass.
+
+## Round 10 revision (2026-10-17)
+- Three parallel rows: PCA (10-D points → centre, covariance → principal axes PC1/PC2 → variance explained → projection), t-SNE, UMAP. Stage 1 is the same oblique 2-D linear view of the 10-D toy cloud in every row.
+- Canvas 338 × 125 mm, 144 dpi video (1920 × 710 px master; PowerPoint copy 1280 × 474, 24 fps, CRF 30); static 300 dpi. All text ≥14 pt at that physical size (titles 15 pt, labels 14–18 pt).
+- Cards: light-grey fill, dark-grey (#505050) border; step discs and arrows dark grey when active, light grey when idle. All text black; colour only on points, curves, bars and arrows.
+- Duration 22.5 s (540 frames); every-frame QA.

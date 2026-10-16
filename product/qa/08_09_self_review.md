@@ -46,3 +46,8 @@ Round-8 files: `talk_tsne_umap_principle.png`, `talk_multitask_finetune.png` (PR
   - Per step, one head lights and a thick gradient arrow runs in and fans into every RepFlow layer, which then updates.
   - Inputs and the step ribbon are grey; there are no loss formulas.
 - Both videos are rendered by `common.render_video`, which does the every-frame QA and writes the contact sheets.
+
+## Round 10
+- Added a PCA row (linear baseline) parallel to t-SNE and UMAP; figure 338 × 125 mm, fonts ≥14 pt at that size.
+- Unified card style (light-grey fill, dark-grey border, dark-grey discs); all text labels black.
+- 09: same card style applied. Keeping it did not break the focus, because the descriptor stays the largest card with the heaviest border. Head identity now lives in the border colour rather than in a coloured fill or text.
