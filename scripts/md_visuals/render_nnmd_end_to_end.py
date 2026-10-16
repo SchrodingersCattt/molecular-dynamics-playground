@@ -210,7 +210,7 @@ POSITION_EQUATION = r"$\mathbf{r}_{n+1}=\mathbf{r}_n$" "\n" r"$+\mathbf{v}_{n+1/
 ACCELERATION_EQUATION = r"$\mathbf{a}_{n}=\mathbf{F}_{n}/m$" "\n" r"$\mathbf{F}_{n}=-\nabla E$"
 VELOCITY_EQUATION = r"$\mathbf{v}_{n+1/2}=\mathbf{v}_{n}$" "\n" r"$+\frac{1}{2}\mathbf{a}_{n}\Delta t$"
 
-EPS_CMAP = LinearSegmentedColormap.from_list("eps", [NAVY, "#D9D9D9", CRIMSON])
+EPS_CMAP = LinearSegmentedColormap.from_list("eps", ["#536E8E", "#E1E1E1", "#B66A74"])  # softened navy/crimson ends
 
 
 # --------------------------------------------------------------------------
@@ -755,7 +755,7 @@ RIGHT_X = (0.54, 0.985)
 EPS_Y = 0.215
 ENERGY_Y = 0.135
 from common import SIGNED_CMAP as OP_CMAP, signed_unit  # shared lime-white-purple, symmetric about 0
-SPECIES_DOT = {"O": "#D2453A", "H": "#C9CED3"}
+SPECIES_DOT = {"O": "#DA7D73", "H": "#D3D7DB"}
 # DPA4C moment layout (model constants of the checkpoint): degree zero is the
 # 64-channel amplitude, X^(1) uses harmonics 1-3 x channels 0-7 and X^(2)
 # harmonics 4-8 x channels 0-3.
@@ -1027,7 +1027,14 @@ def draw_pipeline(
     if inv_alpha > 0:
         _heat(ax, inv_matrix, inv_rect, alpha=inv_alpha, clip=inv_clip)
     _frame(ax, inv_rect, colour=FORCE_OLIVE if backward else (EDGE_NAVY if inv_alpha > 0 else LINE_GRAY), lw=1.8 if backward else 1.1)
-    registry.text(ax, rx0, inv_rect[3] + 0.04, inv_label, ha="left", va="center", fontsize=fs * (0.88 if model == "deepmd" else 1.0), color=EDGE_NAVY if inv_alpha > 0 else DARK_GRAY, zorder=8)
+    inv_text = registry.text(ax, rx0, inv_rect[3] + 0.04, inv_label, ha="left", va="center", fontsize=fs * (0.88 if model == "deepmd" else 1.0), color=EDGE_NAVY if inv_alpha > 0 else DARK_GRAY, zorder=8)
+    # Keep a right padding between the label (its M_2 subscript) and the
+    # right edge of the descriptor box: shrink the font until it fits.
+    renderer = ax.figure.canvas.get_renderer()
+    limit_px = ax.transAxes.transform((rx1 - 0.018, 0.0))[0] if inv_text.get_transform() == ax.transAxes else ax.transData.transform((rx1 - 0.018, 0.0))[0]
+    floor_pt = registry.min_font_pt * max(1.0, text_scale_of(ax.figure))
+    while inv_text.get_window_extent(renderer=renderer).x1 > limit_px and inv_text.get_fontsize() > floor_pt * 1.02:
+        inv_text.set_fontsize(max(inv_text.get_fontsize() * 0.97, floor_pt))
 
     # --- fitting layers, eps_i and E ----------------------------------------
     fit_on = y_front < 0.42 if swept else fit_p > 0

@@ -731,13 +731,13 @@ from matplotlib.colors import LinearSegmentedColormap as _LSC  # noqa: E402
 
 SIGNED_CMAP = _LSC.from_list(
     "signed_lime_white_purple",
-    ["#A9C97E", "#D6E9B8", "#FFFFFF", "#DDD3EE", "#AE9BD3"],
+    ["#BFD4A3", "#E2EDD2", "#FFFFFF", "#E7E1F1", "#C0B3DA"],
 )
 
 
 # Toned-down accents used only by the NNMD scenes (04*/05*).
-NNMD_ENERGY_TEAL = "#3F8A87"
-NNMD_ORANGE = "#CF9A6E"
+NNMD_ENERGY_TEAL = "#5B908D"
+NNMD_ORANGE = "#D3AC8A"
 
 
 def signed_unit(values, vmax=None):
