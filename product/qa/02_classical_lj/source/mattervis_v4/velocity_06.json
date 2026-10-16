@@ -4,8 +4,8 @@
   "format": "png",
   "width": 1700,
   "height": 1180,
-  "plan_sha256": "e381f56a0094fdee90cc3fca825609b1a43ef8157b12f41a21e7d499316f77a3",
-  "output_sha256": "8ae481179581d862a5b2d10269e4f350de464294811f4b1f340cd23b1529a540",
+  "plan_sha256": "695ae99291b9ea3e8fe4aed1074945012d3e76b7e10ef395af5643152e69b86c",
+  "output_sha256": "e7a365be9d2c1aba1a42c96dbca9aa30f46a4a9868a1df6d91e0d7743dfc7abb",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\02_classical_lj\\source\\mattervis_v4\\velocity_06.png",
   "source_sha256": "dedfcf62051f48e7294e355d81399d053439c7343bc673f6324da82329337f9e",
   "frame": 6,
@@ -44,7 +44,7 @@
     "cell_color": "#333333",
     "cell_width_px": 2.0
   },
-  "vector_signature": "[{\"color\":\"#2F8562\",\"id\":\"lj-v-0\",\"opacity\":1.0,\"origin\":[-1.457659021853057,-0.05701566033066997,0.17104698099200988],\"style\":{\"head_length\":0.065,\"head_radius\":0.042,\"shaft_radius\":0.018,\"sides\":18},\"vector\":[-0.06773744590371862,-0.2621666347038735,0.7864999041116203]},{\"color\":\"#2F8562\",\"id\":\"lj-v-1\",\"opacity\":1.0,\"origin\":[1.457659021853057,0.05701566033066997,-0.17104698099200988],\"style\":{\"head_length\":0.065,\"head_radius\":0.042,\"shaft_radius\":0.018,\"sides\":18},\"vector\":[0.06773744590371862,0.2621666347038735,-0.7864999041116203]}]",
+  "vector_signature": "[{\"color\":\"#8169AD\",\"id\":\"lj-v-0\",\"opacity\":1.0,\"origin\":[-1.457659021853057,-0.05701566033066997,0.17104698099200988],\"style\":{\"head_length\":0.065,\"head_radius\":0.042,\"shaft_radius\":0.018,\"sides\":18},\"vector\":[-0.06773744590371862,-0.2621666347038735,0.7864999041116203]},{\"color\":\"#8169AD\",\"id\":\"lj-v-1\",\"opacity\":1.0,\"origin\":[1.457659021853057,0.05701566033066997,-0.17104698099200988],\"style\":{\"head_length\":0.065,\"head_radius\":0.042,\"shaft_radius\":0.018,\"sides\":18},\"vector\":[0.06773744590371862,0.2621666347038735,-0.7864999041116203]}]",
   "vector_count": 2,
   "vector_renderer": "MatterVis native world-space vector_overlays",
   "mesh_signature": "[]",
@@ -55,6 +55,7 @@
   "metadata": {
     "transparent_compositor": "per-pixel-fragment-list",
     "scale": 1,
+    "requested_backend": "cpu",
     "actual_backend": "cpu",
     "camera": {
       "position": [
@@ -97,9 +98,28 @@
       "install": "python -m pip install \"matter-vis\"",
       "notes": [
         "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+      ],
+      "capability_details": [
+        {
+          "name": "core",
+          "description": "CPU 3D and Matplotlib 2D PNG/PDF/SVG, structure inspection, ORTEP, rings, and polyhedra",
+          "extra": null,
+          "packages": [
+            "numpy",
+            "ase",
+            "matplotlib",
+            "pillow",
+            "molcrys-kit"
+          ],
+          "includes": [],
+          "available": true,
+          "install": "python -m pip install \"matter-vis\"",
+          "note": "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+        }
       ]
     },
     "install": "python -m pip install \"matter-vis\"",
-    "fallback": null
+    "fallback": null,
+    "atom_property_color": null
   }
 }

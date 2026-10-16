@@ -11,10 +11,10 @@
         "curve_progress": 0.0,
         "scf_phase": "loop",
         "stage_weights": [
-          0.0,
-          0.0,
-          0.48858447488584433,
-          0.5114155251141557
+          1.0,
+          1.0,
+          1.0,
+          0.0
         ],
         "progress": 0.03424657534246576,
         "scf_progress": 0.03424657534246576,
@@ -28,7 +28,7 @@
         },
         {
           "id": "beta_density",
-          "color": "#2F6B4F",
+          "color": "#0A6230",
           "min_pixels": 0
         }
       ],
@@ -45,10 +45,10 @@
         "curve_progress": 0.0,
         "scf_phase": "loop",
         "stage_weights": [
-          0.0,
-          0.0,
-          0.0,
-          0.08219178082191902
+          1.0,
+          1.0,
+          1.0,
+          0.0
         ],
         "progress": 0.4965753424657534,
         "scf_progress": 0.4965753424657534,
@@ -62,7 +62,7 @@
         },
         {
           "id": "beta_density",
-          "color": "#2F6B4F",
+          "color": "#0A6230",
           "min_pixels": 0
         }
       ],
@@ -96,7 +96,7 @@
         },
         {
           "id": "beta_density",
-          "color": "#2F6B4F",
+          "color": "#0A6230",
           "min_pixels": 0
         }
       ],
@@ -125,7 +125,7 @@
       "semantics": [
         {
           "id": "nuclear_force",
-          "color": "#E07A1F",
+          "color": "#C8834A",
           "min_pixels": 120
         }
       ],
@@ -154,7 +154,7 @@
       "semantics": [
         {
           "id": "half_step_velocity",
-          "color": "#7A4FB8",
+          "color": "#8169AD",
           "min_pixels": 120
         }
       ],
@@ -183,7 +183,7 @@
       "semantics": [
         {
           "id": "nuclear_displacement",
-          "color": "#2F6FB3",
+          "color": "#4F7CAC",
           "min_pixels": 30
         }
       ],
@@ -200,10 +200,10 @@
         "curve_progress": 0.0,
         "scf_phase": "loop",
         "stage_weights": [
+          1.0,
+          1.0,
           0.0,
-          0.0,
-          0.7168949771689577,
-          0.28310502283104233
+          0.0
         ],
         "progress": 0.034246575342465634,
         "scf_progress": 0.034246575342465634,
@@ -217,7 +217,7 @@
         },
         {
           "id": "beta_density",
-          "color": "#2F6B4F",
+          "color": "#0A6230",
           "min_pixels": 0
         }
       ],
@@ -234,9 +234,9 @@
         "curve_progress": 0.8630136986301409,
         "scf_phase": "curve",
         "stage_weights": [
-          0.0,
-          0.0,
-          0.0,
+          1.0,
+          1.0,
+          1.0,
           1.0
         ],
         "progress": 0.4965753424657535,
@@ -251,7 +251,7 @@
         },
         {
           "id": "beta_density",
-          "color": "#2F6B4F",
+          "color": "#0A6230",
           "min_pixels": 0
         }
       ],
@@ -285,7 +285,7 @@
         },
         {
           "id": "beta_density",
-          "color": "#2F6B4F",
+          "color": "#0A6230",
           "min_pixels": 0
         }
       ],
@@ -314,7 +314,7 @@
       "semantics": [
         {
           "id": "nuclear_force",
-          "color": "#E07A1F",
+          "color": "#C8834A",
           "min_pixels": 120
         }
       ],
@@ -343,7 +343,7 @@
       "semantics": [
         {
           "id": "half_step_velocity",
-          "color": "#7A4FB8",
+          "color": "#8169AD",
           "min_pixels": 120
         }
       ],
@@ -372,7 +372,7 @@
       "semantics": [
         {
           "id": "nuclear_displacement",
-          "color": "#2F6FB3",
+          "color": "#4F7CAC",
           "min_pixels": 30
         }
       ],
@@ -389,10 +389,10 @@
         "curve_progress": 0.0,
         "scf_phase": "loop",
         "stage_weights": [
-          0.0,
-          0.0,
-          0.3333333333334374,
-          0.6666666666665626
+          1.0,
+          1.0,
+          1.0,
+          0.0
         ],
         "progress": 0.23999999999999844,
         "scf_progress": 0.23999999999999844,
@@ -406,7 +406,7 @@
         },
         {
           "id": "beta_density",
-          "color": "#2F6B4F",
+          "color": "#0A6230",
           "min_pixels": 0
         }
       ],
@@ -435,7 +435,7 @@
       "semantics": [
         {
           "id": "nuclear_displacement",
-          "color": "#2F6FB3",
+          "color": "#4F7CAC",
           "min_pixels": 30
         }
       ],
@@ -446,7 +446,7 @@
       "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\_qa\\multistep_keyframes\\frame_14_12.42s.png",
       "state": {
         "mode": "move",
-        "ion": 3,
+        "ion": 4,
         "iteration": 10,
         "blend": 0.0,
         "curve_progress": 0.0,
@@ -464,7 +464,7 @@
       "semantics": [
         {
           "id": "nuclear_displacement",
-          "color": "#2F6FB3",
+          "color": "#4F7CAC",
           "min_pixels": 30
         }
       ],
@@ -475,7 +475,7 @@
       "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\_qa\\multistep_keyframes\\frame_15_14.82s.png",
       "state": {
         "mode": "move",
-        "ion": 5,
+        "ion": 8,
         "iteration": 10,
         "blend": 0.0,
         "curve_progress": 0.0,
@@ -493,7 +493,7 @@
       "semantics": [
         {
           "id": "nuclear_displacement",
-          "color": "#2F6FB3",
+          "color": "#4F7CAC",
           "min_pixels": 30
         }
       ],
@@ -504,15 +504,15 @@
       "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\_qa\\multistep_keyframes\\frame_16_15.10s.png",
       "state": {
         "mode": "scf",
-        "ion": 6,
+        "ion": 11,
         "iteration": 1,
         "blend": 0.0,
         "curve_progress": 0.9999999999999716,
         "scf_phase": "curve",
         "stage_weights": [
-          0.0,
-          0.0,
-          0.0,
+          1.0,
+          1.0,
+          1.0,
           1.0
         ],
         "progress": 0.1999999999999993,
@@ -527,7 +527,7 @@
         },
         {
           "id": "beta_density",
-          "color": "#2F6B4F",
+          "color": "#0A6230",
           "min_pixels": 0
         }
       ],
@@ -538,14 +538,14 @@
       "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\_qa\\multistep_keyframes\\frame_17_18.80s.png",
       "state": {
         "mode": "scf",
-        "ion": 9,
+        "ion": 16,
         "iteration": 1,
         "blend": 0.0,
         "curve_progress": 0.0,
         "scf_phase": "loop",
         "stage_weights": [
-          0.9999999999999053,
-          9.473903143468003e-14,
+          0.0,
+          0.0,
           0.0,
           0.0
         ],
@@ -561,7 +561,7 @@
         },
         {
           "id": "beta_density",
-          "color": "#2F6B4F",
+          "color": "#0A6230",
           "min_pixels": 0
         }
       ],
@@ -572,14 +572,14 @@
       "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\_qa\\multistep_keyframes\\frame_18_20.05s.png",
       "state": {
         "mode": "scf",
-        "ion": 10,
+        "ion": 16,
         "iteration": 1,
         "blend": 0.0,
         "curve_progress": 0.0,
         "scf_phase": "loop",
         "stage_weights": [
-          0.9999999999999053,
-          9.473903143468003e-14,
+          0.0,
+          0.0,
           0.0,
           0.0
         ],
@@ -595,7 +595,7 @@
         },
         {
           "id": "beta_density",
-          "color": "#2F6B4F",
+          "color": "#0A6230",
           "min_pixels": 0
         }
       ],
@@ -606,14 +606,14 @@
       "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\_qa\\multistep_keyframes\\frame_19_23.80s.png",
       "state": {
         "mode": "scf",
-        "ion": 13,
+        "ion": 18,
         "iteration": 1,
         "blend": 0.0,
         "curve_progress": 0.0,
         "scf_phase": "loop",
         "stage_weights": [
-          0.9999999999999053,
-          9.473903143468003e-14,
+          0.0,
+          0.0,
           0.0,
           0.0
         ],
@@ -629,7 +629,7 @@
         },
         {
           "id": "beta_density",
-          "color": "#2F6B4F",
+          "color": "#0A6230",
           "min_pixels": 0
         }
       ],
@@ -640,14 +640,14 @@
       "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\_qa\\multistep_keyframes\\frame_20_25.05s.png",
       "state": {
         "mode": "scf",
-        "ion": 14,
+        "ion": 18,
         "iteration": 1,
         "blend": 0.0,
         "curve_progress": 0.0,
         "scf_phase": "loop",
         "stage_weights": [
-          0.9999999999999053,
-          9.473903143468003e-14,
+          0.0,
+          0.0,
           0.0,
           0.0
         ],
@@ -663,7 +663,7 @@
         },
         {
           "id": "beta_density",
-          "color": "#2F6B4F",
+          "color": "#0A6230",
           "min_pixels": 0
         }
       ],
@@ -674,14 +674,14 @@
       "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\_qa\\multistep_keyframes\\frame_21_28.80s.png",
       "state": {
         "mode": "scf",
-        "ion": 17,
+        "ion": 20,
         "iteration": 1,
         "blend": 0.0,
         "curve_progress": 0.0,
         "scf_phase": "loop",
         "stage_weights": [
-          0.9999999999999053,
-          9.473903143468003e-14,
+          0.0,
+          0.0,
           0.0,
           0.0
         ],
@@ -697,7 +697,7 @@
         },
         {
           "id": "beta_density",
-          "color": "#2F6B4F",
+          "color": "#0A6230",
           "min_pixels": 0
         }
       ],
@@ -707,8 +707,8 @@
       "time_seconds": 29.8,
       "path": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\_qa\\multistep_keyframes\\frame_22_29.80s.png",
       "state": {
-        "mode": "move",
-        "ion": 17,
+        "mode": "pause",
+        "ion": 24,
         "iteration": 10,
         "blend": 0.0,
         "curve_progress": 0.0,
@@ -719,15 +719,20 @@
           0.0,
           0.0
         ],
-        "progress": 0.047619047619050836,
+        "progress": 1.0,
         "scf_progress": 1.0,
         "rapid": true
       },
       "semantics": [
         {
-          "id": "nuclear_displacement",
-          "color": "#2F6FB3",
-          "min_pixels": 30
+          "id": "alpha_density",
+          "color": "#A32035",
+          "min_pixels": 0
+        },
+        {
+          "id": "beta_density",
+          "color": "#0A6230",
+          "min_pixels": 0
         }
       ],
       "layout_passed": true

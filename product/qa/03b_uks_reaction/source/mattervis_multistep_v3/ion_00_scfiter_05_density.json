@@ -1,0 +1,9 @@
+{
+  "density_rendering": "scf_iterate_contours_plus_signed_difference",
+  "delta_definition": "rho_alpha+rho_beta at SCF cycle k minus converged, max-|.| projection along plane normal",
+  "delta_scale_e_per_ang3": 0.014758126810193062,
+  "max_abs_delta_projected": 0.03310033373039112,
+  "contours": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\mattervis_multistep_v3\\ion_00_scfiter_05_density_contours.png",
+  "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\mattervis_multistep_v3\\ion_00_scfiter_05_density.png",
+  "ion_index": 0
+}

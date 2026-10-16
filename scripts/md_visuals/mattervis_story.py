@@ -27,6 +27,7 @@ from mat_viewer.renderer import resolve_vector_overlays
 
 from common import (
     CRIMSON,
+    STAGE_COLORS,
     DARK_GRAY,
     FONT_SIZES,
     GREEN,
@@ -1004,9 +1005,9 @@ def draw_vv_loop(
 ) -> None:
     """Draw the shared three-stage Velocity Verlet loop.
 
-    Position, acceleration and velocity are black. The active node is black
-    with a white symbol; the other two stay white with black symbols. Scene
-    arrows keep their own colours.
+    Position, acceleration and velocity use the shared STAGE_COLORS palette
+    (same hue as the middle-panel arrows). The active node is filled with its
+    hue and a white symbol; the others are white with hue outline/symbol.
     Word labels sit outside the circle so the arc never runs through them.
     """
     figure_width, figure_height = ax.figure.canvas.get_width_height()
@@ -1019,7 +1020,7 @@ def draw_vv_loop(
     ax.add_patch(Arc((centre_x, centre_y), 2 * radius_x, 2 * radius_y, theta1=0, theta2=360, color=ring_grey, lw=2.6 if video else 2.0, zorder=1))
     if active_stage is not None:
         theta1, theta2 = arc_ranges[active_stage]
-        ax.add_patch(Arc((centre_x, centre_y), 2 * radius_x, 2 * radius_y, theta1=theta1, theta2=theta2, color=INK, lw=4.2 if video else 2.8, zorder=2))
+        ax.add_patch(Arc((centre_x, centre_y), 2 * radius_x, 2 * radius_y, theta1=theta1, theta2=theta2, color=STAGE_COLORS[active_stage], lw=4.2 if video else 2.8, zorder=2))
     tangent_angles = ((38, 24), (-82, -98), (-202, -218))
     for index, (start_angle, end_angle) in enumerate(tangent_angles):
         def point(angle: float) -> tuple[float, float]:
@@ -1032,7 +1033,7 @@ def draw_vv_loop(
             arrowstyle="-|>",
             mutation_scale=22 if video else 14,
             lw=3.0 if video else 2.2,
-            color=INK if active_stage == index else ring_grey,
+            color=STAGE_COLORS[index] if active_stage == index else ring_grey,
             zorder=3,
         )
     nodes = [
@@ -1050,8 +1051,8 @@ def draw_vv_loop(
                 (x, y),
                 width=2.0 * node_half_width,
                 height=2.0 * node_half_height,
-                fc=INK if active else WHITE,
-                ec=INK,
+                fc=STAGE_COLORS[index] if active else WHITE,
+                ec=STAGE_COLORS[index],
                 lw=3.0 if video else 2.0,
                 zorder=4,
             )
@@ -1064,7 +1065,7 @@ def draw_vv_loop(
             ha="center",
             va="center_baseline",
             fontsize=FONT_SIZES["page_title"],
-            color=WHITE if active else INK,
+            color=WHITE if active else STAGE_COLORS[index],
             zorder=5,
         )
         if index == 0:
@@ -1080,7 +1081,7 @@ def draw_vv_loop(
             ha=align,
             va=valign,
             fontsize=FONT_SIZES["micro"],
-            color=INK,
+            color=STAGE_COLORS[index],
             zorder=5,
         )
     registry.text(

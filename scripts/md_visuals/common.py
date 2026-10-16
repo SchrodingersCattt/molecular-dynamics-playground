@@ -44,9 +44,9 @@ CRIMSON = "#A32035"
 GREEN = "#2F6B4F"
 # Velocity-Verlet stage colours, shared by every story: the loop node, its
 # label and every arrow of that quantity use the same hue.
-R_BLUE = "#2F6FB3"
-V_PURPLE = "#7A4FB8"
-A_ORANGE = "#E07A1F"
+R_BLUE = "#4F7CAC"
+V_PURPLE = "#8169AD"
+A_ORANGE = "#C8834A"
 STAGE_COLORS = (R_BLUE, A_ORANGE, V_PURPLE)  # loop stage index: r, a, v
 
 
@@ -66,6 +66,9 @@ def latched_scf_stage_weights(loop_progress: float) -> tuple[float, float, float
 FORCE_OLIVE = A_ORANGE
 # Energy and the geometric quantities that enter it share one hue.
 ENERGY_TEAL = "#1F7A7A"
+# One orthographic half-height (Angstrom) for every TNT scene (02b, 03b), so
+# Angstrom-per-pixel is identical between them.
+TNT_ORTHO_SCALE = 5.2
 
 # Four type sizes, in points as they appear on a 16:9 slide (33.87 cm wide):
 # 14 annotations/legends/ticks, 16 labels and equations, 18 panel titles,

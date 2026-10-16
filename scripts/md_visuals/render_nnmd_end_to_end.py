@@ -704,7 +704,8 @@ def draw_case(
     box_rect = composition["box_rect"]
     mag_rect = composition["mag_rect"]
     mag_rx, mag_ry = composition["mag_radius"]
-    registry.text(ax, box_x, box_rect[3] + (0.035 if video else 0.015), "64 H$_2$O periodic box", ha="center", va="bottom", fontsize=FONT_SIZES["micro"], color=DARK_GRAY, zorder=21)
+    # (box caption removed on request)
+    #     registry.text(ax, box_x, box_rect[3] + (0.035 if video else 0.015), "64 H$_2$O periodic box", ha="center", va="bottom", fontsize=FONT_SIZES["micro"], color=DARK_GRAY, zorder=21)
 
     focus_origin = positions[0, centre]
     local_vectors = local["vectors"]

@@ -4,8 +4,8 @@
   "format": "png",
   "width": 1500,
   "height": 950,
-  "plan_sha256": "c94954a9f93a3c243f9ad989dab4a174fa6bb0c37ad8e6b3f62886a7a5b1dc5a",
-  "output_sha256": "98e6f00284c18ba86559766495e5c6526fce1b3b423a93ffde0ac690e59c9a62",
+  "plan_sha256": "cca8bb0fdab44f8fdc080782253f164307328e6a984615acf00eca8d25ad581f",
+  "output_sha256": "86996d14c011b17148d9176274d2387204b6876c3708863c2fec57455ab25ce1",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\mattervis_multistep_v3\\ion_00_structure.png",
   "source_sha256": "abc9f5958fccb53e928813a8307a69db02f81a74d9940b5c1d0dbc4273256319",
   "frame": 0,
@@ -16,7 +16,7 @@
       0.0042917164272209644,
       -0.1037991470347843
     ],
-    "ortho_scale": 5.435968498721205,
+    "ortho_scale": 5.2,
     "direction": [
       0.23121552453364444,
       0.9300234133236358,
@@ -55,6 +55,7 @@
   "metadata": {
     "transparent_compositor": "per-pixel-fragment-list",
     "scale": 1,
+    "requested_backend": "cpu",
     "actual_backend": "cpu",
     "camera": {
       "position": [
@@ -76,7 +77,7 @@
       "fov_y_deg": 45.0,
       "near": 0.01,
       "far": 10000.0,
-      "ortho_scale": 5.435968498721205
+      "ortho_scale": 5.2
     },
     "source": {
       "path": null,
@@ -97,6 +98,24 @@
       "install": "python -m pip install \"matter-vis\"",
       "notes": [
         "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+      ],
+      "capability_details": [
+        {
+          "name": "core",
+          "description": "CPU 3D and Matplotlib 2D PNG/PDF/SVG, structure inspection, ORTEP, rings, and polyhedra",
+          "extra": null,
+          "packages": [
+            "numpy",
+            "ase",
+            "matplotlib",
+            "pillow",
+            "molcrys-kit"
+          ],
+          "includes": [],
+          "available": true,
+          "install": "python -m pip install \"matter-vis\"",
+          "note": "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+        }
       ]
     },
     "install": "python -m pip install \"matter-vis\"",

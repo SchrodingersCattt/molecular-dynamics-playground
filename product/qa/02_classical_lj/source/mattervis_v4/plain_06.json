@@ -4,7 +4,7 @@
   "format": "png",
   "width": 1700,
   "height": 1180,
-  "plan_sha256": "64e22ae93f05a58be2720d19ddf1ce9680b434a003c67b0c4493e4379ca2cafc",
+  "plan_sha256": "a62bb003d8df414e977e0e3063655a55d934b283b7897fa7182dd8d01527537d",
   "output_sha256": "cbb411b200f1289ae5bd8a7b5237fc5c6e9e237fa62d4e775891d5a4ee3b26c3",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\02_classical_lj\\source\\mattervis_v4\\plain_06.png",
   "source_sha256": "dedfcf62051f48e7294e355d81399d053439c7343bc673f6324da82329337f9e",
@@ -55,6 +55,7 @@
   "metadata": {
     "transparent_compositor": "per-pixel-fragment-list",
     "scale": 1,
+    "requested_backend": "cpu",
     "actual_backend": "cpu",
     "camera": {
       "position": [
@@ -97,9 +98,28 @@
       "install": "python -m pip install \"matter-vis\"",
       "notes": [
         "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+      ],
+      "capability_details": [
+        {
+          "name": "core",
+          "description": "CPU 3D and Matplotlib 2D PNG/PDF/SVG, structure inspection, ORTEP, rings, and polyhedra",
+          "extra": null,
+          "packages": [
+            "numpy",
+            "ase",
+            "matplotlib",
+            "pillow",
+            "molcrys-kit"
+          ],
+          "includes": [],
+          "available": true,
+          "install": "python -m pip install \"matter-vis\"",
+          "note": "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+        }
       ]
     },
     "install": "python -m pip install \"matter-vis\"",
-    "fallback": null
+    "fallback": null,
+    "atom_property_color": null
   }
 }

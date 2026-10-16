@@ -96,17 +96,15 @@ def _draw_structure(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, obje
         ax, 0.03, 0.965, "Training dataset",
         ha="left", va="top", fontsize=FONT_SIZES["panel_title"], color=INK,
     )
-    reveal = smoothstep(np.clip((time_seconds - 0.6) / 0.8, 0.0, 1.0))
+    # The box, magnifier and labels are part of the static dataset context,
+    # so they are visible from the first frame.
+    reveal = 1.0
     image = _composition_rgba(scene["assets"]["cut"][0])
     draw_box_magnifier(
         ax, scene["data"], scene, image=image, state=0,
         box_center=(0.185, 0.615), box_radius=0.125,
         magnifier_center=(0.675, 0.570), magnifier_radius=0.275,
         reveal=reveal, video=True, zorder=2.0,
-    )
-    registry.text(
-        ax, 0.185, 0.330, "64 H$_2$O periodic box",
-        ha="center", va="top", fontsize=FONT_SIZES["micro"], color=INK,
     )
     registry.text(
         ax, 0.675, 0.245, "local environment",
@@ -160,7 +158,7 @@ def _draw_grid_colorbar(ax: plt.Axes, registry: LayoutRegistry, *, label: str) -
 
 
 def _network_arrow(ax: plt.Axes, registry: LayoutRegistry, start: tuple[float, float], end: tuple[float, float], *, colour: str, alpha: float = 1.0) -> None:
-    registry.arrow(ax, start, end, arrowstyle="-|>", mutation_scale=17, lw=2.5, color=colour, alpha=alpha, zorder=5)
+    registry.arrow(ax, start, end, arrowstyle="-|>", mutation_scale=13, lw=2.0, color=colour, alpha=alpha, zorder=5)
 
 
 def _draw_network(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object], time_seconds: float) -> None:
@@ -187,12 +185,18 @@ def _draw_network(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
         stage, stage_colour = "forward again", ENERGY_TEAL
     registry.text(ax, 0.97, 0.965, stage, ha="right", va="top", fontsize=FONT_SIZES["body"], color=stage_colour)
 
-    input_rect = (0.035, 0.420, 0.205, 0.755)
-    hidden_rects = [(0.280, 0.385, 0.385, 0.795), (0.455, 0.385, 0.560, 0.795), (0.630, 0.385, 0.735, 0.795)]
+    # Same DeepPot-SE pipeline as scene 04: environment matrix R~ -> embedding
+    # layers G1 -> G2 -> G, descriptor D = T^T T_<, then the fitting net.
+    input_rect = (0.030, 0.420, 0.120, 0.755)
+    labels = ("G¹", "G²", "G", "D", "fit")
+    block_w, gap = 0.088, 0.034
+    hidden_rects = []
+    x = input_rect[2] + gap
+    for _ in labels:
+        hidden_rects.append((x, 0.385, x + block_w, 0.795))
+        x += block_w + gap
+    n_blocks = len(hidden_rects)
     layer_centres = [0.5 * (rect[0] + rect[2]) for rect in hidden_rects]
-    # Keep the descriptor quiet during the sample/zoom phase.  It is the
-    # network's first evaluated block, so the navy border should appear only
-    # when the forward pass reaches the network at 2 s.
     input_active = 1.0 if time_seconds >= 2.0 else 0.0
     _heat_block(
         ax,
@@ -203,14 +207,16 @@ def _draw_network(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
         value_phase=input_active,
         mode="activation",
     )
-    registry.text(ax, 0.120, 0.825, "descriptor", ha="center", va="bottom", fontsize=FONT_SIZES["micro"], color=INK)
-    registry.text(ax, 0.120, 0.350, r"$\mathbf{R}_i$", ha="center", va="top", fontsize=FONT_SIZES["body"], color=INK)
+    input_centre = 0.5 * (input_rect[0] + input_rect[2])
+    registry.text(ax, input_centre, 0.825, r"$\tilde{\mathcal{R}}$", ha="center", va="bottom", fontsize=FONT_SIZES["micro"], color=INK)
+    registry.text(ax, input_centre, 0.350, r"$\mathbf{R}_i$", ha="center", va="top", fontsize=FONT_SIZES["body"], color=INK)
+    registry.text(ax, 0.5 * (hidden_rects[0][0] + hidden_rects[2][2]), 0.350, "embedding net", ha="center", va="top", fontsize=FONT_SIZES["micro"], color=INK)
 
+    window = 0.80 / n_blocks
     for index, rect in enumerate(hidden_rects):
-        # G1, G2, and fit occupy successive windows of the forward pass.
-        forward_arrival = float(np.clip((forward_phase - (0.10 + 0.22 * index)) / 0.20, 0.0, 1.0))
-        reverse_offset = (2 - index) * 0.30
-        reverse_arrival = float(np.clip((back_t * 1.30 - reverse_offset) / 0.36, 0.0, 1.0))
+        forward_arrival = float(np.clip((forward_phase - (0.10 + window * index)) / window, 0.0, 1.0))
+        reverse_offset = (n_blocks - 1 - index) * (1.0 / n_blocks)
+        reverse_arrival = float(np.clip((back_t * 1.20 - reverse_offset) / 0.25, 0.0, 1.0))
         active = max(forward_arrival, reverse_arrival if backprop_active else 0.0)
         if backprop_active and backward_p > 0.0:
             edge = GRADIENT_ORANGE if reverse_arrival > 0.02 else LINE_GRAY
@@ -228,16 +234,10 @@ def _draw_network(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
             grid_mode = "activation"
             grid_phase = forward_arrival
         _heat_block(ax, rect, fill=fill, edge=edge, active=active, value_phase=grid_phase, mode=grid_mode)
-        label = ("G¹", "G²", "fit")[index]
-        registry.text(ax, layer_centres[index], 0.825, label, ha="center", va="bottom", fontsize=FONT_SIZES["micro"], color=INK)
-        if not backprop_active:
-            registry.text(ax, layer_centres[index], 0.350, label, ha="center", va="top", fontsize=FONT_SIZES["micro"], color=INK)
+        registry.text(ax, layer_centres[index], 0.825, labels[index], ha="center", va="bottom", fontsize=FONT_SIZES["micro"], color=INK)
 
-    links = [
-        ((input_rect[2], 0.600), (hidden_rects[0][0], 0.600)),
-        ((hidden_rects[0][2], 0.600), (hidden_rects[1][0], 0.600)),
-        ((hidden_rects[1][2], 0.600), (hidden_rects[2][0], 0.600)),
-    ]
+    chain = [input_rect, *hidden_rects]
+    links = [((a[2], 0.600), (b[0], 0.600)) for a, b in zip(chain[:-1], chain[1:])]
     for start, end in links:
         if backprop_active and backward_p > 0.0:
             _network_arrow(ax, registry, end, start, colour=GRADIENT_ORANGE, alpha=0.35 + 0.55 * backward_p)
@@ -246,10 +246,11 @@ def _draw_network(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
             _network_arrow(ax, registry, start, end, colour=forward_colour, alpha=max(0.25, forward_phase))
 
     if 8.5 <= time_seconds < 11.5:
-        pulse = np.clip(back_t * 3.0, 0.0, 2.999)
-        link_index = min(int(pulse), 2)
+        n_links = len(links)
+        pulse = np.clip(back_t * n_links, 0.0, n_links - 1.0e-3)
+        link_index = min(int(pulse), n_links - 1)
         local_p = pulse - link_index
-        start, end = links[2 - link_index]
+        start, end = links[n_links - 1 - link_index]
         x = end[0] + local_p * (start[0] - end[0])
         y = end[1] + local_p * (start[1] - end[1])
         ax.plot([x], [y], marker="o", markersize=7.0, color=GRADIENT_ORANGE, zorder=8)
@@ -293,31 +294,12 @@ def _prediction_card(
     card = Rectangle((rect[0], rect[1]), rect[2] - rect[0], rect[3] - rect[1], fc=PREDICTION_FILL, ec=edge, lw=1.6, zorder=2)
     card.set_clip_on(False)
     ax.add_patch(card)
-    aspect = _axes_aspect(ax)
-    circle_center = (-0.12, 0.635)
-    radius = 0.045
-    circle = Ellipse(
-        circle_center,
-        2.0 * radius,
-        2.0 * radius * aspect,
-        fc=PREDICTION_FILL,
-        ec=edge,
-        lw=1.8,
-        zorder=4,
-    )
-    circle.set_clip_on(False)
-    ax.add_patch(circle)
-    # Keep the requested black label below the circle while the numeric value
-    # sits in the same card, so the network output is no longer duplicated.
-    registry.text(ax, circle_center[0], 0.575, r"$\hat{\varepsilon}_{i}$", ha="center", va="top", fontsize=FONT_SIZES["body"], color=INK)
-    title = "prediction · after update" if final_on else "prediction · network output"
-    registry.text(ax, 0.08, 0.685, title, ha="left", va="top", fontsize=FONT_SIZES["micro"], color=INK)
-    registry.text(ax, 0.08, 0.575, f"{_fmt_ev(value)} eV", ha="left", va="top", fontsize=FONT_SIZES["body"], color=INK)
+    registry.text(ax, -0.175, 0.700, "Neural-network prediction", ha="left", va="top", fontsize=FONT_SIZES["micro"], color=INK)
+    registry.text(ax, -0.175, 0.530, rf"$\hat{{\varepsilon}}_i = {_fmt_ev(value)}$ eV", ha="left", va="bottom", fontsize=FONT_SIZES["body"], color=INK)
 
 
 def _draw_metrics(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object], time_seconds: float) -> None:
     _panel_background(ax)
-    registry.text(ax, 0.97, 0.965, "O126", ha="right", va="top", fontsize=FONT_SIZES["micro"], color=INK)
     ref = float(demo["_arrays"]["reference"][0])
     initial = float(demo["_arrays"]["initial"][0])
     updated = float(demo["_arrays"]["updated"][0])
@@ -331,11 +313,12 @@ def _draw_metrics(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
     prediction_on = time_seconds >= 4.5
     final_on = time_seconds >= 13.5
 
+    # The DFT label belongs to the dataset and is shown from the first frame.
+    _metric_card(
+        ax, registry, rect=(0.05, 0.765, 0.95, 0.910), colour=ENERGY_TEAL,
+        title="DFT reference", value=rf"$\varepsilon_i^{{\mathrm{{ref}}}} = {_fmt_ev(ref)}$ eV", fill=STRUCTURE_BG,
+    )
     if prediction_on:
-        _metric_card(
-            ax, registry, rect=(0.05, 0.765, 0.95, 0.910), colour=ENERGY_TEAL,
-            title="truth · DFT reference", value=rf"$\varepsilon_i^{{ref}} = {_fmt_ev(ref)}$ eV", fill=STRUCTURE_BG,
-        )
         prediction_value = updated if final_on else initial
         _prediction_card(ax, registry, value=prediction_value, final_on=final_on)
         registry.arrow(
@@ -343,16 +326,17 @@ def _draw_metrics(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
             # truth and prediction bands, so the relation remains long and
             # legible even when the inter-band gap is narrow.
             ax, (0.90, 0.8375), (0.90, 0.6175),
-            arrowstyle="<->", mutation_scale=16, lw=2.0,
+            arrowstyle="<->", mutation_scale=20, lw=4.0,
             color=GRADIENT_ORANGE, zorder=6,
         )
-        error_colour = ENERGY_TEAL if final_on else GRADIENT_ORANGE
-        error_fill = UPDATED_FILL if final_on else LOSS_FILL
+        # The error box shares the colour of the truth/prediction arrow.
+        error_colour = GRADIENT_ORANGE
+        error_fill = LOSS_FILL
         error_value = abs(updated_delta) if final_on else abs(delta)
         loss_value = updated_loss if final_on else loss
         _metric_card(
             ax, registry, rect=(0.05, 0.275, 0.95, 0.455), colour=error_colour,
-            title="error · prediction − truth",
+            title="Error",
             value=rf"$|\delta_i| = {error_value:.2f}$ eV   ·   $L_i = {loss_value:.3f}$ eV$^2$",
             fill=error_fill,
         )
@@ -407,8 +391,8 @@ def _draw_story_links(
 
     if (4.5 <= time_seconds < 8.5) or time_seconds >= 13.5:
         output_link = ConnectionPatch(
-            xyA=(0.735, 0.60), coordsA="data", axesA=network_ax,
-            xyB=(-0.165, 0.635), coordsB="data", axesB=metrics_ax,
+            xyA=(0.730, 0.60), coordsA="data", axesA=network_ax,
+            xyB=(-0.20, 0.6175), coordsB="data", axesB=metrics_ax,
             arrowstyle="-|>", mutation_scale=13, lw=1.5,
             color=ENERGY_TEAL if time_seconds >= 13.5 else NAVY, alpha=0.85, zorder=12,
         )
@@ -418,13 +402,13 @@ def _draw_story_links(
         # The error first returns to the merged prediction/output node, then
         # crosses back to fit and continues through G², G¹, and the descriptor.
         metrics_ax.annotate(
-            "", xy=(-0.12, 0.585), xytext=(-0.12, 0.46),
+            "", xy=(-0.12, 0.515), xytext=(-0.12, 0.455),
             arrowprops={"arrowstyle": "-|>", "mutation_scale": 12, "lw": 1.8, "color": GRADIENT_ORANGE},
             zorder=12,
         )
         error_link = ConnectionPatch(
-            xyA=(-0.165, 0.635), coordsA="data", axesA=metrics_ax,
-            xyB=(0.735, 0.60), coordsB="data", axesB=network_ax,
+            xyA=(-0.20, 0.6175), coordsA="data", axesA=metrics_ax,
+            xyB=(0.730, 0.60), coordsB="data", axesB=network_ax,
             arrowstyle="-|>", mutation_scale=14, lw=2.0,
             color=GRADIENT_ORANGE, alpha=0.88, zorder=12,
             connectionstyle="arc3,rad=0.10",

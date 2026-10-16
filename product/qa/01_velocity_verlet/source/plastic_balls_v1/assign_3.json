@@ -4,8 +4,8 @@
   "format": "png",
   "width": 1700,
   "height": 1000,
-  "plan_sha256": "01dfe4697683a8f3798c627f7f44bd661831b706b1b41982a0f933a52ef2cb4e",
-  "output_sha256": "b93d4e5a7fe86ceaeba6d2a8b72194df2b466aa58bb28e39294a4d0d6f0cfe27",
+  "plan_sha256": "6c86921da56a529a58159a4d2c564e631676d7d180872ffd252327708bf5b1b6",
+  "output_sha256": "ec8fa0fc9da4882ac0479800b9743bb1b0bf795c1d09982db755acb9f779d2db",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\01_velocity_verlet\\source\\plastic_balls_v1\\assign_3.png",
   "source_sha256": "a50187c5ccc63fb48da3e46a1dbe675437b3eb6b6dc77846fbe32bd213e1cd4a",
   "frame": 0,
@@ -44,7 +44,7 @@
     "cell_color": "#333333",
     "cell_width_px": 2.0
   },
-  "vector_signature": "[{\"color\":\"#7A4FB8\",\"id\":\"assign_3-0\",\"opacity\":1.0,\"origin\":[4.538511518558179,0.05641187363548672,-1.0992754455955012],\"style\":{\"head_length\":0.36,\"head_radius\":0.16,\"shaft_radius\":0.06,\"sides\":16},\"vector\":[1.1229802260443404,-0.4854765619150322,0.9590890211284779]},{\"color\":\"#7A4FB8\",\"id\":\"assign_3-1\",\"opacity\":1.0,\"origin\":[2.833245594806442,4.021205819931898,1.4773177185459643],\"style\":{\"head_length\":0.36,\"head_radius\":0.16,\"shaft_radius\":0.06,\"sides\":16},\"vector\":[-1.4966438296908764,1.2731277590438548,0.04509283708605222]},{\"color\":\"#7A4FB8\",\"id\":\"assign_3-2\",\"opacity\":1.0,\"origin\":[0.7349240732506237,-5.151618925907815,-3.384282433507092],\"style\":{\"head_length\":0.36,\"head_radius\":0.16,\"shaft_radius\":0.06,\"sides\":16},\"vector\":[-1.5757790695103249,-1.3069928141291205,-0.35717990941955013]}]",
+  "vector_signature": "[{\"color\":\"#8169AD\",\"id\":\"assign_3-0\",\"opacity\":1.0,\"origin\":[4.538511518558179,0.05641187363548672,-1.0992754455955012],\"style\":{\"head_length\":0.36,\"head_radius\":0.16,\"shaft_radius\":0.06,\"sides\":16},\"vector\":[1.1229802260443404,-0.4854765619150322,0.9590890211284779]},{\"color\":\"#8169AD\",\"id\":\"assign_3-1\",\"opacity\":1.0,\"origin\":[2.833245594806442,4.021205819931898,1.4773177185459643],\"style\":{\"head_length\":0.36,\"head_radius\":0.16,\"shaft_radius\":0.06,\"sides\":16},\"vector\":[-1.4966438296908764,1.2731277590438548,0.04509283708605222]},{\"color\":\"#8169AD\",\"id\":\"assign_3-2\",\"opacity\":1.0,\"origin\":[0.7349240732506237,-5.151618925907815,-3.384282433507092],\"style\":{\"head_length\":0.36,\"head_radius\":0.16,\"shaft_radius\":0.06,\"sides\":16},\"vector\":[-1.5757790695103249,-1.3069928141291205,-0.35717990941955013]}]",
   "vector_count": 3,
   "vector_renderer": "MatterVis native world-space vector_overlays",
   "mesh_signature": "[{\"color\":\"#CBD7E2\",\"id\":\"ball-00\",\"metadata\":{\"_raster_alpha_back_factor\":1.0,\"_raster_alpha_front_factor\":1.0,\"_raster_ambient\":0.6,\"_raster_center\":[0.19555190237694198,1.39230133889096,5.462282036503922],\"_raster_diffuse\":0.4,\"_raster_light\":[-0.38,0.5,1.0],\"_raster_radius\":1.3,\"_raster_shape\":\"sphere\",\"_raster_shininess\":52.0,\"_raster_specular\":0.55,\"_raster_two_sided\":false},\"normals_shape\":[144,3],\"opacity\":1.0,\"sha256\":\"07b7b18ef762f47534a81e213a56899777b9fdeab483db7a857c5a7d5dd8b7d0\",\"triangles_shape\":[256,3],\"vertices_shape\":[144,3]},{\"color\":\"#CBD7E2\",\"id\":\"ball-01\",\"metadata\":{\"_raster_alpha_back_factor\":1.0,\"_raster_alpha_front_factor\":1.0,\"_raster_ambient\":0.6,\"_raster_center\":[-4.590085903269721,-0.9189075285994295,1.3698367385643049],\"_raster_diffuse\":0.4,\"_raster_light\":[-0.38,0.5,1.0],\"_raster_radius\":1.3,\"_raster_shape\":\"sphere\",\"_raster_shininess\":52.0,\"_raster_specular\":0.55,\"_raster_two_sided\":false},\"normals_shape\":[144,3],\"opacity\":1.0,\"sha256\":\"31d574d0e5fb66da10f1ebec5a945920306b3d8ef4d4353925a5a8c2f66a35eb\",\"triangles_shape\":[256,3],\"vertices_shape\":[144,3]},{\"color\":\"#CBD7E2\",\"id\":\"ball-02\",\"metadata\":{\"_raster_alpha_back_factor\":1.0,\"_raster_alpha_front_factor\":1.0,\"_raster_ambient\":0.6,\"_raster_center\":[3.5994134778195948,0.4623941674865892,-1.9013186158552753],\"_raster_diffuse\":0.4,\"_raster_light\":[-0.38,0.5,1.0],\"_raster_radius\":1.3,\"_raster_shape\":\"sphere\",\"_raster_shininess\":52.0,\"_raster_specular\":0.55,\"_raster_two_sided\":false},\"normals_shape\":[144,3],\"opacity\":1.0,\"sha256\":\"65c7baaf1fe6ef2cfb34f01f1d02c033d2be8ec6d3abd02cbf44cd94b740cbf3\",\"triangles_shape\":[256,3],\"vertices_shape\":[144,3]},{\"color\":\"#CBD7E2\",\"id\":\"ball-03\",\"metadata\":{\"_raster_alpha_back_factor\":1.0,\"_raster_alpha_front_factor\":1.0,\"_raster_ambient\":0.6,\"_raster_center\":[3.823185864185173,3.1791080464077015,1.4474915071211407],\"_raster_diffuse\":0.4,\"_raster_light\":[-0.38,0.5,1.0],\"_raster_radius\":1.3,\"_raster_shape\":\"sphere\",\"_raster_shininess\":52.0,\"_raster_specular\":0.55,\"_raster_two_sided\":false},\"normals_shape\":[144,3],\"opacity\":1.0,\"sha256\":\"259a933b5a6600e9f57860d58cadb6e2f86b54d7319325ee45dac4e759475628\",\"triangles_shape\":[256,3],\"vertices_shape\":[144,3]},{\"color\":\"#CBD7E2\",\"id\":\"ball-04\",\"metadata\":{\"_raster_alpha_back_factor\":1.0,\"_raster_alpha_front_factor\":1.0,\"_raster_ambient\":0.6,\"_raster_center\":[1.9078311177955252,-4.231290775464053,2.5392211871058024],\"_raster_diffuse\":0.4,\"_raster_light\":[-0.38,0.5,1.0],\"_raster_radius\":1.3,\"_raster_shape\":\"sphere\",\"_raster_shininess\":52.0,\"_raster_specular\":0.55,\"_raster_two_sided\":false},\"normals_shape\":[144,3],\"opacity\":1.0,\"sha256\":\"3537be6f64b5b7c024d1b3776c5ad2a0505b62f61ec4193af8fbc9f615e5f95a\",\"triangles_shape\":[256,3],\"vertices_shape\":[144,3]},{\"color\":\"#CBD7E2\",\"id\":\"ball-05\",\"metadata\":{\"_raster_alpha_back_factor\":1.0,\"_raster_alpha_front_factor\":1.0,\"_raster_ambient\":0.6,\"_raster_center\":[-3.8664668566561913,3.887452788952291,2.0580704533754863],\"_raster_diffuse\":0.4,\"_raster_light\":[-0.38,0.5,1.0],\"_raster_radius\":1.3,\"_raster_shape\":\"sphere\",\"_raster_shininess\":52.0,\"_raster_specular\":0.55,\"_raster_two_sided\":false},\"normals_shape\":[144,3],\"opacity\":1.0,\"sha256\":\"77b8e3f6fe70b9e7d56835d15f2ed196e00623c9db5e5509602a121a5b29d881\",\"triangles_shape\":[256,3],\"vertices_shape\":[144,3]},{\"color\":\"#CBD7E2\",\"id\":\"ball-06\",\"metadata\":{\"_raster_alpha_back_factor\":1.0,\"_raster_alpha_front_factor\":1.0,\"_raster_ambient\":0.6,\"_raster_center\":[-2.7245858976252437,1.5893121193867228,-3.0518183573234174],\"_raster_diffuse\":0.4,\"_raster_light\":[-0.38,0.5,1.0],\"_raster_radius\":1.3,\"_raster_shape\":\"sphere\",\"_raster_shininess\":52.0,\"_raster_specular\":0.55,\"_raster_two_sided\":false},\"normals_shape\":[144,3],\"opacity\":1.0,\"sha256\":\"7aa0bf3cb913ebbe890bf93c64fd303b87bf3f65e97b438fd5bbc2fcaf38e953\",\"triangles_shape\":[256,3],\"vertices_shape\":[144,3]},{\"color\":\"#CBD7E2\",\"id\":\"ball-07\",\"metadata\":{\"_raster_alpha_back_factor\":1.0,\"_raster_alpha_front_factor\":1.0,\"_raster_ambient\":0.6,\"_raster_center\":[-0.06548589817832096,-1.0263318964371106,-4.762914033597268],\"_raster_diffuse\":0.4,\"_raster_light\":[-0.38,0.5,1.0],\"_raster_radius\":1.3,\"_raster_shape\":\"sphere\",\"_raster_shininess\":52.0,\"_raster_specular\":0.55,\"_raster_two_sided\":false},\"normals_shape\":[144,3],\"opacity\":1.0,\"sha256\":\"6e6111a00bc4982b439a63e68caa3af46503bb2c3349956eb203c879c924738a\",\"triangles_shape\":[256,3],\"vertices_shape\":[144,3]},{\"color\":\"#CBD7E2\",\"id\":\"ball-08\",\"metadata\":{\"_raster_alpha_back_factor\":1.0,\"_raster_alpha_front_factor\":1.0,\"_raster_ambient\":0.6,\"_raster_center\":[1.7206421935522433,-4.334038260623672,-3.1608509158946956],\"_raster_diffuse\":0.4,\"_raster_light\":[-0.38,0.5,1.0],\"_raster_radius\":1.3,\"_raster_shape\":\"sphere\",\"_raster_shininess\":52.0,\"_raster_specular\":0.55,\"_raster_two_sided\":false},\"normals_shape\":[144,3],\"opacity\":1.0,\"sha256\":\"dee1744a0c11c47f31fa17f6a6e09d7cb5198b44b4c6a43438fea57739464bcd\",\"triangles_shape\":[256,3],\"vertices_shape\":[144,3]}]",
@@ -55,6 +55,7 @@
   "metadata": {
     "transparent_compositor": "per-pixel-fragment-list",
     "scale": 1,
+    "requested_backend": "cpu",
     "actual_backend": "cpu",
     "camera": {
       "position": [
@@ -97,6 +98,24 @@
       "install": "python -m pip install \"matter-vis\"",
       "notes": [
         "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+      ],
+      "capability_details": [
+        {
+          "name": "core",
+          "description": "CPU 3D and Matplotlib 2D PNG/PDF/SVG, structure inspection, ORTEP, rings, and polyhedra",
+          "extra": null,
+          "packages": [
+            "numpy",
+            "ase",
+            "matplotlib",
+            "pillow",
+            "molcrys-kit"
+          ],
+          "includes": [],
+          "available": true,
+          "install": "python -m pip install \"matter-vis\"",
+          "note": "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+        }
       ]
     },
     "install": "python -m pip install \"matter-vis\"",

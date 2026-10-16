@@ -4,7 +4,7 @@
   "format": "png",
   "width": 1700,
   "height": 1180,
-  "plan_sha256": "607bdaf2897a44692f651c09321e7f348c08944c449194d4a1dacb9c5cbd988b",
+  "plan_sha256": "0dabb7850cc3f379526e831ecadd90b0677ed010faf5e7c9fc723fa14f124058",
   "output_sha256": "53c1ffbbd14989095f568f08001acc1185648b48448acdd3a6f4b1a97b5e21c9",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\02_classical_lj\\source\\mattervis_v4\\plain_01.png",
   "source_sha256": "dedfcf62051f48e7294e355d81399d053439c7343bc673f6324da82329337f9e",
@@ -55,6 +55,7 @@
   "metadata": {
     "transparent_compositor": "per-pixel-fragment-list",
     "scale": 1,
+    "requested_backend": "cpu",
     "actual_backend": "cpu",
     "camera": {
       "position": [
@@ -97,9 +98,28 @@
       "install": "python -m pip install \"matter-vis\"",
       "notes": [
         "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+      ],
+      "capability_details": [
+        {
+          "name": "core",
+          "description": "CPU 3D and Matplotlib 2D PNG/PDF/SVG, structure inspection, ORTEP, rings, and polyhedra",
+          "extra": null,
+          "packages": [
+            "numpy",
+            "ase",
+            "matplotlib",
+            "pillow",
+            "molcrys-kit"
+          ],
+          "includes": [],
+          "available": true,
+          "install": "python -m pip install \"matter-vis\"",
+          "note": "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+        }
       ]
     },
     "install": "python -m pip install \"matter-vis\"",
-    "fallback": null
+    "fallback": null,
+    "atom_property_color": null
   }
 }

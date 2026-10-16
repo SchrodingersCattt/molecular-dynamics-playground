@@ -24,6 +24,8 @@ import numpy as np
 from matplotlib.patches import Ellipse, Rectangle
 
 from common import (
+    R_BLUE,
+    TNT_ORTHO_SCALE,
     A_ORANGE,
     DARK_GRAY,
     ENERGY_TEAL,
@@ -88,14 +90,17 @@ TERM = ENERGY_TEAL  # coordination ring, valence angle and charge cues
 LEGEND = {
     "F": (r"force $\mathbf{F}$", A_ORANGE),
     "v": (r"velocity $\mathbf{v}$", V_PURPLE),
+    "r": (r"displacement $\Delta\mathbf{r}$", R_BLUE),
 }
 
 SNAP_STRIDE = 25
 N_SNAP = 17  # steps 0, 25, ..., 400
 FORCE_SCALE = 1.6  # Angstrom of arrow per eV/Angstrom
-VELOCITY_SCALE = 40.0  # Angstrom of arrow per Angstrom/fs
+VELOCITY_SCALE = 90.0  # Angstrom of arrow per Angstrom/fs (was 40: too short)
+DISPLACEMENT_SCALE = 15.0  # Angstrom of arrow per Angstrom of snapshot displacement
+DISPLACEMENT_MAX_VECTOR_LENGTH = 1.6
 FORCE_MAX_VECTOR_LENGTH = 0.68  # force arrows stay compact beside the scaffold
-VELOCITY_MAX_VECTOR_LENGTH = 1.10  # velocity arrows remain visibly distinct
+VELOCITY_MAX_VECTOR_LENGTH = 1.80  # velocity arrows remain visibly distinct
 CELL_SECONDS = 0.8
 DETAIL_END = 9.6
 DURATION = DETAIL_END + CELL_SECONDS * (N_SNAP - 2)
@@ -192,7 +197,7 @@ def build_camera(positions: np.ndarray) -> SceneCamera:
     aspect = IMAGE_SIZE[0] / IMAGE_SIZE[1]
     half_w = 0.5 * (sx.max() - sx.min()) * 1.03
     half_h = 0.5 * (sy.max() - sy.min()) * 1.03
-    ortho = max(half_h, half_w / aspect)
+    ortho = TNT_ORTHO_SCALE  # shared with the other TNT scene (fit was max(half_h, half_w / aspect))
     target = 0.5 * (sx.max() + sx.min()) * right + 0.5 * (sy.max() + sy.min()) * up
     return camera_for_source(
         MOTION_SOURCE,
@@ -304,6 +309,12 @@ def prepare_assets(data: dict) -> tuple[dict[str, object], SceneCamera]:
         max_length=VELOCITY_MAX_VECTOR_LENGTH,
     )
     assets["vel0"] = render("vel_00", 0, groups, bond_styles(data["bo"][0]))
+    groups = arrow_groups(
+        "disp-0", pos, data["positions"][1] - data["positions"][0],
+        scale=DISPLACEMENT_SCALE, color=R_BLUE,
+        max_length=DISPLACEMENT_MAX_VECTOR_LENGTH,
+    )
+    assets["disp0"] = render("disp_00", 0, groups, bond_styles(data["bo"][0]))
     write_provenance_index(ASSET_DIR, records)
     return assets, camera
 
@@ -395,8 +406,8 @@ def image_for_state(state: dict, assets: dict) -> tuple[list[Path], float]:
     if name == "velocity":
         return [force[0] if u < 0.12 else assets["vel0"]], 0.0
     if name == "position":
-        if u < 0.25:
-            return [assets["vel0"]], 0.0
+        if u < 0.30:
+            return [assets["disp0"]], 0.0
         return [base[0], base[1]], smoothstep((u - 0.30) / 0.70)
     if u < 0.04:
         return [base[k]], 0.0
@@ -411,8 +422,10 @@ def legend_for_state(state: dict) -> tuple[str, ...]:
     name, u = state["name"], state["u"]
     if (name == "force" and u >= 0.15) or (name == "velocity" and u < 0.12):
         return ("F",)
-    if (name == "velocity" and u >= 0.12) or (name == "position" and u < 0.25):
+    if name == "velocity" and u >= 0.12:
         return ("v",)
+    if name == "position" and u < 0.30:
+        return ("r",)
     if name == "rapid" and 0.04 <= u < 0.34:
         return ("F",)
     return ()

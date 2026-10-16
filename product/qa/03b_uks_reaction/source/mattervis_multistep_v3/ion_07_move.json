@@ -4,8 +4,8 @@
   "format": "png",
   "width": 1500,
   "height": 950,
-  "plan_sha256": "422cfb202fb91f76b474bdd7a41e7a6538ede6de9ee6b5e32cabf8e485f2d1a4",
-  "output_sha256": "5bc9961be24725c80e4cad5a39de2e7858d5bc0fd05aabe2bb39cf2c6a7a9809",
+  "plan_sha256": "90f9d1e6d70793fb836cd3b0e72c6e6c19d9aa99008e9209384a315019467cc5",
+  "output_sha256": "e182e6a07d302de002feeafaca1b5eb1b1efcd813030cc66501c2b88ea3f46cb",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\mattervis_multistep_v3\\ion_07_move.png",
   "source_sha256": "abc9f5958fccb53e928813a8307a69db02f81a74d9940b5c1d0dbc4273256319",
   "frame": 7,
@@ -16,7 +16,7 @@
       0.0042917164272209644,
       -0.1037991470347843
     ],
-    "ortho_scale": 5.435968498721205,
+    "ortho_scale": 5.2,
     "direction": [
       0.23121552453364444,
       0.9300234133236358,
@@ -44,7 +44,7 @@
     "cell_color": "#333333",
     "cell_width_px": 2.0
   },
-  "vector_signature": "[{\"color\":\"#2F6FB3\",\"id\":\"position-drift-ion-07-12\",\"opacity\":1.0,\"origin\":[-0.90088691170463,-0.44352276360430143,2.447508171109252],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.0568144977738374,-0.026218514296461493,0.14042592122629216]},{\"color\":\"#2F6FB3\",\"id\":\"position-drift-ion-07-15\",\"opacity\":1.0,\"origin\":[-0.5197628286607316,-1.3641374006978808,3.131689184891493],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.05783632851293685,-0.024351595696707307,0.14129940940024177]},{\"color\":\"#2F6FB3\",\"id\":\"position-drift-ion-07-16\",\"opacity\":1.0,\"origin\":[-1.7686732412391157,0.34494884943570825,2.7453817914396668],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.05579656080025153,-0.028840600407705974,0.14290855242437495]}]",
+  "vector_signature": "[{\"color\":\"#4F7CAC\",\"id\":\"position-drift-ion-07-12\",\"opacity\":1.0,\"origin\":[-0.90088691170463,-0.44352276360430143,2.447508171109252],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.0568144977738374,-0.026218514296461493,0.14042592122629216]},{\"color\":\"#4F7CAC\",\"id\":\"position-drift-ion-07-15\",\"opacity\":1.0,\"origin\":[-0.5197628286607316,-1.3641374006978808,3.131689184891493],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.05783632851293685,-0.024351595696707307,0.14129940940024177]},{\"color\":\"#4F7CAC\",\"id\":\"position-drift-ion-07-16\",\"opacity\":1.0,\"origin\":[-1.7686732412391157,0.34494884943570825,2.7453817914396668],\"style\":{\"head_length\":0.07,\"head_radius\":0.046,\"shaft_radius\":0.02,\"sides\":18},\"vector\":[-0.05579656080025153,-0.028840600407705974,0.14290855242437495]}]",
   "vector_count": 3,
   "vector_renderer": "MatterVis native world-space vector_overlays",
   "mesh_signature": "[]",
@@ -55,6 +55,7 @@
   "metadata": {
     "transparent_compositor": "per-pixel-fragment-list",
     "scale": 1,
+    "requested_backend": "cpu",
     "actual_backend": "cpu",
     "camera": {
       "position": [
@@ -76,7 +77,7 @@
       "fov_y_deg": 45.0,
       "near": 0.01,
       "far": 10000.0,
-      "ortho_scale": 5.435968498721205
+      "ortho_scale": 5.2
     },
     "source": {
       "path": null,
@@ -97,6 +98,24 @@
       "install": "python -m pip install \"matter-vis\"",
       "notes": [
         "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+      ],
+      "capability_details": [
+        {
+          "name": "core",
+          "description": "CPU 3D and Matplotlib 2D PNG/PDF/SVG, structure inspection, ORTEP, rings, and polyhedra",
+          "extra": null,
+          "packages": [
+            "numpy",
+            "ase",
+            "matplotlib",
+            "pillow",
+            "molcrys-kit"
+          ],
+          "includes": [],
+          "available": true,
+          "install": "python -m pip install \"matter-vis\"",
+          "note": "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+        }
       ]
     },
     "install": "python -m pip install \"matter-vis\"",

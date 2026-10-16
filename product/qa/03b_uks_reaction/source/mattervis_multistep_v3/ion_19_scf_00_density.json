@@ -2,7 +2,7 @@
   "pipeline_version": 9,
   "signature": {
     "pipeline_version": 9,
-    "asset_stamp": "2026-10-13-bs-beta-dash",
+    "asset_stamp": "2026-10-16-review-v3-forces",
     "ion_index": 19,
     "width": 1500,
     "height": 950,
@@ -22,7 +22,7 @@
         -0.3649682439845321,
         0.7916337182449558
       ],
-      "ortho_scale": 5.435968498721205,
+      "ortho_scale": 5.2,
       "scene_offset": [
         7.6822165346,
         6.4941351092,

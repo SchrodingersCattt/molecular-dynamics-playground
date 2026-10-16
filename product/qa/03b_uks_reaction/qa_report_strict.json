@@ -18,7 +18,7 @@
   "mode": "fast_export",
   "full_frame_qa": false,
   "arrow_scales": {
-    "force": 150.0,
+    "force": 60.0,
     "half_step_velocity": 34.0,
     "position_drift": 4.0
   },

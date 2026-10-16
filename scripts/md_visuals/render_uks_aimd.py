@@ -19,6 +19,7 @@ from scipy import ndimage
 from scipy.interpolate import RegularGridInterpolator
 
 from common import (
+    TNT_ORTHO_SCALE,
     R_BLUE,
     V_PURPLE,
     DARK_GRAY,
@@ -90,10 +91,11 @@ VIDEO_D = STORY_VIDEO_D
 # Same canvas as 02b so the fitted molecule has the same size in the centre panel.
 RENDER_WIDTH = 1500
 RENDER_HEIGHT = 950
-ASSET_STAMP = "2026-10-13-bs-beta-dash"
+ASSET_STAMP = "2026-10-16-review-v3-forces"
 POSITION_LAKE = R_BLUE
 VELOCITY_EMERALD = V_PURPLE
-FORCE_DISPLAY_SCALE = 150.0
+FORCE_DISPLAY_SCALE = 60.0  # Angstrom of arrow per Eh/bohr (was 150: arrows up to ~16 A)
+FORCE_MAX_ARROW_ANG = 1.6
 VELOCITY_DISPLAY_SCALE = 34.0
 DISPLACEMENT_ARROW_SCALE = 4.0
 
@@ -145,6 +147,7 @@ ION_SNAPSHOT_COUNT = 19
 REACTION_TARGET_TIME = 18.0
 REACTION_DISSOCIATION_DISTANCE = 2.20
 DETAILED_BLOCK_SECONDS = 5.0
+FINAL_HOLD_SECONDS = 0.75
 RAPID_BLOCK_SECONDS = 1.25
 SCF_LOOP_FRACTION = 0.60
 SCF_PAUSE_FRACTION = 0.15
@@ -625,6 +628,159 @@ def render_density_projection_contour_scene(
     return payload
 
 
+
+# Real SCF iterates (03b review, item iii).  The production UKS run stored
+# only the converged density matrix per ionic step, and the renderer reused
+# that one converged density for every SCF slot, so the isosurface could not
+# change.  scripts/build_box/compute_tnt_scf_iterates.py re-ran the PBE0/
+# def2-SVP UKS for the two slow-motion ionic steps (a800, gpu4pyscf) and
+# saved the density after every cycle.  The density change is real but small
+# (max |rho_k - rho_conv| <= 0.8 % of the peak), so the middle panel shows it
+# as a signed difference map Delta rho_k = rho_k - rho_conv on a fixed
+# per-ionic-step colour scale, on top of the iterate's own contours.
+SCF_ITERATES_PATH = QA_DIR / "source" / "scf_iterates.npz"
+SCF_ITERATE_IONS = (0, 1)
+DELTA_CMAP = plt.get_cmap("PuOr_r")
+
+
+def _screen_projection(fields, *, width, height, grid_x, grid_y, grid_z, plane_centre, plane_normal, camera, signed=False):
+    normal = np.asarray(plane_normal, dtype=float)
+    normal /= max(float(np.linalg.norm(normal)), 1.0e-12)
+    view = np.asarray(camera.direction, dtype=float)
+    view /= max(float(np.linalg.norm(view)), 1.0e-12)
+    right, screen_up = camera_basis(camera)
+    ortho = float(camera.ortho_scale)
+    aspect = width / height
+    target = np.asarray(camera.target, dtype=float)
+    centre = np.asarray(plane_centre, dtype=float)
+    screen_nx = np.linspace(0.0, 1.0, 280)
+    screen_ny = np.linspace(0.0, 1.0, 180)
+    screen_x, screen_y = np.meshgrid(screen_nx, screen_ny, indexing="xy")
+    world = (
+        target
+        + (screen_x[..., None] - 0.5) * (2.0 * ortho * aspect) * right
+        + (screen_y[..., None] - 0.5) * (2.0 * ortho) * screen_up
+    )
+    denom = float(np.dot(view, normal))
+    if abs(denom) < 1.0e-8:
+        denom = 1.0e-8 if denom >= 0.0 else -1.0e-8
+    shift = np.einsum("...i,i->...", centre - world, normal) / denom
+    flat_plane = (world + shift[..., None] * view).reshape(-1, 3)
+    out = []
+    for field in fields:
+        interpolator = RegularGridInterpolator(
+            (np.asarray(grid_x), np.asarray(grid_y), np.asarray(grid_z)),
+            np.asarray(field, dtype=float), bounds_error=False, fill_value=0.0,
+        )
+        projected = np.zeros(screen_x.shape, dtype=float)
+        for depth in PROJECTION_DEPTHS:
+            sample = np.asarray(interpolator(flat_plane + depth * normal), dtype=float).reshape(screen_x.shape)
+            if signed:
+                projected = np.where(np.abs(sample) > np.abs(projected), sample, projected)
+            else:
+                projected = np.maximum(projected, sample)
+        out.append(projected)
+    return out, screen_nx * (width - 1.0), (1.0 - screen_ny) * (height - 1.0)
+
+
+def render_scf_iterate_scene(
+    rho_k: np.ndarray,
+    rho_final: np.ndarray,
+    structure_image: Path,
+    output: Path,
+    *,
+    delta_scale: float,
+    grid_x, grid_y, grid_z, plane_centre, plane_u, plane_v, plane_normal, u_axis, v_axis,
+    camera: SceneCamera,
+    ion_index: int,
+) -> dict:
+    contour_path = output.with_name(output.stem + "_contours.png")
+    record = render_density_projection_contour_scene(
+        rho_k[0], rho_k[1], structure_image, contour_path,
+        grid_x=grid_x, grid_y=grid_y, grid_z=grid_z, plane_centre=plane_centre,
+        plane_u=plane_u, plane_v=plane_v, plane_normal=plane_normal,
+        u_axis=u_axis, v_axis=v_axis, camera=camera, ion_index=ion_index,
+    )
+    with Image.open(contour_path) as image:
+        base = np.asarray(image.convert("RGB"), dtype=np.float32) / 255.0
+    height, width = base.shape[:2]
+    delta = (rho_k[0] + rho_k[1]) - (rho_final[0] + rho_final[1])
+    (projected,), gx, gy = _screen_projection(
+        [delta], width=width, height=height, grid_x=grid_x, grid_y=grid_y, grid_z=grid_z,
+        plane_centre=plane_centre, plane_normal=plane_normal, camera=camera, signed=True,
+    )
+    figure = plt.figure(figsize=(width / 100.0, height / 100.0), dpi=100, facecolor=WHITE)
+    axes = figure.add_axes([0.0, 0.0, 1.0, 1.0])
+    axes.set_xlim(0.0, width - 1.0)
+    axes.set_ylim(height - 1.0, 0.0)
+    levels = np.linspace(-delta_scale, delta_scale, 13)
+    clipped = np.clip(projected, -delta_scale * 0.999, delta_scale * 0.999)
+    filled = np.where(np.abs(clipped) < delta_scale / 12.0, np.nan, clipped)
+    axes.contourf(gx, gy, filled, levels=levels, cmap=DELTA_CMAP, alpha=0.85, antialiased=True)
+    axes.axis("off")
+    figure.canvas.draw()
+    layer = np.asarray(figure.canvas.buffer_rgba(), dtype=np.float32)[:, :, :3] / 255.0
+    plt.close(figure)
+    if layer.shape != base.shape:
+        layer = np.asarray(Image.fromarray((layer * 255).astype(np.uint8)).resize((width, height)), dtype=np.float32) / 255.0
+    combined = np.clip(base * layer, 0.0, 1.0)  # multiply blend keeps contours/atoms readable
+    Image.fromarray((combined * 255.0 + 0.5).astype(np.uint8)).save(output)
+    payload = {
+        "density_rendering": "scf_iterate_contours_plus_signed_difference",
+        "delta_definition": "rho_alpha+rho_beta at SCF cycle k minus converged, max-|.| projection along plane normal",
+        "delta_scale_e_per_ang3": float(delta_scale),
+        "max_abs_delta_projected": float(np.abs(projected).max()),
+        "contours": record.get("output"),
+        "output": str(output),
+        "ion_index": int(ion_index),
+    }
+    json_dump(output.with_suffix(".json"), payload)
+    return payload
+
+
+def scf_iterate_assets(data: dict[str, np.ndarray], camera: SceneCamera, structure_paths: list[Path]) -> dict[int, list[Path]]:
+    if not SCF_ITERATES_PATH.exists():
+        return {}
+    result: dict[int, list[Path]] = {}
+    with np.load(SCF_ITERATES_PATH) as archive:
+        for ion in SCF_ITERATE_IONS:
+            key = f"rho_{ion}"
+            if key not in archive.files:
+                continue
+            rho = np.asarray(archive[key], dtype=np.float32)
+            final = rho[-1]
+            # Fixed colour scale for one ionic step: the first iterate's
+            # 99.5th-percentile |Delta rho| (so later cycles visibly fade).
+            first = (rho[0, 0] + rho[0, 1]) - (final[0] + final[1])
+            scale = float(np.percentile(np.abs(first), 99.5))
+            paths = []
+            for k in range(len(rho)):
+                out = MATTERVIS_DIR / f"ion_{ion:02d}_scfiter_{k:02d}_density.png"
+                sidecar = out.with_suffix(".json")
+                if not (out.exists() and sidecar.exists() and json.loads(sidecar.read_text(encoding="utf-8")).get("delta_scale_e_per_ang3") == scale):
+                    render_scf_iterate_scene(
+                        rho[k], final, structure_paths[ion], out, delta_scale=scale,
+                        grid_x=data["density_grid_x_ang"], grid_y=data["density_grid_y_ang"], grid_z=data["density_grid_z_ang"],
+                        plane_centre=np.asarray(data["plane_centre_angstrom"], dtype=float),
+                        plane_u=data["plane_u"], plane_v=np.asarray(data["plane_v"], dtype=float),
+                        plane_normal=np.asarray(data["plane_normal"], dtype=float),
+                        u_axis=data["plane_u_axis_angstrom"], v_axis=data["plane_v_axis_angstrom"],
+                        camera=frame_camera(camera, ion), ion_index=ion,
+                    )
+                    gc.collect()
+                paths.append(out)
+            result[ion] = paths
+    return result
+
+
+def _resample(paths: list[Path], count: int) -> list[Path]:
+    """Map the real SCF cycles onto the timeline's iteration slots."""
+    if count <= 1:
+        return [paths[-1]]
+    picks = np.rint(np.linspace(0, len(paths) - 1, count)).astype(int)
+    return [paths[i] for i in picks]
+
+
 def load_data() -> dict[str, np.ndarray]:
     """Adapt the saved kick trajectory to the exact 03 seven-ion-step schema."""
     if not RAW_DATA_PATH.exists():
@@ -767,7 +923,7 @@ def build_camera(positions: np.ndarray) -> SceneCamera:
     aspect = RENDER_WIDTH / RENDER_HEIGHT
     half_w = 0.5 * (screen_x.max() - screen_x.min()) * 1.03
     half_h = 0.5 * (screen_y.max() - screen_y.min()) * 1.03
-    ortho = max(half_h, half_w / aspect)
+    ortho = TNT_ORTHO_SCALE  # shared with the other TNT scene (fit was max(half_h, half_w / aspect))
     target = (
         0.5 * (screen_x.max() + screen_x.min()) * right
         + 0.5 * (screen_y.max() + screen_y.min()) * screen_up
@@ -906,18 +1062,16 @@ def prepare_mattervis(
         "head_radius": 0.046,
         "sides": 18,
     }
-    force_arrow_style = {
-        "shaft_radius": 0.004,
-        "head_length": 0.010,
-        "head_radius": 0.007,
-        "sides": 12,
-    }
+    # Thicker than the old hair-line style so the now-short force arrows read.
+    force_arrow_style = {"shaft_radius": 0.05, "head_length": 0.18, "head_radius": 0.10, "sides": 18}
     force_paths: list[Path] = []
     velocity_paths: list[Path] = []
     movement_paths: list[Path] = []
     update_count = len(positions) - 1
     for ion_index in range(update_count):
-        force_value = np.asarray(data["forces_eh_per_bohr"][ion_index], dtype=float)
+        force_value = np.asarray(data["forces_eh_per_bohr"][ion_index], dtype=float).copy()
+        force_norm = np.linalg.norm(force_value, axis=1) * FORCE_DISPLAY_SCALE
+        force_value *= np.minimum(1.0, FORCE_MAX_ARROW_ANG / np.maximum(force_norm, 1.0e-12))[:, None]
         force_vectors = []
         if np.max(np.abs(force_value)) >= 1.0e-12:
             force_vectors = make_vector_group(
@@ -932,12 +1086,11 @@ def prepare_mattervis(
             force_vectors[0]["arrows"] = [
                 arrow
                 for arrow, vector in zip(force_vectors[0]["arrows"], force_value)
-                if np.linalg.norm(vector) * FORCE_DISPLAY_SCALE > 0.012
+                if np.linalg.norm(vector) * FORCE_DISPLAY_SCALE > 0.20
             ]
             if not force_vectors[0]["arrows"]:
                 force_vectors = []
-            else:
-                force_vectors[0]["anchor"] = "center"
+            # Tail-anchored at the nucleus (was centred, hiding half inside the atom).
         force_path = MATTERVIS_DIR / f"ion_{ion_index:02d}_force.png"
         records.append(
             render_structure(
@@ -1023,6 +1176,8 @@ def prepare_mattervis(
         )
         movement_paths.append(movement_path)
 
+    for ion, paths in scf_iterate_assets(data, camera, structure_paths).items():
+        density_paths[ion] = _resample(paths, int(scf_counts[ion]))
     write_provenance_index(MATTERVIS_DIR, records)
     (MATTERVIS_DIR / "asset_stamp.txt").write_text(ASSET_STAMP + "\n", encoding="utf-8")
     return {
@@ -1031,6 +1186,7 @@ def prepare_mattervis(
         "force": force_paths,
         "velocity": velocity_paths,
         "movement": movement_paths,
+        "force_max": np.linalg.norm(np.asarray(data["forces_eh_per_bohr"], dtype=float), axis=-1).max(axis=1).tolist(),
     }, camera
 
 
@@ -1057,6 +1213,9 @@ def reuse_mattervis_assets(
     force = [MATTERVIS_DIR / f"ion_{ion:02d}_force.png" for ion in range(len(positions) - 1)]
     velocity = [MATTERVIS_DIR / f"ion_{ion:02d}_velocity.png" for ion in range(len(positions) - 1)]
     movement = [MATTERVIS_DIR / f"ion_{ion:02d}_move.png" for ion in range(len(positions) - 1)]
+    structure_paths = structure
+    for ion, paths in scf_iterate_assets(data, camera, structure_paths).items():
+        density[ion] = _resample(paths, int(counts[ion]))
     required = [path for path in force + velocity + movement]
     required.extend(path for ion_paths in density for path in ion_paths)
     missing = [path for path in required if not path.exists()]
@@ -1068,6 +1227,7 @@ def reuse_mattervis_assets(
         "force": force,
         "velocity": velocity,
         "movement": movement,
+        "force_max": np.linalg.norm(np.asarray(data["forces_eh_per_bohr"], dtype=float), axis=-1).max(axis=1).tolist(),
     }, camera
 
 
@@ -1097,18 +1257,19 @@ def draw_scf_loop(
     # in words so they do not share that symbol.
     symbols = ["Fock\nα, β", r"$C_\alpha,C_\beta$", r"$\rho_\alpha,\rho_\beta$", r"$\Delta_{SCF}$"]
     labels = ("potentials", "orbitals", "densities", "residual")
+    # Enlarged loop: the nodes sit far enough apart that the central "UKS"
+    # label never touches the Fock node (03b review, item i).
     positions = [
-        (0.50, 0.75),
-        (0.78, 0.52),
+        (0.50, 0.765),
+        (0.865, 0.49),
         (0.50, 0.29),
-        (0.22, 0.52),
+        (0.135, 0.49),
     ]
-    arrows = [
-        ((0.565, 0.695), (0.715, 0.575)),
-        ((0.715, 0.465), (0.565, 0.345)),
-        ((0.435, 0.345), (0.285, 0.465)),
-        ((0.285, 0.575), (0.435, 0.695)),
-    ]
+    arrows = []
+    for index in range(4):
+        p0 = np.asarray(positions[index])
+        p1 = np.asarray(positions[(index + 1) % 4])
+        arrows.append((tuple(p0 + 0.36 * (p1 - p0)), tuple(p0 + 0.66 * (p1 - p0))))
     radius_x = 0.072 if video else 0.064
     centre_x = 0.50
     for index, (start, end) in enumerate(arrows):
@@ -1127,7 +1288,7 @@ def draw_scf_loop(
     for index, ((x, y), symbol) in enumerate(zip(positions, symbols)):
         weight = stage_weights[index]
         fill = mix_hex(WHITE, INK, weight)
-        rx = radius_x * (1.55 if index == 0 else 1.0)
+        rx = radius_x * (1.30 if index == 0 else 1.0)
         ry = rx * aspect
         ax.add_patch(
             Ellipse(
@@ -1153,13 +1314,14 @@ def draw_scf_loop(
             zorder=5,
         )
         label_y = y + ry + 0.025 if video and index == 0 else y - ry - (0.035 if video else 0.028)
+        label_x, label_ha, label_va = x, "center", ("bottom" if video and index == 0 else "top")
         registry.text(
             ax,
-            x,
+            label_x,
             label_y,
             labels[index],
-            ha="center",
-            va="bottom" if video and index == 0 else "top",
+            ha=label_ha,
+            va=label_va,
             fontsize=FONT_SIZES["micro"],
             color=INK if weight < 0.48 else INK,
             zorder=5,
@@ -1167,7 +1329,7 @@ def draw_scf_loop(
     registry.text(
         ax,
         centre_x,
-        0.52,
+        0.50,
         "UKS",
         ha="center",
         va="center",
@@ -1263,6 +1425,13 @@ def draw_case(
     elif mode == "force":
         place_render(ax, force_paths[ion_index], scene_rect, zorder=5)
         stage_text = "Evaluate UKS nuclear forces"
+        force_max = assets.get("force_max", [1.0] * (ion_index + 1))[ion_index]
+        if force_max * FORCE_DISPLAY_SCALE < 0.20:
+            registry.text(
+                ax, 0.50, 0.855,
+                rf"optimised start: max $|\mathbf{{F}}|$ = {force_max:.0e} $E_h$/bohr ≈ 0",
+                ha="center", va="center", fontsize=FONT_SIZES["micro"], color=FORCE_OLIVE, zorder=21,
+            )
     elif mode == "velocity":
         place_render(ax, velocity_paths[ion_index], scene_rect, zorder=5)
         stage_text = "Update half-step velocity"
@@ -1314,6 +1483,12 @@ def draw_case(
     }
     if mode in legend:
         draw_arrow_legend(ax, registry, [legend[mode]], x_right=0.925, y=0.070, video=video)
+    if video and mode == "scf" and ion_index in SCF_ITERATE_IONS and SCF_ITERATES_PATH.exists():
+        registry.text(
+            ax, 0.50, 0.855,
+            r"SCF cycle: shading = $\Delta\rho^{(k)}=\rho^{(k)}-\rho^{\mathrm{conv}}$ (orange +, purple −)",
+            ha="center", va="center", fontsize=FONT_SIZES["micro"], color=INK, zorder=21,
+        )
     if video and mode in {"scf", "pause"}:
         registry.text(
             ax,
@@ -1654,6 +1829,11 @@ def video_state(
 ) -> dict:
     """Map 30 s to two detailed steps and a reaction-aligned rapid cycle."""
     bounded = float(np.clip(time_seconds, 0.0, VIDEO_DURATION - 1.0e-9))
+    if bounded >= VIDEO_DURATION - FINAL_HOLD_SECONDS:
+        # Final hold: last ionic geometry with its converged UKS isosurface,
+        # so the closing frame keeps both structure and density (item iv).
+        last = len(scf_counts) - 1
+        return _phase_state("pause", ion_index=last, progress=1.0, iteration_count=int(scf_counts[last]), rapid=True)
     if bounded < 2.0 * DETAILED_BLOCK_SECONDS:
         ion_index = int(bounded // DETAILED_BLOCK_SECONDS)
         local = bounded - ion_index * DETAILED_BLOCK_SECONDS
@@ -1832,8 +2012,9 @@ def draw_video_frame(
             # Quiet only the left and middle panels.  Keep the upper-right
             # residual plot visible but held, so the later serial update is
             # easy to read.
-            for panel in (panel_b,):
-                _deemphasize_panel(panel)
+            # No veil on the middle panel: the density must stay fully
+            # visible while the SCF iterations run (03b review, item ii).
+            pass
         else:
             # Force/velocity/position arrows are the active middle-panel
             # event.  Quiet both sides so the arrow is not lost in competing

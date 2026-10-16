@@ -12,9 +12,9 @@
     "displacement_ang_per_ang": 9.031911877561342
   },
   "arrow_colours": {
-    "position": "#2F6FB3",
-    "velocity": "#7A4FB8",
-    "acceleration": "#E07A1F"
+    "position": "#4F7CAC",
+    "velocity": "#8169AD",
+    "acceleration": "#C8834A"
   },
   "arrow_shaft_radius_ang": 0.06,
   "camera": {

@@ -4,8 +4,8 @@
   "format": "png",
   "width": 1500,
   "height": 950,
-  "plan_sha256": "b99cc4b09c066bee7bc9440b1a3eeece37ba5b376a3f53ddf7a4f9b0978ee263",
-  "output_sha256": "98e6f00284c18ba86559766495e5c6526fce1b3b423a93ffde0ac690e59c9a62",
+  "plan_sha256": "cca8bb0fdab44f8fdc080782253f164307328e6a984615acf00eca8d25ad581f",
+  "output_sha256": "86996d14c011b17148d9176274d2387204b6876c3708863c2fec57455ab25ce1",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\mattervis_multistep_v3\\ion_00_force.png",
   "source_sha256": "abc9f5958fccb53e928813a8307a69db02f81a74d9940b5c1d0dbc4273256319",
   "frame": 0,
@@ -16,7 +16,7 @@
       0.0042917164272209644,
       -0.1037991470347843
     ],
-    "ortho_scale": 5.435968498721205,
+    "ortho_scale": 5.2,
     "direction": [
       0.23121552453364444,
       0.9300234133236358,
@@ -44,8 +44,8 @@
     "cell_color": "#333333",
     "cell_width_px": 2.0
   },
-  "vector_signature": "[{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-00-1\",\"opacity\":1.0,\"origin\":[-0.13738925047097764,-0.1999349469406274,0.9377645108647117],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[0.006755449341955266,-0.0156610811187452,0.015204186870576564]},{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-00-3\",\"opacity\":1.0,\"origin\":[1.9342889051812702,-0.36285327403806567,-0.23548453063121397],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[-0.012941208762540235,0.006249451476131318,0.0005234834624279205]},{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-00-5\",\"opacity\":1.0,\"origin\":[-0.024680993993406244,0.46093422293939684,-1.328618020103157],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[-0.0021771794131875133,0.001150431321206291,0.015688279806314043]},{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-00-12\",\"opacity\":1.0,\"origin\":[-0.8150623727189122,-0.40628562060824525,2.2315567664458156],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[-0.003162775362175463,0.00399240121649047,0.012906896508368959]},{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-00-13\",\"opacity\":1.0,\"origin\":[3.3639043754339073,-0.6949671057812984,-0.2644018434043216],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[-0.009140691867814965,-0.011941725437403239,-0.006602786991356802]},{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-00-14\",\"opacity\":1.0,\"origin\":[-0.5936617364208225,1.0183539690465677,-2.5758179223248607],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[0.014562192041644996,-0.005935881493135398,0.01660256684972161]},{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-00-15\",\"opacity\":1.0,\"origin\":[-0.4393662266554508,-1.3258480103289465,2.9300369350171342],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[0.009146984910901601,0.0017430900578929709,-0.018329662434268812]},{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-00-19\",\"opacity\":1.0,\"origin\":[-0.11170759738496883,0.5950811939620156,-3.5934621898561008],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[-0.018707130430062335,0.013101089275968647,-0.018806588887798625]},{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-00-20\",\"opacity\":1.0,\"origin\":[-1.4485049972718083,1.8692819078428071,-2.461482842962764],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[0.008799279943616511,-0.015322811685614113,-0.005716426274471331]}]",
-  "vector_count": 9,
+  "vector_signature": "[]",
+  "vector_count": 0,
   "vector_renderer": "MatterVis native world-space vector_overlays",
   "mesh_signature": "[]",
   "atom_signature": "{\"color\":{},\"opacity\":{}}",
@@ -55,6 +55,7 @@
   "metadata": {
     "transparent_compositor": "per-pixel-fragment-list",
     "scale": 1,
+    "requested_backend": "cpu",
     "actual_backend": "cpu",
     "camera": {
       "position": [
@@ -76,7 +77,7 @@
       "fov_y_deg": 45.0,
       "near": 0.01,
       "far": 10000.0,
-      "ortho_scale": 5.435968498721205
+      "ortho_scale": 5.2
     },
     "source": {
       "path": null,
@@ -97,6 +98,24 @@
       "install": "python -m pip install \"matter-vis\"",
       "notes": [
         "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+      ],
+      "capability_details": [
+        {
+          "name": "core",
+          "description": "CPU 3D and Matplotlib 2D PNG/PDF/SVG, structure inspection, ORTEP, rings, and polyhedra",
+          "extra": null,
+          "packages": [
+            "numpy",
+            "ase",
+            "matplotlib",
+            "pillow",
+            "molcrys-kit"
+          ],
+          "includes": [],
+          "available": true,
+          "install": "python -m pip install \"matter-vis\"",
+          "note": "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+        }
       ]
     },
     "install": "python -m pip install \"matter-vis\"",

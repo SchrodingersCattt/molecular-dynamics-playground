@@ -21,6 +21,8 @@ from common import (
     DARK_GRAY,
     FONT_SIZES,
     FORCE_OLIVE,
+    R_BLUE,
+    V_PURPLE,
     INK,
     LIGHT_GRAY,
     LINE_GRAY,
@@ -40,8 +42,8 @@ from mattervis_story import _composition_rgba, place_render, place_render_blend,
 # A restrained palette shared by all four stories.  Use shape/labels as the
 # primary semantics; colours are only a redundant cue.
 PALE_OLIVE = FORCE_OLIVE      # force / acceleration
-LAKE_BLUE = "#4E9BB5"        # position / displacement
-EMERALD = "#2F8562"          # velocity / model output
+LAKE_BLUE = R_BLUE        # position / displacement
+EMERALD = V_PURPLE          # velocity / model output
 PALE_BLUE = "#B8D7E2"         # density contours
 PALE_OLIVE_FILL = "#EEEBDD"
 

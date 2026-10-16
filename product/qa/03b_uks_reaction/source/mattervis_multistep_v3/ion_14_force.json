@@ -4,8 +4,8 @@
   "format": "png",
   "width": 1500,
   "height": 950,
-  "plan_sha256": "27311cf65ba28afa31152aebd3451c87de412340c70db7d7beff49b4415efd87",
-  "output_sha256": "23b29c63046101ec254784ac3e022a6af1e6ca12fea1d7908972d90e2c952f51",
+  "plan_sha256": "777254d7d6d1b54c5a2496c291f28de7faa5cb49561d42ab004dd255b8070e92",
+  "output_sha256": "669b32c9e9cbcb5ec1c8acc105dff76598923cc2c28f25290c1f435e21fbefbc",
   "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\mattervis_multistep_v3\\ion_14_force.png",
   "source_sha256": "abc9f5958fccb53e928813a8307a69db02f81a74d9940b5c1d0dbc4273256319",
   "frame": 14,
@@ -16,7 +16,7 @@
       0.0042917164272209644,
       -0.1037991470347843
     ],
-    "ortho_scale": 5.435968498721205,
+    "ortho_scale": 5.2,
     "direction": [
       0.23121552453364444,
       0.9300234133236358,
@@ -44,8 +44,8 @@
     "cell_color": "#333333",
     "cell_width_px": 2.0
   },
-  "vector_signature": "[{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-14-0\",\"opacity\":1.0,\"origin\":[-0.7523043426155741,0.7341962485336704,-1.4176752149231258],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[-0.03792158246764821,-0.828269131351933,2.2219266475670407]},{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-14-1\",\"opacity\":1.0,\"origin\":[0.11455298013980875,-0.03508130674369325,0.5068605327653058],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[-0.4079847417783222,-0.30573409723093636,0.6510027968695375]},{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-14-2\",\"opacity\":1.0,\"origin\":[2.069508661773634,-0.4143148534042387,-0.2905359925205858],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[-1.6205286983462577,-0.21603411992396904,2.185017276123258]},{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-14-3\",\"opacity\":1.0,\"origin\":[2.471450776964588,-0.3139654086212632,-0.7806058604921576],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[-0.9733633422037702,-0.03650745192811389,0.8000303882137904]},{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-14-4\",\"opacity\":1.0,\"origin\":[1.312901968798244,0.18941840760902978,-1.5754735393961534],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[0.1367604124369759,-0.05725719775869775,0.1064651688083007]},{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-14-5\",\"opacity\":1.0,\"origin\":[0.11722185116549035,0.5923627107234518,-2.010874784661252],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[-0.16723719773764634,-0.20827102621153726,1.095043407893026]},{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-14-6\",\"opacity\":1.0,\"origin\":[-2.1380822290807098,0.5671028405975668,-0.6591676955939375],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[-0.20528167476898673,0.0748186420715502,0.7138424714441316]},{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-14-7\",\"opacity\":1.0,\"origin\":[1.6868820977040049,-0.9578221921854589,1.7383640858273453],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[0.14513229436451391,0.038773175823880734,-0.11356860173290517]},{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-14-8\",\"opacity\":1.0,\"origin\":[1.9389673725127015,0.28700858085937103,-2.4410893015616577],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[0.015814807256264718,-0.004866238368095299,-0.008040878069515145]},{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-14-9\",\"opacity\":1.0,\"origin\":[-2.7983262773308795,-0.06928344855090673,0.38054201513849883],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[0.09151192259704288,0.05874488428220248,0.08622392157746073]},{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-14-10\",\"opacity\":1.0,\"origin\":[-2.6423975187528135,0.5078087710057821,-1.3410073606552726],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[-0.08363255721561824,-0.07387455231087359,0.09260021052904799]},{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-14-11\",\"opacity\":1.0,\"origin\":[-2.426819256100555,1.644120973809372,0.010195231962922833],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[0.00473397502078754,0.012145166817578712,-0.04071033549803427]},{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-14-12\",\"opacity\":1.0,\"origin\":[-0.5999528904833793,-0.5060718351916919,2.4768903978514194],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[-0.881022742448534,-0.0023035632327972344,0.6264503879125194]},{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-14-13\",\"opacity\":1.0,\"origin\":[3.5110684967907444,-0.6572244240464271,-0.47094229610228444],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[-0.18755169689619322,-0.03389902908106368,0.117933501112958]},{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-14-14\",\"opacity\":1.0,\"origin\":[-0.5087668047612589,1.0457675672741222,-2.8064342610190445],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[-0.03902842833031217,-0.006723392556062802,0.1893506813082979]},{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-14-15\",\"opacity\":1.0,\"origin\":[-1.5197269519891052,-2.4464237769728676,5.977181476282089],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[1.7195363824431318,2.0529171945284475,-5.012046820027916]},{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-14-16\",\"opacity\":1.0,\"origin\":[-3.1706910212056307,0.49806771141269557,5.010804891951637],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[2.538993715383153,-0.4512588269376394,-3.8399495560665464]},{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-14-17\",\"opacity\":1.0,\"origin\":[3.867502405697995,-1.0921386656725633,0.597877373694486],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[0.06605763346616556,-0.02486291951546704,0.0206597621772886]},{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-14-18\",\"opacity\":1.0,\"origin\":[4.010430699768982,-0.49819014351382207,-1.4802418650508051],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[-0.023909680721434512,0.001959527679851192,0.047547069973763456]},{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-14-19\",\"opacity\":1.0,\"origin\":[-0.04847917669564078,0.6187260014952461,-3.784077091279955],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[-0.029229501244998343,0.0200533162608707,0.07374795908194898]},{\"color\":\"#E07A1F\",\"id\":\"uks-force-ion-14-20\",\"opacity\":1.0,\"origin\":[-1.3532993032219047,1.892715425141688,-2.603001208513404],\"style\":{\"head_length\":0.01,\"head_radius\":0.007,\"shaft_radius\":0.004,\"sides\":12},\"vector\":[-0.0656049763418487,-0.008258946317774019,-0.011514089685427109]}]",
-  "vector_count": 21,
+  "vector_signature": "[{\"color\":\"#C8834A\",\"id\":\"uks-force-ion-14-0\",\"opacity\":1.0,\"origin\":[-0.7712651338493982,0.32006168285770387,-0.3067118911396054],\"style\":{\"head_length\":0.18,\"head_radius\":0.1,\"shaft_radius\":0.05,\"sides\":18},\"vector\":[-0.015168632987059283,-0.3313076525407732,0.8887706590268163]},{\"color\":\"#C8834A\",\"id\":\"uks-force-ion-14-1\",\"opacity\":1.0,\"origin\":[-0.08943939074935237,-0.18794835535916143,0.8323619312000746],\"style\":{\"head_length\":0.18,\"head_radius\":0.1,\"shaft_radius\":0.05,\"sides\":18},\"vector\":[-0.1631938967113289,-0.12229363889237455,0.260401118747815]},{\"color\":\"#C8834A\",\"id\":\"uks-force-ion-14-2\",\"opacity\":1.0,\"origin\":[1.259244312600505,-0.5223319133662232,0.8019726455410431],\"style\":{\"head_length\":0.18,\"head_radius\":0.1,\"shaft_radius\":0.05,\"sides\":18},\"vector\":[-0.6482114793385031,-0.08641364796958761,0.8740069104493031]},{\"color\":\"#C8834A\",\"id\":\"uks-force-ion-14-3\",\"opacity\":1.0,\"origin\":[1.984769105862703,-0.33221913458532015,-0.38059066638526245],\"style\":{\"head_length\":0.18,\"head_radius\":0.1,\"shaft_radius\":0.05,\"sides\":18},\"vector\":[-0.3893453368815081,-0.014602980771245555,0.32001215528551613]},{\"color\":\"#C8834A\",\"id\":\"uks-force-ion-14-5\",\"opacity\":1.0,\"origin\":[0.03360325229666718,0.4882271976176832,-1.463353080714739],\"style\":{\"head_length\":0.18,\"head_radius\":0.1,\"shaft_radius\":0.05,\"sides\":18},\"vector\":[-0.06689487909505853,-0.0833084104846149,0.4380173631572104]},{\"color\":\"#C8834A\",\"id\":\"uks-force-ion-14-6\",\"opacity\":1.0,\"origin\":[-2.240723066465203,0.6045121616333419,-0.3022464598718717],\"style\":{\"head_length\":0.18,\"head_radius\":0.1,\"shaft_radius\":0.05,\"sides\":18},\"vector\":[-0.0821126699075947,0.02992745682862008,0.28553698857765264]},{\"color\":\"#C8834A\",\"id\":\"uks-force-ion-14-12\",\"opacity\":1.0,\"origin\":[-1.0404642617076463,-0.5072236168080905,2.790115591807679],\"style\":{\"head_length\":0.18,\"head_radius\":0.1,\"shaft_radius\":0.05,\"sides\":18},\"vector\":[-0.3524090969794136,-0.0009214252931188938,0.25058015516500776]},{\"color\":\"#C8834A\",\"id\":\"uks-force-ion-14-15\",\"opacity\":1.0,\"origin\":[-0.6599587607675395,-1.4199651797086437,3.4711580662681314],\"style\":{\"head_length\":0.18,\"head_radius\":0.1,\"shaft_radius\":0.05,\"sides\":18},\"vector\":[0.48415523831912943,0.5780224389054066,-1.4111994066502414]},{\"color\":\"#C8834A\",\"id\":\"uks-force-ion-14-16\",\"opacity\":1.0,\"origin\":[-1.9011941635140541,0.27243829794387586,3.090830113918364],\"style\":{\"head_length\":0.18,\"head_radius\":0.1,\"shaft_radius\":0.05,\"sides\":18},\"vector\":[0.8782578713636686,-0.1560939731276607,-1.328268716390241]}]",
+  "vector_count": 9,
   "vector_renderer": "MatterVis native world-space vector_overlays",
   "mesh_signature": "[]",
   "atom_signature": "{\"color\":{},\"opacity\":{}}",
@@ -55,6 +55,7 @@
   "metadata": {
     "transparent_compositor": "per-pixel-fragment-list",
     "scale": 1,
+    "requested_backend": "cpu",
     "actual_backend": "cpu",
     "camera": {
       "position": [
@@ -76,7 +77,7 @@
       "fov_y_deg": 45.0,
       "near": 0.01,
       "far": 10000.0,
-      "ortho_scale": 5.435968498721205
+      "ortho_scale": 5.2
     },
     "source": {
       "path": null,
@@ -97,6 +98,24 @@
       "install": "python -m pip install \"matter-vis\"",
       "notes": [
         "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+      ],
+      "capability_details": [
+        {
+          "name": "core",
+          "description": "CPU 3D and Matplotlib 2D PNG/PDF/SVG, structure inspection, ORTEP, rings, and polyhedra",
+          "extra": null,
+          "packages": [
+            "numpy",
+            "ase",
+            "matplotlib",
+            "pillow",
+            "molcrys-kit"
+          ],
+          "includes": [],
+          "available": true,
+          "install": "python -m pip install \"matter-vis\"",
+          "note": "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+        }
       ]
     },
     "install": "python -m pip install \"matter-vis\"",
