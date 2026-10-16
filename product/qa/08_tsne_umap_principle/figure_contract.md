@@ -1,0 +1,22 @@
+# Figure Contract - t-SNE and UMAP principle (08)
+
+## Output
+- Stem: `08_tsne_umap_principle`; PNG + MP4 (+ ppt/ MP4, GIF, poster).
+- Static: 13.333 x 4.167 in at 300 dpi (4000 x 1250 px), text in slide points, for a 12.4 in wide slot.
+- Video: 1920 x 600 (16:5), 24 fps, 16.5 s; PPT copy 1280 x 400, CRF 30.
+
+## Panels
+| Row | Stages (left to right, numbered discs, big arrows) |
+|---|---|
+| t-SNE | 1 10-D points (PCA view) -> 2 Gaussian neighbours p_ij -> 3 Student-t q_ij (heavy tail vs Gaussian) -> 4 KL(P||Q) falling -> 5 embedding |
+| UMAP | 1 10-D points -> 2 fuzzy kNN graph -> 3 low-dim q_ij (edges attract / others repel) -> 4 cross-entropy falling -> 5 embedding, "more global layout" |
+
+## Required
+- Real optimisation of the seeded toy (`generate_tsne_umap_toy.py`), both runs started from the PCA view; points in panel 5 follow the recorded trajectory; the loss dot is synchronised with it.
+- Palette, fonts and card style from `common.py` / 05a (via `explainer_common.py`); Arial; no bold; text 14-18 pt.
+
+## Forbidden
+- Hand-placed embedding points, decorative colours outside the series palette, numbers on the slide, text below 14 pt.
+
+## QA
+- `common.render_video` every-frame QA (layout registry, pixel checks, vertical whitespace) must pass; contact sheets reviewed; static layout registry must pass.

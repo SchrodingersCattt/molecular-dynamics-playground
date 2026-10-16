@@ -121,6 +121,9 @@ STATIC_D = (0.605, 0.045, 0.965, 0.905)
 RETURN_Y_VIDEO = 0.045
 RETURN_Y_STATIC = 0.030
 
+# NNMD scenes use softened energy/force accents (less busy).
+from common import NNMD_ENERGY_TEAL as ENERGY_TEAL, NNMD_ORANGE as A_ORANGE  # noqa: E402
+
 # Shared r/v/a palette of every movie: structure and descriptor in navy,
 # energy in teal, force and acceleration in orange.
 POSITION_LAKE = R_BLUE
@@ -1087,7 +1090,7 @@ def draw_pipeline(
     if inv_alpha > 0:
         _heat(ax, inv_matrix, inv_rect, alpha=inv_alpha, clip=inv_clip)
     _frame(ax, inv_rect, colour=FORCE_OLIVE if backward else (EDGE_NAVY if inv_alpha > 0 else LINE_GRAY), lw=1.8 if backward else 1.1)
-    registry.text(ax, rx0, inv_rect[3] + 0.04, inv_label, ha="left", va="center", fontsize=fs, color=EDGE_NAVY if inv_alpha > 0 else DARK_GRAY, zorder=8)
+    registry.text(ax, rx0, inv_rect[3] + 0.04, inv_label, ha="left", va="center", fontsize=fs * (0.88 if model == "deepmd" else 1.0), color=EDGE_NAVY if inv_alpha > 0 else DARK_GRAY, zorder=8)
 
     # --- fitting layers, eps_i and E ----------------------------------------
     fit_on = y_front < 0.42 if swept else fit_p > 0
