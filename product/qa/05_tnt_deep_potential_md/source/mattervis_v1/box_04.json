@@ -1,0 +1,125 @@
+{
+  "schema": "mattervis.render-result/v1",
+  "backend": "cpu",
+  "format": "png",
+  "width": 1100,
+  "height": 1100,
+  "plan_sha256": "1360adf92cf5ffd758471bf4c9f285d6f1034299bed4d1492f92a6c9ba9f35fe",
+  "output_sha256": "7325dc755a529095c9f5eb2a1c258c5211e747b018924d32a6f5905ebdb00ce7",
+  "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\05_tnt_deep_potential_md\\source\\mattervis_v1\\box_04.png",
+  "source_sha256": "c7f1f60f019dde29ba68194bec94c086440c9d69c61564888793c9e40d870bf0",
+  "frame": 4,
+  "view": "unit_cell",
+  "camera": {
+    "target": [
+      7.4955,
+      6.077,
+      10.0085
+    ],
+    "ortho_scale": 14.0,
+    "direction": [
+      1.55,
+      -1.0,
+      0.62
+    ],
+    "up": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "scene_offset": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "render_settings": {
+    "width": 1100,
+    "height": 1100,
+    "atom_scale": 0.72,
+    "bond_radius": 0.075,
+    "show_cell": true,
+    "include_boundary_replicas": true,
+    "show_bonds": true,
+    "cell_color": "#9AA5AA",
+    "cell_width_px": 1.2
+  },
+  "vector_signature": "[]",
+  "vector_count": 0,
+  "vector_renderer": "MatterVis native world-space vector_overlays",
+  "mesh_signature": "[]",
+  "atom_signature": "{\"color\":{\"203\":\"#183153\"},\"opacity\":{}}",
+  "mesh_renderer": "MatterVis native world-space mesh overlay",
+  "pipeline_version": 7,
+  "warnings": [],
+  "metadata": {
+    "transparent_compositor": "per-pixel-fragment-list",
+    "scale": 1,
+    "requested_backend": "cpu",
+    "actual_backend": "cpu",
+    "camera": {
+      "position": [
+        26.61167604656927,
+        -6.256016804238238,
+        17.654970418627705
+      ],
+      "target": [
+        7.4955,
+        6.077,
+        10.0085
+      ],
+      "up": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "projection": "orthographic",
+      "fov_y_deg": 45.0,
+      "near": 0.01,
+      "far": 10000.0,
+      "ortho_scale": 14.0
+    },
+    "source": {
+      "path": null,
+      "input_format": null,
+      "frame": null
+    },
+    "requirements": {
+      "schema": "mattervis.requirements/v1",
+      "requested": [
+        "png"
+      ],
+      "capabilities": [
+        "core"
+      ],
+      "extras": [],
+      "available": true,
+      "missing_capabilities": [],
+      "install": "python -m pip install \"matter-vis\"",
+      "notes": [
+        "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+      ],
+      "capability_details": [
+        {
+          "name": "core",
+          "description": "CPU 3D and Matplotlib 2D PNG/PDF/SVG, structure inspection, ORTEP, rings, and polyhedra",
+          "extra": null,
+          "packages": [
+            "numpy",
+            "ase",
+            "matplotlib",
+            "pillow",
+            "molcrys-kit"
+          ],
+          "includes": [],
+          "available": true,
+          "install": "python -m pip install \"matter-vis\"",
+          "note": "Requires the renderer-ready MolCrysKit public contracts from molcrys-kit>=0.7.0. Upgrade with: python -m pip install \"molcrys-kit>=0.7.0\"."
+        }
+      ]
+    },
+    "install": "python -m pip install \"matter-vis\"",
+    "fallback": null,
+    "atom_property_color": null
+  }
+}

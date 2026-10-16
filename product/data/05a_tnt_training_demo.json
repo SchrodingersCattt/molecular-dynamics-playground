@@ -1,0 +1,71 @@
+{
+  "schema": "nnmd_training_demo/v1",
+  "structure_source": "tnt_box_336.npz",
+  "trajectory_source": "dpa1_tnt_box_trajectory.npz",
+  "structure_status": "real 336-atom TNT crystal box (ZZZMUC01 1x2x1) from a 300 K DPA4C-Neo NVT run, state 0 of the 05 story",
+  "label_kind": "DFT reference · schematic",
+  "label_note": "No per-atom DFT decomposition exists for this box. These values are a single teaching example (relative per-atom energies) and are not DFT or model output.",
+  "focus_atom": "central nitro N",
+  "atoms": [
+    {
+      "id": "N (nitro)",
+      "element": "N",
+      "reference_ev": -6.12,
+      "prediction_initial_ev": -5.31,
+      "prediction_updated_ev": -5.97
+    },
+    {
+      "id": "O (nitro)",
+      "element": "O",
+      "reference_ev": -4.87,
+      "prediction_initial_ev": -5.29,
+      "prediction_updated_ev": -4.93
+    },
+    {
+      "id": "O (nitro)",
+      "element": "O",
+      "reference_ev": -4.85,
+      "prediction_initial_ev": -4.41,
+      "prediction_updated_ev": -4.8
+    }
+  ],
+  "loss": {
+    "formula": "L_i = 1/2 (epsilon_hat_i - epsilon_ref_i)^2",
+    "focus_atom_only": true,
+    "optimizer_update": "w <- w - eta * grad_w L"
+  },
+  "units": {
+    "per_atom_energy": "eV",
+    "loss": "eV^2"
+  },
+  "timeline_seconds": {
+    "sample_zoom": [
+      0.0,
+      2.0
+    ],
+    "forward": [
+      2.0,
+      4.5
+    ],
+    "compare": [
+      4.5,
+      6.5
+    ],
+    "loss": [
+      6.5,
+      8.5
+    ],
+    "backprop": [
+      8.5,
+      11.5
+    ],
+    "update": [
+      11.5,
+      13.5
+    ],
+    "forward_again": [
+      13.5,
+      16.0
+    ]
+  }
+}

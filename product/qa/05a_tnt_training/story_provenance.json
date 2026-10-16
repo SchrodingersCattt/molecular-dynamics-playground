@@ -1,0 +1,75 @@
+{
+  "schema": "nnmd_training_story/v1",
+  "stem": "05a_tnt_training",
+  "manifest": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\data\\05a_tnt_training_demo.json",
+  "structure_source": "data/05_tnt_dpa4c/tnt_box_336.npz (TNT ZZZMUC01 1x2x1, 300 K DPA4C NVT snapshot)",
+  "trajectory_source": "data/05_tnt_dpa4c/nnmd05/dpa1_tnt_box_trajectory.npz",
+  "structure_status": "real 336-atom TNT crystal box (ZZZMUC01 1x2x1) from a 300 K DPA4C-Neo NVT run, state 0 of the 05 story",
+  "label_kind": "DFT reference \u00b7 schematic",
+  "label_note": "No per-atom DFT decomposition exists for this box. These values are a single teaching example (relative per-atom energies) and are not DFT or model output.",
+  "focus_atom": "central nitro N",
+  "centre_atom_index": 203,
+  "box_length_angstrom": [
+    14.991,
+    12.154,
+    20.017
+  ],
+  "cutoff_angstrom": 6.0,
+  "derived": {
+    "delta_ev": [
+      0.8100000000000005,
+      -0.41999999999999993,
+      0.4399999999999995
+    ],
+    "updated_delta_ev": [
+      0.15000000000000036,
+      -0.05999999999999961,
+      0.04999999999999982
+    ],
+    "focus_loss_ev2": 0.3280500000000004,
+    "updated_focus_loss_ev2": 0.011250000000000053,
+    "sum_reference_ev": -15.84,
+    "sum_prediction_initial_ev": -15.01,
+    "sum_prediction_updated_ev": -15.7
+  },
+  "timeline_seconds": {
+    "sample_zoom": [
+      0.0,
+      2.0
+    ],
+    "forward": [
+      2.0,
+      4.5
+    ],
+    "compare": [
+      4.5,
+      6.5
+    ],
+    "loss": [
+      6.5,
+      8.5
+    ],
+    "backprop": [
+      8.5,
+      11.5
+    ],
+    "update": [
+      11.5,
+      13.5
+    ],
+    "forward_again": [
+      13.5,
+      16.0
+    ]
+  },
+  "video": {
+    "duration_seconds": 16.0,
+    "canvas": [
+      1920,
+      600
+    ],
+    "fps": 24,
+    "aspect_ratio": "16:5"
+  },
+  "mattervis_assets": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\05_tnt_deep_potential_md\\source\\mattervis_v1"
+}
