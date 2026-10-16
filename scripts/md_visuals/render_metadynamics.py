@@ -27,8 +27,8 @@ from common import (
 
 
 ROOT = Path(__file__).resolve().parents[2] / "product"
-STEM = "05_well_tempered_metadynamics"
-QA_DIR = ROOT / "qa" / "05_metadynamics"
+STEM = "06_well_tempered_metadynamics"
+QA_DIR = ROOT / "qa" / "06_metadynamics"
 BLUE = "#4E9BB5"
 OLIVE = "#A89B52"
 CRIMSON = "#A32035"

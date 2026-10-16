@@ -123,11 +123,11 @@ DP 视频时序已改为固定舞台：水盒、O126、小圆、放大圆和引�
 - `product/videos/01_velocity_verlet.mp4` 至 `04_deep_potential_md.mp4`
 - `product/qa/04_dpmd_native/qa_report_strict.json`
 - `product/qa/04_dpmd_native/_qa/every_frame_qa.json`
-- `product/figures/05_well_tempered_metadynamics.png`
-- `product/videos/05_well_tempered_metadynamics.mp4`
-- `product/qa/05_metadynamics/qa_report_strict.json`
-- `product/figures/06_rigid_water_descriptor_invariance.png`
-- `product/videos/06_rigid_water_descriptor_invariance.mp4`
-- `product/qa/06_symmetry_invariance/descriptor_provenance.json`
+- `product/figures/06_well_tempered_metadynamics.png`
+- `product/videos/06_well_tempered_metadynamics.mp4`
+- `product/qa/06_metadynamics/qa_report_strict.json`
+- `product/figures/07_rigid_water_descriptor_invariance.png`
+- `product/videos/07_rigid_water_descriptor_invariance.mp4`
+- `product/qa/07_symmetry_invariance/descriptor_provenance.json`
 
 

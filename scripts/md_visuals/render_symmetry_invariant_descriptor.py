@@ -14,8 +14,8 @@ from mattervis_story import camera_for_source, render_structure
 from responsive_story import EMERALD, panel_box, place_main, story_axes
 
 ROOT = Path(__file__).resolve().parents[2] / "product"
-STEM = "06_rigid_water_descriptor_invariance"
-QA_DIR = ROOT / "qa" / "06_symmetry_invariance"
+STEM = "07_rigid_water_descriptor_invariance"
+QA_DIR = ROOT / "qa" / "07_symmetry_invariance"
 SOURCE = QA_DIR / "water_rigid.extxyz"
 META = QA_DIR / "descriptor_provenance.json"
 BOX = 12.0

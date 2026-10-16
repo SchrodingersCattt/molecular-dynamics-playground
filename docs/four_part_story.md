@@ -13,9 +13,9 @@ This directory contains independent figures and independent 16:5 videos. Each mo
 | 03b UKS reactive AIMD | `product/figures/03b_uks_reaction.png` / `.svg` | `product/videos/03b_uks_reaction.mp4` | kick-started TNT C2–NO₂ homolysis, α/β spin-density separation, reaction coordinate and UKS loop; `product/data/uks_tnt_reaction.json` records whether the data are real UKS or a renderer-only fixture |
 | 04 Deep Potential MD | `product/figures/04_deep_potential_md.png` / `.svg` | `product/videos/04_deep_potential_md.mp4` | 64-water periodic box, O126 and its 83 minimum-image neighbours inside 6.0 Å; six DeepMD (DeepPot-SE) states, five velocity-Verlet updates, end to end from positions to the next positions |
 | 04_4c DPA4C MD | `product/figures/04_4c_dpa4c.png` / `.svg` | `product/videos/04_4c_dpa4c.mp4` | same box, velocities and time step; force provider swapped for DPA4C-Neo-OMat24 (equivariant descriptor), evaluated live on Bohrium |
-| 05 Well-tempered metadynamics | `product/figures/05_well_tempered_metadynamics.png` / `.svg` | `product/videos/05_well_tempered_metadynamics.mp4` | one-dimensional double well, Langevin residence, tempered Gaussian hills, recovered free energy |
-| 06 Rigid-water symmetry | `product/figures/06_rigid_water_descriptor_invariance.png` / `.svg` | `product/videos/06_rigid_water_descriptor_invariance.mp4` | one H₂O translated and rotated as a rigid body; full Cartesian coordinates change while the DeepMD environment matrix Rᵢ stays invariant |
-| 06 Rigid-water invariance | `product/figures/06_rigid_water_descriptor_invariance.png` / `.svg` | `product/videos/06_rigid_water_descriptor_invariance.mp4` | one real H₂O rigidly translated and rotated in a periodic box; Cartesian coordinates change while the minimum-image descriptor is constant |
+| 06 Well-tempered metadynamics | `product/figures/06_well_tempered_metadynamics.png` / `.svg` | `product/videos/06_well_tempered_metadynamics.mp4` | one-dimensional double well, Langevin residence, tempered Gaussian hills, recovered free energy |
+| 07 Rigid-water symmetry | `product/figures/07_rigid_water_descriptor_invariance.png` / `.svg` | `product/videos/07_rigid_water_descriptor_invariance.mp4` | one H₂O translated and rotated as a rigid body; full Cartesian coordinates change while the DeepMD environment matrix Rᵢ stays invariant |
+| 07 Rigid-water invariance | `product/figures/07_rigid_water_descriptor_invariance.png` / `.svg` | `product/videos/07_rigid_water_descriptor_invariance.mp4` | one real H₂O rigidly translated and rotated in a periodic box; Cartesian coordinates change while the minimum-image descriptor is constant |
 
 ## Scientific evidence
 
@@ -55,10 +55,10 @@ Publication gates require:
 - zero frame-level clipping, text overlap, boundary, whitespace, or semantic-colour errors;
 - exact neighbor selection and real energy/force provenance where numerical values are shown;
 - native MatterVis provenance for atoms, bonds, periodic cells, density overlays, and world-space vectors.
-- the metadynamics demo has a strict static manifest and a complete 384-frame report under `product/qa/05_metadynamics/`.
+- the metadynamics demo has a strict static manifest and a complete 384-frame report under `product/qa/06_metadynamics/`.
 - the DeepMD and DPA4C stories follow the AIMD layout (loop | box + magnifier | energy | E→∇→F→a→Δt chain with a return arrow); every quantity is drawn on the real atoms inside r_c, arrow scales and the ε colour range are data-driven and recorded in `product/qa/04_deep_potential_md/asset_manifest.json` and `product/qa/04_4c_dpa4c/asset_manifest.json`.
-- the rigid-water symmetry proof uses PBC-unwrapped source geometry, 240 real MatterVis frames, complete O/H₁/H₂ Cartesian rows, and a DeepMD-style 2×4 environment matrix (R_i=[s,sx/r,sy/r,sz/r]); self-checks for bond lengths, angle, and matrix invariance are in `product/qa/06_symmetry_invariance/descriptor_provenance.json`.
+- the rigid-water symmetry proof uses PBC-unwrapped source geometry, 240 real MatterVis frames, complete O/H₁/H₂ Cartesian rows, and a DeepMD-style 2×4 environment matrix (R_i=[s,sx/r,sy/r,sz/r]); self-checks for bond lengths, angle, and matrix invariance are in `product/qa/07_symmetry_invariance/descriptor_provenance.json`.
 - the DP descriptor stage follows the PPT sketch: a square water box, an in-place local circle, a magnified local circle with real green neighbour links, and the matrix/descriptor logic in the right rail.
-- the rigid-water invariance demo uses minimum-image distances and records `max |ΔD|` plus all source coordinates in `product/qa/06_symmetry_invariance/descriptor_provenance.json`.
+- the rigid-water invariance demo uses minimum-image distances and records `max |ΔD|` plus all source coordinates in `product/qa/07_symmetry_invariance/descriptor_provenance.json`.
 - 03b records the backend in `product/data/uks_tnt_reaction.json`; `backend=pyscf_uks` is required before the trajectory can be described as real UKS data. `backend=analytic_demo` is only a renderer/layout fixture. The corresponding 3-D α/β fields are stored in `product/data/uks_tnt_reaction_density3d.npz` with a fixed Cartesian grid.
 
