@@ -721,3 +721,28 @@ def sha256_file(path: Path) -> str:
             digest.update(block)
     return digest.hexdigest()
 
+
+
+# Shared signed (diverging) colormap for every matrix/heat block in the NNMD
+# scenes (04, 04_4c, 04a, 05, 05_4c, 05a): light lime green (negative) ->
+# white (zero) -> light purple (positive).  Values are always mapped as
+# 0.5 + 0.5 * clip(v / vmax, -1, 1), i.e. symmetric about zero.
+from matplotlib.colors import LinearSegmentedColormap as _LSC  # noqa: E402
+
+SIGNED_CMAP = _LSC.from_list(
+    "signed_lime_white_purple",
+    ["#8FC24A", "#C9E59A", "#FFFFFF", "#D5C6EC", "#9C82CC"],
+)
+
+
+def signed_unit(values, vmax=None):
+    """Map signed values to [0, 1] symmetric about zero (shared normalisation).
+
+    ``vmax`` defaults to the 98th-percentile |value| of the block.
+    """
+    values = np.asarray(values, dtype=float)
+    if vmax is None:
+        vmax = float(np.nanpercentile(np.abs(values), 98.0)) if values.size else 0.0
+        vmax = vmax or float(np.nanmax(np.abs(values))) if values.size else 0.0
+    vmax = vmax or 1.0
+    return 0.5 + 0.5 * np.clip(values / vmax, -1.0, 1.0)

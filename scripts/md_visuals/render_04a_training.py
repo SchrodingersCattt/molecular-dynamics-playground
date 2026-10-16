@@ -9,10 +9,10 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.colors import LinearSegmentedColormap
-from matplotlib.patches import ConnectionPatch, Ellipse, Rectangle
+from matplotlib.patches import ConnectionPatch, Ellipse, FancyBboxPatch, Rectangle
 
 from common import (
-    A_ORANGE, ENERGY_TEAL, FONT_SIZES, INK, LINE_GRAY, LIGHT_GRAY,
+    A_ORANGE, ENERGY_TEAL, SIGNED_CMAP, signed_unit, FONT_SIZES, INK, LINE_GRAY, LIGHT_GRAY,
     NAVY, WHITE, LayoutRegistry, axes_from_top_slot, json_dump,
     new_video_figure, render_video, smoothstep,
 )
@@ -31,14 +31,13 @@ PANEL_NETWORK = (0.350, 0.035, 0.665, 0.955)
 PANEL_METRICS = (0.680, 0.035, 0.985, 0.955)
 STRUCTURE_BG = "#F7F9FA"
 INPUT_FILL = "#E7EEF6"
-PREDICTION_FILL = "#D7EBEB"
-LOSS_FILL = "#FFF1E6"
+PREDICTION_FILL = "#EEF6F5"
+SOFT_TEAL = "#7FB5B0"  # softened ENERGY_TEAL for box borders
+LOSS_FILL = "#FFF6EE"
+SOFT_ORANGE = "#E2A878"
 UPDATED_FILL = "#E5F0E8"
 GRADIENT_ORANGE = A_ORANGE
-GRID_CMAP = LinearSegmentedColormap.from_list(
-    "training_grid",
-    ["#E1EBF8", "#C7EAFB", "#9ED4D0", "#1F7A7A", "#183153"],
-)
+GRID_CMAP = SIGNED_CMAP  # shared with 04/05/04_4c/05_4c heat blocks
 
 
 def _fmt_ev(value: float, digits: int = 2) -> str:
@@ -111,6 +110,22 @@ def _draw_structure(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, obje
         ha="center", va="top", fontsize=FONT_SIZES["micro"], color=INK,
     )
 
+def _soft_box(ax, rect, *, fill, edge, lw=1.0, zorder=2, clip_on=True):
+    x0, y0, x1, y1 = rect
+    patch = FancyBboxPatch(
+        (x0, y0), x1 - x0, y1 - y0,
+        boxstyle="round,pad=0,rounding_size=0.018", mutation_aspect=1.0,
+        fc=fill, ec=edge, lw=lw, zorder=zorder,
+    )
+    patch.set_clip_on(clip_on)
+    ax.add_patch(patch)
+    return patch
+
+
+def _soften(colour):
+    return {ENERGY_TEAL: SOFT_TEAL, A_ORANGE: SOFT_ORANGE}.get(colour, colour)
+
+
 def _heat_block(
     ax: plt.Axes,
     rect: tuple[float, float, float, float],
@@ -122,7 +137,7 @@ def _heat_block(
     mode: str = "activation",
 ) -> None:
     x0, y0, x1, y1 = rect
-    ax.add_patch(Rectangle((x0, y0), x1 - x0, y1 - y0, fc=fill, ec=edge, lw=1.6, zorder=3))
+    _soft_box(ax, rect, fill=fill, edge=_soften(edge), lw=1.1, zorder=3)
     cols, rows = 5, 8
     for col in range(cols):
         for row in range(rows):
@@ -136,7 +151,7 @@ def _heat_block(
                 value = base + 0.65 * (float(value_phase) - 0.5)
             else:
                 value = base + 0.25 * float(value_phase)
-            colour = GRID_CMAP(float(np.clip((value + 1.0) / 2.0, 0.0, 1.0))) if active > 0.05 else LIGHT_GRAY
+            colour = GRID_CMAP(float(signed_unit(value, 1.0))) if active > 0.05 else LIGHT_GRAY
             pad_x = (x1 - x0) * 0.06
             pad_y = (y1 - y0) * 0.035
             cell_w = (x1 - x0 - 2 * pad_x) / cols
@@ -153,6 +168,7 @@ def _draw_grid_colorbar(ax: plt.Axes, registry: LayoutRegistry, *, label: str) -
         right = x0 + (x1 - x0) * (index + 1) / steps
         ax.add_patch(Rectangle((left, y0), right - left, y1 - y0, fc=GRID_CMAP(index / (steps - 1)), ec="none", zorder=3))
     registry.text(ax, x0, 0.070, "−1", ha="left", va="top", fontsize=FONT_SIZES["micro"], color=INK)
+    registry.text(ax, 0.5 * (x0 + x1), 0.070, "0", ha="center", va="top", fontsize=FONT_SIZES["micro"], color=INK)
     registry.text(ax, x1, 0.070, "+1", ha="right", va="top", fontsize=FONT_SIZES["micro"], color=INK)
     registry.text(ax, 0.80, 0.180, label, ha="center", va="bottom", fontsize=FONT_SIZES["micro"], color=INK)
 
@@ -189,7 +205,7 @@ def _draw_network(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
     # layers G1 -> G2 -> G, descriptor D = T^T T_<, then the fitting net.
     input_rect = (0.030, 0.420, 0.120, 0.755)
     labels = ("G¹", "G²", "G", "D", "fit")
-    block_w, gap = 0.088, 0.034
+    block_w, gap = 0.080, 0.050
     hidden_rects = []
     x = input_rect[2] + gap
     for _ in labels:
@@ -274,7 +290,7 @@ def _metric_card(
     fill: str,
 ) -> None:
     x0, y0, x1, y1 = rect
-    ax.add_patch(Rectangle((x0, y0), x1 - x0, y1 - y0, fc=fill, ec=colour, lw=1.6, zorder=2))
+    _soft_box(ax, rect, fill=fill, edge=_soften(colour), lw=1.1, zorder=2)
     registry.text(ax, x0 + 0.025, y1 - 0.005, title, ha="left", va="top", fontsize=FONT_SIZES["micro"], color=INK)
     registry.text(ax, x0 + 0.025, y0 + 0.010, value, ha="left", va="bottom", fontsize=FONT_SIZES["body"], color=INK)
 
@@ -289,13 +305,12 @@ def _prediction_card(
     """Merge the scalar output node and prediction panel into one element."""
     # Let the merged prediction element extend a little into the inter-panel
     # gap so the fit block and output node do not leave a large white void.
-    rect = (-0.20, 0.515, 0.95, 0.720)
-    edge = ENERGY_TEAL if final_on else NAVY
-    card = Rectangle((rect[0], rect[1]), rect[2] - rect[0], rect[3] - rect[1], fc=PREDICTION_FILL, ec=edge, lw=1.6, zorder=2)
-    card.set_clip_on(False)
-    ax.add_patch(card)
-    registry.text(ax, -0.175, 0.700, "Neural-network prediction", ha="left", va="top", fontsize=FONT_SIZES["micro"], color=INK)
-    registry.text(ax, -0.175, 0.530, rf"$\hat{{\varepsilon}}_i = {_fmt_ev(value)}$ eV", ha="left", va="bottom", fontsize=FONT_SIZES["body"], color=INK)
+    # Same width and left/right alignment as the DFT reference and Error cards.
+    rect = (0.05, 0.500, 0.95, 0.690)
+    edge = SOFT_TEAL if final_on else NAVY
+    _soft_box(ax, rect, fill=PREDICTION_FILL, edge=edge, lw=1.1, zorder=2)
+    registry.text(ax, 0.075, 0.685, "Neural-network prediction", ha="left", va="top", fontsize=FONT_SIZES["micro"], color=INK)
+    registry.text(ax, 0.075, 0.515, rf"$\hat{{\varepsilon}}_i = {_fmt_ev(value)}$ eV", ha="left", va="bottom", fontsize=FONT_SIZES["body"], color=INK)
 
 
 def _draw_metrics(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object], time_seconds: float) -> None:
@@ -315,8 +330,8 @@ def _draw_metrics(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
 
     # The DFT label belongs to the dataset and is shown from the first frame.
     _metric_card(
-        ax, registry, rect=(0.05, 0.765, 0.95, 0.910), colour=ENERGY_TEAL,
-        title="DFT reference", value=rf"$\varepsilon_i^{{\mathrm{{ref}}}} = {_fmt_ev(ref)}$ eV", fill=STRUCTURE_BG,
+        ax, registry, rect=(0.05, 0.740, 0.95, 0.930), colour=ENERGY_TEAL,
+        title="DFT reference", value=rf"$\varepsilon_i^{{\mathrm{{ref}}}} = {_fmt_ev(ref)}$ eV", fill="#F6FAF9",
     )
     if prediction_on:
         prediction_value = updated if final_on else initial
@@ -325,7 +340,7 @@ def _draw_metrics(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
             # Anchor the double arrow on the horizontal centre lines of the
             # truth and prediction bands, so the relation remains long and
             # legible even when the inter-band gap is narrow.
-            ax, (0.90, 0.8375), (0.90, 0.6175),
+            ax, (0.90, 0.835), (0.90, 0.595),
             arrowstyle="<->", mutation_scale=20, lw=4.0,
             color=GRADIENT_ORANGE, zorder=6,
         )
@@ -335,7 +350,7 @@ def _draw_metrics(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
         error_value = abs(updated_delta) if final_on else abs(delta)
         loss_value = updated_loss if final_on else loss
         _metric_card(
-            ax, registry, rect=(0.05, 0.275, 0.95, 0.455), colour=error_colour,
+            ax, registry, rect=(0.05, 0.260, 0.95, 0.450), colour=error_colour,
             title="Error",
             value=rf"$|\delta_i| = {error_value:.2f}$ eV   ·   $L_i = {loss_value:.3f}$ eV$^2$",
             fill=error_fill,
@@ -381,7 +396,7 @@ def _draw_story_links(
         ),
         ConnectionPatch(
             xyA=(0.50, 0.985), coordsA="data", axesA=metrics_ax,
-            xyB=(0.50, 0.885), coordsB="data", axesB=metrics_ax,
+            xyB=(0.50, 0.932), coordsB="data", axesB=metrics_ax,
             arrowstyle="-|>", mutation_scale=11, lw=1.3, color=ENERGY_TEAL, alpha=1.0, zorder=10,
         ),
     )
@@ -391,8 +406,8 @@ def _draw_story_links(
 
     if (4.5 <= time_seconds < 8.5) or time_seconds >= 13.5:
         output_link = ConnectionPatch(
-            xyA=(0.730, 0.60), coordsA="data", axesA=network_ax,
-            xyB=(-0.20, 0.6175), coordsB="data", axesB=metrics_ax,
+            xyA=(0.725, 0.60), coordsA="data", axesA=network_ax,
+            xyB=(0.05, 0.595), coordsB="data", axesB=metrics_ax,
             arrowstyle="-|>", mutation_scale=13, lw=1.5,
             color=ENERGY_TEAL if time_seconds >= 13.5 else NAVY, alpha=0.85, zorder=12,
         )
@@ -402,13 +417,13 @@ def _draw_story_links(
         # The error first returns to the merged prediction/output node, then
         # crosses back to fit and continues through G², G¹, and the descriptor.
         metrics_ax.annotate(
-            "", xy=(-0.12, 0.515), xytext=(-0.12, 0.455),
+            "", xy=(0.12, 0.500), xytext=(0.12, 0.450),
             arrowprops={"arrowstyle": "-|>", "mutation_scale": 12, "lw": 1.8, "color": GRADIENT_ORANGE},
             zorder=12,
         )
         error_link = ConnectionPatch(
-            xyA=(-0.20, 0.6175), coordsA="data", axesA=metrics_ax,
-            xyB=(0.730, 0.60), coordsB="data", axesB=network_ax,
+            xyA=(0.05, 0.595), coordsA="data", axesA=metrics_ax,
+            xyB=(0.725, 0.60), coordsB="data", axesB=network_ax,
             arrowstyle="-|>", mutation_scale=14, lw=2.0,
             color=GRADIENT_ORANGE, alpha=0.88, zorder=12,
             connectionstyle="arc3,rad=0.10",

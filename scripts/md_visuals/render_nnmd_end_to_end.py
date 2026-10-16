@@ -204,7 +204,7 @@ FLOW_ORDER = tuple(name for name, _ in DETAILED_PHASES)
 MODE_TO_LOOP_STAGE = {name: 1 for name in FLOW_ORDER} | {"velocity": 2, "move": 0}
 
 POSITION_EQUATION = r"$\mathbf{r}_{n+1}=\mathbf{r}_n$" "\n" r"$+\mathbf{v}_{n+1/2}\Delta t$"
-ACCELERATION_EQUATION = r"$\mathbf{a}_{n}=\mathbf{F}_{n}/m$" "\n" r"$\mathbf{F}_{n}=-\nabla_R E(\mathbf{r}_n)$"
+ACCELERATION_EQUATION = r"$\mathbf{a}_{n}=\mathbf{F}_{n}/m$" "\n" r"$\mathbf{F}_{n}=-\nabla E$"
 VELOCITY_EQUATION = r"$\mathbf{v}_{n+1/2}=\mathbf{v}_{n}$" "\n" r"$+\frac{1}{2}\mathbf{a}_{n}\Delta t$"
 
 EPS_CMAP = LinearSegmentedColormap.from_list("eps", [NAVY, "#D9D9D9", CRIMSON])
@@ -751,7 +751,7 @@ LABEL_Y = 0.865
 RIGHT_X = (0.54, 0.985)
 EPS_Y = 0.215
 ENERGY_Y = 0.135
-OP_CMAP = LinearSegmentedColormap.from_list("op", [NAVY, "#F4F5F6", CRIMSON])
+from common import SIGNED_CMAP as OP_CMAP, signed_unit  # shared lime-white-purple, symmetric about 0
 SPECIES_DOT = {"O": "#D2453A", "H": "#C9CED3"}
 # DPA4C moment layout (model constants of the checkpoint): degree zero is the
 # 64-channel amplitude, X^(1) uses harmonics 1-3 x channels 0-7 and X^(2)
@@ -795,7 +795,7 @@ def load_internals(model: str, data: dict[str, object]) -> dict[str, object]:
             # close it, so the last partial sum equals the dumped T.
             real = np.einsum("jk,jc->jkc", rmat, g) / DPMD_N_SEL
             partial = [("T", "", real, T - real.sum(axis=0))]
-            invariant = (r"Descriptor $D=T^{\top}T_{<}$", raw["D"][state].T)
+            invariant = (r"Descriptor $D=T^{\top}T_{1:M_2}$", raw["D"][state].T)
             fits = [raw["fit_1"][state], raw["fit_2"][state], raw["fit_3"][state]]
             fit_label = "Fitting net"
             epsilon = float(raw["epsilon"][state])
@@ -844,8 +844,7 @@ def _heat(ax, matrix, rect, *, alpha=1.0, zorder=3.0, vmax=None, clip=None):
     ``clip`` (x0, y0, x1, y1) shows only that part of the block (sweep reveal).
     """
     matrix = np.atleast_2d(np.asarray(matrix, dtype=float))
-    vmax = vmax or float(np.nanpercentile(np.abs(matrix), 98.0)) or float(np.nanmax(np.abs(matrix))) or 1.0
-    rgba = OP_CMAP(0.5 + 0.5 * np.clip(matrix / vmax, -1.0, 1.0))
+    rgba = OP_CMAP(signed_unit(matrix, vmax))
     rgba[..., 3] = alpha
     x0, y0, x1, y1 = rect
     image = ax.imshow(rgba, extent=(x0, x1, y0, y1), origin="upper", aspect="auto", interpolation="nearest", zorder=zorder)
@@ -908,7 +907,7 @@ def draw_pipeline(
         widths = {"R": (0.07, 0.13), "G1": (0.17, 0.23), "G2": (0.27, 0.34), "G3": (0.38, 0.47)}
     else:
         widths = {"Y": (0.07, 0.11), "e": (0.15, 0.20), "h": (0.24, 0.31), "g": (0.35, 0.40), "phi": (0.44, 0.49)}
-    registry.text(ax, 0.5, 0.955, MODELS[model]["provider"], ha="center", va="center", fontsize=FONT_SIZES["panel_title"], color=INK, zorder=8)
+    registry.text(ax, 0.5, 0.955, "DeePMD" if model == "deepmd" else MODELS[model]["provider"], ha="center", va="center", fontsize=FONT_SIZES["panel_title"], color=INK, zorder=8)
     keys = [key for key, *_ in rows]
     embed_keys = [key for key, *_rest, stage in rows if stage == "embed"]
     row_h = (ROW_TOP - ROW_BOTTOM) / n
