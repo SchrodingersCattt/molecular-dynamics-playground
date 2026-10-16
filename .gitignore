@@ -91,3 +91,5 @@ product/qa/**/failed_frame_*.png
 # 05 TNT series: trajectory and NNMD data are transferred by scp, not versioned
 data/05_tnt_dpa4c/
 product/qa/05*/source/trajectory_sources/
+
+**/_qa/_encode_frames_*/
