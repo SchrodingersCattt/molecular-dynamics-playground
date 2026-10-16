@@ -1,0 +1,28 @@
+{
+  "08_tsne_umap_principle": {
+    "png": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\figures\\08_tsne_umap_principle.png",
+    "master": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\videos\\08_tsne_umap_principle.mp4",
+    "ppt": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\videos\\ppt\\08_tsne_umap_principle.mp4",
+    "poster": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\videos\\ppt\\08_tsne_umap_principle_poster.png",
+    "frames": 396,
+    "qa_passed": true,
+    "sha256": {
+      "png": "3ed293a1e77f09009243fab842ba99509bf83cc36cd247d9be76956eaf0741fb",
+      "master": "ddc2c613e336ba0671fae27936b09ea0a1227c28418dcc3bb96410d99aea9244",
+      "ppt": "303981b1fb5b55471ef55f26f9f008efc63edbb4239365b80d039c00b176aea1"
+    }
+  },
+  "09_multitask_finetune": {
+    "png": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\figures\\09_multitask_finetune.png",
+    "master": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\videos\\09_multitask_finetune.mp4",
+    "ppt": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\videos\\ppt\\09_multitask_finetune.mp4",
+    "poster": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\videos\\ppt\\09_multitask_finetune_poster.png",
+    "frames": 348,
+    "qa_passed": true,
+    "sha256": {
+      "png": "468e07c481247ed643e8494084717e306a3944789187c96d22897e349dd449ae",
+      "master": "859460bdf4f3419b37290029dc13ef32f7bcd170c2437a1031b5fee628608f24",
+      "ppt": "6c240b8fe8fff69e60b49d0ee48c1afc21950ce12a97ad8964511a492b14f203"
+    }
+  }
+}
