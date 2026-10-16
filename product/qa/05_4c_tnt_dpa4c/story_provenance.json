@@ -587,7 +587,7 @@
   },
   "timeline": {
     "duration_seconds": 25.0,
-    "detailed_block_seconds": 12.9,
+    "detailed_block_seconds": 12.899999999999997,
     "slow_hold_seconds": 3.0,
     "rapid_cycle_seconds": 2.0,
     "rapid_states": [
