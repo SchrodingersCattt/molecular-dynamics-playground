@@ -716,7 +716,7 @@ def render_scf_iterate_scene(
     levels = np.linspace(-delta_scale, delta_scale, 13)
     clipped = np.clip(projected, -delta_scale * 0.999, delta_scale * 0.999)
     filled = np.where(np.abs(clipped) < delta_scale / 12.0, np.nan, clipped)
-    axes.contourf(gx, gy, filled, levels=levels, cmap=DELTA_CMAP, alpha=0.85, antialiased=True)
+    axes.contourf(gx, gy, filled, levels=levels, cmap=DELTA_CMAP, alpha=0.40, antialiased=True)  # subtle: visible, contours stay readable
     axes.axis("off")
     figure.canvas.draw()
     layer = np.asarray(figure.canvas.buffer_rgba(), dtype=np.float32)[:, :, :3] / 255.0
