@@ -1,0 +1,54 @@
+{
+  "pipeline_version": 9,
+  "signature": {
+    "pipeline_version": 9,
+    "asset_stamp": "2026-10-16-review-v3-forces",
+    "ion_index": 11,
+    "width": 1500,
+    "height": 950,
+    "camera": {
+      "target": [
+        0.11097357401799121,
+        0.0042917164272209644,
+        -0.1037991470347843
+      ],
+      "direction": [
+        0.23121552453364444,
+        0.9300234133236358,
+        0.28564984138711746
+      ],
+      "up": [
+        0.490014527356601,
+        -0.3649682439845321,
+        0.7916337182449558
+      ],
+      "ortho_scale": 5.2,
+      "scene_offset": [
+        7.7684547116000005,
+        6.4019943001,
+        8.7157770295
+      ]
+    }
+  },
+  "density_rendering": "3d_max_normal_projection_contours",
+  "density_units": "electron/angstrom^3",
+  "density_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\data\\uks_tnt_reaction_density3d.npz",
+  "structure_source": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\mattervis_multistep_v3\\ion_11_structure.png",
+  "ion_index": 11,
+  "projection_axis": [
+    0.23121552453364444,
+    0.9300234133236358,
+    0.28564984138711746
+  ],
+  "projection_depth_angstrom": [
+    -3.0,
+    3.0
+  ],
+  "levels": [
+    0.05,
+    0.15,
+    0.4,
+    1.0
+  ],
+  "output": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\qa\\03b_uks_reaction\\source\\mattervis_multistep_v3\\ion_11_scfiter_02_density_contours.png"
+}

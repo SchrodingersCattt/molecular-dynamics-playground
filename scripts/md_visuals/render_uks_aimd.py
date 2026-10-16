@@ -640,6 +640,25 @@ def render_density_projection_contour_scene(
 # per-ionic-step colour scale, on top of the iterate's own contours.
 SCF_ITERATES_PATH = QA_DIR / "source" / "scf_iterates.npz"
 SCF_ITERATE_IONS = (0, 1)
+# Fast-sweep ionic steps: one file per step, same UKS setup, SCF started from
+# the previous step's converged density (as in the production MD).
+SCF_FAST_ITERATES = QA_DIR / "source" / "scf_iterates_fast"
+
+
+def _iterate_sources():
+    if SCF_ITERATES_PATH.exists():
+        with np.load(SCF_ITERATES_PATH) as archive:
+            for ion in SCF_ITERATE_IONS:
+                if f"rho_{ion}" in archive.files:
+                    yield ion, np.asarray(archive[f"rho_{ion}"], dtype=np.float32)
+    for path in sorted(SCF_FAST_ITERATES.glob("scf_iterates_*.npz")):
+        ion = int(path.stem.rsplit("_", 1)[1])
+        with np.load(path) as archive:
+            yield ion, np.asarray(archive["rho"], dtype=np.float32)
+
+
+def has_scf_iterates(ion: int) -> bool:
+    return (ion in SCF_ITERATE_IONS and SCF_ITERATES_PATH.exists()) or (SCF_FAST_ITERATES / f"scf_iterates_{ion:02d}.npz").exists()
 DELTA_CMAP = plt.get_cmap("PuOr_r")
 
 
@@ -739,15 +758,11 @@ def render_scf_iterate_scene(
 
 
 def scf_iterate_assets(data: dict[str, np.ndarray], camera: SceneCamera, structure_paths: list[Path]) -> dict[int, list[Path]]:
-    if not SCF_ITERATES_PATH.exists():
-        return {}
     result: dict[int, list[Path]] = {}
-    with np.load(SCF_ITERATES_PATH) as archive:
-        for ion in SCF_ITERATE_IONS:
-            key = f"rho_{ion}"
-            if key not in archive.files:
+    if True:
+        for ion, rho in _iterate_sources():
+            if ion >= len(structure_paths) or len(rho) < 2:
                 continue
-            rho = np.asarray(archive[key], dtype=np.float32)
             final = rho[-1]
             # Fixed colour scale for one ionic step: the first iterate's
             # 99.5th-percentile |Delta rho| (so later cycles visibly fade).
@@ -1483,7 +1498,7 @@ def draw_case(
     }
     if mode in legend:
         draw_arrow_legend(ax, registry, [legend[mode]], x_right=0.925, y=0.070, video=video)
-    if video and mode == "scf" and ion_index in SCF_ITERATE_IONS and SCF_ITERATES_PATH.exists():
+    if video and mode == "scf" and has_scf_iterates(ion_index):
         registry.text(
             ax, 0.50, 0.855,
             r"SCF cycle: shading = $\Delta\rho^{(k)}=\rho^{(k)}-\rho^{\mathrm{conv}}$ (orange +, purple −)",
