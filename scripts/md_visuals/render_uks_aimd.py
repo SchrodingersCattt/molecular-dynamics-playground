@@ -108,10 +108,7 @@ DENSITY_LEVELS = np.asarray(
 DENSITY_ISO_LEVELS = (0.05,)
 DENSITY_ISO_STRIDE = 2
 DENSITY_ISO_OPACITIES = (0.025,)
-# 2.0 e/A^3 added (03b review): the alpha/beta separation of the early SCF
-# cycles is largest at high density, so this level makes the real per-cycle
-# change readable.  Used for every density frame, converged ones included.
-DENSITY_CONTOUR_LEVELS = np.asarray((0.05, 0.15, 0.40, 1.00, 2.00), dtype=float)
+DENSITY_CONTOUR_LEVELS = np.asarray((0.05, 0.15, 0.40, 1.00), dtype=float)
 PROJECTION_DEPTHS = np.linspace(-3.0, 3.0, 49, dtype=float)
 DENSITY_COLORS = (
     "#DDE5EA",
@@ -511,7 +508,7 @@ def render_density_projection_contour_scene(
     with Image.open(structure_image) as structure_source:
         width, height = structure_source.size
     signature = {
-        "pipeline_version": 10,
+        "pipeline_version": 9,
         "asset_stamp": ASSET_STAMP,
         "ion_index": int(ion_index),
         "width": int(width),
@@ -593,7 +590,7 @@ def render_density_projection_contour_scene(
                 field,
                 levels=DENSITY_CONTOUR_LEVELS,
                 colors=["#FFFFFF"] * len(DENSITY_CONTOUR_LEVELS),
-                linewidths=(4.8, 4.6, 4.4, 4.2, 4.0),
+                linewidths=(4.8, 4.6, 4.4, 4.2),
                 linestyles=[BETA_DASH] * len(DENSITY_CONTOUR_LEVELS),
                 antialiased=True,
             )
@@ -602,8 +599,8 @@ def render_density_projection_contour_scene(
             grid_py,
             field,
             levels=DENSITY_CONTOUR_LEVELS,
-            colors=[colors[index] for index in (3, 4, 5, 6, 7)],
-            linewidths=(2.2, 2.0, 1.8, 1.6, 1.5) if channel_index == 0 else (3.0, 2.8, 2.6, 2.4, 2.2),
+            colors=[colors[index] for index in (4, 5, 6, 7)],
+            linewidths=(2.2, 2.0, 1.8, 1.6) if channel_index == 0 else (3.0, 2.8, 2.6, 2.4),
             linestyles="solid" if channel_index == 0 else [BETA_DASH] * len(DENSITY_CONTOUR_LEVELS),
             antialiased=True,
         )
@@ -637,8 +634,10 @@ def render_density_projection_contour_scene(
 # that one converged density for every SCF slot, so the isosurface could not
 # change.  scripts/build_box/compute_tnt_scf_iterates.py re-ran the PBE0/
 # def2-SVP UKS for the two slow-motion ionic steps (a800, gpu4pyscf) and
-# saved the density after every cycle; each SCF slot now shows that cycle's
-# own alpha/beta contours (max |rho_k - rho_conv| <= 0.8 % of the peak).
+# saved the density after every cycle.  The density change is real but small
+# (max |rho_k - rho_conv| <= 0.8 % of the peak), so the middle panel shows it
+# as a signed difference map Delta rho_k = rho_k - rho_conv on a fixed
+# per-ionic-step colour scale, on top of the iterate's own contours.
 SCF_ITERATES_PATH = QA_DIR / "source" / "scf_iterates.npz"
 SCF_ITERATE_IONS = (0, 1)
 DELTA_CMAP = plt.get_cmap("PuOr_r")
@@ -756,19 +755,19 @@ def scf_iterate_assets(data: dict[str, np.ndarray], camera: SceneCamera, structu
             scale = float(np.percentile(np.abs(first), 99.5))
             paths = []
             for k in range(len(rho)):
-                # Plain alpha/beta contours of this cycle's own density, drawn
-                # exactly like the converged-density display (no difference map).
-                out = MATTERVIS_DIR / f"ion_{ion:02d}_scfcycle_{k:02d}_density.png"
-                render_density_projection_contour_scene(
-                    rho[k, 0], rho[k, 1], structure_paths[ion], out,
-                    grid_x=data["density_grid_x_ang"], grid_y=data["density_grid_y_ang"], grid_z=data["density_grid_z_ang"],
-                    plane_centre=np.asarray(data["plane_centre_angstrom"], dtype=float),
-                    plane_u=data["plane_u"], plane_v=np.asarray(data["plane_v"], dtype=float),
-                    plane_normal=np.asarray(data["plane_normal"], dtype=float),
-                    u_axis=data["plane_u_axis_angstrom"], v_axis=data["plane_v_axis_angstrom"],
-                    camera=frame_camera(camera, ion), ion_index=ion * 1000 + k,
-                )
-                gc.collect()
+                out = MATTERVIS_DIR / f"ion_{ion:02d}_scfiter_{k:02d}_density.png"
+                sidecar = out.with_suffix(".json")
+                if not (out.exists() and sidecar.exists() and json.loads(sidecar.read_text(encoding="utf-8")).get("delta_scale_e_per_ang3") == scale):
+                    render_scf_iterate_scene(
+                        rho[k], final, structure_paths[ion], out, delta_scale=scale,
+                        grid_x=data["density_grid_x_ang"], grid_y=data["density_grid_y_ang"], grid_z=data["density_grid_z_ang"],
+                        plane_centre=np.asarray(data["plane_centre_angstrom"], dtype=float),
+                        plane_u=data["plane_u"], plane_v=np.asarray(data["plane_v"], dtype=float),
+                        plane_normal=np.asarray(data["plane_normal"], dtype=float),
+                        u_axis=data["plane_u_axis_angstrom"], v_axis=data["plane_v_axis_angstrom"],
+                        camera=frame_camera(camera, ion), ion_index=ion,
+                    )
+                    gc.collect()
                 paths.append(out)
             result[ion] = paths
     return result
@@ -778,11 +777,7 @@ def _resample(paths: list[Path], count: int) -> list[Path]:
     """Map the real SCF cycles onto the timeline's iteration slots."""
     if count <= 1:
         return [paths[-1]]
-    # Early cycles carry almost all of the change, so they get more of the
-    # SCF screen time (each real cycle is held, none is invented): slot
-    # fraction u -> cycle (len-1) * u**2.
-    u = np.linspace(0.0, 1.0, count)
-    picks = np.rint((len(paths) - 1) * u**2).astype(int)
+    picks = np.rint(np.linspace(0, len(paths) - 1, count)).astype(int)
     return [paths[i] for i in picks]
 
 
@@ -1488,6 +1483,12 @@ def draw_case(
     }
     if mode in legend:
         draw_arrow_legend(ax, registry, [legend[mode]], x_right=0.925, y=0.070, video=video)
+    if video and mode == "scf" and ion_index in SCF_ITERATE_IONS and SCF_ITERATES_PATH.exists():
+        registry.text(
+            ax, 0.50, 0.855,
+            r"SCF cycle: shading = $\Delta\rho^{(k)}=\rho^{(k)}-\rho^{\mathrm{conv}}$ (orange +, purple −)",
+            ha="center", va="center", fontsize=FONT_SIZES["micro"], color=INK, zorder=21,
+        )
     if video and mode in {"scf", "pause"}:
         registry.text(
             ax,
