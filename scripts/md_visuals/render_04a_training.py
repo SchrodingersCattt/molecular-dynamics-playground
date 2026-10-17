@@ -164,16 +164,40 @@ def _heat_block(
 
 def _draw_grid_colorbar(ax: plt.Axes, registry: LayoutRegistry, *, label: str) -> None:
     x0, x1 = 0.64, 0.96
-    y0, y1 = 0.105, 0.145
+    y0, y1 = 0.028, 0.068
     steps = 24
     for index in range(steps):
         left = x0 + (x1 - x0) * index / steps
         right = x0 + (x1 - x0) * (index + 1) / steps
         ax.add_patch(Rectangle((left, y0), right - left, y1 - y0, fc=GRID_CMAP(index / (steps - 1)), ec="none", zorder=3))
-    registry.text(ax, x0, 0.070, "−1", ha="left", va="top", fontsize=FONT_SIZES["micro"], color=INK)
-    registry.text(ax, 0.5 * (x0 + x1), 0.070, "0", ha="center", va="top", fontsize=FONT_SIZES["micro"], color=INK)
-    registry.text(ax, x1, 0.070, "+1", ha="right", va="top", fontsize=FONT_SIZES["micro"], color=INK)
-    registry.text(ax, 0.80, 0.180, label, ha="center", va="bottom", fontsize=FONT_SIZES["micro"], color=INK)
+    registry.text(ax, 0.5 * (x0 + x1), 0.088, label, ha="center", va="baseline", fontsize=FONT_SIZES["micro"], color=INK)
+
+
+def _draw_neuron_inset(ax: plt.Axes, src: tuple[float, float, float, float], phase: float) -> None:
+    """Zoom-in inset: what one arrow between matrix blocks means as neurons."""
+    sx0, sy0, sx1, sy1 = src
+    ix0, iy0, ix1, iy1 = 0.050, 0.040, 0.420, 0.235
+    soft = "#B9C4C8"
+    ax.add_patch(FancyBboxPatch((sx0, sy0), sx1 - sx0, sy1 - sy0, boxstyle="round,pad=0,rounding_size=0.008", fc="none", ec=ENERGY_TEAL, lw=0.9, alpha=0.75, zorder=7))
+    # Leaders drop straight down through the column gap (clear of the R_i /
+    # embedding-net labels), then fan out to the inset corners.
+    for x_src, x_dst in ((sx0 + 0.004, ix0 + 0.012), (sx1 - 0.004, ix1 - 0.012)):
+        ax.plot([x_src, x_src, x_dst], [sy0, 0.280, iy1], color=soft, lw=0.8, solid_joinstyle="round", zorder=1)
+    ax.add_patch(FancyBboxPatch((ix0, iy0), ix1 - ix0, iy1 - iy0, boxstyle="round,pad=0,rounding_size=0.015", fc="#FBFCFC", ec=soft, lw=0.8, zorder=2))
+    layers = (3, 4, 4, 2)
+    xs = np.linspace(ix0 + 0.06, ix1 - 0.06, len(layers))
+    pts = [[(x, iy0 + (iy1 - iy0) * (j + 1) / (n + 1)) for j in range(n)] for x, n in zip(xs, layers)]
+    lit = [float(np.clip((phase - 0.05 - 0.18 * k) / 0.15, 0.0, 1.0)) for k in range(len(layers))]
+    for k in range(len(layers) - 1):
+        for p in pts[k]:
+            for q in pts[k + 1]:
+                ax.plot([p[0], q[0]], [p[1], q[1]], color=LINE_GRAY if lit[k + 1] < 0.5 else soft, lw=0.6, alpha=0.55 + 0.35 * lit[k + 1], zorder=3)
+    aspect = _axes_aspect(ax) if callable(_axes_aspect) else 1.0
+    for k, layer in enumerate(pts):
+        for j, (x, y) in enumerate(layer):
+            value = 2.0 * (((k * 5 + j * 3) % 7) / 6.0) - 1.0
+            colour = GRID_CMAP(float(signed_unit(value, 1.0))) if lit[k] > 0.05 else "white"
+            ax.add_patch(Ellipse((x, y), 0.026, 0.026 * aspect, fc=colour, ec=LINE_GRAY if lit[k] < 0.5 else NAVY, lw=0.8, alpha=1.0, zorder=4))
 
 
 def _network_arrow(ax: plt.Axes, registry: LayoutRegistry, start: tuple[float, float], end: tuple[float, float], *, colour: str, alpha: float = 1.0) -> None:
@@ -228,8 +252,15 @@ def _draw_network(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
     )
     input_centre = 0.5 * (input_rect[0] + input_rect[2])
     registry.text(ax, input_centre, 0.825, r"$\tilde{\mathcal{R}}$", ha="center", va="bottom", fontsize=FONT_SIZES["micro"], color=INK)
-    registry.text(ax, input_centre, 0.350, r"$\mathbf{R}_i$", ha="center", va="top", fontsize=FONT_SIZES["body"], color=INK)
-    registry.text(ax, 0.5 * (hidden_rects[0][0] + hidden_rects[2][2]), 0.350, "embedding net", ha="center", va="top", fontsize=FONT_SIZES["micro"], color=INK)
+    # Group labels under the network share one bracket row and one text
+    # baseline.  An upside-down-Pi bracket marks exactly which columns each
+    # label refers to: R_i -> R~ only, embedding net -> G1, G2, G.
+    def _group_label(x0: float, x1: float, text: str, fontsize: float) -> None:
+        y_bar, y_tip = 0.352, 0.370
+        ax.plot([x0, x0, x1, x1], [y_tip, y_bar, y_bar, y_tip], color=LINE_GRAY, lw=1.0, solid_capstyle="round", solid_joinstyle="round", zorder=3)
+        registry.text(ax, 0.5 * (x0 + x1), 0.305, text, ha="center", va="baseline", fontsize=fontsize, color=INK)
+
+    _group_label(input_rect[0] + 0.008, input_rect[2] - 0.008, r"$\mathbf{R}_i$", FONT_SIZES["micro"])
 
     window = 0.80 / n_blocks
     for index, rect in enumerate(hidden_rects):
@@ -255,7 +286,10 @@ def _draw_network(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
         _heat_block(ax, rect, fill=fill, edge=edge, active=active, value_phase=grid_phase, mode=grid_mode)
         registry.text(ax, layer_centres[index], 0.825, labels[index], ha="center", va="bottom", fontsize=FONT_SIZES["micro"], color=INK)
 
+    _group_label(hidden_rects[0][0] + 0.008, hidden_rects[2][2] - 0.008, "embedding net", FONT_SIZES["micro"])
+
     chain = [input_rect, *hidden_rects]
+    _draw_neuron_inset(ax, (input_rect[2] - 0.006, 0.560, hidden_rects[0][0] + 0.006, 0.640), forward_phase)
     links = [((a[2], 0.600), (b[0], 0.600)) for a, b in zip(chain[:-1], chain[1:])]
     for start, end in links:
         if backprop_active and backward_p > 0.0:
@@ -275,11 +309,11 @@ def _draw_network(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
         ax.plot([x], [y], marker="o", markersize=7.0, color=GRADIENT_ORANGE, zorder=8)
 
     if backprop_active:
-        colourbar_label = "gradient value (mock)"
+        colourbar_label = "gradient value"
     elif update_on and time_seconds < 13.5:
-        colourbar_label = "updated activation (mock)"
+        colourbar_label = "updated activation"
     else:
-        colourbar_label = "activation value (mock)"
+        colourbar_label = "activation value"
     _draw_grid_colorbar(ax, registry, label=colourbar_label)
 
 def _metric_card(
