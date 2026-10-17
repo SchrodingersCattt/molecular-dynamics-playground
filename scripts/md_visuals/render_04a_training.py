@@ -389,7 +389,7 @@ def _draw_network(ax: plt.Axes, registry: LayoutRegistry, demo: dict[str, object
     elif update_on and time_seconds < 13.5:
         colourbar_label = "updated value"
     else:
-        colourbar_label = "activation value"
+        colourbar_label = "parameter value"
     _draw_grid_colorbar(ax, registry, label=colourbar_label)
 
 def _metric_card(
