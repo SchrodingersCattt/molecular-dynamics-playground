@@ -5,13 +5,13 @@ Data: product/data/08_tsne_umap_toy.json from scripts/build_box/generate_tsne_um
 (perplexity 6) and a full-batch UMAP-style cross-entropy run (k = 6, a = 1.577, b = 0.895); the two
 non-linear runs start from the PCA projection.
 Rows: PCA, t-SNE, UMAP. Stage 1 is the same 10-D cloud (an oblique 2-D linear view) in every row; stage 2 of t-SNE/UMAP draws the graph on it.
-  PCA:   points -> centre + covariance -> principal axes PC1/PC2 -> variance explained -> linear projection
-  t-SNE: points -> neighbours p_ij -> Student-t q_ij -> KL(P||Q) -> embedding
+  PCA:   points -> center + covariance -> principal axes PC1/PC2 -> variance explained -> linear projection
+  t-SNE: points -> neighbors p_ij -> Student-t q_ij -> KL(P||Q) -> embedding
   UMAP:  points -> fuzzy kNN graph -> low-dim q_ij -> cross-entropy -> embedding
 Video: rows play in order; stages light up; PCA rotates the view onto PC1/PC2 while the captured variance
-rises, t-SNE/UMAP move the points along the recorded optimisation while the loss dot runs down.
+rises, t-SNE/UMAP move the points along the recorded optimization while the loss dot runs down.
 Size: 338 x 125 mm (text in true points, >= 14 pt). Static 300 dpi; video 1920 px wide, 24 fps.
-Style: grey cards (dark-grey border, light-grey fill), dark-grey step discs, black text.
+Style: gray cards (dark-gray border, light-gray fill), dark-gray step discs, black text.
 """
 from __future__ import annotations
 
@@ -44,8 +44,8 @@ ROWS = ((0.676, 0.990), (0.343, 0.657), (0.010, 0.324))
 X_START, X_END, GAP = 0.086, 0.995, 0.028
 PANEL_W = (X_END - X_START - 4 * GAP) / 5
 TITLES = (
-    ("10-D points", "Centre, covariance", "Principal axes", "Variance explained", "Projection"),
-    ("10-D points", "Neighbours $p_{ij}$", "Student-$t$  $q_{ij}$", "KL($P\\,\\|\\,Q$)", "Embedding"),
+    ("10-D points", "Center, covariance", "Principal axes", "Variance explained", "Projection"),
+    ("10-D points", "Neighbors $p_{ij}$", "Student-$t$  $q_{ij}$", "KL($P\\,\\|\\,Q$)", "Embedding"),
     ("10-D points", "Fuzzy $k$NN graph", "Low-dim  $q_{ij}$", "Cross-entropy", "Embedding"),
 )
 ROW_NAMES = ("PCA", "t-SNE", "UMAP")
@@ -76,9 +76,9 @@ def content_rect(row, col):
     return x0 + 0.010, y0 + 0.022, x1 - 0.010, y1 - 0.092
 
 
-def fit(ax, fig, rect, Y, pad=1.12, centre=True):
+def fit(ax, fig, rect, Y, pad=1.12, center=True):
     w = (rect[2] - rect[0]) * fig.get_figwidth(); h = (rect[3] - rect[1]) * fig.get_figheight(); r = w / h
-    if centre:
+    if center:
         Y = Y - 0.5 * (Y.max(0) + Y.min(0))
     s = max(np.abs(Y[:, 0]).max() / r, np.abs(Y[:, 1]).max()) or 1.0
     ax.set_xlim(-pad * r, pad * r); ax.set_ylim(-pad, pad)
@@ -89,14 +89,14 @@ def points(ax, Y, labels, alpha=1.0, size=60):
     ax.scatter(Y[:, 0], Y[:, 1], s=size, c=[CLUSTER[i] for i in labels], edgecolors=WHITE, linewidths=0.9, alpha=alpha, zorder=4)
 
 
-def edges(ax, Y, E, colour, alpha, top=None):
+def edges(ax, Y, E, color, alpha, top=None):
     w = E[:, 2]
     if top is not None:
         E = E[np.argsort(w)[::-1][:top]]; w = E[:, 2]
     wn = w / w.max()
     for (i, j, _), v in zip(E, wn):
         i, j = int(i), int(j)
-        ax.plot([Y[i, 0], Y[j, 0]], [Y[i, 1], Y[j, 1]], color=colour, lw=0.5 + 2.2 * v, alpha=alpha * (0.25 + 0.6 * v),
+        ax.plot([Y[i, 0], Y[j, 0]], [Y[i, 1], Y[j, 1]], color=color, lw=0.5 + 2.2 * v, alpha=alpha * (0.25 + 0.6 * v),
                 zorder=2, solid_capstyle="round")
 
 
@@ -143,7 +143,7 @@ def scree(ax, ratio, u, alpha):
 
 
 def pca_proj(data, u):
-    """Rotate the random view basis onto PC1/PC2 (orthonormalised linear blend)."""
+    """Rotate the random view basis onto PC1/PC2 (orthonormalized linear blend)."""
     r = data["pcarow"]; B = (1 - u) * r["view"] + u * r["evecs2"]
     q, rr = np.linalg.qr(B); q = q * np.sign(np.diag(rr))
     return r["Xc"] @ q
@@ -167,7 +167,7 @@ def draw(fig, reg, t, data):
             if col < 4:
                 ym = 0.5 * (rect[1] + rect[3]) - 0.025
                 big_arrow(ax, reg, fig, (x1 + 0.004, ym), (x1 + GAP - 0.004, ym),
-                          colour=DARK_GRAY if reveal[col + 1] > 0.5 else LINE_GRAY, lw=3.0, ms=18)
+                          color=DARK_GRAY if reveal[col + 1] > 0.5 else LINE_GRAY, lw=3.0, ms=18)
             if a < 0.01:
                 continue
             cr = content_rect(row, col)
@@ -198,7 +198,7 @@ def draw(fig, reg, t, data):
 def _pca_panel(sub, reg, fig, cr, data, col, a, u):
     labels = data["labels"]; r = data["pcarow"]
     if col in (1, 2):
-        Yv, s = fit(sub, fig, cr, data["view"], centre=False)  # data are centred: origin = mean
+        Yv, s = fit(sub, fig, cr, data["view"], center=False)  # data are centered: origin = mean
         points(sub, Yv, labels, alpha=a * (0.55 if col == 2 else 1.0))
         C = np.cov((r["Xc"] @ r["view"]).T) / s ** 2; ev, V = np.linalg.eigh(C)
         if col == 1:

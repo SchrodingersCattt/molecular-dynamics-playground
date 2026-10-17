@@ -7,9 +7,9 @@
     "frames": 540,
     "qa_passed": true,
     "sha256": {
-      "png": "4e1aff390d630a6c4840d9eb986b2f6192250ce3e7b5fa4e59c36235d3c82d4f",
-      "master": "aaf5b1c695b90e7aa03bd2fb3f4e93224d5e45854ca8b069e6df456076a84033",
-      "ppt": "20f7986105f7cf46498d835d0fd4a7419a8db8f741a8c1505c5ad5c5c932bffa"
+      "png": "ad876e37fbd4ce21aa166ca4abb7765a4cd1364dd233be5f25c9f3a1fa756b75",
+      "master": "260e053adafc02d3236e2c063b7c66ee36daa1a803d4ec30a3a40615118f83c9",
+      "ppt": "280d5f0c81d435d3caf8df215f481237d1d38eb5994c27246cf993b136cf8f20"
     }
   },
   "08b_dimred_overview": {
@@ -20,9 +20,21 @@
     "frames": 254,
     "qa_passed": true,
     "sha256": {
-      "png": "c0f245b6bd917d7fb70d8ed27446055bfad89c419e737e474378f483b0f46b70",
-      "master": "6ba0b8296aaecb72b1a16987ba7c42faeef44ebf7d4758d4ab48d45d56420c3a",
-      "ppt": "97c67c362cd38cf98e186af0146032d1b2cef6be181157f1273f11fc5f442df4"
+      "png": "b9913fd9b9803050e0f672f1fe98337e908a862ef14df1253a96e1a80be6083e",
+      "master": "faaae788593ce9be75b0d315122d39155761a7233dd5708e44d9d0e0fc17212b",
+      "ppt": "9c47c63481783f22cb41709812770c6398c173435f82cc80b39015f81d7406d4"
+    },
+    "clip_check": {
+      "frames_checked": 254,
+      "limit_mm": 2.0,
+      "min_distance_mm_per_card": [
+        5.77,
+        4.38,
+        4.09,
+        4.91,
+        5.24
+      ],
+      "passed": true
     }
   },
   "09_multitask_finetune": {

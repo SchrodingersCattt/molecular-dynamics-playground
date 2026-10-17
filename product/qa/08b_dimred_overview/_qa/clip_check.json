@@ -1,0 +1,14 @@
+{
+  "stem": "08b_dimred_overview",
+  "frames_checked": 254,
+  "limit_mm": 2.0,
+  "min_distance_mm_per_card": [
+    5.77,
+    4.38,
+    4.09,
+    4.91,
+    5.24
+  ],
+  "violations": [],
+  "passed": true
+}

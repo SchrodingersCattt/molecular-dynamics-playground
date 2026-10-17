@@ -1,4 +1,4 @@
-"""Toy data for the 08 t-SNE / UMAP explainer: exact t-SNE and a full-batch UMAP-style optimisation.
+"""Toy data for the 08 t-SNE / UMAP explainer: exact t-SNE and a full-batch UMAP-style optimization.
 
 24 points in 10-D (also a random 2-D view and the PCA eigen-decomposition for the PCA row) (three clusters of 8; A and B close, C far) plus one large non-informative
 dimension, so the PCA projection mixes the clusters. Both methods start from that PCA layout.
@@ -17,9 +17,9 @@ OUT = Path(__file__).resolve().parents[2] / "product" / "data" / "08_tsne_umap_t
 def make_points(rng):
     """Three clusters on orthogonal axes (C twice as far), plus broad within-cluster spread in two
     shared dimensions, so the 2-D linear (PCA) view of the 10-D cloud overlaps A and B."""
-    centres = np.zeros((3, 10)); centres[0, 0] = 4.0; centres[1, 1] = 4.0; centres[2, 2] = 8.0
+    centers = np.zeros((3, 10)); centers[0, 0] = 4.0; centers[1, 1] = 4.0; centers[2, 2] = 8.0
     scale = np.full(10, 0.35); scale[5] = scale[6] = 2.4
-    X = np.vstack([centres[k] + scale * rng.standard_normal((8, 10)) for k in range(3)])
+    X = np.vstack([centers[k] + scale * rng.standard_normal((8, 10)) for k in range(3)])
     return X, np.repeat(np.arange(3), 8)
 
 

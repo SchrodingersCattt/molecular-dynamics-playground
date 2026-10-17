@@ -5,15 +5,15 @@ deepmd/pt/train/training.py, Trainer.run() -> step():
   * each step draws ONE model_key: dp_random.choice(arange(num_model), p=self.model_prob)   (l.700-704)
   * zero_grad -> get_data(task_key) -> wrapper(**input, label, task_key) -> loss.backward()
     -> clip_grad_norm_(gradient_max_norm) -> optimizer.step() -> scheduler.step()             (l.714-740)
-  * model_prob is normalised from training.model_prob (l.642-653); the two descriptors are tied by
+  * model_prob is normalized from training.model_prob (l.642-653); the two descriptors are tied by
     wrapper.share_params(shared_links) (l.588), so the update reaches the one shared DPA3 descriptor.
 exp7a_fold0/input.json: model_prob {deepems_vanilla: 0.5, pems_vdet_kj: 0.5}; gradient_max_norm 1.0; 400k steps.
 => serial stochastic alternation: one head, one batch, one loss, one backward pass per step; losses are not summed.
 
 Figure: per sampled step the active lane shows the forward pass (input -> shared descriptor -> head -> prediction ->
-loss vs label, dark-grey arrows) and the backward pass (gradient from the loss back through the head into every
-RepFlow layer of the shared descriptor, arrows in the head colour), then the update. The other lane stays idle.
-Size 338 x 125 mm (same as 08), text in true points (>= 14 pt). Style: grey cards, dark-grey borders, black text.
+loss vs label, dark-gray arrows) and the backward pass (gradient from the loss back through the head into every
+RepFlow layer of the shared descriptor, arrows in the head color), then the update. The other lane stays idle.
+Size 338 x 125 mm (same as 08), text in true points (>= 14 pt). Style: gray cards, dark-gray borders, black text.
 """
 from __future__ import annotations
 
@@ -37,8 +37,8 @@ SIZE_IN = (338 * MM, 125 * MM)
 INTRO, STEP_SECONDS, HOLD = 1.0, 3.0, 1.5
 REPRESENTATIVE_TIMES = (0.5, 1.6, 2.4, 3.0, 3.7, 5.5, 8.5, 11.5, 14.5, 17.5, 19.0, 20.4)
 
-COLOUR = {0: TEAL, 1: ORANGE}
-LANE_Y = {0: 0.640, 1: 0.220}          # centre line of each task lane
+COLOR = {0: TEAL, 1: ORANGE}
+LANE_Y = {0: 0.640, 1: 0.220}          # center line of each task lane
 LANE_H = 0.260
 DESC = (0.185, 0.045, 0.425, 0.835)
 COLS = {"input": (0.010, 0.140), "head": (0.490, 0.640), "pred": (0.690, 0.815), "loss": (0.865, 0.992)}
@@ -82,7 +82,7 @@ def state(t, data):
 
 def lane_card(ax, reg, fig, key, h, level):
     x0, x1 = COLS[key]; yc = LANE_Y[h]; r = (x0, yc - LANE_H / 2, x1, yc + LANE_H / 2)
-    edge = mix_hex(IDLE_EDGE, COLOUR[h] if key == "head" else CARD_EDGE, level)
+    edge = mix_hex(IDLE_EDGE, COLOR[h] if key == "head" else CARD_EDGE, level)
     card(ax, r, fill=mix_hex(IDLE_FILL, CARD_FILL, level), edge=edge, lw=1.1 + (1.9 if key == "head" else 0.4) * level, fig=fig, z=2)
     xc = 0.5 * (x0 + x1); txt = TEXT[key][h]
     if isinstance(txt, tuple):
@@ -121,27 +121,27 @@ def segments(h):
             (COLS["pred"][1], COLS["loss"][0], y)]
 
 
-def forward(ax, reg, fig, h, p, colour=DARK_GRAY):
+def forward(ax, reg, fig, h, p, color=DARK_GRAY):
     segs = segments(h); n = len(segs)
     for i, (x0, x1, y) in enumerate(segs):
         q = min(max(p * n - i, 0.0), 1.0)
         if q > 0.01:
             big_arrow(ax, reg, fig, (x0 + 0.005, y + FWD_DY), (x0 + 0.005 + (x1 - x0 - 0.010) * q, y + FWD_DY),
-                      colour=colour, lw=2.6, ms=18, z=6)
+                      color=color, lw=2.6, ms=18, z=6)
 
 
 def backward(ax, reg, fig, h, p):
-    segs = segments(h)[1:][::-1]; n = len(segs) + 1; col = COLOUR[h]
+    segs = segments(h)[1:][::-1]; n = len(segs) + 1; col = COLOR[h]
     for i, (x0, x1, y) in enumerate(segs):
         q = min(max(p * n - i, 0.0), 1.0)
         if q > 0.01:
             big_arrow(ax, reg, fig, (x1 - 0.005, y + BWD_DY), (x1 - 0.005 - (x1 - x0 - 0.010) * q, y + BWD_DY),
-                      colour=col, lw=4.0, ms=24, z=6)
+                      color=col, lw=4.0, ms=24, z=6)
     q = min(max(p * n - (n - 1), 0.0), 1.0)
     if q > 0.01:  # into every RepFlow layer of the shared descriptor
         xs, y = DESC[2] - 0.004, LANE_Y[h] + BWD_DY
         for yc in LAYER_Y:
-            big_arrow(ax, reg, fig, (xs, y), (xs - 0.050 * q, y + (yc - y) * q), colour=col, lw=2.2, ms=14, z=7)
+            big_arrow(ax, reg, fig, (xs, y), (xs - 0.050 * q, y + (yc - y) * q), color=col, lw=2.2, ms=14, z=7)
 
 
 def ribbon(ax, reg, fig, st, sched):
@@ -149,11 +149,11 @@ def ribbon(ax, reg, fig, st, sched):
              fontsize=FONT_SIZES["micro"], color=INK)
     for i, hh in enumerate(sched):
         shown = st is None or i <= st["step"]; cur = st is not None and i == st["step"]
-        disc(ax, fig, 0.395 + i * 0.024, 0.935, 0.0100 if cur else 0.0070, COLOUR[hh] if shown else LINE_GRAY, z=4)
-    # legend: line colour carries the meaning, text stays black
-    big_arrow(ax, reg, fig, (0.640, 0.935), (0.690, 0.935), colour=DARK_GRAY, lw=2.6, ms=18, z=6)
+        disc(ax, fig, 0.395 + i * 0.024, 0.935, 0.0100 if cur else 0.0070, COLOR[hh] if shown else LINE_GRAY, z=4)
+    # legend: line color carries the meaning, text stays black
+    big_arrow(ax, reg, fig, (0.640, 0.935), (0.690, 0.935), color=DARK_GRAY, lw=2.6, ms=18, z=6)
     reg.text(ax, 0.698, 0.935, "forward", ha="left", va="center", fontsize=FONT_SIZES["micro"], color=INK)
-    big_arrow(ax, reg, fig, (0.835, 0.935), (0.785, 0.935), colour=TEAL, lw=4.0, ms=22, z=6)
+    big_arrow(ax, reg, fig, (0.835, 0.935), (0.785, 0.935), color=TEAL, lw=4.0, ms=22, z=6)
     reg.text(ax, 0.843, 0.935, "gradient → update", ha="left", va="center", fontsize=FONT_SIZES["micro"], color=INK)
 
 
@@ -168,14 +168,14 @@ def draw(fig, reg, t, data):
             f = st["fwd"]
             lv = {"input": 1.0, "head": smoothstep(f * 2 - 0.5), "pred": smoothstep(f * 2 - 1.0), "loss": st["loss"]}
             fwd, bwd = f, st["bwd"]
-            glow = (COLOUR[h], st["pulse"])
+            glow = (COLOR[h], st["pulse"])
         else:
             lv = {k: 0.0 for k in COLS}; fwd, bwd = 0.0, 0.0
         for key in COLS:
             lane_card(ax, reg, fig, key, h, lv[key])
         if fwd <= 0.01:  # idle lane: faint guide arrows only
             for x0, x1, y in segments(h):
-                big_arrow(ax, reg, fig, (x0 + 0.005, y + FWD_DY), (x1 - 0.005, y + FWD_DY), colour=LINE_GRAY, lw=1.6, ms=14, z=4)
+                big_arrow(ax, reg, fig, (x0 + 0.005, y + FWD_DY), (x1 - 0.005, y + FWD_DY), color=LINE_GRAY, lw=1.6, ms=14, z=4)
         forward(ax, reg, fig, h, fwd)
         backward(ax, reg, fig, h, bwd)
     if st is None:

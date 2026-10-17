@@ -10,9 +10,9 @@ Round-8 files: `talk_tsne_umap_principle.png`, `talk_multitask_finetune.png` (PR
 - The 05a cards use pale tints with softened borders: STRUCTURE_BG #F7F9FA, INPUT_FILL #E7EEF6, PREDICTION_FILL #EEF6F5 with
   SOFT_TEAL #9CC6C2, LOSS_FILL #FFF9F4 with SOFT_ORANGE #E9BC96, and UPDATED_FILL #E5F0E8.
 - Round 8 retyped a subset by hand and used it differently from the series:
-  - flat grey cards (LIGHT_GRAY fill, MID_GRAY edge) in place of tinted cards;
+  - flat gray cards (LIGHT_GRAY fill, MID_GRAY edge) in place of tinted cards;
   - the dark ENERGY_TEAL #1F7A7A, not the softer NNMD teal used in 05a;
-  - V_PURPLE and R_BLUE as head and curve colours, although the series reserves them for the r/a/v integrator stages and categories;
+  - V_PURPLE and R_BLUE as head and curve colors, although the series reserves them for the r/a/v integrator stages and categories;
   - no navy accent and no signed colormap.
 - Next to the 05a and 04/05 slides, the result looked like a different deck.
 
@@ -39,23 +39,31 @@ Round-8 files: `talk_tsne_umap_principle.png`, `talk_multitask_finetune.png` (PR
 - The palette and card style are imported from `common.py`; the 05a tints are copied verbatim into `explainer_common.py`. Text is 14–18 pt, regular weight.
 - t-SNE/UMAP:
   - Numbered five-stage rows with big arrows: points → similarities → low-dim kernel → loss → embedding.
-  - 24 large toy points from a real seeded optimisation.
+  - 24 large toy points from a real seeded optimization.
   - The video reveals the stages in order and moves the points as the loss dot runs down.
 - Multitask:
   - The shared DPA3 descriptor (three RepFlow strips) is the single focus, with a thick navy border.
   - Per step, one head lights and a thick gradient arrow runs in and fans into every RepFlow layer, which then updates.
-  - Inputs and the step ribbon are grey; there are no loss formulas.
+  - Inputs and the step ribbon are gray; there are no loss formulas.
 - Both videos are rendered by `common.render_video`, which does the every-frame QA and writes the contact sheets.
 
 ## Round 10
 - Added a PCA row (linear baseline) parallel to t-SNE and UMAP; figure 338 × 125 mm, fonts ≥14 pt at that size.
-- Unified card style (light-grey fill, dark-grey border, dark-grey discs); all text labels black.
-- 09: same card style applied. Keeping it did not break the focus, because the descriptor stays the largest card with the heaviest border. Head identity now lives in the border colour rather than in a coloured fill or text.
+- Unified card style (light-gray fill, dark-gray border, dark-gray discs); all text labels black.
+- 09: same card style applied. Keeping it did not break the focus, because the descriptor stays the largest card with the heaviest border. Head identity now lives in the border color rather than in a colored fill or text.
 
 ## Round 11
 - 08 kept; new 08b one-row overview (shared 5-stage abstraction, three methods stacked per card) is the default on slide 21.
 - 09 redrawn from the verified DeePMD-kit training loop: serial stochastic alternation (one head per step), forward and backward both shown.
 
 ## Round 12
-- 08b replaced by a generic, method-agnostic schematic (Data / Relations / Objective / Optimise / Embedding) with room
+- 08b replaced by a generic, method-agnostic schematic (Data / Relations / Objective / Optimize / Embedding) with room
   under each card for the presenter's per-method notes; the stacked three-method version was rejected.
+
+## Round 13
+- 08b: card 5's cluster ellipse was clipped at the left card border. The layout is now in millimeters and every
+  picture is framed with an equal-aspect margin around everything it draws; check_08b_clipping.py verifies all
+  254 frames (minimum ink-to-border distance 4.1 mm, limit 2 mm).
+- 08b: the reserved note area and dashed guide are removed (text goes outside the cards), so the figure is now 338 x 72 mm.
+- 08b titles: Data / Relations / Objective / Optimize / Low-D map ("Embedding" replaced).
+- American spelling throughout 08, 08b, 09, their scripts and their contracts (standing rule, see AGENTS.md).

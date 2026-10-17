@@ -3,9 +3,9 @@
     .venv311\\Scripts\\python.exe scripts\\md_visuals\\build_08_09_explainers.py [--deck-assets DIR]
 
 Steps: regenerate the toy data (seeded) -> static PNGs (300 dpi) -> master videos with every-frame QA
-and contact sheets (common.render_video) -> PowerPoint copies via export_ppt_media.export_one
-settings (24 fps, CRF 30) at 1280 px wide; all three figures are 338 x 125 mm since round 11 (not 16:5),
-so export_wide keeps their aspect (1280 x 474) -> optional copy of PNG/MP4/poster into a deck asset folder.
+and contact sheets (common.render_video) -> 08b every-frame card-border clipping check (check_08b_clipping.py) -> PowerPoint copies via export_ppt_media.export_one
+settings (24 fps, CRF 30) at 1280 px wide; 08 and 09 are 338 x 125 mm and 08b is 338 x 72 mm (not 16:5),
+so export_wide keeps each aspect (1280 x 474 / 1280 x 274) -> optional copy of PNG/MP4/poster into a deck asset folder.
 Writes build_08_09_manifest.json with SHA-256 of every output.
 """
 from __future__ import annotations
@@ -45,6 +45,7 @@ def main() -> None:
     subprocess.run([py, str(HERE / "render_08b_dimred_overview.py")], check=True, cwd=HERE)
     subprocess.run([py, str(HERE / "render_09_multitask_finetune.py")], check=True, cwd=HERE)
     sys.path.insert(0, str(HERE))
+    subprocess.run([py, str(HERE / "check_08b_clipping.py")], check=True, cwd=HERE)   # every-frame card-border clipping check
     out = {}
     for stem in STEMS:
         master = PRODUCT / "videos" / f"{stem}.mp4"; export_wide(master)
@@ -57,6 +58,10 @@ def main() -> None:
         out[stem] = {"png": str(png), "master": str(master), "ppt": str(ppt), "poster": str(poster),
                      "frames": qa.get("frame_count_audited", qa.get("frames")), "qa_passed": True,
                      "sha256": {"png": sha(png), "master": sha(master), "ppt": sha(ppt)}}
+        clip = PRODUCT / "qa" / stem / "_qa" / "clip_check.json"
+        if stem == "08b_dimred_overview":
+            cc = json.loads(clip.read_text(encoding="utf-8"))
+            out[stem]["clip_check"] = {k: cc[k] for k in ("frames_checked", "limit_mm", "min_distance_mm_per_card", "passed")}
         if args.deck_assets:
             args.deck_assets.mkdir(parents=True, exist_ok=True)
             for f in (png, ppt, poster):

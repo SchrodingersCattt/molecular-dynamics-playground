@@ -1,8 +1,8 @@
 """Shared drawing helpers for the 08 (PCA / t-SNE / UMAP) and 09 (multi-task fine-tuning) explainers.
 
 Palette, Arial and the frame QA come from common.py (the 04/05/05a series). Card style per the user
-(2026-10-17): dark-grey border (DARK_GRAY), light-grey fill, dark-grey step discs, black text only;
-colour is used for lines, arrows and points.
+(2026-10-17): dark-gray border (DARK_GRAY), light-gray fill, dark-gray step discs, black text only;
+color is used for lines, arrows and points.
 One draw function serves both outputs. Both use a plain figure whose size is the final printed size,
 so text sizes are true points: static at 300 dpi; video at 1920 px wide (about 144 dpi).
 The 08 canvas is 338 x 125 mm (not 16:5), so the video loop here mirrors common.render_video
@@ -33,8 +33,8 @@ from common import (  # noqa: F401  (re-exported for the renderers)
 TEAL = NNMD_ENERGY_TEAL
 ORANGE = NNMD_ORANGE
 CLUSTER = (R_BLUE, ORANGE, V_PURPLE)
-CARD_FILL = mix_hex(LIGHT_GRAY, WHITE, 0.45)   # light grey
-CARD_EDGE = DARK_GRAY                            # dark grey
+CARD_FILL = mix_hex(LIGHT_GRAY, WHITE, 0.45)   # light gray
+CARD_EDGE = DARK_GRAY                            # dark gray
 IDLE_FILL = WHITE
 IDLE_EDGE = LINE_GRAY
 DISC = DARK_GRAY
@@ -65,19 +65,19 @@ def card(ax, rect, *, fill=CARD_FILL, edge=CARD_EDGE, lw=1.1, z=2, alpha=1.0, fi
     return p
 
 
-def disc(ax, fig, x, y, r, colour, alpha=1.0, z=6):
+def disc(ax, fig, x, y, r, color, alpha=1.0, z=6):
     aspect = fig.get_figwidth() / fig.get_figheight()
-    ax.add_patch(Ellipse((x, y), 2 * r, 2 * r * aspect, fc=colour, ec="none", alpha=alpha, zorder=z))
+    ax.add_patch(Ellipse((x, y), 2 * r, 2 * r * aspect, fc=color, ec="none", alpha=alpha, zorder=z))
 
 
-def number_disc(ax, reg, fig, x, y, n, colour, alpha=1.0):
-    """Stage number in a filled disc (Arial has no circled digits); the digit is white on dark grey."""
-    disc(ax, fig, x, y, 0.0125, colour, alpha=alpha, z=6)
+def number_disc(ax, reg, fig, x, y, n, color, alpha=1.0):
+    """Stage number in a filled disc (Arial has no circled digits); the digit is white on dark gray."""
+    disc(ax, fig, x, y, 0.0125, color, alpha=alpha, z=6)
     reg.text(ax, x, y, str(n), ha="center", va="center_baseline", fontsize=FONT_SIZES["micro"], color=WHITE, zorder=7)
 
 
-def big_arrow(ax, reg, fig, a, b, colour=MID_GRAY, lw=3.0, ms=22, alpha=1.0, ls="-", rad=0.0, z=5):
-    return reg.arrow(ax, a, b, arrowstyle="-|>", mutation_scale=ms, lw=lw, color=colour, alpha=alpha,
+def big_arrow(ax, reg, fig, a, b, color=MID_GRAY, lw=3.0, ms=22, alpha=1.0, ls="-", rad=0.0, z=5):
+    return reg.arrow(ax, a, b, arrowstyle="-|>", mutation_scale=ms, lw=lw, color=color, alpha=alpha,
                      linestyle=ls, connectionstyle=f"arc3,rad={rad}", shrinkA=0, shrinkB=0, zorder=z, joinstyle="miter")
 
 
