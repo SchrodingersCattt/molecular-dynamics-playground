@@ -55,3 +55,7 @@ Round-8 files: `talk_tsne_umap_principle.png`, `talk_multitask_finetune.png` (PR
 ## Round 11
 - 08 kept; new 08b one-row overview (shared 5-stage abstraction, three methods stacked per card) is the default on slide 21.
 - 09 redrawn from the verified DeePMD-kit training loop: serial stochastic alternation (one head per step), forward and backward both shown.
+
+## Round 12
+- 08b replaced by a generic, method-agnostic schematic (Data / Relations / Objective / Optimise / Embedding) with room
+  under each card for the presenter's per-method notes; the stacked three-method version was rejected.

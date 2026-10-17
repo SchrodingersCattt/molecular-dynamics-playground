@@ -17,12 +17,12 @@
     "master": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\videos\\08b_dimred_overview.mp4",
     "ppt": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\videos\\ppt\\08b_dimred_overview.mp4",
     "poster": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\videos\\ppt\\08b_dimred_overview_poster.png",
-    "frames": 276,
+    "frames": 254,
     "qa_passed": true,
     "sha256": {
-      "png": "a8ecddb2f0fe080b388331e81bb94c14a890ea0156a28e479d63e8aa286525f7",
-      "master": "13c9588e822aa574c9dd23e9cc843e454a063316043ae6de092f3201eeb97620",
-      "ppt": "5ba1c602493d5180022ce2dc50fca0b12538774ccf81470588f90a690fdef3dc"
+      "png": "c0f245b6bd917d7fb70d8ed27446055bfad89c419e737e474378f483b0f46b70",
+      "master": "6ba0b8296aaecb72b1a16987ba7c42faeef44ebf7d4758d4ab48d45d56420c3a",
+      "ppt": "97c67c362cd38cf98e186af0146032d1b2cef6be181157f1273f11fc5f442df4"
     }
   },
   "09_multitask_finetune": {

@@ -1,10 +1,14 @@
-# 08b_dimred_overview - figure contract
+# 08b_dimred_overview - figure contract (round 12: generic, method-agnostic)
 
-- Purpose: one-slide abstract overview of PCA / t-SNE / UMAP for a short talk; 08 (3 x 5 pipelines) stays as the detailed backup.
-- One row of five cards = the shared abstraction: (1) high-dim data (one shared 10-D toy cloud) -> (2) structure
-  (covariance ellipse | neighbour probabilities p_ij | fuzzy kNN graph) -> (3) objective (max variance | min KL(P||Q) |
-  min cross-entropy) -> (4) solve (eigen-decomposition scree | gradient-descent loss | SGD loss) -> (5) 2-D embedding.
-  Inside each card the three methods are stacked in bands aligned with the PCA / t-SNE / UMAP labels on the left.
-- Data: same seeded toy as 08 (product/data/08_tsne_umap_toy.json).
-- Canvas 338 x 125 mm; static 300 dpi; video 1920 x 710 (ppt copy 1280 x 474, 24 fps, CRF 30), 11.5 s, every-frame QA.
-- Style: light-grey cards, dark-grey borders, dark-grey step discs and arrows, black Arial text >= 14 pt; colour only on points, curves, bars.
+- Purpose: one generic schematic of the dimensionality-reduction pipeline that PCA, t-SNE and UMAP share. No method
+  names and no method-specific symbols; the presenter adds per-method notes in PowerPoint in the empty lower part of
+  each card (below the faint dashed guide). 08 (3 x 5 per-method pipelines) stays as the detailed figure.
+- One row, five cards, short generic titles with numbered discs:
+  1 Data (point cloud + a star of many axes) -> 2 Relations (pairwise neighbour graph) -> 3 Objective (high-D vs
+  low-D relation matrices, matched; labels "high-D" / "low-D") -> 4 Optimise (point trajectories + falling error curve)
+  -> 5 Embedding (2-D clusters).
+- Data: seeded toy from scripts/build_box/generate_tsne_umap_toy.py; relation matrices are Gaussian affinities
+  (median-distance scale), ordered by cluster; one recorded neighbour-embedding run gives trajectory and error curve.
+- Canvas 338 x 125 mm; static 300 dpi; video 1920 x 710 (ppt copy 1280 x 474, 24 fps, CRF 30), 10.6 s, every-frame QA.
+- Style: light-grey cards, dark-grey borders, dark-grey numbered discs and arrows, black Arial text >= 14 pt
+  (titles 18 pt); colour only on points, lines, curves and the relation matrices.
