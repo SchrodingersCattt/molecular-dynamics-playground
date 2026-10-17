@@ -1,11 +1,11 @@
-"""One-command rebuild of the 08 (t-SNE/UMAP) and 09 (multi-task fine-tuning) explainers.
+"""One-command rebuild of the 08 (PCA/t-SNE/UMAP, 3 rows), 08b (one-row overview) and 09 (multi-task fine-tuning) explainers.
 
     .venv311\\Scripts\\python.exe scripts\\md_visuals\\build_08_09_explainers.py [--deck-assets DIR]
 
 Steps: regenerate the toy data (seeded) -> static PNGs (300 dpi) -> master videos with every-frame QA
 and contact sheets (common.render_video) -> PowerPoint copies via export_ppt_media.export_one
-(1280x400, 24 fps, CRF 30) for 09; 08 is 338x125 mm (not 16:5), so it gets the same ffmpeg settings
-at 1280 px wide with an even height (export_wide below) -> optional copy of PNG/MP4/poster into a deck asset folder.
+settings (24 fps, CRF 30) at 1280 px wide; all three figures are 338 x 125 mm since round 11 (not 16:5),
+so export_wide keeps their aspect (1280 x 474) -> optional copy of PNG/MP4/poster into a deck asset folder.
 Writes build_08_09_manifest.json with SHA-256 of every output.
 """
 from __future__ import annotations
@@ -21,7 +21,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[1]
 PRODUCT = REPO / "product"
-STEMS = ("08_tsne_umap_principle", "09_multitask_finetune")
+STEMS = ("08_tsne_umap_principle", "08b_dimred_overview", "09_multitask_finetune")
 
 
 def sha(p: Path) -> str:
@@ -42,12 +42,12 @@ def main() -> None:
     py = sys.executable
     subprocess.run([py, str(REPO / "scripts" / "build_box" / "generate_tsne_umap_toy.py")], check=True)
     subprocess.run([py, str(HERE / "render_08_tsne_umap.py")], check=True, cwd=HERE)
+    subprocess.run([py, str(HERE / "render_08b_dimred_overview.py")], check=True, cwd=HERE)
     subprocess.run([py, str(HERE / "render_09_multitask_finetune.py")], check=True, cwd=HERE)
     sys.path.insert(0, str(HERE))
-    from export_ppt_media import export_one
     out = {}
     for stem in STEMS:
-        master = PRODUCT / "videos" / f"{stem}.mp4"; (export_wide if stem.startswith("08") else export_one)(master)
+        master = PRODUCT / "videos" / f"{stem}.mp4"; export_wide(master)
         ppt = PRODUCT / "videos" / "ppt" / f"{stem}.mp4"; png = PRODUCT / "figures" / f"{stem}.png"
         poster = PRODUCT / "videos" / "ppt" / f"{stem}_poster.png"
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-sseof", "-0.1", "-i", str(ppt), "-frames:v", "1", str(poster)], check=True)

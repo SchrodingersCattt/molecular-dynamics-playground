@@ -1,10 +1,62 @@
 {
   "source": "a800:experiments_david2024/exp7a_fold0/input.json (read-only, 2026-10-16)",
-  "descriptor": {"type": "dpa3", "repflow": {"nlayers": 3, "n_dim": 256, "e_dim": 128, "a_dim": 32, "e_rcut": 5.6, "a_rcut": 3.6}, "shared": true},
-  "heads": {
-    "deepems_vanilla": {"role": "energy/force", "fitting_net": [240, 240, 240], "finetune_head": "Default (pretrained)", "loss": "ener, pref_e 0.02->2, pref_f 1, pref_v 0", "model_prob": 0.5},
-    "pems_vdet_kj": {"role": "V_det property", "intensive": true, "task_dim": 1, "fitting_net": [240, 240, 240], "finetune_head": "RANDOM", "loss": "MAE", "model_prob": 0.5}
+  "descriptor": {
+    "type": "dpa3",
+    "repflow": {
+      "nlayers": 3,
+      "n_dim": 256,
+      "e_dim": 128,
+      "a_dim": 32,
+      "e_rcut": 5.6,
+      "a_rcut": 3.6
+    },
+    "shared": true
   },
-  "training": {"numb_steps": 400000, "lr": {"type": "exp", "start": 2e-5, "stop": 1e-8, "decay_steps": 5000}},
-  "animation": {"steps_shown": 6, "schedule_seed": 18, "note": "head per step drawn with model_prob 0.5/0.5; seed 18 picked so the clip opens with one step of each head and shows a repeat (illustrative draw, not the training log)"}
+  "heads": {
+    "deepems_vanilla": {
+      "role": "energy/force",
+      "fitting_net": [
+        240,
+        240,
+        240
+      ],
+      "finetune_head": "Default (pretrained)",
+      "loss": "ener, pref_e 0.02->2, pref_f 1, pref_v 0",
+      "model_prob": 0.5
+    },
+    "pems_vdet_kj": {
+      "role": "V_det property",
+      "intensive": true,
+      "task_dim": 1,
+      "fitting_net": [
+        240,
+        240,
+        240
+      ],
+      "finetune_head": "RANDOM",
+      "loss": "MAE",
+      "model_prob": 0.5
+    }
+  },
+  "training": {
+    "numb_steps": 400000,
+    "lr": {
+      "type": "exp",
+      "start": 2e-05,
+      "stop": 1e-08,
+      "decay_steps": 5000
+    }
+  },
+  "animation": {
+    "steps_shown": 6,
+    "schedule_seed": 18,
+    "note": "head per step drawn with model_prob 0.5/0.5; seed 18 picked so the clip opens with one step of each head and shows a repeat (illustrative draw, not the training log)"
+  },
+  "verified_scheme": {
+    "verdict": "serial stochastic alternation: each step samples ONE model_key with p = model_prob, runs that head's batch forward, its loss only, loss.backward(), clip_grad_norm_(1.0), optimizer.step(); losses are never summed",
+    "code": "a800:/aisi-nas/guomingyu/SOFTWARE/deepmd-kit-250729 @ 04e3517b (editable install of conda_env/prop_finetuning), deepmd/pt/train/training.py: Trainer.__init__ l.588 share_params(shared_links), l.642-653 model_prob normalisation; Trainer.run().step() l.698-704 dp_random.choice(..., p=self.model_prob), l.714-740 zero_grad/get_data(task_key)/wrapper(task_key)/backward/clip/optimizer.step/scheduler.step; deepmd/pt/train/wrapper.py ModelWrapper.forward(task_key) l.139-180",
+    "config": "exp7a_fold0/input.json training.model_prob {deepems_vanilla: 0.5, pems_vdet_kj: 0.5}, gradient_max_norm 1.0, numb_steps 400000; model_dict.*.descriptor = shared_dict.dpa3_descriptor",
+    "log": "exp7a_fold0/train.log l.322 'Shared params of deepems_vanilla.descriptor and pems_vdet_kj.descriptor!'",
+    "checked": "2026-10-17, read-only"
+  }
 }

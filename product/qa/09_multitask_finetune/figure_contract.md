@@ -21,3 +21,13 @@
 ## Round 10 revision (2026-10-17)
 - Canvas 338 × 105.6 mm (16:5, same width as 08); grey cards with dark-grey borders; all text black.
 - Focus kept on the shared DPA3 descriptor by a heavier (3.2 pt) dark-grey border and size, not by fill colour; it flashes the active head's colour on each update. The active head is marked by a coloured border (a line) on a grey card; idle cards are white with a light border. Gradient arrows stay teal/orange.
+
+## Round 11 revision (2026-10-17): verified scheme, forward + backward
+- Verified read-only on a800 (deepmd-kit 04e3517b, deepmd/pt/train/training.py Trainer.run().step(), l.698-740):
+  each step samples ONE model_key with p = model_prob (0.5 / 0.5 in exp7a), runs that head's forward pass and loss,
+  loss.backward(), clip_grad_norm_(1.0), optimizer.step(). Losses are not summed. Evidence in product/data/09_multitask_config.json.
+- Two task lanes (DFT frames -> E/F head -> E^, F^ -> ener loss vs DFT E, F; PEMs clusters -> V_det head -> V^_det -> MAE loss vs label),
+  both through the one shared DPA3 descriptor. Per sampled step the active lane shows forward (dark-grey arrows), loss,
+  backward (head-colour arrows from the loss back through the head into all three RepFlow layers), then the update
+  (descriptor border flash + activations change). The other lane stays idle.
+- Canvas 338 x 125 mm (same as 08/08b); 6 sampled steps, 3 s each, 20.5 s video; every-frame QA.

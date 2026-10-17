@@ -51,3 +51,7 @@ Round-8 files: `talk_tsne_umap_principle.png`, `talk_multitask_finetune.png` (PR
 - Added a PCA row (linear baseline) parallel to t-SNE and UMAP; figure 338 × 125 mm, fonts ≥14 pt at that size.
 - Unified card style (light-grey fill, dark-grey border, dark-grey discs); all text labels black.
 - 09: same card style applied. Keeping it did not break the focus, because the descriptor stays the largest card with the heaviest border. Head identity now lives in the border colour rather than in a coloured fill or text.
+
+## Round 11
+- 08 kept; new 08b one-row overview (shared 5-stage abstraction, three methods stacked per card) is the default on slide 21.
+- 09 redrawn from the verified DeePMD-kit training loop: serial stochastic alternation (one head per step), forward and backward both shown.

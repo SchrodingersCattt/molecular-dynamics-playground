@@ -1,11 +1,19 @@
-"""09 - multi-task fine-tuning: one shared DPA3 descriptor, two heads, one head per step (static + video).
+"""09 - multi-task fine-tuning as DeePMD-kit actually runs it (static + video).
 
-Config: product/data/09_multitask_config.json (values copied from exp7a_fold0/input.json on a800).
-Focus: the shared descriptor in the centre. Each training step draws one head with p = 0.5
-(model_prob 0.5 / 0.5); that head lights up and its gradient flows back into the shared descriptor,
-whose RepFlow activations update. Inputs and the step ribbon stay in idle (white/light-border) cards. Style: grey cards, black text.
-Outputs: product/figures/09_multitask_finetune.png (4000x1250, 300 dpi at 13.33 in),
-product/videos/09_multitask_finetune.mp4 (1920x600, 24 fps) + every-frame QA and contact sheets.
+Verified on a800 (read-only), deepmd-kit editable install /aisi-nas/guomingyu/SOFTWARE/deepmd-kit-250729 @ 04e3517b,
+deepmd/pt/train/training.py, Trainer.run() -> step():
+  * each step draws ONE model_key: dp_random.choice(arange(num_model), p=self.model_prob)   (l.700-704)
+  * zero_grad -> get_data(task_key) -> wrapper(**input, label, task_key) -> loss.backward()
+    -> clip_grad_norm_(gradient_max_norm) -> optimizer.step() -> scheduler.step()             (l.714-740)
+  * model_prob is normalised from training.model_prob (l.642-653); the two descriptors are tied by
+    wrapper.share_params(shared_links) (l.588), so the update reaches the one shared DPA3 descriptor.
+exp7a_fold0/input.json: model_prob {deepems_vanilla: 0.5, pems_vdet_kj: 0.5}; gradient_max_norm 1.0; 400k steps.
+=> serial stochastic alternation: one head, one batch, one loss, one backward pass per step; losses are not summed.
+
+Figure: per sampled step the active lane shows the forward pass (input -> shared descriptor -> head -> prediction ->
+loss vs label, dark-grey arrows) and the backward pass (gradient from the loss back through the head into every
+RepFlow layer of the shared descriptor, arrows in the head colour), then the update. The other lane stays idle.
+Size 338 x 125 mm (same as 08), text in true points (>= 14 pt). Style: grey cards, dark-grey borders, black text.
 """
 from __future__ import annotations
 
@@ -14,30 +22,35 @@ import json
 from pathlib import Path
 
 import numpy as np
+from matplotlib.patches import Rectangle
 
 from explainer_common import (
-    CARD_EDGE, CARD_FILL, DARK_GRAY, FONT_SIZES, IDLE_EDGE, IDLE_FILL, INK, LINE_GRAY, MID_GRAY, MM, ORANGE, SIGNED_CMAP,
-    TEAL, WHITE, big_arrow, canvas, card, mix_hex, render_video_canvas, save_static, sf, smoothstep,
+    CARD_EDGE, CARD_FILL, DARK_GRAY, FONT_SIZES, IDLE_EDGE, IDLE_FILL, INK, LINE_GRAY, MM, ORANGE, SIGNED_CMAP,
+    TEAL, WHITE, big_arrow, canvas, card, disc, mix_hex, render_video_canvas, save_static, smoothstep,
 )
 
 ROOT = Path(__file__).resolve().parents[2] / "product"
 STEM = "09_multitask_finetune"
 CONFIG = ROOT / "data" / "09_multitask_config.json"
 QA_ROOT = ROOT / "qa" / STEM
-SIZE_IN = (338 * MM, 338 * MM * 5 / 16)  # 338 x 105.6 mm, same width as 08
-INTRO, STEP_SECONDS, HOLD = 1.0, 2.0, 1.5
-REPRESENTATIVE_TIMES = (0.5, 1.3, 1.8, 2.3, 2.8, 4.5, 6.5, 8.5, 10.5, 12.8, 13.8)
+SIZE_IN = (338 * MM, 125 * MM)
+INTRO, STEP_SECONDS, HOLD = 1.0, 3.0, 1.5
+REPRESENTATIVE_TIMES = (0.5, 1.6, 2.4, 3.0, 3.7, 5.5, 8.5, 11.5, 14.5, 17.5, 19.0, 20.4)
 
-DESC = (0.335, 0.045, 0.655, 0.955)
-HEAD = {0: (0.745, 0.560, 0.990, 0.955), 1: (0.745, 0.045, 0.990, 0.440)}
-HEAD_COLOUR = {0: TEAL, 1: ORANGE}
-HEAD_TEXT = {0: ("$E$ / $F$ head", "pretrained"), 1: ("$V_{\\mathrm{det}}$ head", "random init")}
-INPUT = {0: (0.012, 0.560, 0.200, 0.780), 1: (0.012, 0.220, 0.200, 0.440)}
-INPUT_TEXT = {0: "DFT frames", 1: "Ion clusters"}
-RIBBON_Y = 0.875
-LAYER_Y = (0.585, 0.385, 0.185)
-CELLS = 16
-GRID_X1 = DESC[2] - 0.062
+COLOUR = {0: TEAL, 1: ORANGE}
+LANE_Y = {0: 0.640, 1: 0.220}          # centre line of each task lane
+LANE_H = 0.260
+DESC = (0.185, 0.045, 0.425, 0.835)
+COLS = {"input": (0.010, 0.140), "head": (0.490, 0.640), "pred": (0.690, 0.815), "loss": (0.865, 0.992)}
+TEXT = {
+    "input": ("DFT frames", "PEMs clusters"),
+    "head": (("$E$ / $F$ head", "pretrained"), ("$V_{\\mathrm{det}}$ head", "random init")),
+    "pred": ("$\\hat{E}$, $\\hat{F}$", "$\\hat{V}_{\\mathrm{det}}$"),
+    "loss": (("ener loss", "vs DFT $E$, $F$"), ("MAE loss", "vs $V_{\\mathrm{det}}$ label")),
+}
+LAYER_Y = (0.600, 0.435, 0.270)
+CELLS = 12
+FWD_DY, BWD_DY = 0.045, -0.045
 
 
 def load():
@@ -50,112 +63,127 @@ def load():
     return {"cfg": cfg, "schedule": schedule, "heat": heat, "duration": INTRO + n * STEP_SECONDS + HOLD}
 
 
+def phases(u):
+    """Within one step (u in 0..1): forward 0-0.38, loss 0.38-0.48, backward 0.48-0.82, update 0.82-1."""
+    return {"fwd": smoothstep(u / 0.38), "loss": smoothstep((u - 0.36) / 0.10), "bwd": smoothstep((u - 0.48) / 0.34),
+            "upd": smoothstep((u - 0.82) / 0.18), "pulse": float(np.sin(np.pi * min(max((u - 0.82) / 0.18, 0), 1)))}
+
+
 def state(t, data):
-    """Return (step index or None, head, phase dict)."""
     n = len(data["schedule"])
     if t is None:
         return None
     s = (t - INTRO) / STEP_SECONDS
     if s < 0:
-        return {"step": -1, "fwd": 0, "head": 0, "grad": 0, "pulse": 0, "upd": 0.0}
+        return {"step": -1, "lane": None, **phases(0.0)}
     k = min(int(s), n - 1); u = s - k if s < n else 1.0
-    return {"step": k, "fwd": smoothstep(u / 0.25), "head": smoothstep((u - 0.25) / 0.2), "grad": smoothstep((u - 0.45) / 0.35),
-            "pulse": np.sin(np.pi * min(max((u - 0.78) / 0.22, 0), 1)), "upd": smoothstep((u - 0.78) / 0.22)}
+    return {"step": k, "lane": data["schedule"][k], **phases(u)}
+
+
+def lane_card(ax, reg, fig, key, h, level):
+    x0, x1 = COLS[key]; yc = LANE_Y[h]; r = (x0, yc - LANE_H / 2, x1, yc + LANE_H / 2)
+    edge = mix_hex(IDLE_EDGE, COLOUR[h] if key == "head" else CARD_EDGE, level)
+    card(ax, r, fill=mix_hex(IDLE_FILL, CARD_FILL, level), edge=edge, lw=1.1 + (1.9 if key == "head" else 0.4) * level, fig=fig, z=2)
+    xc = 0.5 * (x0 + x1); txt = TEXT[key][h]
+    if isinstance(txt, tuple):
+        reg.text(ax, xc, yc + 0.045, txt[0], ha="center", va="center", fontsize=FONT_SIZES["body"], color=INK)
+        reg.text(ax, xc, yc - 0.050, txt[1], ha="center", va="center", fontsize=FONT_SIZES["micro"], color=INK)
+    else:
+        reg.text(ax, xc, yc, txt, ha="center", va="center", fontsize=FONT_SIZES["body"], color=INK)
 
 
 def descriptor(ax, reg, fig, data, st, glow):
-    k = sf(fig)
-    # focus: same grey card as everything else, but a heavy dark-grey border that flashes the head colour on update
     edge = CARD_EDGE if glow is None else mix_hex(CARD_EDGE, glow[0], 0.8 * glow[1])
     card(ax, DESC, fill=CARD_FILL, edge=edge, lw=3.2 + 1.6 * (glow[1] if glow else 0), fig=fig, z=2)
-    reg.text(ax, 0.5 * (DESC[0] + DESC[2]), DESC[3] - 0.075, "Shared DPA3 descriptor", ha="center", va="center",
-             fontsize=FONT_SIZES["panel_title"], color=INK)
+    xc = 0.5 * (DESC[0] + DESC[2])
+    reg.text(ax, xc, DESC[3] - 0.060, "Shared DPA3", ha="center", va="center", fontsize=FONT_SIZES["panel_title"], color=INK)
+    reg.text(ax, xc, DESC[3] - 0.135, "descriptor", ha="center", va="center", fontsize=FONT_SIZES["panel_title"], color=INK)
     heat = data["heat"]
-    if st is None:
-        cur = heat[-1]
+    if st is None or st["step"] < 0:
+        cur = heat[-1] if st is None else heat[0]
     else:
-        k0 = max(st["step"], 0); cur = heat[k0] * (1 - st["upd"]) + heat[k0 + 1] * st["upd"] if st["step"] >= 0 else heat[0]
-    gx0, gx1 = DESC[0] + 0.095, GRID_X1; cw = (gx1 - gx0) / CELLS; ch = 0.062
+        k0 = st["step"]; cur = heat[k0] * (1 - st["upd"]) + heat[k0 + 1] * st["upd"]
+    gx0, gx1 = DESC[0] + 0.088, DESC[2] - 0.012; cw = (gx1 - gx0) / CELLS; ch = 0.042
     for li, yc in enumerate(LAYER_Y):
-        reg.text(ax, DESC[0] + 0.012, yc, f"RepFlow {li + 1}", ha="left", va="center", fontsize=FONT_SIZES["micro"], color=INK)
+        reg.text(ax, DESC[0] + 0.010, yc, f"RepFlow {li + 1}", ha="left", va="center", fontsize=FONT_SIZES["micro"], color=INK)
         for r in range(2):
             for c in range(CELLS):
                 v = 0.5 + 0.5 * float(np.clip(cur[li, r, c], -1, 1))
-                ax.add_patch(plt_rect(gx0 + c * cw, yc - ch + r * ch, cw * 0.92, ch * 0.88, SIGNED_CMAP(v), k))
+                ax.add_patch(Rectangle((gx0 + c * cw, yc - ch + r * ch), cw * 0.9, ch * 0.86, fc=SIGNED_CMAP(v),
+                                       ec=mix_hex(LINE_GRAY, WHITE, 0.3), lw=0.4, zorder=3))
+    reg.text(ax, xc, DESC[1] + 0.045, "shared by both heads", ha="center", va="center", fontsize=FONT_SIZES["micro"], color=INK)
 
 
-def plt_rect(x, y, w, h, colour, k):
-    from matplotlib.patches import Rectangle
-    return Rectangle((x, y), w, h, fc=colour, ec=mix_hex(LINE_GRAY, WHITE, 0.3), lw=0.5 * k, zorder=3)
+def segments(h):
+    """Forward path pieces (x0, x1, y) of lane h; descriptor edge -> head etc."""
+    y = LANE_Y[h]
+    return [(COLS["input"][1], DESC[0], y), (DESC[2], COLS["head"][0], y), (COLS["head"][1], COLS["pred"][0], y),
+            (COLS["pred"][1], COLS["loss"][0], y)]
 
 
-def head(ax, reg, fig, h, level):
-    """level 0 = idle (grey), 1 = active."""
-    col = HEAD_COLOUR[h]
-    # idle: white card, light border; active: grey card, border in the head colour (a line, not text)
-    fill = mix_hex(IDLE_FILL, CARD_FILL, level); edge = mix_hex(IDLE_EDGE, col, level)
-    card(ax, HEAD[h], fill=fill, edge=edge, lw=1.1 + 1.9 * level, fig=fig, z=2)
-    x0, y0, x1, y1 = HEAD[h]; xc = 0.5 * (x0 + x1)
-    reg.text(ax, xc, 0.5 * (y0 + y1) + 0.075, HEAD_TEXT[h][0], ha="center", va="center", fontsize=FONT_SIZES["panel_title"],
-             color=INK)
-    reg.text(ax, xc, 0.5 * (y0 + y1) - 0.085, HEAD_TEXT[h][1], ha="center", va="center", fontsize=FONT_SIZES["body"],
-             color=INK)
+def forward(ax, reg, fig, h, p, colour=DARK_GRAY):
+    segs = segments(h); n = len(segs)
+    for i, (x0, x1, y) in enumerate(segs):
+        q = min(max(p * n - i, 0.0), 1.0)
+        if q > 0.01:
+            big_arrow(ax, reg, fig, (x0 + 0.005, y + FWD_DY), (x0 + 0.005 + (x1 - x0 - 0.010) * q, y + FWD_DY),
+                      colour=colour, lw=2.6, ms=18, z=6)
 
 
-def grad_arrow(ax, reg, fig, h, progress, label=None, fan=True):
-    if progress <= 0.01:
-        return
-    y = 0.665 if h == 0 else 0.335
-    xs, xe = HEAD[h][0] - 0.006, (DESC[2] + 0.006) if fan else (GRID_X1 + 0.010)
-    x = xs + (xe - xs) * progress
-    p1 = min(progress / 0.7, 1.0) if fan else progress; x = xs + (xe - xs) * p1
-    big_arrow(ax, reg, fig, (xs, y), (x, y), colour=HEAD_COLOUR[h], lw=5.0, ms=30, z=6)
-    p2 = smoothstep((progress - 0.7) / 0.3)
-    if fan and p2 > 0.01:  # back-propagation fans into every RepFlow layer of the shared descriptor
+def backward(ax, reg, fig, h, p):
+    segs = segments(h)[1:][::-1]; n = len(segs) + 1; col = COLOUR[h]
+    for i, (x0, x1, y) in enumerate(segs):
+        q = min(max(p * n - i, 0.0), 1.0)
+        if q > 0.01:
+            big_arrow(ax, reg, fig, (x1 - 0.005, y + BWD_DY), (x1 - 0.005 - (x1 - x0 - 0.010) * q, y + BWD_DY),
+                      colour=col, lw=4.0, ms=24, z=6)
+    q = min(max(p * n - (n - 1), 0.0), 1.0)
+    if q > 0.01:  # into every RepFlow layer of the shared descriptor
+        xs, y = DESC[2] - 0.004, LANE_Y[h] + BWD_DY
         for yc in LAYER_Y:
-            ye = yc - 0.002
-            big_arrow(ax, reg, fig, (xe - 0.004, y), (xe - 0.004 + (GRID_X1 + 0.006 - xe + 0.004) * p2, y + (ye - y) * p2),
-                      colour=HEAD_COLOUR[h], lw=2.4, ms=16, z=7)
-    if label:
-        reg.text(ax, 0.5 * (xs + DESC[2]), y + (0.055 if h == 0 else -0.055), label, ha="center", va="center",
-                 fontsize=FONT_SIZES["body"], color=INK)
+            big_arrow(ax, reg, fig, (xs, y), (xs - 0.050 * q, y + (yc - y) * q), colour=col, lw=2.2, ms=14, z=7)
+
+
+def ribbon(ax, reg, fig, st, sched):
+    reg.text(ax, 0.010, 0.935, "Each step: sample one task with model_prob 0.5 / 0.5", ha="left", va="center",
+             fontsize=FONT_SIZES["micro"], color=INK)
+    for i, hh in enumerate(sched):
+        shown = st is None or i <= st["step"]; cur = st is not None and i == st["step"]
+        disc(ax, fig, 0.395 + i * 0.024, 0.935, 0.0100 if cur else 0.0070, COLOUR[hh] if shown else LINE_GRAY, z=4)
+    # legend: line colour carries the meaning, text stays black
+    big_arrow(ax, reg, fig, (0.640, 0.935), (0.690, 0.935), colour=DARK_GRAY, lw=2.6, ms=18, z=6)
+    reg.text(ax, 0.698, 0.935, "forward", ha="left", va="center", fontsize=FONT_SIZES["micro"], color=INK)
+    big_arrow(ax, reg, fig, (0.835, 0.935), (0.785, 0.935), colour=TEAL, lw=4.0, ms=22, z=6)
+    reg.text(ax, 0.843, 0.935, "gradient → update", ha="left", va="center", fontsize=FONT_SIZES["micro"], color=INK)
 
 
 def draw(fig, reg, t, data):
     ax = canvas(fig); st = state(t, data); sched = data["schedule"]
-    active = None if st is None or st["step"] < 0 else sched[st["step"]]
-    # left column: step ribbon + inputs (de-emphasised)
-    reg.text(ax, 0.012, RIBBON_Y + 0.045, "One head per step,", ha="left", va="center", fontsize=FONT_SIZES["micro"], color=INK)
-    reg.text(ax, 0.012, RIBBON_Y - 0.035, "$p$ = 0.5 / 0.5", ha="left", va="center", fontsize=FONT_SIZES["micro"], color=INK)
-    from explainer_common import disc
-    for i, hh in enumerate(sched):
-        shown = st is None or i <= st["step"]
-        cx = 0.150 + i * 0.026; current = st is not None and i == st["step"]
-        disc(ax, fig, cx, RIBBON_Y - 0.035, 0.0105 if current else 0.0075, HEAD_COLOUR[hh] if shown else LINE_GRAY, z=4)
+    ribbon(ax, reg, fig, st, sched)
+    glow = None
     for h in (0, 1):
-        lit = 1.0 if st is None else (st["fwd"] if active == h else 0.0)
-        card(ax, INPUT[h], fill=mix_hex(IDLE_FILL, CARD_FILL, lit), edge=mix_hex(IDLE_EDGE, CARD_EDGE, lit), lw=1.1, fig=fig, z=1)
-        x0, y0, x1, y1 = INPUT[h]
-        reg.text(ax, 0.5 * (x0 + x1), 0.5 * (y0 + y1), INPUT_TEXT[h], ha="center", va="center", fontsize=FONT_SIZES["body"],
-                 color=INK)
-        yin = 0.5 * (y0 + y1)
-        big_arrow(ax, reg, fig, (x1 + 0.006, yin), (DESC[0] - 0.006, yin), colour=mix_hex(LINE_GRAY, MID_GRAY, lit), lw=2.2, ms=18)
-        yout = 0.81 if h == 0 else 0.19
-        big_arrow(ax, reg, fig, (DESC[2] + 0.006, yout), (HEAD[h][0] - 0.006, yout), colour=mix_hex(LINE_GRAY, MID_GRAY, lit), lw=2.2, ms=18)
-    # heads
-    for h in (0, 1):
-        level = 1.0 if st is None else (0.15 + 0.85 * st["head"] if active == h else 0.15)
-        head(ax, reg, fig, h, level)
-    # gradients into the shared descriptor
+        if st is None:
+            lv = {k: 1.0 for k in COLS}; fwd, bwd = 1.0, 1.0
+        elif st["lane"] == h:
+            f = st["fwd"]
+            lv = {"input": 1.0, "head": smoothstep(f * 2 - 0.5), "pred": smoothstep(f * 2 - 1.0), "loss": st["loss"]}
+            fwd, bwd = f, st["bwd"]
+            glow = (COLOUR[h], st["pulse"])
+        else:
+            lv = {k: 0.0 for k in COLS}; fwd, bwd = 0.0, 0.0
+        for key in COLS:
+            lane_card(ax, reg, fig, key, h, lv[key])
+        if fwd <= 0.01:  # idle lane: faint guide arrows only
+            for x0, x1, y in segments(h):
+                big_arrow(ax, reg, fig, (x0 + 0.005, y + FWD_DY), (x1 - 0.005, y + FWD_DY), colour=LINE_GRAY, lw=1.6, ms=14, z=4)
+        forward(ax, reg, fig, h, fwd)
+        backward(ax, reg, fig, h, bwd)
     if st is None:
-        grad_arrow(ax, reg, fig, 0, 1.0, "step $t$", fan=False); grad_arrow(ax, reg, fig, 1, 1.0, "step $t$ + 1", fan=False)
-        glow = None
-    else:
-        glow = None
-        if active is not None:
-            grad_arrow(ax, reg, fig, active, st["grad"], "gradient")
-            glow = (HEAD_COLOUR[active], float(st["pulse"]))
-    descriptor(ax, reg, fig, data, st, glow)
+        pass
+    elif st["lane"] is not None:
+        reg.text(ax, 0.5 * (COLS["head"][1] + COLS["pred"][0]) + 0.005, 0.5 * (LANE_Y[0] + LANE_Y[1]),
+                 f"step {st['step'] + 1}", ha="center", va="center", fontsize=FONT_SIZES["body"], color=INK)
+    descriptor(ax, reg, fig, data, st, glow if glow and glow[1] > 0.01 else None)
     return []
 
 

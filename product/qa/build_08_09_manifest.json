@@ -12,17 +12,30 @@
       "ppt": "20f7986105f7cf46498d835d0fd4a7419a8db8f741a8c1505c5ad5c5c932bffa"
     }
   },
+  "08b_dimred_overview": {
+    "png": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\figures\\08b_dimred_overview.png",
+    "master": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\videos\\08b_dimred_overview.mp4",
+    "ppt": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\videos\\ppt\\08b_dimred_overview.mp4",
+    "poster": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\videos\\ppt\\08b_dimred_overview_poster.png",
+    "frames": 276,
+    "qa_passed": true,
+    "sha256": {
+      "png": "a8ecddb2f0fe080b388331e81bb94c14a890ea0156a28e479d63e8aa286525f7",
+      "master": "13c9588e822aa574c9dd23e9cc843e454a063316043ae6de092f3201eeb97620",
+      "ppt": "5ba1c602493d5180022ce2dc50fca0b12538774ccf81470588f90a690fdef3dc"
+    }
+  },
   "09_multitask_finetune": {
     "png": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\figures\\09_multitask_finetune.png",
     "master": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\videos\\09_multitask_finetune.mp4",
     "ppt": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\videos\\ppt\\09_multitask_finetune.mp4",
     "poster": "D:\\CRYSTAL_PHD\\impromptus\\260314_molecular_dynamics\\product\\videos\\ppt\\09_multitask_finetune_poster.png",
-    "frames": 348,
+    "frames": 492,
     "qa_passed": true,
     "sha256": {
-      "png": "fe87f5d2e7d877654155e73b97a3fd2cad23e9d076090fdece69892a34becdbc",
-      "master": "0bbb9012873c12699f72e09a6c5d2249d5481748071811387695c991230b7bd9",
-      "ppt": "6add87c1c87d6ee8f8eb2e6650d30b23141c60b4f31a0e82041a701d8d3f5fd8"
+      "png": "1fdd3ab080d932270b0afaddaf6e3c892cd52daa76cb11a53ea019b681834ba2",
+      "master": "144c377f746a2e8c5888a688d3192f8251bc854f248b7cb97f3909d0b8664660",
+      "ppt": "4f3a3b8933cdb0097c7624f7eef7317f6ba6cf0ce4ba8c78e16879f0679621d3"
     }
   }
 }
