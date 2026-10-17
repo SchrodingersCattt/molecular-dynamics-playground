@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import colorsys
 import json
 from pathlib import Path
 
@@ -10,6 +11,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.patches import ConnectionPatch, Ellipse, FancyBboxPatch, Rectangle
+from matplotlib.text import Text
 
 from common import (
     A_ORANGE, ENERGY_TEAL, SIGNED_CMAP, signed_unit, FONT_SIZES, INK, LINE_GRAY, LIGHT_GRAY,
@@ -181,15 +183,52 @@ def _draw_grid_colorbar(ax: plt.Axes, registry: LayoutRegistry, *, label: str) -
     registry.text(ax, 0.5 * (x0 + x1), 0.385, label, ha="center", va="baseline", fontsize=FONT_SIZES["micro"], color=INK)
 
 
+def _param_colour(value: float, *, text: bool = False) -> tuple[float, float, float]:
+    """Colour for a trainable parameter, by sign and magnitude.
+
+    Same hues as GRID_CMAP / the colorbar (positive -> purple end, negative ->
+    green end), deepened so thin lines and small numbers stay legible."""
+    end = GRID_CMAP(1.0 if value > 0 else 0.0)
+    hue, _light, sat = colorsys.rgb_to_hls(*end[:3])
+    magnitude = min(abs(value) / 0.5, 1.0)
+    light = (0.44 - 0.10 * magnitude) if text else (0.68 - 0.16 * magnitude)
+    return colorsys.hls_to_rgb(hue, light, min(1.0, 0.25 + 0.9 * sat))
+
+
+def _math_segments(ax: plt.Axes, x: float, y: float, segments, fontsize: float) -> None:
+    """Draw one baseline-aligned formula line from differently coloured parts."""
+    fig = ax.figure
+    renderer = fig.canvas.get_renderer()
+    scale = float(getattr(fig, "text_scale", 1.0))
+    inverse = ax.transData.inverted()
+    cursor = ax.transData.transform((x, y))[0]
+    for text, colour, *gap in segments:
+        x_data = inverse.transform((cursor, 0.0))[0]
+        artist = ax.text(x_data, y, f"${text}$", ha="left", va="baseline", fontsize=fontsize, color=colour, zorder=6, gid="inset_algebra")
+        probe = Text(0.0, 0.0, f"${text}$", fontproperties=artist.get_fontproperties().copy())
+        probe.set_fontsize(fontsize * scale)
+        probe.set_figure(fig)
+        # Mathtext drops the spacing after a trailing operator; `gap` (px at
+        # slide scale) restores it where a segment ends in one.
+        cursor += probe.get_window_extent(renderer).width + (gap[0] * scale if gap else 0.0)
+
+
 def _draw_neuron_inset(ax: plt.Axes, src: tuple[float, float, float, float], phase: float) -> None:
     """Zoom-in inset: one arrow between matrix blocks seen as neurons, with a
-    worked example for one hidden neuron (tanh, as in the DeePMD embedding)."""
+    worked example for one hidden neuron (tanh, as in the DeePMD embedding).
+
+    Colour semantics follow the main figure: only trainable parameters
+    (weights, bias) carry the purple/green signed colours; inputs, neurons,
+    activations and operators stay neutral."""
     sx0, sy0, sx1, sy1 = src
     ix0, iy0, ix1, iy1 = INSET_RECT
     soft = "#B9C4C8"
+    neutral_line = "#D5DADD"
+    neuron_edge = "#4A4F55"
+    neuron_fill_on = "#E9EBED"
     small = FONT_SIZES["micro"]
     aspect = _axes_aspect(ax)
-    ax.add_patch(FancyBboxPatch((sx0, sy0), sx1 - sx0, sy1 - sy0, boxstyle="round,pad=0,rounding_size=0.008", fc="none", ec=ENERGY_TEAL, lw=0.9, alpha=0.75, zorder=7))
+    ax.add_patch(FancyBboxPatch((sx0, sy0), sx1 - sx0, sy1 - sy0, boxstyle="round,pad=0,rounding_size=0.008", fc="none", ec=soft, lw=1.0, zorder=7))
     # Leaders drop straight down through the column gap (clear of the R_i /
     # embedding-net labels) into the inset.
     for x_src in (sx0 + 0.004, sx1 - 0.004):
@@ -202,21 +241,22 @@ def _draw_neuron_inset(ax: plt.Axes, src: tuple[float, float, float, float], pha
     lit = [float(np.clip((phase - 0.05 - 0.25 * k) / 0.15, 0.0, 1.0)) for k in range(len(pts))]
     example_on = lit[1] > 0.5
     target = 1  # middle neuron of the hidden layer
+    inputs, weights, bias = (0.8, -0.3, 0.5), (0.4, -0.2, 0.1), 0.05  # pts[0] runs bottom -> top
     for k in range(len(pts) - 1):
-        for p in pts[k]:
+        for j, p in enumerate(pts[k]):
             for t, q in enumerate(pts[k + 1]):
                 hot = example_on and k == 0 and t == target
-                ax.plot([p[0], q[0]], [p[1], q[1]], color=ENERGY_TEAL if hot else (LINE_GRAY if lit[k + 1] < 0.5 else soft), lw=1.3 if hot else 0.6, alpha=0.95 if hot else 0.40 + 0.30 * lit[k + 1], zorder=3.5 if hot else 3)
+                if hot:
+                    ax.plot([p[0], q[0]], [p[1], q[1]], color=_param_colour(weights[j]), lw=1.6, zorder=3.5, solid_capstyle="round")
+                else:
+                    ax.plot([p[0], q[0]], [p[1], q[1]], color=neutral_line, lw=0.6, alpha=0.55 + 0.35 * lit[k + 1], zorder=3)
     for k, layer in enumerate(pts):
         for j, (x, y) in enumerate(layer):
-            value = 2.0 * (((k * 5 + j * 3) % 7) / 6.0) - 1.0
-            colour = GRID_CMAP(float(signed_unit(value, 1.0))) if lit[k] > 0.05 else "white"
             hot = example_on and (k == 0 or (k == 1 and j == target))
-            ax.add_patch(Ellipse((x, y), 0.024, 0.024 * aspect, fc=colour, ec=ENERGY_TEAL if hot else (LINE_GRAY if lit[k] < 0.5 else NAVY), lw=1.3 if hot else 0.8, zorder=4))
+            ax.add_patch(Ellipse((x, y), 0.024, 0.024 * aspect, fc=neuron_fill_on if lit[k] > 0.05 else "white", ec=neuron_edge if (hot or lit[k] > 0.5) else LINE_GRAY, lw=1.2 if hot else 0.8, zorder=4))
     if not example_on:
         return
     halo = dict(boxstyle="round,pad=0.04", fc="#FBFCFC", ec="none")
-    inputs, weights = (0.8, -0.3, 0.5), (0.4, -0.2, 0.1)  # pts[0] runs bottom -> top
     for (x, y), value in zip(pts[0], inputs):
         ax.text(x - 0.026, y, f"{value:g}".replace("-", "\u2212"), ha="right", va="center", fontsize=small, color=INK, zorder=6, gid="inset_input")
     q = pts[1][target]
@@ -224,15 +264,17 @@ def _draw_neuron_inset(ax: plt.Axes, src: tuple[float, float, float, float], pha
     # and bottom ones go outside the fan, the middle one just above its line.
     for (x, y), value, (f, off) in zip(pts[0], weights, INSET_WEIGHT_POS):
         mx, my = x + f * (q[0] - x), y + f * (q[1] - y)
-        ax.text(mx, my + off, f"{value:g}".replace("-", "\u2212"), ha="center", va="center", fontsize=small, color=ENERGY_TEAL, zorder=6, bbox=halo, gid="inset_weight")
+        ax.text(mx, my + off, f"{value:g}".replace("-", "\u2212"), ha="center", va="center", fontsize=small, color=_param_colour(value, text=True), zorder=6, bbox=halo, gid="inset_weight")
+    w_bot, w_mid, w_top = weights
+    K = INK
     tx = xs[2] + 0.045
-    lines = (
-        (r"$z=0.1{\cdot}0.5+(-0.2)(-0.3)$", 0.0, INK),
-        (r"$+\,0.4{\cdot}0.8+0.05=0.48$", 0.030, INK),
-        (r"$y=\tanh(0.48)=0.45$", 0.0, ENERGY_TEAL),
+    rows = (
+        [("z=", K, 2.0), ("0.1", _param_colour(w_top, text=True)), (r"{\cdot}0.5+(", K), ("-0.2", _param_colour(w_mid, text=True)), (r")(-0.3)", K)],
+        [("+", K, 3.0), ("0.4", _param_colour(w_bot, text=True)), (r"{\cdot}0.8+", K, 3.0), ("0.05", _param_colour(bias, text=True)), ("=0.48", K)],
+        [(r"y=\tanh(0.48)=0.45", K)],
     )
-    for row, (text, indent, colour) in enumerate(lines):
-        ax.text(tx + indent, yc + (1 - row) * INSET_LINE_PITCH, text, ha="left", va="center", fontsize=small, color=colour, zorder=6, gid="inset_algebra")
+    for row, segments in enumerate(rows):
+        _math_segments(ax, tx + (0.030 if row == 1 else 0.0), yc + (1 - row) * INSET_LINE_PITCH - 0.013, segments, small)
 
 def _network_arrow(ax: plt.Axes, registry: LayoutRegistry, start: tuple[float, float], end: tuple[float, float], *, colour: str, alpha: float = 1.0) -> None:
     registry.arrow(ax, start, end, arrowstyle="-|>", mutation_scale=13, lw=2.0, color=colour, alpha=alpha, zorder=5)
